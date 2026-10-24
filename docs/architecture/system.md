@@ -76,3 +76,19 @@ flowchart TD
 - **未実装:** Sleep/Dream全体ループ、永続Episodes DB、学習された検索方針、Kernelによる自律タスク選択。
 - **決定的な境界:** `learning` は訓練課題からのみ候補を作る。`evaluation` は候補を触らず開発/最終評価を計測。生成したmacroは `DEFAULT_REGISTRY` を変更しない。
 - 探索条件とデータの対応は [ARCH-002](contracts.md)、研究ゲートは [EXP-0002](../specs/EXP-0002.md)、実測は [runs](../../experiments/EXP-0002/runs/README.md) を参照。
+
+## EXP-0002 security boundary — 第3回独立レビュー指摘への対応
+
+```mermaid
+flowchart LR
+    IN["TaskSpec + caller Registry + SkillCandidate"] --> CHECK["実行前: canonical primitive allowlist照合"]
+    BASE["DEFAULT_REGISTRY: trim/lower/upper のID・型・版・実装"] --> CHECK
+    CHECK -->|偽装・順序変更・未知演算| REJECT["拒否: ValueError"]
+    CHECK -->|一致| REBUILD["技能body hash・型検証、ASTからmacroを再構築"]
+    REBUILD --> EVAL["Bounded synthesis: 展開後ASTと候補数の予算"]
+    EVAL --> VER["独立Verification"]
+    VER --> REP["結果と監査証跡"]
+```
+
+- 呼び出し元から提供されたRegistry内の実装callbackは、原始演算もmacroも実行権限の根拠にしない。primitiveは`DEFAULT_REGISTRY`の実装同一性で検査し、macroは型付きASTから再構築する。
+- PR #6の第3回P1指摘への対応。採否は[独立監査の記録](../../experiments/EXP-0002/reviews/20261024-primitive-allowlist-hardening.md)とCI/再レビューを待つ。
