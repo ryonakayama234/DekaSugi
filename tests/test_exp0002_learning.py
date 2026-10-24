@@ -2,6 +2,9 @@
 import unittest
 from dataclasses import replace
 
+from packages.learning import SkillCandidate
+from packages.protocol import program_hash
+
 from packages.evaluation import (
     DEV, TRAIN, HOLDOUT, bounded_synthesize, expanded_nodes, run_experiment,
 )
@@ -42,6 +45,26 @@ class LearningTests(unittest.TestCase):
         ):
             with self.subTest(damaged=damaged), self.assertRaises(DSLValidationError):
                 validate_skill(damaged)
+
+    def test_nested_macros_rejected_and_expansion_cost_is_recursive(self):
+        base = discover_skills(TRAIN)[0]
+        extended = registry_with_skill(base)
+        # This used to be accepted as two calls; the true physical cost is 5.
+        nested_body = Call(base.skill_id, Call(base.skill_id, Input()))
+        digest = program_hash(nested_body)
+        nested = SkillCandidate(
+            skill_id="skill_" + digest[:16], body_ast=nested_body,
+            body_hash=digest, dependencies=(base.skill_id,),
+            provenance=("train-01", "train-02"), occurrences=2,
+        )
+        with self.assertRaisesRegex(DSLValidationError, "Nested learned macros"):
+            registry_with_skill(nested, extended)
+        self.assertEqual(expanded_nodes(nested_body, {base.skill_id: base}), 5)
+        with self.assertRaisesRegex(ValueError, "Registry and learned-skill"):
+            bounded_synthesize(HOLDOUT[0], extended)
+        cyclic = replace(base, body_ast=Call(base.skill_id, Input()))
+        with self.assertRaisesRegex(ValueError, "Cyclic macro"):
+            expanded_nodes(Call(base.skill_id, Input()), {base.skill_id: cyclic})
 
     def test_expanded_budget_and_baseline_equivalence(self):
         c = discover_skills(TRAIN)[0]

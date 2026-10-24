@@ -109,7 +109,14 @@ def validate_skill(candidate: SkillCandidate, registry: Registry = DEFAULT_REGIS
     if not isinstance(candidate.body_ast, Call) or not isinstance(candidate.body_ast.child, Call):
         raise DSLValidationError("Skill must compress >=2 primitive calls")
     check_program(candidate.body_ast, registry.signatures, max_nodes=32)
-    if candidate.dependencies != _operation_ids(candidate.body_ast):
+    # A previous derived macro must not masquerade as a primitive: expansion
+    # and safety accounting currently guarantee only flat primitive AST bodies.
+    used_ops = _operation_ids(candidate.body_ast)
+    derived = {p.op_id for p in registry.primitives
+               if p.semantics_version.startswith("derived-")}
+    if derived.intersection(used_ops):
+        raise DSLValidationError("Nested learned macros are not supported")
+    if candidate.dependencies != used_ops:
         raise DSLValidationError("Skill dependencies mismatch")
     if (candidate.occurrences < 2 or len(candidate.provenance) < 2
             or candidate.occurrences != len(candidate.provenance)

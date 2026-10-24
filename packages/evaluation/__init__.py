@@ -42,21 +42,35 @@ EXPECTED = {
 
 def expanded_nodes(program: Program,
                    learned: dict[str, SkillCandidate] | None = None) -> int:
-    """Physical AST node cost after expanding macros, not just logical nodes."""
+    """Count primitive AST nodes after recursive expansion; detect cycles."""
     learned = learned or {}
-    if isinstance(program, Input):
-        return 1
-    if not isinstance(program, Call):
-        raise ValueError("Unsupported program")
-    child_nodes = expanded_nodes(program.child, learned)
-    if program.op_id not in learned:
-        return 1 + child_nodes
-    return expanded_nodes(learned[program.op_id].body_ast) - 1 + child_nodes
+
+    def count(node: Program, active: frozenset[str]) -> int:
+        if isinstance(node, Input):
+            return 1
+        if not isinstance(node, Call):
+            raise ValueError("Unsupported program")
+        child_nodes = count(node.child, active)
+        if node.op_id not in learned:
+            return 1 + child_nodes
+        if node.op_id in active:
+            raise ValueError("Cyclic macro dependency")
+        candidate = learned[node.op_id]
+        if candidate.skill_id != node.op_id:
+            raise ValueError("Skill map identity mismatch")
+        body_nodes = count(candidate.body_ast, active | {node.op_id})
+        return body_nodes - 1 + child_nodes
+
+    return count(program, frozenset())
 
 
 def bounded_synthesize(task: TaskSpec, registry: Registry,
                        learned: dict[str, SkillCandidate] | None = None) -> SearchResult:
     """Same candidate budget and MAX EXPANDED primitive-AST nodes in both arms."""
+    derived_ids = {p.op_id for p in registry.primitives
+                   if p.semantics_version.startswith("derived-")}
+    if derived_ids != set(learned or {}):
+        raise ValueError("Registry and learned-skill metadata must match")
     started = perf_counter()
     tested = 0
     digest = sha256()
