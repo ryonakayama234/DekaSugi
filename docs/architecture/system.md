@@ -92,3 +92,22 @@ flowchart LR
 
 - 呼び出し元から提供されたRegistry内の実装callbackは、原始演算もmacroも実行権限の根拠にしない。primitiveは`DEFAULT_REGISTRY`の実装同一性で検査し、macroは型付きASTから再構築する。
 - PR #6の第3回P1指摘への対応。採否は[独立監査の記録](../../experiments/EXP-0002/reviews/20261024-primitive-allowlist-hardening.md)とCI/再レビューを待つ。
+
+## SEC-004: 実行用Registryの独立スナップショット（PR #6への修正案）
+
+```mermaid
+flowchart TD
+    A["Caller Registry / SkillCandidate（非信頼）"] --> V["Metadata / hash / budget validation"]
+    P["DEFAULT_PRIMITIVES（固定の原始演算定義）"] --> V
+    V -->|invalid| X["Fail closed: reject before search"]
+    V -->|valid| R["Registry(DEFAULT_PRIMITIVES): fresh maps"]
+    P --> R
+    R --> M["Rebuild macros from validated AST"]
+    M --> S["Bounded synthesis + independent verifier"]
+    S --> E["Same status / candidates / AST / trace"]
+```
+
+- `DEFAULT_REGISTRY`の`primitives`、`by_name`、`signatures`は公開属性で、可変な実行権限の根拠にしない。原始演算の正本は`DEFAULT_PRIMITIVES`、実行に使う検索表と署名表は毎回新しい`Registry`で生成する。
+- 呼出元の`Registry.by_name`を参照してmacroを認証しない。登録情報は`primitives`タプルと`SkillCandidate`のbody hashで検査し、macro callableも検証済みASTから再構築する。
+- この境界はEXP-0002の`bounded_synthesize`に限定される。任意のPythonコードや同一プロセスの攻撃者からの完全な隔離を意味しない。新Kernelの実装やFINAL評価には進んでいない。
+- [SEC-004の回帰・監査記録](../../experiments/EXP-0002/reviews/20261025-registry-snapshot-boundary.md)と[Issue #14](https://github.com/ryonakayama234/DekaSugi/issues/14)を参照。

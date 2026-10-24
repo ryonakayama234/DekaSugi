@@ -1,6 +1,7 @@
 """Independent safety, discovery, determinism and evaluation gates for EXP-0002."""
 import unittest
 from dataclasses import replace
+from unittest.mock import patch
 
 from packages.learning import SkillCandidate
 from packages.protocol import program_hash
@@ -128,6 +129,63 @@ class LearningTests(unittest.TestCase):
                           actual.trace_sha256),
                          (expected.status, expected.program, expected.tested_candidates,
                           expected.trace_sha256))
+
+    def test_mutable_registry_lookup_never_becomes_executable_authority(self):
+        """SEC-004: both default and caller lookup tables are untrusted."""
+        def poison(_value: str) -> str:
+            raise AssertionError("Poisoned by_name callback executed")
+
+        baseline_registry = Registry()
+        skill = discover_skills(TRAIN)[0]
+        macro_registry = registry_with_skill(skill, baseline_registry)
+        learned = {skill.skill_id: skill}
+
+        def stable(result):
+            return (result.status, result.program, result.tested_candidates,
+                    result.trace_sha256)
+
+        expected_off = stable(bounded_synthesize(TRAIN[0], baseline_registry))
+        expected_on = stable(bounded_synthesize(TRAIN[0], macro_registry, learned))
+
+        poisoned_lookup = dict(DEFAULT_REGISTRY.by_name)
+        poisoned_lookup["trim"] = replace(
+            DEFAULT_REGISTRY.primitives[0], implementation=poison
+        )
+        poisoned_primitive_tuple = (
+            replace(DEFAULT_REGISTRY.primitives[0], implementation=poison),
+            *DEFAULT_REGISTRY.primitives[1:],
+        )
+
+        # Regression for PR #6 P1: original code uses DEFAULT_REGISTRY as
+        # its "trusted" executor; patched by_name previously executed poison.
+        with patch.object(DEFAULT_REGISTRY, "by_name", poisoned_lookup), \\
+             patch.object(DEFAULT_REGISTRY, "signatures", {"trim": ("String", "String")}), \\
+             patch.object(DEFAULT_REGISTRY, "primitives", poisoned_primitive_tuple):
+            self.assertEqual(
+                stable(bounded_synthesize(TRAIN[0], baseline_registry)),
+                expected_off,
+            )
+            self.assertEqual(
+                stable(bounded_synthesize(TRAIN[0], macro_registry, learned)),
+                expected_on,
+            )
+
+        # Caller-supplied lookup and signatures can also lie while the
+        # declarative primitive tuple remains unchanged.
+        baseline_registry.by_name = poisoned_lookup
+        baseline_registry.signatures = {"trim": ("String", "String")}
+        macro_lookup = dict(macro_registry.by_name)
+        macro_lookup[skill.skill_id] = replace(
+            macro_registry.primitives[-1], implementation=poison
+        )
+        macro_registry.by_name = macro_lookup
+        macro_registry.signatures = {}
+        self.assertEqual(
+            stable(bounded_synthesize(TRAIN[0], baseline_registry)), expected_off
+        )
+        self.assertEqual(
+            stable(bounded_synthesize(TRAIN[0], macro_registry, learned)), expected_on
+        )
 
     def test_expanded_budget_and_baseline_equivalence(self):
         c = discover_skills(TRAIN)[0]
