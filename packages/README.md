@@ -5,7 +5,7 @@ status: proposed
 updated: 2026-10-24
 tags: packages, modularity, api
 
-以下は**予定構成**。このREADMEだけではモジュールが実装されたことにはならない。
+現在の実装と将来の予定を区別する。EXP-0001は型付き文字列DSLの探索・実行・検証・CLIを実装。正式な採否は実験runに依存する。
 
 | package | 責務 | 想定フェーズ |
 |---|---|---|
@@ -22,3 +22,16 @@ tags: packages, modularity, api
 | cli | 人間/CIが実験を実行する窓口 | 1 |
 
 モジュール間通信の形式は [ARCH-002](../docs/architecture/contracts.md)、全体関係は [ARCH-001](../docs/architecture/system.md)。
+
+## EXP-0001で実装したパッケージ
+
+| Package | 主要API | 状態 |
+|---|---|---|
+| `protocol` | `parse_task`, `parse_program`, `check_program`, `program_to_dict`, `program_hash` | implemented |
+| `library` | `Registry`, `DEFAULT_PRIMITIVES` | implemented, fixed primitives only |
+| `runtime` | `evaluate` | implemented |
+| `verification` | `verify` | implemented |
+| `synthesis` | `enumerate_candidates`, `synthesize` | implemented |
+| `cli` | `python -m packages.cli --task/--suite` | implemented |
+
+この段階の `library` は**固定操作の管理**のみ。技能の自動獲得は未実装。
