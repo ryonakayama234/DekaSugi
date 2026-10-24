@@ -19,6 +19,7 @@ tags: navigation, architecture, research, experiments
 | ROADMAP | 実験ロードマップ | proposed | [roadmap](roadmap.md) |
 | EXP-0001 | 型付きプログラム合成ベースライン | accepted baseline (EXP-0001) | [spec](specs/EXP-0001.md) / [plan](../experiments/EXP-0001/plan.md) |
 | EXP-0002 | 共通部分式の発見と未知例での比較 | functionally verified; promotion pending independent review | [spec](specs/EXP-0002.md) / [preregistered plan](../experiments/EXP-0002/plan.md) / [runs](../experiments/EXP-0002/runs/README.md) |
+| MEASURE-0001 | 実行されたprimitiveのコスト計測と反実仮想比較の下準備 | experimental branch; independent verification pending | [system/data diagrams](architecture/measurement.md) / [measurement log](../experiments/EXP-0002B/metering-log.md) / [Issue #7](https://github.com/ryonakayama234/DekaSugi/issues/7) |
 | RSRCH-INDEX | 研究資料の検索入口 | collecting | [research](research/INDEX.md) |
 | RSRCH-001 | プログラム合成・抽象化 | notes | [program synthesis](research/program-synthesis.md) |
 | TPL-SPEC | 仕様書テンプレート | active | [template](templates/spec.md) |
