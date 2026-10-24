@@ -1,0 +1,71 @@
+{
+  "id": "EXP-0002B-METER-RUN-001",
+  "kind": "diagnostic_remeasurement_of_published_EXP-0002_tasks",
+  "claim_limit": "NOT independent EXP-0002B policy or holdout evaluation",
+  "measured_at_utc": "2026-10-24T07:58:32Z",
+  "source_pr_head_sha": "0921f1cee59c9f3d35baf7740af7feeb940b48c9",
+  "ci_checkout_source_commit": "4dcd7d6762b5ec0eaf8771fc03cf5ad035ee825d",
+  "ci_run": "https://github.com/ryonakayama234/DekaSugi/actions/runs/40076212287",
+  "measurement_version": "runtime-wrapped-v1",
+  "tests": {
+    "unittest_passed": 28,
+    "documentation": "PASS",
+    "exp0001": "PASS",
+    "exp0002": "PASS"
+  },
+  "observations": [
+    {
+      "task_id": "dev-01",
+      "partition": "development",
+      "status": "solved",
+      "off_candidates": 6,
+      "on_candidates": 5,
+      "off_calls": 14,
+      "on_calls": 10
+    },
+    {
+      "task_id": "holdout-01",
+      "partition": "previously_published_holdout",
+      "status": "solved",
+      "off_candidates": 6,
+      "on_candidates": 5,
+      "off_calls": 14,
+      "on_calls": 10
+    },
+    {
+      "task_id": "holdout-02",
+      "partition": "previously_published_holdout",
+      "status": "solved",
+      "off_candidates": 6,
+      "on_candidates": 5,
+      "off_calls": 14,
+      "on_calls": 10
+    },
+    {
+      "task_id": "negative-reverse",
+      "partition": "previously_published_holdout",
+      "status": "not_found",
+      "off_candidates": 40,
+      "on_candidates": 47,
+      "off_calls": 102,
+      "on_calls": 122
+    },
+    {
+      "task_id": "negative-identity",
+      "partition": "previously_published_holdout",
+      "status": "solved",
+      "off_candidates": 1,
+      "on_candidates": 1,
+      "off_calls": 0,
+      "on_calls": 0
+    }
+  ],
+  "published_holdout_aggregate": {
+    "off_calls": 130,
+    "on_calls": 142,
+    "delta_on_minus_off": 12,
+    "note": "diagnostic sample too small and reused; NOT confirmatory"
+  },
+  "cost_coverage": "primitive implementation invocations during verifier example evaluation only",
+  "adoption": "pending_independent_review"
+}
