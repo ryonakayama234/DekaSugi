@@ -62,7 +62,7 @@ Mean and fractions are arithmetic; feature vector order and float representation
 - DEV is a non-tuning engineering smoke set: if it exposes a defect, fix under **new protocol version** and new FINAL seeds; do not silently reuse this preregistration or the same FINAL as confirmatory evidence.
 - The comparator `ORACLE` chooses better observed arm retrospectively; **diagnostic upper bound only**. Not an executable policy.
 
-## Measures and acceptance gates fixed before results
+## Metrics and acceptance gates fixed before results
 For FINAL **all 112 tasks** and grouped by 7 families, compare OFF, ON and LEARNED; ORACLE is reported but excluded from adoption:
 1. Safety first: **zero additional audit-invalid solved programs** and no lower independently audited solve count relative to OFF; unchanged allowlisted interpreter and budgets.
 2. Primary improvement: total `primitive_invocations` by LEARNED must be at least **5.0% lower than both OFF and ON separately**, and total `tested_candidates` must also be at least **5.0% lower than both**. Do not subtract estimated overhead from either numerator. Report per-task differences and per-family means.
@@ -72,7 +72,7 @@ For FINAL **all 112 tasks** and grouped by 7 families, compare OFF, ON and LEARN
 6. Statistical uncertainty: report 1,000-seed deterministic `Random(260299)` **family-clustered bootstrap** paired aggregate deltas with replacement, also report simple task-paired sign counts. Low family count and small benchmark size must be acknowledged; p-values alone cannot approve promotion.
 7. Baseline, ON, LEARNED and ORACLE statuses, audit success, candidate count, primitive calls and trace IDs for every task in immutable JSON, with Python/platform, source commit and all hashes. Failures and negative results remain archived.
 
-### Interpretation gates
+## Acceptance / interpretation gates
 - Passing numerical criteria plus independent security/code/research review permits a **candidate selection policy in experimental mode**, not default-library skill promotion and not claims about general intelligence.
 - Improvement over ON but not OFF = useful suppression, **not** improved overall capability.
 - If any strict threshold fails, label `not_demonstrated`, preserve output, and propose a **new** independent study rather than retuning on FINAL.
