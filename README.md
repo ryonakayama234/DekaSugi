@@ -53,3 +53,6 @@ python -m packages.evaluation --output .run/EXP-0002-result.json
 ```
 
 機能/効率の実測と、技能を標準ライブラリへ正式採用する判断は別段階。[設計図](docs/architecture/system.md) / [仕様](docs/specs/EXP-0002.md)。
+
+## EXP-0002Bへの観測基盤（開発中）
+新しい[primitive呼出数計測](docs/architecture/measurement.md)は、安全なmacro内部の実行回数を含む試行ごとのメータを提供する。現段階では**EXP-0002の検索結果の追加診断**であり、学習型Kernelや新しい独立評価の実装を意味しない。[開発記録](experiments/EXP-0002B/metering-log.md)。
