@@ -147,3 +147,20 @@ flowchart LR
 | `EvaluationReport` | 112最終課題の4条件、独立監査、族別コスト/退行、OOD、CI環境を記録 | EXP-0002B v1 proposal |
 
 不変条件: 最終112課題を結果に合わせて再利用しない。公開されたEXP-0002旧holdoutの診断値は学習器の教師・採否根拠から排除する。前計算やPolicy推論の時間とprimitive呼出数は混同しない。exact generator/feature/policy constants: [preregistered plan](../../experiments/EXP-0002B/plan.md)。
+
+## EXP-0002B v2 — 隔離した分割・監査データの契約（未実装）
+
+```mermaid
+flowchart TD
+   G["Generator: disjoint train/dev/final seeds"] --> PUB["TaskSpec: visible IO×2"]
+   G --> PRIV["AuditExample: hidden IO×1 + family"]
+   PUB --> FEAT["Features: 8 numeric values; pre-solve"]
+   PUB --> SEARCH["TRAIN pair: OFF/ON"]
+   SEARCH --> OBS["Observation: statuses and primitive calls"]
+   PRIV --> SCORE["Independent post-search audit"]
+   OBS --> SCORE
+   SCORE --> SNAP["Immutable PolicySnapshot: TRAIN only"]
+   SNAP --> FINAL["Unopened FINAL evaluation"]
+```
+
+生成seedはsplitごとに`10000000/20000000/30000000`の非重複領域とし、例番号を加算しても重複しない。TaskSpecには`family/seed/split/audit`を含めない。v1は[履歴](../../experiments/EXP-0002B/plan.md)として保存し、[v2の固定契約](../../experiments/EXP-0002B/plan-v2.md)を実装の唯一の基準とする。
