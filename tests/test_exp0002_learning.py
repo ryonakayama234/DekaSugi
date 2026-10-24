@@ -66,6 +66,19 @@ class LearningTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Cyclic macro"):
             expanded_nodes(Call(base.skill_id, Input()), {base.skill_id: cyclic})
 
+    def test_forged_macro_metadata_cannot_underreport_cost(self):
+        skill = discover_skills(TRAIN)[0]
+        registry = registry_with_skill(skill)
+        forged_body = replace(skill, body_ast=Input())
+        with self.assertRaisesRegex(ValueError, "body hash mismatch"):
+            bounded_synthesize(TRAIN[0], registry, {skill.skill_id: forged_body})
+        with self.assertRaisesRegex(ValueError, "body hash mismatch"):
+            expanded_nodes(Call(skill.skill_id, Input()), {skill.skill_id: forged_body})
+        # Forging a self-consistent hash still must not change the registered body.
+        forged_hash = replace(forged_body, body_hash=program_hash(Input()))
+        with self.assertRaisesRegex(ValueError, "Registered skill body hash"):
+            bounded_synthesize(TRAIN[0], registry, {skill.skill_id: forged_hash})
+
     def test_expanded_budget_and_baseline_equivalence(self):
         c = discover_skills(TRAIN)[0]
         r = registry_with_skill(c)

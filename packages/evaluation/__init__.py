@@ -9,7 +9,8 @@ from time import perf_counter
 
 from packages.library import DEFAULT_REGISTRY, Registry
 from packages.learning import SkillCandidate, discover_skills, registry_with_skill
-from packages.protocol import Call, Input, Program, TaskSpec, parse_task, program_hash, program_to_dict
+from packages.protocol import (Call, Input, Program, TaskSpec, parse_task,
+                               program_hash, program_to_dict, check_program, DSLValidationError)
 from packages.synthesis import SearchResult, enumerate_candidates
 from packages.verification import verify
 
@@ -58,6 +59,8 @@ def expanded_nodes(program: Program,
         candidate = learned[node.op_id]
         if candidate.skill_id != node.op_id:
             raise ValueError("Skill map identity mismatch")
+        if program_hash(candidate.body_ast) != candidate.body_hash:
+            raise ValueError("Skill metadata body hash mismatch")
         body_nodes = count(candidate.body_ast, active | {node.op_id})
         return body_nodes - 1 + child_nodes
 
@@ -71,6 +74,24 @@ def bounded_synthesize(task: TaskSpec, registry: Registry,
                    if p.semantics_version.startswith("derived-")}
     if derived_ids != set(learned or {}):
         raise ValueError("Registry and learned-skill metadata must match")
+    # The evaluator must use precisely the AST that was registered to execute.
+    # Otherwise a caller could under-report expanded cost with forged metadata.
+    primitive_signatures = {
+        p.op_id: (p.input_type, p.output_type)
+        for p in registry.primitives if p.op_id not in derived_ids
+    }
+    for skill_id, candidate in (learned or {}).items():
+        if candidate.skill_id != skill_id:
+            raise ValueError("Skill metadata ID mismatch")
+        digest = program_hash(candidate.body_ast)
+        if candidate.body_hash != digest:
+            raise ValueError("Skill metadata body hash mismatch")
+        if registry.by_name[skill_id].semantics_version != "derived-" + digest:
+            raise ValueError("Registered skill body hash mismatch")
+        try:
+            check_program(candidate.body_ast, primitive_signatures, max_nodes=32)
+        except DSLValidationError as error:
+            raise ValueError("Skill body is not primitive-only and type-safe") from error
     started = perf_counter()
     tested = 0
     digest = sha256()
