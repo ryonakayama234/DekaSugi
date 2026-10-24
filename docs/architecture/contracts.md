@@ -146,7 +146,7 @@ flowchart LR
 | `PolicySnapshot` | 5-NNの固定閾値、全訓練ID/Hash、学習内容、skill body hash、source commit、canonical hash | `knn-cost-v1` |
 | `EvaluationReport` | 112最終課題の4条件、独立監査、族別コスト/退行、OOD、CI環境を記録 | EXP-0002B v1 proposal |
 
-不変条件: 最終112課題を結果に合わせて再利用しない。公開されたEXP-0002旧holdoutの診断値は学習器の教師・採否根拠から排除する。前計算やPolicy推論の時間とprimitive呼出数は混同しない。exact generator/feature/policy constants: [preregistered plan](../../experiments/EXP-0002B/plan.md)。
+不変条件: 最終112課題を結果に合わせて再利用しない。公開されたEXP-0002旧holdoutの診断値は学習器の教師・採否根拠から排除する。前計算やPolicy推論の時間とprimitive呼出数は混同しない。exact generator/feature/policy constants: [歴史的v1](../../experiments/EXP-0002B/plan.md)ではなく[現行v2正本](../../experiments/EXP-0002B/plan-v2.md)。
 
 ## EXP-0002B v2 — 隔離した分割・監査データの契約（未実装）
 
@@ -164,3 +164,37 @@ flowchart TD
 ```
 
 生成seedはsplitごとに`10000000/20000000/30000000`の非重複領域とし、例番号を加算しても重複しない。TaskSpecには`family/seed/split/audit`を含めない。v1は[履歴](../../experiments/EXP-0002B/plan.md)として保存し、[v2の固定契約](../../experiments/EXP-0002B/plan-v2.md)を実装の唯一の基準とする。
+
+## AUDIT-0002B-001 — データ隔離と監査証跡（統合前・未実装）
+
+以下は現行v2を変更しない**監査用の情報境界図**。新GeneratorとKernelは未実装、FINAL runは未実施。診断値と正式な学習結果を混同しない。
+
+```mermaid
+flowchart TD
+    P["Frozen plan-v2 / source SHA"] --> G["未実装: deterministic generator"]
+    G --> TRAIN["TRAIN: visible TaskSpec ×2"]
+    G --> DEV["DEV: smokeのみ"]
+    G --> FINAL["FINAL: 未使用、採否評価のみ"]
+    G --> AUDIT["AuditExample ×1: solverから遮断"]
+    TRAIN --> OFFON["TRAIN限定: paired OFF / ON"]
+    OFFON --> OBS["SkillUsageObservation: correctness・calls・candidates"]
+    AUDIT -->|TRAIN評価のみ| OBS
+    OBS --> FIT["TRAIN限定: 5-NN fit"]
+    FIT --> SNAP["PolicySnapshot: training/source hashes"]
+    SNAP --> EVAL["FINAL評価器"]
+    FINAL --> EVAL
+    AUDIT -->|FINAL採点のみ| EVAL
+    EVAL --> REPORT["immutable EvaluationReport・採否"]
+    DEV --> CHECK["実装のsmoke: 方策の調整禁止"]
+```
+
+| 契約・境界 | 監査で要求する証拠 | 状態 |
+|---|---|---|
+| 乱数分割 | `master + 100000*k + 100*i + j` のTRAIN/DEV/FINAL計912 seed一意性をCIで再検査 | 算術点検済み・Generator未実装 |
+| 公開入力と監査入力 | 2公開例のみTaskSpec、監査第3例・family・split・seedはFeature/Kernelに渡さない | 契約のみ・実装未確認 |
+| primitive呼出数 | PR #9のverifier実行原始演算のみ。他の計算費用は独立指標 | PR #9実装・独立レビュー待ち |
+| PolicySnapshot | TRAIN由来の観測とversion/hashだけでfreeze、FINALから更新しない | 未実装 |
+| EvaluationReport | 監査成否・候補数・calls・CPU/時間・OOD・尾部費用・予算・dataset hash | 未実装・runなし |
+| AuditRecord | 対象PR SHA、レビュー指摘、未完了ゲート、統合順序。実験結果ではない | [AUDIT-001](../../experiments/EXP-0002B/reviews/20261024-audit-001.md) |
+
+旧v1の記述は研究史として保持するが、実行仕様の正本は常に[plan-v2.md](../../experiments/EXP-0002B/plan-v2.md)。実験条件を変更する必要が判明したら新たな版を事前に承認し、未使用のFINALを設ける。
