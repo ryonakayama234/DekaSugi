@@ -1,15 +1,18 @@
 # EXP-0002 runs
 
 id: EXP-0002-RUNS
-status: pending
+status: completed; candidate review pending
 updated: 2026-10-24
 tags: exp0002, runs, evidence, provenance
 
-## Current state
-実装変更が完了したらGitHub Actionsで `python -m packages.evaluation --output .run/EXP-0002-result.json` を実行し、runのSHA、環境、成功・悪化双方の候補数をここから辿れるように保存する。
+## EXP-0002 RUN-001 — initial measured test
+- [RUN-001 human-readable measured report](20261024-0440-c849632.md)
+- [RUN-001 machine-readable JSON](20261024-0440-c849632.json)
+- [CI and original downloadable artifact](https://github.com/ryonakayama234/DekaSugi/actions/runs/40063234247)
 
-**現時点の実測は未登録。** 候補数の改善や技術的な採用を先取りしない。
+**Functional gate PASS, limited within-family search benefit, promotion not yet approved.**
+Positive holdout: 6→5 candidates (twice). Negative reverse: 40→47 candidates (+17.5%). Independent review pending.
 
-- [Preregistered plan](../plan.md)
-- [Data contract](../../../docs/architecture/contracts.md)
-- [Specification](../../../docs/specs/EXP-0002.md)
+Run metadata records both PR head and test-merge SHA; see individual report. New algorithmic tuning following this published holdout requires a fresh evaluation split.
+
+[Preregistered plan](../plan.md) / [Data contract](../../../docs/architecture/contracts.md) / [Specification](../../../docs/specs/EXP-0002.md).

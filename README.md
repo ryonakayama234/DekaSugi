@@ -19,7 +19,7 @@
 ## 現在の状態
 
 **EXP-0001 は技術的にPASS、固定DSLの非学習baselineとして採用済み。** [実測run](experiments/EXP-0001/runs/README.md)。
-**EXP-0002 は技能の自動発見と評価を実装中。** [事前登録計画](experiments/EXP-0002/plan.md)、[再実行](experiments/EXP-0002/runs/README.md)。技能の全体的な性能向上は独立評価とレビューまで未確定。
+**EXP-0002 は技能候補の発見と小規模実験を実施済み（保留課題で6→5候補、反転課題で40→47候補）。** [事前登録計画](experiments/EXP-0002/plan.md)、[再実行](experiments/EXP-0002/runs/README.md)。技能の一般的な性能向上は未実証。独立レビューまで正式採用を保留。
 
 ローカル資料検査: `python scripts/check_docs.py`（標準ライブラリのみ）。
 

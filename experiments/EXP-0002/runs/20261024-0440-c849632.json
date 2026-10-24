@@ -1,0 +1,315 @@
+{
+  "candidates": [
+    {
+      "body_ast": {
+        "children": [
+          {
+            "children": [
+              {
+                "node_kind": "input",
+                "type": "String"
+              }
+            ],
+            "node_kind": "call",
+            "op_id": "trim",
+            "type": "String"
+          }
+        ],
+        "node_kind": "call",
+        "op_id": "lower",
+        "type": "String"
+      },
+      "body_hash": "8fe1361cb5014f8503e4a57392e45f4fc7607e788fdd598f66668fbc11338eff",
+      "dependencies": [
+        "lower",
+        "trim"
+      ],
+      "occurrences": 2,
+      "provenance": [
+        "train-01",
+        "train-02"
+      ],
+      "schema_version": "1.0",
+      "skill_id": "skill_8fe1361cb5014f85",
+      "status": "candidate"
+    }
+  ],
+  "caveat": "Macro search candidate savings != total compute or out-of-family generalization.",
+  "comparisons": [
+    {
+      "baseline": {
+        "elapsed_ms": 0.226,
+        "max_candidates": 100,
+        "max_nodes": 4,
+        "program": {
+          "children": [
+            {
+              "children": [
+                {
+                  "node_kind": "input",
+                  "type": "String"
+                }
+              ],
+              "node_kind": "call",
+              "op_id": "trim",
+              "type": "String"
+            }
+          ],
+          "node_kind": "call",
+          "op_id": "lower",
+          "type": "String"
+        },
+        "solved": true,
+        "status": "solved",
+        "task_id": "dev-01",
+        "tested_candidates": 6,
+        "trace_sha256": "1bd8a1440a41d96ededfedc17b208b6178438aba5316414eb500c1a0a1bedc47"
+      },
+      "baseline_expanded_nodes": 3,
+      "candidate_delta": 1,
+      "learned": {
+        "elapsed_ms": 0.176,
+        "max_candidates": 100,
+        "max_nodes": 4,
+        "program": {
+          "children": [
+            {
+              "node_kind": "input",
+              "type": "String"
+            }
+          ],
+          "node_kind": "call",
+          "op_id": "skill_8fe1361cb5014f85",
+          "type": "String"
+        },
+        "solved": true,
+        "status": "solved",
+        "task_id": "dev-01",
+        "tested_candidates": 5,
+        "trace_sha256": "378dc5c320b59948fe382cd0d8deaddb0bd162ce414268880f0611ddff811b6f"
+      },
+      "learned_expanded_nodes": 3,
+      "partition": "development",
+      "task_id": "dev-01"
+    },
+    {
+      "baseline": {
+        "elapsed_ms": 0.138,
+        "max_candidates": 100,
+        "max_nodes": 4,
+        "program": {
+          "children": [
+            {
+              "children": [
+                {
+                  "node_kind": "input",
+                  "type": "String"
+                }
+              ],
+              "node_kind": "call",
+              "op_id": "trim",
+              "type": "String"
+            }
+          ],
+          "node_kind": "call",
+          "op_id": "lower",
+          "type": "String"
+        },
+        "solved": true,
+        "status": "solved",
+        "task_id": "holdout-01",
+        "tested_candidates": 6,
+        "trace_sha256": "1bd8a1440a41d96ededfedc17b208b6178438aba5316414eb500c1a0a1bedc47"
+      },
+      "baseline_expanded_nodes": 3,
+      "candidate_delta": 1,
+      "learned": {
+        "elapsed_ms": 0.119,
+        "max_candidates": 100,
+        "max_nodes": 4,
+        "program": {
+          "children": [
+            {
+              "node_kind": "input",
+              "type": "String"
+            }
+          ],
+          "node_kind": "call",
+          "op_id": "skill_8fe1361cb5014f85",
+          "type": "String"
+        },
+        "solved": true,
+        "status": "solved",
+        "task_id": "holdout-01",
+        "tested_candidates": 5,
+        "trace_sha256": "378dc5c320b59948fe382cd0d8deaddb0bd162ce414268880f0611ddff811b6f"
+      },
+      "learned_expanded_nodes": 3,
+      "partition": "final_holdout",
+      "task_id": "holdout-01"
+    },
+    {
+      "baseline": {
+        "elapsed_ms": 0.148,
+        "max_candidates": 100,
+        "max_nodes": 4,
+        "program": {
+          "children": [
+            {
+              "children": [
+                {
+                  "node_kind": "input",
+                  "type": "String"
+                }
+              ],
+              "node_kind": "call",
+              "op_id": "trim",
+              "type": "String"
+            }
+          ],
+          "node_kind": "call",
+          "op_id": "lower",
+          "type": "String"
+        },
+        "solved": true,
+        "status": "solved",
+        "task_id": "holdout-02",
+        "tested_candidates": 6,
+        "trace_sha256": "1bd8a1440a41d96ededfedc17b208b6178438aba5316414eb500c1a0a1bedc47"
+      },
+      "baseline_expanded_nodes": 3,
+      "candidate_delta": 1,
+      "learned": {
+        "elapsed_ms": 0.114,
+        "max_candidates": 100,
+        "max_nodes": 4,
+        "program": {
+          "children": [
+            {
+              "node_kind": "input",
+              "type": "String"
+            }
+          ],
+          "node_kind": "call",
+          "op_id": "skill_8fe1361cb5014f85",
+          "type": "String"
+        },
+        "solved": true,
+        "status": "solved",
+        "task_id": "holdout-02",
+        "tested_candidates": 5,
+        "trace_sha256": "378dc5c320b59948fe382cd0d8deaddb0bd162ce414268880f0611ddff811b6f"
+      },
+      "learned_expanded_nodes": 3,
+      "partition": "final_holdout",
+      "task_id": "holdout-02"
+    },
+    {
+      "baseline": {
+        "elapsed_ms": 1.023,
+        "max_candidates": 100,
+        "max_nodes": 4,
+        "program": null,
+        "solved": false,
+        "status": "not_found",
+        "task_id": "negative-reverse",
+        "tested_candidates": 40,
+        "trace_sha256": "4dea244157d5ecc8b1b1a93332c18df68a3cc42c3d116153b3953422c4c737be"
+      },
+      "baseline_expanded_nodes": null,
+      "candidate_delta": -7,
+      "learned": {
+        "elapsed_ms": 1.535,
+        "max_candidates": 100,
+        "max_nodes": 4,
+        "program": null,
+        "solved": false,
+        "status": "not_found",
+        "task_id": "negative-reverse",
+        "tested_candidates": 47,
+        "trace_sha256": "3dd78bf781e817763b7a0060cd151a8eef101f3bf807aac5579880595e29345c"
+      },
+      "learned_expanded_nodes": null,
+      "partition": "final_holdout",
+      "task_id": "negative-reverse"
+    },
+    {
+      "baseline": {
+        "elapsed_ms": 0.018,
+        "max_candidates": 100,
+        "max_nodes": 4,
+        "program": {
+          "node_kind": "input",
+          "type": "String"
+        },
+        "solved": true,
+        "status": "solved",
+        "task_id": "negative-identity",
+        "tested_candidates": 1,
+        "trace_sha256": "dd590dbd6c8d65d68b92654a47fc3661d39c7412d24b1eb72ac814fcf05a085e"
+      },
+      "baseline_expanded_nodes": 1,
+      "candidate_delta": 0,
+      "learned": {
+        "elapsed_ms": 0.016,
+        "max_candidates": 100,
+        "max_nodes": 4,
+        "program": {
+          "node_kind": "input",
+          "type": "String"
+        },
+        "solved": true,
+        "status": "solved",
+        "task_id": "negative-identity",
+        "tested_candidates": 1,
+        "trace_sha256": "dd590dbd6c8d65d68b92654a47fc3661d39c7412d24b1eb72ac814fcf05a085e"
+      },
+      "learned_expanded_nodes": 1,
+      "partition": "final_holdout",
+      "task_id": "negative-identity"
+    }
+  ],
+  "dev_task_ids": [
+    "dev-01"
+  ],
+  "environment": {
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "processor": "x86_64",
+    "python": "3.12.15"
+  },
+  "experiment_id": "EXP-0002",
+  "final_task_ids": [
+    "holdout-01",
+    "holdout-02",
+    "negative-reverse",
+    "negative-identity"
+  ],
+  "limits": {
+    "max_candidates": 100,
+    "max_expanded_nodes": 4
+  },
+  "plan_version": "2026-10-24-preregistered-v1",
+  "promotion_gate_metrics_pass": true,
+  "promotion_status": "pending_independent_review",
+  "registry": [
+    {
+      "op_id": "trim",
+      "semantics_version": "python-str-strip-v1"
+    },
+    {
+      "op_id": "lower",
+      "semantics_version": "python-str-lower-v1"
+    },
+    {
+      "op_id": "upper",
+      "semantics_version": "python-str-upper-v1"
+    }
+  ],
+  "search_benefit_same_task_family": true,
+  "source_commit": "725cca1d07291a955ceeface2297fe2f46ba2520",
+  "status": "functional_pass",
+  "train_task_ids": [
+    "train-01",
+    "train-02"
+  ]
+}
