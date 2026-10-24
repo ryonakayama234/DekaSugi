@@ -1,7 +1,7 @@
 # SEC-004 — Mutable Registry lookupを実行権限としない
 
 id: SEC-004
-status: implemented-in-review-branch; ci-and-codex-review-pending
+status: ci-verified-at-b2a311e; codex-review-completed-no-findings; stacked-integration-pending
 updated: 2026-10-25
 tags: security, registry, exp0002, audit, regression, architecture
 
@@ -33,8 +33,16 @@ tags: security, registry, exp0002, audit, regression, architecture
 - Code ReviewとSecurity Reviewが行える場合は独立に結果を記録。レビューが未着の場合は完了とはみなさない。
 - 研究上の正式採用・新しいFINAL・ポリシー学習は対象外。これはPython内部の不正なオブジェクト利用を限定範囲で防ぐもので、任意の不正Pythonコードを同一プロセスに隔離するセキュリティsandboxではない。
 
-## 進捗
+## 実測した検証結果（過去の事前登録実験は不変更）
 
-この文書は変更コミットと同期する設計・監査記録。CIと外部レビューの結果は実際に確認した後に追記する。
+- [GitHub Actions #40110370898](https://github.com/ryonakayama234/DekaSugi/actions/runs/40110370898)、検証対象head `b2a311e919f062d273453679b15193241f4d3ca5`、job `verify`: success。
+- `python scripts/check_docs.py`: Documentation validation **PASSED, 28 Markdown files**。
+- `python -m unittest discover -s tests -v`: **26 tests / PASS**。SEC-004の回帰`test_mutable_registry_lookup_never_becomes_executable_authority`はok。
+- EXP-0001 suite、EXP-0002 comparison、両run artifact uploadはCIのstepごとにsuccess。旧holdoutの回帰であり、新しい汎化実験ではない。
+- [PR #15](https://github.com/ryonakayama234/DekaSugi/pull/15)に`@codex review`依頼済み。head `b2a311e`のレビュー要約は`completed`, `has_any_findings=false`, `has_unresolved_findings=false`。明示的なAPPROVED reviewとは異なる。
+- この監査文書を追記するcommit自体にも、CIとレビュー要約の対象SHA確認を必要とする。PR #15をPR #6のブランチへ統合後は、PR #6の最新headにも改めてレビューを要求する。
+
+**採否:** SEC-004の修正はCIとCodexコードレビューを通過したが、stack統合とPR #6のP1再レビューが完了するまで、`main`へのマージと技能の正式昇格は保留。
+
 
 関連：[Issue #14](https://github.com/ryonakayama234/DekaSugi/issues/14) / [PR #6](https://github.com/ryonakayama234/DekaSugi/pull/6) / [ARCH-001](../../../docs/architecture/system.md) / [ARCH-002](../../../docs/architecture/contracts.md) / [資料目録](../../../docs/INDEX.md)。
