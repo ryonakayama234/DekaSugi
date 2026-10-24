@@ -154,3 +154,25 @@ Related: [実験事前登録](../../experiments/EXP-0002/plan.md) / [仕様](../
 ## EXP-0002 evaluator integrity hardening (second independent review finding)
 
 The evaluator must verify each learned macro before any candidate search: `sha256(canonical(body_ast)) == body_hash`, `registry[skill_id].semantics_version == "derived-" + body_hash`, and that the body AST contains only approved primitives with compatible types. A matching skill ID is insufficient to protect expanded-cost accounting. This prevents swapping a shorter fake body into `learned` after a real macro has been registered. Regression tests cover mismatching body and forged internally consistent metadata.
+
+## MEASURE-0001 — 計測された原始演算呼出数（実装、採否保留）
+
+```mermaid
+flowchart LR
+    AST["候補AST"] --> VER["既存Verifier"]
+    IR["検証済みprimitive / macro registry"] --> WR["primitive計数ラッパー"]
+    WR --> VER
+    VER --> CNT["PrimitiveCallMeter: total, by_op"]
+    CNT --> OBS["primitive_measurements.off / on"]
+    VER --> SR["SearchResult: status, tested_candidates, trace_sha256"]
+    SR --> OBS
+    OBS --> RUN["実験JSON / 将来のSkillUsageObservation"]
+```
+
+| Object / version | Fields | 不変条件 |
+|---|---|---|
+| `PrimitiveCallMeter` (runtime-wrapped-v1) | `total: int`, `by_op: dict[str,int]` | 試行armごとに新規作成し、primitive実行時に加算する |
+| `primitive_measurements` | `off`, `on`、各々`primitive_invocations`と`by_op` | 同じTaskSpec・同じ予算の両armを対として記録 |
+| `SearchResult` (existing) | `status`, `tested_candidates`, `trace_sha256`, `program` | 計測によって既存の探索順と解を変更しない |
+
+呼出数は**検証器がサンプルを評価する際に実際に実行した基本演算**であり、展開ASTのノード数・候補数とは別。Pythonの処理時間、型検査、技能抽出、Policy推論は**含まれない**。macroの外側1回だけ数える実装を禁止する。[計測仕様](measurement.md) / [全体図](system.md)。
