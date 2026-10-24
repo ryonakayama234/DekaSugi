@@ -67,6 +67,44 @@ def expanded_nodes(program: Program,
     return count(program, frozenset())
 
 
+def _trusted_search_registry(registry: Registry,
+                             learned: dict[str, SkillCandidate]) -> Registry:
+    """Rebuild the execution registry from the immutable primitive allowlist.
+
+    Registry and Primitive are public containers, so a caller can mislabel an
+    existing macro as a primitive or replace a Python callable. A claimed
+    semantics_version is not an attestation. Never execute those callables.
+    Keep canonical primitive order and rebuild approved macro bodies from AST.
+    """
+    approved = DEFAULT_REGISTRY.primitives
+    supplied = registry.primitives
+    if len(supplied) != len(approved) + len(learned):
+        raise ValueError("Registry and learned-skill metadata must match")
+    for actual, canonical in zip(supplied[:len(approved)], approved):
+        metadata = (actual.op_id, actual.input_type, actual.output_type,
+                    actual.semantics_version)
+        allowed = (canonical.op_id, canonical.input_type,
+                   canonical.output_type, canonical.semantics_version)
+        if metadata != allowed or actual.implementation is not canonical.implementation:
+            raise ValueError("Unapproved primitive registry metadata or implementation")
+
+    # Never run the macro implementation supplied by the caller either.
+    trusted = DEFAULT_REGISTRY
+    for supplied_macro in supplied[len(approved):]:
+        candidate = learned.get(supplied_macro.op_id)
+        if candidate is None:
+            raise ValueError("Registry and learned-skill metadata must match")
+        trusted = registry_with_skill(candidate, trusted)
+        canonical = trusted.primitives[-1]
+        actual_metadata = (supplied_macro.op_id, supplied_macro.input_type,
+                           supplied_macro.output_type, supplied_macro.semantics_version)
+        canonical_metadata = (canonical.op_id, canonical.input_type,
+                              canonical.output_type, canonical.semantics_version)
+        if actual_metadata != canonical_metadata:
+            raise ValueError("Unapproved derived registry metadata")
+    return trusted
+
+
 def bounded_synthesize(task: TaskSpec, registry: Registry,
                        learned: dict[str, SkillCandidate] | None = None) -> SearchResult:
     """Same candidate budget and MAX EXPANDED primitive-AST nodes in both arms."""
@@ -92,6 +130,9 @@ def bounded_synthesize(task: TaskSpec, registry: Registry,
             check_program(candidate.body_ast, primitive_signatures, max_nodes=32)
         except DSLValidationError as error:
             raise ValueError("Skill body is not primitive-only and type-safe") from error
+    # Validate *all* primitive implementations and reconstruct macro closures.
+    # The caller's registry must never be used as executable authority.
+    registry = _trusted_search_registry(registry, learned or {})
     started = perf_counter()
     tested = 0
     digest = sha256()
