@@ -11,7 +11,7 @@ from packages.evaluation import (
 from packages.learning import (
     discover_skills, registry_with_skill, validate_skill,
 )
-from packages.library import DEFAULT_REGISTRY
+from packages.library import DEFAULT_REGISTRY, Primitive, Registry
 from packages.protocol import Call, Input, DSLValidationError
 from packages.runtime import evaluate
 from packages.synthesis import synthesize
@@ -80,6 +80,54 @@ class LearningTests(unittest.TestCase):
         forged_hash = replace(forged_body, body_hash=program_hash(Input()))
         with self.assertRaisesRegex(ValueError, "Registered skill body hash"):
             bounded_synthesize(TRAIN[0], registry, {skill.skill_id: forged_hash})
+
+    def test_disguised_macro_and_unapproved_primitives_fail_closed(self):
+        skill = discover_skills(TRAIN)[0]
+        approved_registry = registry_with_skill(skill)
+
+        def poison(_value: str) -> str:
+            raise AssertionError("Untrusted registry function must not execute")
+
+        # P1 regression: re-label the macro as a non-derived primitive.
+        # Previously this passed with learned=None and undercounted its body.
+        disguised = replace(approved_registry.primitives[-1],
+                            semantics_version="python-str-lower-v1")
+        forged = Registry(approved_registry.primitives[:-1] + (disguised,))
+        with self.assertRaisesRegex(ValueError, "Registry and learned-skill"):
+            bounded_synthesize(TRAIN[0], forged)
+
+        # Forging an allowlisted name/version must not authorize a new callable.
+        forged_lower = replace(DEFAULT_REGISTRY.primitives[1], implementation=poison)
+        forged = Registry((DEFAULT_REGISTRY.primitives[0], forged_lower,
+                           DEFAULT_REGISTRY.primitives[2]))
+        with self.assertRaisesRegex(ValueError, "Unapproved primitive"):
+            bounded_synthesize(TRAIN[0], forged)
+
+        # Primitive order is part of deterministic search; reject reordering.
+        reordered = Registry(tuple(reversed(DEFAULT_REGISTRY.primitives)))
+        with self.assertRaisesRegex(ValueError, "Unapproved primitive"):
+            bounded_synthesize(TRAIN[0], reordered)
+
+        unknown = Primitive("unknown", "String", "String",
+                            "python-str-lower-v1", poison)
+        with self.assertRaisesRegex(ValueError, "Registry and learned-skill"):
+            bounded_synthesize(TRAIN[0],
+                               Registry(DEFAULT_REGISTRY.primitives + (unknown,)))
+
+        # Even a forged macro callable with a matching derived-version label
+        # is never executed: the evaluator rebuilds it from canonical AST.
+        poisoned_macro = replace(approved_registry.primitives[-1],
+                                 implementation=poison)
+        poisoned_registry = Registry(approved_registry.primitives[:-1]
+                                     + (poisoned_macro,))
+        expected = bounded_synthesize(
+            TRAIN[0], approved_registry, {skill.skill_id: skill})
+        actual = bounded_synthesize(
+            TRAIN[0], poisoned_registry, {skill.skill_id: skill})
+        self.assertEqual((actual.status, actual.program, actual.tested_candidates,
+                          actual.trace_sha256),
+                         (expected.status, expected.program, expected.tested_candidates,
+                          expected.trace_sha256))
 
     def test_expanded_budget_and_baseline_equivalence(self):
         c = discover_skills(TRAIN)[0]
