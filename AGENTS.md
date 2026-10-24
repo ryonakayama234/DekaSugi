@@ -62,3 +62,10 @@
 - 予算には候補数に加え、**合計原始演算呼出数**・特徴抽出/方策推論の実行コスト・技能発見の償却コストを記録する。
 - 根拠不足の選択は原始演算のみのbaselineへ安全にフォールバック。独立検証器の正しさ判定とデフォルト技能レジストリは変更しない。
 - 実装前に [EXP-0002B計画](experiments/EXP-0002B/plan.md) の未確定なデータ分割・指標・閾値を別commitで事前登録する。計画版と実測を混同しない。
+
+## 9. EXP-0002B preregistration freeze / 実装禁止ライン
+- 学習器実装と最新のfinal task出力の観測**前**に[事前登録計画v1](experiments/EXP-0002B/plan.md)のfamily,seed,サンプル数,feature,predictor,閾値,acceptanceを固定した。後から都合よく書換えず、変更時は新protocol version・新FINAL seedを設ける。
+- 公開EXP-0002の既知holdoutは、Kernelの訓練・選択方策設計・最終採否に流用しない。PR #9の測定diagnosticは参考値であり、新しい性能エビデンスではない。
+- 第3audit例、正解プログラム、生成family/partition、先の評価結果がTaskFeaturesに混入しないことをコードレビューと検査で確認する。
+- TRAINだけでPolicySnapshotを作り、生成器/データ/学習器のバージョン・hashを固定してからFINALを開く。
+- PR #6のP1安全レビューが未解決の間は未審査macroの正式採用・自動統合を行わない。
