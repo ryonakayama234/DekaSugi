@@ -61,3 +61,7 @@
 - 探索予算は候補数に加え、macroを原始演算に展開したASTノード数でも統制する。総CPUコストと区別する。
 - PRには `ARCH-001` のシステム図、`ARCH-002` のデータフロー/契約、実験runと `docs/INDEX.md` の索引更新を同時に含める。
 - 保留課題の結果で採用条件を修正した場合は同じholdoutを再利用せず、新たな実験として扱う。
+
+## 9. EXP-0002 第3回P1の境界
+- `Registry`の`semantics_version`やIDラベルだけで原始演算の認証をしない。EXP-0002の探索評価では`DEFAULT_REGISTRY`のcallable同一性、型、版、順序を照合し、macroは検証済みASTからcanonicalに再構築する。
+- 偽装Registryの回帰テストと[監査記録](experiments/EXP-0002/reviews/20261024-primitive-allowlist-hardening.md)、独立再レビューとCIの結果を確認してからPR #6の統合を判断する。新しい評価方法や技能昇格を意味しない。
