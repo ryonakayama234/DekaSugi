@@ -91,9 +91,9 @@ flowchart LR
 ```
 
 - 呼び出し元から提供されたRegistry内の実装callbackは、原始演算もmacroも実行権限の根拠にしない。primitiveは`DEFAULT_REGISTRY`の実装同一性で検査し、macroは型付きASTから再構築する。
-- PR #6の第3回P1指摘への対応。採否は[独立監査の記録](../../experiments/EXP-0002/reviews/20261024-primitive-allowlist-hardening.md)とCI/再レビューを待つ。
+- PR #6の第3回P1を含む安全修正はSEC-004とあわせてmainへ統合済み。コード品質の検査根拠は[独立監査の記録](../../experiments/EXP-0002/reviews/20261024-primitive-allowlist-hardening.md)と[SEC-004追跡](../../experiments/EXP-0002/reviews/20261025-registry-snapshot-boundary.md)。科学的な技能昇格は別判断。
 
-## SEC-004: 実行用Registryの独立スナップショット（PR #6への修正案）
+## SEC-004: 実行用Registryの独立スナップショット（mainへ統合済み）
 
 ```mermaid
 flowchart TD
