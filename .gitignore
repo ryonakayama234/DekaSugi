@@ -1,0 +1,14 @@
+# Local or generated data; experiment summaries and small reproducible fixtures are tracked.
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.env
+.env.*
+!.env.example
+data/
+dist/
+build/
+*.egg-info/
