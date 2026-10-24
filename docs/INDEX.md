@@ -19,7 +19,7 @@ tags: navigation, architecture, research, experiments
 | ROADMAP | 実験ロードマップ | proposed | [roadmap](roadmap.md) |
 | EXP-0001 | 型付きプログラム合成ベースライン | accepted baseline (EXP-0001) | [spec](specs/EXP-0001.md) / [plan](../experiments/EXP-0001/plan.md) |
 | EXP-0002 | 共通部分式から技能候補化（PR #6） | implemented in open PR; review pending | [issue](https://github.com/ryonakayama234/DekaSugi/issues/5) / [implementation PR](https://github.com/ryonakayama234/DekaSugi/pull/6) |
-| EXP-0002B | Contextual Kernel: 技能使用の学習 | **protocol v1 preregistered; not implemented / no results** | [spec](specs/EXP-0002B.md) / [plan](../experiments/EXP-0002B/plan.md) / [runs](../experiments/EXP-0002B/runs/README.md) |
+| EXP-0002B | Contextual Kernel: 技能使用の学習 | **v2 protocol proposed for review; no implementation/results; v1 superseded as evaluation plan** | [spec](specs/EXP-0002B.md) / [v2 current plan](../experiments/EXP-0002B/plan-v2.md) / [v1 historical plan](../experiments/EXP-0002B/plan.md) / [runs](../experiments/EXP-0002B/runs/README.md) |
 | RSRCH-INDEX | 研究資料の検索入口 | collecting | [research](research/INDEX.md) |
 | RSRCH-001 | プログラム合成・抽象化 | notes | [program synthesis](research/program-synthesis.md) |
 | TPL-SPEC | 仕様書テンプレート | active | [template](templates/spec.md) |
@@ -43,3 +43,8 @@ tags: navigation, architecture, research, experiments
 - **確定仕様（研究プロトコル）:** [EXP-0002B preregistration](../experiments/EXP-0002B/plan.md)。7つの課題family、訓練/開発/独立最終のデータ生成規則、KNN方策、測定コスト、数値採否ゲートの正本。実験は未実施。
 - **可視化:** [ARCH-001](architecture/system.md) と [ARCH-002](architecture/contracts.md) にpreregisteredな構成・監査データの分離図。
 - **状態と来歴:** [preregistration record](../experiments/EXP-0002B/preregistration-log.md) / [run directory](../experiments/EXP-0002B/runs/README.md)（後者は未実施）。
+
+## EXP-0002B：2026-10-24 評価計画の改訂履歴
+- [最新の事前登録プロトコルv2](../experiments/EXP-0002B/plan-v2.md)：split seedを分離し、現状の探索器で達成可能な採用ゲートを事前設定。
+- [v1原本（使用禁止・参考史料）](../experiments/EXP-0002B/plan.md)：研究結果を見た調整ではなく、コード実装前レビューで方法上の欠陥が発見されたため、正式評価には使用しない。
+- [v2改訂理由・未実装の記録](../experiments/EXP-0002B/preregistration-v2-log.md)：新しいFINALの結果は存在しない。
