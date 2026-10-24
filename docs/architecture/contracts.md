@@ -118,3 +118,32 @@ flowchart LR
 **安全性:** 不確実な場合は技能OFFに戻し、すべての探索候補は既存の型検査・allowlist実行・独立検証器を通す。macro展開後コストも計測する。新スキルの正式昇格とは無関係。
 
 Related: [EXP-0002B spec](../specs/EXP-0002B.md), [experiment proposal](../../experiments/EXP-0002B/plan.md), [architecture](system.md)。
+
+## EXP-0002B preregistered trial: task/audit isolation v1（提案、未実装）
+
+```mermaid
+flowchart LR
+    GEN["Frozen dataset generator"] --> PUB["TaskSpec: two IO examples"]
+    GEN --> PRIVATE["Evaluation-only: third audit example + family"]
+    PUB --> FEATURE["TaskFeatures: 8 numeric features"]
+    PUB --> ARMS["Paired OFF/ON runs: TRAIN"]
+    ARMS --> OBS["SkillUsageObservation: status, candidates, primitive calls"]
+    PRIVATE --> SCORE["Audit after search"]
+    OBS --> SCORE
+    SCORE --> FIT["KNN cost learner: TRAIN only"]
+    FIT --> SNAP["PolicySnapshot: source hashes + frozen parameters"]
+    SNAP --> EVAL["Unopened FINAL evaluation"]
+    EVAL --> REPORT["EvaluationReport: per-task + grouped metrics"]
+    PRIVATE --> REPORT
+```
+
+| Data object | 機密/役割 | 正本/バージョン |
+|---|---|---|
+| `TaskSpec` | 学習器・探索器に渡す**2組のみ**の入出力例と共通の予算。family,split,監査例は禁止 | protocol v0.1 / generator v1 |
+| `AuditExample` | 第3例。特徴抽出・探索中には使わない。TRAINでの教師信号とFINALでの独立採点には使える | generator v1 / restricted evaluator |
+| `TaskFeatures` | 観測可能な8値。正解プログラム、技能効果、family/seed/splitを含めない | `task-features-v1` |
+| `SkillUsageObservation` | 同一訓練課題に対するOFF/ONの正誤、候補、基本演算呼出数、監査・来歴 | `runtime-wrapped-v1`を元とするv1提案 |
+| `PolicySnapshot` | 5-NNの固定閾値、全訓練ID/Hash、学習内容、skill body hash、source commit、canonical hash | `knn-cost-v1` |
+| `EvaluationReport` | 112最終課題の4条件、独立監査、族別コスト/退行、OOD、CI環境を記録 | EXP-0002B v1 proposal |
+
+不変条件: 最終112課題を結果に合わせて再利用しない。公開されたEXP-0002旧holdoutの診断値は学習器の教師・採否根拠から排除する。前計算やPolicy推論の時間とprimitive呼出数は混同しない。exact generator/feature/policy constants: [preregistered plan](../../experiments/EXP-0002B/plan.md)。
