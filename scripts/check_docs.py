@@ -53,7 +53,7 @@ def validate_repository(root: Path) -> list[str]:
         text = md.read_text(encoding="utf-8")
         if md.relative_to(root).parts[0] in {"docs", "experiments", "packages"}:
             for field in ("id:", "status:", "updated:", "tags:"):
-                if field not in text.splitlines()[:12]:
+                if not any(line.startswith(field) for line in text.splitlines()[:12]):
                     errors.append(f"{md.relative_to(root)}: missing metadata {field}")
         for dest in MARKDOWN_LINK.findall(text):
             err = validate_link(md, dest, root)
