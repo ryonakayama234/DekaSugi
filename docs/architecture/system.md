@@ -78,3 +78,27 @@ flowchart TD
 - **現行資産:** EXP-0001の探索器・検証器、EXP-0002の技能候補（PR #6）。ランタイム演算、検証ルール、原始演算セットは固定。
 - **今回作らないもの:** 自律的Web探索、外部コード実行、モデル重みの大規模訓練、Wake–Sleep全自動化。次段階EXP-0003の構想は維持。
 - [データ契約](contracts.md) / [仕様](../specs/EXP-0002B.md) / [計画案](../../experiments/EXP-0002B/plan.md) / [Issue #7](https://github.com/ryonakayama234/DekaSugi/issues/7)。
+
+## EXP-0002B: preregistered trial architecture（実装前、v1）
+
+```mermaid
+flowchart TB
+    SPEC["Frozen generator/seed + protocol v1"] --> TRAIN["TRAIN: 144 TaskSpecs"]
+    SPEC --> DEV["DEV: 48 TaskSpecs"]
+    SPEC --> FINAL["FINAL: 112 unseen TaskSpecs"]
+    TRAIN --> OFF["OFF bounded search"]
+    TRAIN --> ON["ON bounded search: isolated macro"]
+    OFF --> OBS["Paired observation: candidates, executed primitive calls, audit"]
+    ON --> OBS
+    OBS --> LEARN["KNN cost policy: train only"]
+    LEARN --> SNAP["Immutable PolicySnapshot + content hash"]
+    SNAP --> EVAL["LEARNED selection on FINAL"]
+    FINAL --> EVAL
+    EVAL --> VER["Independent verification + private audit example"]
+    VER --> REPORT["Evaluation: 4 arms; grouped outcomes + immutable report"]
+    DEV --> TEST["Smoke tests only; no tuning"]
+    style SNAP fill:#dbeafe,stroke:#2563eb,color:#1e40af
+    style REPORT fill:#dcfce7,stroke:#16a34a,color:#14532d
+```
+
+この図は**事前登録で固定した目標フロー**であり実装図ではない。特に、訓練データで両方の技能使用条件を試す方式は、厳密にはBandit-feedbackではなくfull-information contextual cost-sensitive learning。過去のEXP-0002公開holdoutは新しい最終試験に使わない。[確定方法・分割・採用ゲート](../../experiments/EXP-0002B/plan.md) / [データ契約](contracts.md)。
