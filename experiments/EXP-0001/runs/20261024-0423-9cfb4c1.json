@@ -1,0 +1,298 @@
+{
+  "cases": [
+    {
+      "case": "case-01-identity",
+      "deterministic": true,
+      "expected": "solved",
+      "passed": true,
+      "repeat": {
+        "elapsed_ms": 0.032,
+        "max_candidates": 5000,
+        "max_nodes": 4,
+        "program": {
+          "node_kind": "input",
+          "type": "String"
+        },
+        "solved": true,
+        "status": "solved",
+        "task_id": "case-01-identity",
+        "tested_candidates": 1,
+        "trace_sha256": "dd590dbd6c8d65d68b92654a47fc3661d39c7412d24b1eb72ac814fcf05a085e"
+      },
+      "result": {
+        "elapsed_ms": 0.058,
+        "max_candidates": 5000,
+        "max_nodes": 4,
+        "program": {
+          "node_kind": "input",
+          "type": "String"
+        },
+        "solved": true,
+        "status": "solved",
+        "task_id": "case-01-identity",
+        "tested_candidates": 1,
+        "trace_sha256": "dd590dbd6c8d65d68b92654a47fc3661d39c7412d24b1eb72ac814fcf05a085e"
+      }
+    },
+    {
+      "case": "case-02-trim",
+      "deterministic": true,
+      "expected": "solved",
+      "passed": true,
+      "repeat": {
+        "elapsed_ms": 0.048,
+        "max_candidates": 5000,
+        "max_nodes": 4,
+        "program": {
+          "children": [
+            {
+              "node_kind": "input",
+              "type": "String"
+            }
+          ],
+          "node_kind": "call",
+          "op_id": "trim",
+          "type": "String"
+        },
+        "solved": true,
+        "status": "solved",
+        "task_id": "case-02-trim",
+        "tested_candidates": 2,
+        "trace_sha256": "6d0af4a0706c02160f23e0a333a8b14b34eee992b7a191d712b7274bc65f9c3a"
+      },
+      "result": {
+        "elapsed_ms": 0.058,
+        "max_candidates": 5000,
+        "max_nodes": 4,
+        "program": {
+          "children": [
+            {
+              "node_kind": "input",
+              "type": "String"
+            }
+          ],
+          "node_kind": "call",
+          "op_id": "trim",
+          "type": "String"
+        },
+        "solved": true,
+        "status": "solved",
+        "task_id": "case-02-trim",
+        "tested_candidates": 2,
+        "trace_sha256": "6d0af4a0706c02160f23e0a333a8b14b34eee992b7a191d712b7274bc65f9c3a"
+      }
+    },
+    {
+      "case": "case-03-lower",
+      "deterministic": true,
+      "expected": "solved",
+      "passed": true,
+      "repeat": {
+        "elapsed_ms": 0.074,
+        "max_candidates": 5000,
+        "max_nodes": 4,
+        "program": {
+          "children": [
+            {
+              "node_kind": "input",
+              "type": "String"
+            }
+          ],
+          "node_kind": "call",
+          "op_id": "lower",
+          "type": "String"
+        },
+        "solved": true,
+        "status": "solved",
+        "task_id": "case-03-lower",
+        "tested_candidates": 3,
+        "trace_sha256": "e0880ef30d9de460f73793127b895a28b9e99455530477ab48e2c7c42404d418"
+      },
+      "result": {
+        "elapsed_ms": 0.067,
+        "max_candidates": 5000,
+        "max_nodes": 4,
+        "program": {
+          "children": [
+            {
+              "node_kind": "input",
+              "type": "String"
+            }
+          ],
+          "node_kind": "call",
+          "op_id": "lower",
+          "type": "String"
+        },
+        "solved": true,
+        "status": "solved",
+        "task_id": "case-03-lower",
+        "tested_candidates": 3,
+        "trace_sha256": "e0880ef30d9de460f73793127b895a28b9e99455530477ab48e2c7c42404d418"
+      }
+    },
+    {
+      "case": "case-04-composition",
+      "deterministic": true,
+      "expected": "solved",
+      "passed": true,
+      "repeat": {
+        "elapsed_ms": 0.136,
+        "max_candidates": 5000,
+        "max_nodes": 4,
+        "program": {
+          "children": [
+            {
+              "children": [
+                {
+                  "node_kind": "input",
+                  "type": "String"
+                }
+              ],
+              "node_kind": "call",
+              "op_id": "trim",
+              "type": "String"
+            }
+          ],
+          "node_kind": "call",
+          "op_id": "lower",
+          "type": "String"
+        },
+        "solved": true,
+        "status": "solved",
+        "task_id": "case-04-composition",
+        "tested_candidates": 6,
+        "trace_sha256": "1bd8a1440a41d96ededfedc17b208b6178438aba5316414eb500c1a0a1bedc47"
+      },
+      "result": {
+        "elapsed_ms": 0.189,
+        "max_candidates": 5000,
+        "max_nodes": 4,
+        "program": {
+          "children": [
+            {
+              "children": [
+                {
+                  "node_kind": "input",
+                  "type": "String"
+                }
+              ],
+              "node_kind": "call",
+              "op_id": "trim",
+              "type": "String"
+            }
+          ],
+          "node_kind": "call",
+          "op_id": "lower",
+          "type": "String"
+        },
+        "solved": true,
+        "status": "solved",
+        "task_id": "case-04-composition",
+        "tested_candidates": 6,
+        "trace_sha256": "1bd8a1440a41d96ededfedc17b208b6178438aba5316414eb500c1a0a1bedc47"
+      }
+    },
+    {
+      "case": "case-05-not-found",
+      "deterministic": true,
+      "expected": "not_found",
+      "passed": true,
+      "repeat": {
+        "elapsed_ms": 0.916,
+        "max_candidates": 5000,
+        "max_nodes": 4,
+        "program": null,
+        "solved": false,
+        "status": "not_found",
+        "task_id": "case-05-not-found",
+        "tested_candidates": 40,
+        "trace_sha256": "4dea244157d5ecc8b1b1a93332c18df68a3cc42c3d116153b3953422c4c737be"
+      },
+      "result": {
+        "elapsed_ms": 0.98,
+        "max_candidates": 5000,
+        "max_nodes": 4,
+        "program": null,
+        "solved": false,
+        "status": "not_found",
+        "task_id": "case-05-not-found",
+        "tested_candidates": 40,
+        "trace_sha256": "4dea244157d5ecc8b1b1a93332c18df68a3cc42c3d116153b3953422c4c737be"
+      }
+    },
+    {
+      "case": "case-06-budget",
+      "deterministic": true,
+      "expected": "budget_exhausted",
+      "passed": true,
+      "repeat": {
+        "elapsed_ms": 0.026,
+        "max_candidates": 1,
+        "max_nodes": 4,
+        "program": null,
+        "solved": false,
+        "status": "budget_exhausted",
+        "task_id": "case-06-budget",
+        "tested_candidates": 1,
+        "trace_sha256": "dd590dbd6c8d65d68b92654a47fc3661d39c7412d24b1eb72ac814fcf05a085e"
+      },
+      "result": {
+        "elapsed_ms": 0.03,
+        "max_candidates": 1,
+        "max_nodes": 4,
+        "program": null,
+        "solved": false,
+        "status": "budget_exhausted",
+        "task_id": "case-06-budget",
+        "tested_candidates": 1,
+        "trace_sha256": "dd590dbd6c8d65d68b92654a47fc3661d39c7412d24b1eb72ac814fcf05a085e"
+      }
+    },
+    {
+      "case": "case-07-invalid-ast",
+      "checks_rejected": [
+        true,
+        true
+      ],
+      "expected": "rejected",
+      "passed": true
+    }
+  ],
+  "environment": {
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "processor": "x86_64",
+    "python": "3.12.15"
+  },
+  "experiment_id": "EXP-0001",
+  "registry": [
+    {
+      "op_id": "trim",
+      "semantics_version": "python-str-strip-v1"
+    },
+    {
+      "op_id": "lower",
+      "semantics_version": "python-str-lower-v1"
+    },
+    {
+      "op_id": "upper",
+      "semantics_version": "python-str-upper-v1"
+    }
+  ],
+  "source_commit": "6d2d3e7f1e3c972089a6118bfdc8e1b7154cf8bc",
+  "status": "pass",
+  "provenance": {
+    "experiment_plan_commit": "31fb681d4f1a56053a2fa48ce55b33e8a6c96dc2",
+    "pr_head_commit": "9cfb4c18020981783fedc1e85a442ab5144edaec",
+    "checkout_commit": "6d2d3e7f1e3c972089a6118bfdc8e1b7154cf8bc",
+    "ci_run_id": 40062135574,
+    "ci_job_id": 120777731686,
+    "ci_artifact_id": 12548106221,
+    "suite_source_blob_sha": "b83670b9207cec4732dc011ee016272b9674bfb9",
+    "experiment_time_utc": "2026-10-24T04:23:23Z",
+    "fixture_version": "EXP-0001-plan-v1",
+    "command": "python -m packages.cli --suite --output .run/EXP-0001-result.json",
+    "test_command": "python -m unittest discover -s tests -v",
+    "unit_tests_passed": 18,
+    "review_status": "automated_checks_passed; external_peer_review_not_performed"
+  }
+}

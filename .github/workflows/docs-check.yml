@@ -1,4 +1,4 @@
-name: Documentation integrity
+name: Research verification
 
 on:
   push:
@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  docs:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,5 +20,14 @@ jobs:
           python-version: "3.12"
       - name: Validate repository documents
         run: python scripts/check_docs.py
-      - name: Check documentation validation tests
-        run: python -m unittest discover -s tests -p "test_docs_*.py"
+      - name: Run full unit test suite
+        run: python -m unittest discover -s tests -v
+      - name: Run preregistered EXP-0001 suite
+        run: python -m packages.cli --suite --output .run/EXP-0001-result.json
+      - name: Upload experiment evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: EXP-0001-result
+          path: .run/EXP-0001-result.json
+          if-no-files-found: warn

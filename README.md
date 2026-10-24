@@ -27,3 +27,19 @@
 
 **課題 → 仮説 → 設計 → 実装 → 実験 → 第三者視点の検証 → 採否決定 → 文書更新**。
 コードとともに図・データ契約・実験記録を更新する。詳細は [開発ルール](docs/process/workflow.md)。
+
+## EXP-0001: 動くベースライン
+
+前提: Python 3.12+ / Linux または WSL2。追加のPython依存は不要。
+
+```bash
+python -m unittest discover -s tests -v
+python scripts/check_docs.py
+python -m packages.cli --task experiments/EXP-0001/tasks/composition.json
+python -m packages.cli --suite --output /tmp/exp0001.json
+```
+
+- 事前登録の7ケースは `--suite` で検証する。
+- 出力は探索状態・候補数・解法AST・探索順ハッシュ・実行時間を含む。
+- 実行結果の採否は [実験run記録](experiments/EXP-0001/runs/README.md) で管理。
+- **EXP-0001は自動学習ではない。** 学習による改善の検証は後続の実験。

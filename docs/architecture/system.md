@@ -5,7 +5,7 @@ status: proposed
 updated: 2026-10-24
 tags: diagram, architecture, components, wake-sleep
 
-> **現段階は設計案。** この図は完成済み機能の一覧ではない。各モジュールは [packages目録](../../packages/README.md) で管理。
+> 目標全体図は**提案**。EXP-0001に限定した型付き探索・実行・検証は実装済み（採否は実験runを参照）。各モジュールは [packages目録](../../packages/README.md) で管理。
 
 ## 目標アーキテクチャ
 
@@ -37,7 +37,7 @@ flowchart LR
     V --> M["Result / counters"]
 ```
 
-EXP-0001は **学習・Wake-Sleep・外部Webアクセスをまだ実装しない**。最初に型付き表現、探索、検証、測定を確立する。
+EXP-0001は **学習・Wake-Sleep・外部Webアクセスを実装しない**。型付き表現・探索・検証・測定のみを実装する。依存は `protocol → library/runtime/verification/synthesis → cli`。実験結果は [run目録](../../experiments/EXP-0001/runs/README.md) に分離。
 
 ## レイヤの責任と依存方向
 - `protocol`: 共通の不変データ形式とバージョン。外部依存なし。
