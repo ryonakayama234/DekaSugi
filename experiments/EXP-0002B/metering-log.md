@@ -1,7 +1,7 @@
 # EXP-0002B — measurement-development log (not a learning run)
 
 id: EXP-0002B-METER-LOG
-status: implemented in isolated PR branch; evidence pending CI and independent review
+status: CI-verified diagnostic; independent review and prerequisite merge pending
 updated: 2026-10-24
 tags: experiments, instrumentation, run-log, no-results, exp0002b
 
@@ -41,10 +41,10 @@ tags: experiments, instrumentation, run-log, no-results, exp0002b
 
 | Field | Status |
 |---|---|
-| Code and regression tests | committed on experimental branch; CI not yet assessed in this log |
+| Code and regression tests | 28/28 PASS on [CI run 40076212287](https://github.com/ryonakayama234/DekaSugi/actions/runs/40076212287) |
 | Local WSL/Linux test run | not run in this environment |
-| CI test evidence | pending |
-| Actual experiment output JSON | not recorded here |
+| CI test evidence | docs, unittest, EXP-0001 and EXP-0002 steps PASS (run 40076212287) |
+| Actual experiment output JSON | [diagnostic run](runs/20261024-0758-metering-smoke.json); [interpretation](runs/20261024-0758-metering-smoke.md) (NOT independent policy evaluation) |
 | Independent adoption review | pending |
 | New policy training / holdout | not started |
 
