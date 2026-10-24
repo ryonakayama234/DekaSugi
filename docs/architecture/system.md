@@ -79,7 +79,7 @@ flowchart TD
 - **今回作らないもの:** 自律的Web探索、外部コード実行、モデル重みの大規模訓練、Wake–Sleep全自動化。次段階EXP-0003の構想は維持。
 - [データ契約](contracts.md) / [仕様](../specs/EXP-0002B.md) / [計画案](../../experiments/EXP-0002B/plan.md) / [Issue #7](https://github.com/ryonakayama234/DekaSugi/issues/7)。
 
-## EXP-0002B: preregistered trial architecture（実装前、v1）
+## EXP-0002B: preregistered trial architecture（歴史的v1・現行評価では使用禁止）
 
 ```mermaid
 flowchart TB
@@ -101,7 +101,7 @@ flowchart TB
     style REPORT fill:#dcfce7,stroke:#16a34a,color:#14532d
 ```
 
-この図は**事前登録で固定した目標フロー**であり実装図ではない。特に、訓練データで両方の技能使用条件を試す方式は、厳密にはBandit-feedbackではなくfull-information contextual cost-sensitive learning。過去のEXP-0002公開holdoutは新しい最終試験に使わない。[確定方法・分割・採用ゲート](../../experiments/EXP-0002B/plan.md) / [データ契約](contracts.md)。
+この図は**事前登録で固定した目標フロー**であり実装図ではない。特に、訓練データで両方の技能使用条件を試す方式は、厳密にはBandit-feedbackではなくfull-information contextual cost-sensitive learning。過去のEXP-0002公開holdoutは新しい最終試験に使わない。[旧v1の方法（評価への使用禁止）](../../experiments/EXP-0002B/plan.md) / [現行v2の方法・分割・採用ゲート](../../experiments/EXP-0002B/plan-v2.md) / [データ契約](contracts.md)。
 
 ## EXP-0002B v2 — 評価計画の変更（未実装）
 
@@ -118,3 +118,24 @@ flowchart LR
 ```
 
 旧v1のseed衝突を修正した[方法の正本](../../experiments/EXP-0002B/plan-v2.md)を参照。現行システム図にあるv1の数値・方策は歴史的な設計案であり、**本番評価への採用はv2レビュー後のみ**。
+
+## AUDIT-0002B-001 — 統合前の実装境界とPR依存（監査中）
+
+下図の線は**マージ済み**を意味しない。2つのstack（#6→#9、#8→#10→#12）と、独立した#11を区別する。現在の`main`にはEXP-0002B Kernelはない。
+
+```mermaid
+flowchart TD
+    BASE["main: EXP-0001 baseline"] --> SKILL["PR #6: skill discovery / P1修正・再審査待ち"]
+    SKILL --> METER["PR #9: primitive-call meter / draft"]
+    BASE --> DESIGN["PR #8: Kernel設計・未実装"]
+    DESIGN --> OLD["PR #10: v1履歴・旧評価計画は使用禁止"]
+    OLD --> V2["PR #12: v2事前登録・監査待ち"]
+    BASE --> VISION["PR #11: vision / 文言修正待ち"]
+    METER --> REVIEW["独立監査・競合解決・品質ゲート"]
+    V2 --> REVIEW
+    VISION --> REVIEW
+    REVIEW -->|pass後・別PR| IMPLEMENT["新規Generator/Kernel実装・新規実験"]
+```
+
+- 現行評価プロトコルは[plan-v2](../../experiments/EXP-0002B/plan-v2.md)のみ。PR #6/#9のCI成功をEXP-0002Bの学習成功と解釈しない。
+- APIおよびデータ分離の更新は[ARCH-002](contracts.md)、観測・リスク・順序は[EXP-0002B-AUDIT-001](../../experiments/EXP-0002B/reviews/20261024-audit-001.md)に記録。
