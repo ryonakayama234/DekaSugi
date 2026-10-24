@@ -1,18 +1,72 @@
 """EXP-0002: bounded baseline-vs-learned comparison on fixed partitions."""
 from __future__ import annotations
 
+from dataclasses import dataclass, field
 from hashlib import sha256
 import platform
 import subprocess
 import sys
 from time import perf_counter
 
-from packages.library import DEFAULT_REGISTRY, Registry
+from packages.library import DEFAULT_REGISTRY, Primitive, Registry
 from packages.learning import SkillCandidate, discover_skills, registry_with_skill
 from packages.protocol import (Call, Input, Program, TaskSpec, parse_task,
                                program_hash, program_to_dict, check_program, DSLValidationError)
 from packages.synthesis import SearchResult, enumerate_candidates
 from packages.verification import verify
+
+
+@dataclass(slots=True)
+class PrimitiveCallMeter:
+    """Counts executed allowlisted primitive calls, including inside macros.
+
+    Use one fresh meter per task/arm. Counts verifier executions only:
+    no planning, hash computation, metadata validation, or policy overhead.
+    """
+    total: int = 0
+    by_op: dict[str, int] = field(default_factory=dict)
+
+    def record(self, op_id: str) -> None:
+        self.total += 1
+        self.by_op[op_id] = self.by_op.get(op_id, 0) + 1
+
+    def to_dict(self) -> dict[str, object]:
+        return {"primitive_invocations": self.total,
+                "by_op": dict(sorted(self.by_op.items()))}
+
+
+def _instrumented_registry(registry: Registry,
+                           learned: dict[str, SkillCandidate],
+                           meter: PrimitiveCallMeter) -> Registry:
+    """Mirror primitive semantics/order and rebind macro bodies to counted calls.
+
+    Macros created by registry_with_skill close over their original registry.
+    Wrapping only the outer macro function would hide primitive work; rebuild
+    each macro using counted primitive implementations instead.
+    """
+    derived = set(learned)
+    measured_primitives: list[Primitive] = []
+    for original in registry.primitives:
+        if original.op_id in derived:
+            continue
+
+        def counted(value: str, *, _p: Primitive = original) -> str:
+            meter.record(_p.op_id)
+            return _p.implementation(value)
+
+        measured_primitives.append(
+            Primitive(original.op_id, original.input_type, original.output_type,
+                      original.semantics_version, counted)
+        )
+    result = Registry(tuple(measured_primitives))
+    for original in registry.primitives:
+        if original.op_id in derived:
+            result = registry_with_skill(learned[original.op_id], result)
+    if tuple((p.op_id, p.semantics_version) for p in result.primitives) != tuple(
+        (p.op_id, p.semantics_version) for p in registry.primitives
+    ):
+        raise ValueError("Instrumented registry semantics/order mismatch")
+    return result
 
 
 def _task(task_id: str, examples: tuple[tuple[str, str], ...]) -> TaskSpec:
@@ -68,7 +122,8 @@ def expanded_nodes(program: Program,
 
 
 def bounded_synthesize(task: TaskSpec, registry: Registry,
-                       learned: dict[str, SkillCandidate] | None = None) -> SearchResult:
+                       learned: dict[str, SkillCandidate] | None = None,
+                       *, meter: PrimitiveCallMeter | None = None) -> SearchResult:
     """Same candidate budget and MAX EXPANDED primitive-AST nodes in both arms."""
     derived_ids = {p.op_id for p in registry.primitives
                    if p.semantics_version.startswith("derived-")}
@@ -92,6 +147,8 @@ def bounded_synthesize(task: TaskSpec, registry: Registry,
             check_program(candidate.body_ast, primitive_signatures, max_nodes=32)
         except DSLValidationError as error:
             raise ValueError("Skill body is not primitive-only and type-safe") from error
+    execution_registry = (_instrumented_registry(registry, learned or {}, meter)
+                          if meter is not None else registry)
     started = perf_counter()
     tested = 0
     digest = sha256()
@@ -108,7 +165,7 @@ def bounded_synthesize(task: TaskSpec, registry: Registry,
             return outcome("budget_exhausted", None)
         tested += 1
         digest.update(program_hash(program).encode("ascii") + b"\n")
-        if verify(program, task.examples, registry,
+        if verify(program, task.examples, execution_registry,
                   max_nodes=task.limits.max_ast_nodes).matched:
             return outcome("solved", program)
     return outcome("not_found", None)
@@ -130,14 +187,17 @@ def run_experiment() -> dict[str, object]:
     learned_map = {candidate.skill_id: candidate} if candidate else {}
     comparisons: list[dict[str, object]] = []
     for task in DEV + HOLDOUT:
-        base = bounded_synthesize(task, DEFAULT_REGISTRY)
-        proposed = bounded_synthesize(task, extended, learned_map)
+        off_meter = PrimitiveCallMeter()
+        on_meter = PrimitiveCallMeter()
+        base = bounded_synthesize(task, DEFAULT_REGISTRY, meter=off_meter)
+        proposed = bounded_synthesize(task, extended, learned_map, meter=on_meter)
         comparisons.append({
             "task_id": task.task_id,
             "partition": "development" if task in DEV else "final_holdout",
             "baseline": base.to_dict(),
             "learned": proposed.to_dict(),
             "candidate_delta": base.tested_candidates - proposed.tested_candidates,
+            "primitive_measurements": {"off": off_meter.to_dict(), "on": on_meter.to_dict()},
             "baseline_expanded_nodes": expanded_nodes(base.program) if base.program else None,
             "learned_expanded_nodes": expanded_nodes(proposed.program, learned_map)
                                     if proposed.program else None,
@@ -181,5 +241,9 @@ def run_experiment() -> dict[str, object]:
         "candidates": [c.to_dict() for c in candidates],
         "comparisons": comparisons,
         "limits": {"max_expanded_nodes": 4, "max_candidates": 100},
-        "caveat": "Macro search candidate savings != total compute or out-of-family generalization.",
+        "primitive_measurement_version": "runtime-wrapped-v1",
+        "caveat": ("Primitive invocations count interpreter calls during example "
+                   "verification only. They exclude AST checks, registry setup, "
+                   "policy overhead and skill discovery; historical recorded "
+                   "EXP-0002 run remains unchanged."),
     }
