@@ -158,9 +158,11 @@ class LearningTests(unittest.TestCase):
 
         # Regression for PR #6 P1: original code uses DEFAULT_REGISTRY as
         # its "trusted" executor; patched by_name previously executed poison.
-        with patch.object(DEFAULT_REGISTRY, "by_name", poisoned_lookup), \\
-             patch.object(DEFAULT_REGISTRY, "signatures", {"trim": ("String", "String")}), \\
-             patch.object(DEFAULT_REGISTRY, "primitives", poisoned_primitive_tuple):
+        with (
+            patch.object(DEFAULT_REGISTRY, "by_name", poisoned_lookup),
+            patch.object(DEFAULT_REGISTRY, "signatures", {"trim": ("String", "String")}),
+            patch.object(DEFAULT_REGISTRY, "primitives", poisoned_primitive_tuple),
+        ):
             self.assertEqual(
                 stable(bounded_synthesize(TRAIN[0], baseline_registry)),
                 expected_off,
