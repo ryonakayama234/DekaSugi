@@ -17,7 +17,7 @@ tags: navigation, architecture, research, experiments
 | PROC-001 | 仮説→実験→採否 | active | [workflow](process/workflow.md) |
 | PROC-002 | GitHub運用・進捗管理 | active | [github](process/github.md) |
 | ROADMAP | 実験ロードマップ | proposed | [roadmap](roadmap.md) |
-| EXP-0001 | 型付きプログラム合成ベースライン | implemented / evaluating | [spec](specs/EXP-0001.md) / [plan](../experiments/EXP-0001/plan.md) |
+| EXP-0001 | 型付きプログラム合成ベースライン | evaluated / awaiting merge | [spec](specs/EXP-0001.md) / [plan](../experiments/EXP-0001/plan.md) |
 | RSRCH-INDEX | 研究資料の検索入口 | collecting | [research](research/INDEX.md) |
 | RSRCH-001 | プログラム合成・抽象化 | notes | [program synthesis](research/program-synthesis.md) |
 | TPL-SPEC | 仕様書テンプレート | active | [template](templates/spec.md) |
