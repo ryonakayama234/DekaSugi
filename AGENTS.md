@@ -61,10 +61,10 @@
 - 学習用runでのベースライン比較結果は教師信号として使用できるが、公開済み最終評価セットに合わせた方策修正は不可。新たなholdoutを用意する。
 - 予算には候補数に加え、**合計原始演算呼出数**・特徴抽出/方策推論の実行コスト・技能発見の償却コストを記録する。
 - 根拠不足の選択は原始演算のみのbaselineへ安全にフォールバック。独立検証器の正しさ判定とデフォルト技能レジストリは変更しない。
-- 実装前に [EXP-0002B計画](experiments/EXP-0002B/plan.md) の未確定なデータ分割・指標・閾値を別commitで事前登録する。計画版と実測を混同しない。
+- 現行の実装前に [EXP-0002B計画v2](experiments/EXP-0002B/plan-v2.md) の凍結済みデータ分割・指標・閾値を守る。旧[v1](experiments/EXP-0002B/plan.md)は履歴として保持し、実測と混同しない。
 
-## 9. EXP-0002B preregistration freeze / 実装禁止ライン
-- 学習器実装と最新のfinal task出力の観測**前**に[事前登録計画v1](experiments/EXP-0002B/plan.md)のfamily,seed,サンプル数,feature,predictor,閾値,acceptanceを固定した。後から都合よく書換えず、変更時は新protocol version・新FINAL seedを設ける。
+## 9. EXP-0002B preregistration v1の履歴 / 旧版の実行禁止ライン
+- 過去に[事前登録計画v1](experiments/EXP-0002B/plan.md)を凍結したが、**seed衝突と採用ゲートの問題により正式評価には使用しない**。現行は[v2](experiments/EXP-0002B/plan-v2.md)。旧版は後から書き換えず、次の変更も新protocol version・新FINAL seedを設ける。
 - 公開EXP-0002の既知holdoutは、Kernelの訓練・選択方策設計・最終採否に流用しない。PR #9の測定diagnosticは参考値であり、新しい性能エビデンスではない。
 - 第3audit例、正解プログラム、生成family/partition、先の評価結果がTaskFeaturesに混入しないことをコードレビューと検査で確認する。
 - TRAINだけでPolicySnapshotを作り、生成器/データ/学習器のバージョン・hashを固定してからFINALを開く。
@@ -75,3 +75,8 @@
 - v2で指定したTRAIN/DEV/FINALの別seed領域、監査例と公開TaskSpecの分離、方策の固定閾値、OFF/ON比較、総原始呼出数と候補数のゲートを、実装前の独立レビューで点検する。
 - 未使用のFINALを初めて開く前にデータ生成器・学習版・コスト計測器・dataset hashを固定。結果を見て調整するときは新しい版と未使用データが必要。
 - [改訂経緯](experiments/EXP-0002B/preregistration-v2-log.md)は削除せず、失敗や不合格も記録する。計画を更新しても新しい学習成果を得たと報告しない。
+
+## 11. AUDIT-0002B-001 — 実装・統合前の監査ゲート
+- [監査記録](experiments/EXP-0002B/reviews/20261024-audit-001.md)に対象head SHA、過去CIと本作業で実行した点検を区別して記載。単なるCI successやレビュー指摘への修正返信を独立した最終承認とみなさない。
+- `main`に統合済みなのはEXP-0001。PR #6/#9とPR #8/#10/#12、PR #11は未統合の別系列。重複するsystem/contracts/INDEX/AGENTSを自動上書きしない。
+- #6の安全・#9の部分計測・#12のプロトコルを独立に監査してから、未使用FINALを開く。実装または実験の重要な方法変更は、着手前に人間へ報告して別事前登録を行う。
