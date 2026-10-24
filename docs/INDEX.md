@@ -19,7 +19,7 @@ tags: navigation, architecture, research, experiments
 | ROADMAP | 実験ロードマップ | proposed | [roadmap](roadmap.md) |
 | EXP-0001 | 型付きプログラム合成ベースライン | accepted baseline (EXP-0001) | [spec](specs/EXP-0001.md) / [plan](../experiments/EXP-0001/plan.md) |
 | EXP-0002 | 共通部分式から技能候補化（PR #6） | implemented in open PR; review pending | [issue](https://github.com/ryonakayama234/DekaSugi/issues/5) / [implementation PR](https://github.com/ryonakayama234/DekaSugi/pull/6) |
-| EXP-0002B | Contextual Kernel: 技能使用の学習 | **design only; not preregistered** | [spec](specs/EXP-0002B.md) / [plan](../experiments/EXP-0002B/plan.md) / [runs](../experiments/EXP-0002B/runs/README.md) |
+| EXP-0002B | Contextual Kernel: 技能使用の学習 | **protocol v1 preregistered; not implemented / no results** | [spec](specs/EXP-0002B.md) / [plan](../experiments/EXP-0002B/plan.md) / [runs](../experiments/EXP-0002B/runs/README.md) |
 | RSRCH-INDEX | 研究資料の検索入口 | collecting | [research](research/INDEX.md) |
 | RSRCH-001 | プログラム合成・抽象化 | notes | [program synthesis](research/program-synthesis.md) |
 | TPL-SPEC | 仕様書テンプレート | active | [template](templates/spec.md) |
@@ -38,3 +38,8 @@ tags: navigation, architecture, research, experiments
 - 各文書は一つの責務だけ持つ。内容のコピーを増やさずリンクする。
 - 変更時は参照元の図や契約を確認し、この索引も更新する。
 - Mermaid図はMarkdown内に埋め込み、GitHub上で読めるようにする。
+
+## EXP-0002B v1: 最新の研究文書導線
+- **確定仕様（研究プロトコル）:** [EXP-0002B preregistration](../experiments/EXP-0002B/plan.md)。7つの課題family、訓練/開発/独立最終のデータ生成規則、KNN方策、測定コスト、数値採否ゲートの正本。実験は未実施。
+- **可視化:** [ARCH-001](architecture/system.md) と [ARCH-002](architecture/contracts.md) にpreregisteredな構成・監査データの分離図。
+- **状態と来歴:** [preregistration record](../experiments/EXP-0002B/preregistration-log.md) / [run directory](../experiments/EXP-0002B/runs/README.md)（後者は未実施）。
