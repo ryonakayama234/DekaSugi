@@ -85,3 +85,100 @@ Related: [ARCH-001](system.md), [EXP-0001](../specs/EXP-0001.md)。
 **注:** `not_found` は**今回のDSLと探索上限で見つからなかった**ことを意味する。一般にその問題が解けないことの証明ではない。
 
 実装: [protocol](../../packages/protocol/__init__.py) / [synthesis](../../packages/synthesis/__init__.py) / [runtime](../../packages/runtime/__init__.py) / [verification](../../packages/verification/__init__.py)。
+
+## EXP-0002: SkillCandidate v1 / Macro evaluation data flow
+
+```mermaid
+flowchart LR
+    TE["Train TaskSpec 0.1"] --> SR["SearchResult 0.1"]
+    SR --> EX["AST subtree extractor"]
+    EX --> SC["SkillCandidate v1"]
+    SC --> VA["Safe Registry with macro"]
+    HE["Heldout TaskSpec 0.1"] --> BA["Baseline search"]
+    HE --> LA["Learned search"]
+    VA --> LA
+    BA --> ER["EvaluationReport JSON"]
+    LA --> ER
+    SC --> ER
+    ER --> RU["EXP-0002/run: measured"]
+```
+
+### SkillCandidate v1（実装されたcontract）
+
+| Field | Type | Rule |
+|---|---|---|
+| `schema_version` | String | `1.0` |
+| `skill_id` | String | `skill_` + body_hash先頭16文字 |
+| `body_ast` | Program 0.1 | 少なくとも2個のcall。既存primitiveのみを参照 |
+| `body_hash` | SHA-256 | AST正規化JSONの構造hash。登録前に検証 |
+| `dependencies` | sorted String[] | bodyに含まれる一意のprimitive ID |
+| `provenance` | sorted String[] | 異なる成功訓練task_idが2個以上 |
+| `occurrences` | Integer | distinct task_id数と一致 |
+| `status` | String | 初期値 `candidate`。正式採用は自動化しない |
+
+```json
+{
+  "schema_version": "1.0",
+  "skill_id": "skill_<body-hash-prefix>",
+  "body_ast": {
+    "node_kind": "call", "type": "String", "op_id": "lower",
+    "children": [{
+      "node_kind": "call", "type": "String", "op_id": "trim",
+      "children": [{"node_kind": "input", "type": "String"}]
+    }]
+  },
+  "body_hash": "<SHA256 of canonical AST>",
+  "dependencies": ["lower", "trim"],
+  "provenance": ["train-01", "train-02"],
+  "occurrences": 2,
+  "status": "candidate"
+}
+```
+
+### Data boundaries / 注意点
+- `discover_skills(TRAIN)` への最終保留課題の入力は禁止。重複するtask_idはエラーにする。
+- `registry_with_skill(candidate)` はbodyハッシュ、署名、来歴を検証し、許可済みの元primitiveを使った純粋なインタプリタに委譲する。任意Pythonソースは実行しない。
+- `expanded_nodes` はmacroのInput位置へ引数ASTを置いた際の展開後ノード数を計算。探索上限 `max_ast_nodes` は**両armでこの物理ノード数に適用**。候補数上限も共通。
+- `EvaluationReport` はソースcommit、Python、platform、原始演算版、train/dev/holdout task ID、候補・比較結果・判定・限界を保存。
+- `status=functional_pass` は発見機構と例照合の成立のみ。`promotion_gate_metrics_pass` は独立レビューを要求する指標条件であり、自動採用ではない。
+- EXP-0002はtrain/dev/finalの全入力を公開しているため、結果を用いた改良を行った後の独立評価は**新しい保留課題**が必要。
+
+Related: [実験事前登録](../../experiments/EXP-0002/plan.md) / [仕様](../specs/EXP-0002.md) / [全体図](system.md)。
+
+## EXP-0002 review hardening (PR #6)
+
+- `validate_skill` explicitly rejects references to operations marked with `derived-` semantics when registering a new skill. **Nested macros remain prohibited** in this experiment; they cannot be used to undercount the AST expansion budget.
+- `expanded_nodes` recursively expands skill metadata and rejects cyclic dependencies; `bounded_synthesize` rejects mismatch between derived operations in the registry and supplied skill metadata.
+- New regression tests cover the formerly accepted `s(s(Input()))` macro (which expands to 5 physical AST nodes) and provenance-preserving rejection. This is a bug fix, **not** new evidence of generalization.
+
+## EXP-0002 evaluator integrity hardening (second independent review finding)
+
+The evaluator must verify each learned macro before any candidate search: `sha256(canonical(body_ast)) == body_hash`, `registry[skill_id].semantics_version == "derived-" + body_hash`, and that the body AST contains only approved primitives with compatible types. A matching skill ID is insufficient to protect expanded-cost accounting. This prevents swapping a shorter fake body into `learned` after a real macro has been registered. Regression tests cover mismatching body and forged internally consistent metadata.
+
+## EXP-0002 第3回安全性検証: Registry trust boundary
+
+- `Registry.primitives`は任意に生成可能なコンテナであり、`semantics_version`だけでは実装の真正性を保証しない。
+- `bounded_synthesize`実行前に先頭3原始演算を`DEFAULT_REGISTRY`の**順序・ID・入出力型・版・callable同一性**と照合。許可外callback、旧macroを偽装した追加primitive、順序改変を拒否。
+- 検証済み`SkillCandidate`からmacro実行callbackを**canonicalな原始演算のみで再構築**し、呼び出し元が渡したmacro callbackは利用しない。評価の決定性と展開後ノード上限の維持を目的とする。
+- 生の`Registry`の型が安全性を保証するわけではない。上記はEXP-0002の探索評価エントリポイントでのfail-closed境界であり、`DEFAULT_REGISTRY`への自動昇格も新しい原始演算の登録も行わない。
+- [P1再現条件・テスト・検査状況](../../experiments/EXP-0002/reviews/20261024-primitive-allowlist-hardening.md)を参照。事前登録計画・歴史的runは不変更。
+
+## SEC-004: 実行用データ契約・可変Registryとの境界
+
+```mermaid
+flowchart LR
+    IN["Untrusted Registry.primitives / by_name / signatures"] --> CHECK["Tuple metadata + SkillCandidate hashes"]
+    CAN["DEFAULT_PRIMITIVES: canonical tuple"] --> CHECK
+    CHECK -->|approved| NEW["Fresh Registry: primitives / by_name / signatures"]
+    CAN --> NEW
+    NEW --> MAC["Validated macro AST -> rebuilt callable"]
+    MAC --> VER["Synthesis + verifier"]
+    VER --> OUT["SearchResult status / AST / candidates / trace"]
+    CHECK -->|rejected| ERR["ValueError before candidate search"]
+```
+
+**Boundary invariant:** `_trusted_search_registry`は固定の`DEFAULT_PRIMITIVES`のID、順序、型、意味版、実装オブジェクトと、呼出元`Registry.primitives`を照合する。実行用`Registry`は`Registry(DEFAULT_PRIMITIVES)`から新規生成し、公開`DEFAULT_REGISTRY`も呼出元の`by_name`/`signatures`も実行に流用しない。学習済みmacroは検査済み`SkillCandidate`からのみ生成する。
+
+**Contract:** callerが提供した検索表・署名表は実行権限ではない。登録済みmacroの照合は`primitives`の宣言値とbody hashを使用する。未承認primitive/偽装macro/不正ASTは探索前に拒否し、正常系は既存の探索状態、AST、候補数、順序hashを保存する。実CPU時間の一致は保証しない。Pythonプロセス全体を悪意あるコードから隔離する仕組みではない。
+
+この変更は安全性回帰の修正のみで、研究計画v1の事前登録条件、過去の実験run、EXP-0002Bの保留課題には変更を加えない。[監査記録](../../experiments/EXP-0002/reviews/20261025-registry-snapshot-boundary.md)。

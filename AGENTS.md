@@ -54,3 +54,21 @@
 - 追加した重要資料は必ず `docs/INDEX.md` に登録する。
 
 **重要:** 大胆な仮説を歓迎する一方、採用判定は実測で行う。
+
+## 8. EXP-0002 以降の追加品質ゲート
+- 訓練・開発・最終評価の分割、仮説、比較指標、悪化時の扱いを**実装・結果確認より先に別commitで固定**する。
+- `Learning` が生成した技能は `candidate` として隔離する。探索効率の改善だけを理由に `DEFAULT_REGISTRY` に自動で昇格しない。
+- 探索予算は候補数に加え、macroを原始演算に展開したASTノード数でも統制する。総CPUコストと区別する。
+- PRには `ARCH-001` のシステム図、`ARCH-002` のデータフロー/契約、実験runと `docs/INDEX.md` の索引更新を同時に含める。
+- 保留課題の結果で採用条件を修正した場合は同じholdoutを再利用せず、新たな実験として扱う。
+
+## 9. EXP-0002 第3回P1の境界
+- `Registry`の`semantics_version`やIDラベルだけで原始演算の認証をしない。EXP-0002の探索評価では`DEFAULT_REGISTRY`のcallable同一性、型、版、順序を照合し、macroは検証済みASTからcanonicalに再構築する。
+- 偽装Registryの回帰テストと[監査記録](experiments/EXP-0002/reviews/20261024-primitive-allowlist-hardening.md)、独立再レビューとCIの結果を確認してからPR #6の統合を判断する。新しい評価方法や技能昇格を意味しない。
+
+## 10. SEC-004: 信頼境界と最小リソースでの独立レビュー
+
+- `bounded_synthesize`では公開の`DEFAULT_REGISTRY`や呼出元の`Registry.by_name`・`signatures`を安全な実行基盤として使わない。承認済み`DEFAULT_PRIMITIVES`から独立`Registry`を毎回構築する。
+- マクロの実行権限は、呼出元のPython callbackでなく、検証済み型付きASTと固定された原始演算定義からのみ与える。
+- 依存PRは品質ゲートごとに合流する。CI成功のみでP1を解決済みにせず、GitHubの`@codex review`を現実的な独立レビュー資源として使用する。レビュー依頼とレビュー完了、指摘解消は別々に記録する。
+- セキュリティ修正の正常系の探索結果・候補数・traceの回帰を記録。研究上の正式採用やFINAL結果の新規主張は行わない。[SEC-004記録](experiments/EXP-0002/reviews/20261025-registry-snapshot-boundary.md)。

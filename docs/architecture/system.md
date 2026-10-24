@@ -50,3 +50,64 @@ EXP-0001は **学習・Wake-Sleep・外部Webアクセスを実装しない**。
 - `kernel`: 後続フェーズで課題と技能から行動を選択する。
 
 新しくコードを追加するときは、この図の実装範囲を塗り分ける代わりに各要素の実装/未実装を明記し、[データ契約](contracts.md)を同期する。
+
+## EXP-0002 の実装境界（技能の自動発見）
+
+```mermaid
+flowchart TD
+    T["Train TaskSpec x2"] --> S["Synthesis: EXP-0001の探索器"]
+    L["Library: trim / lower / upper"] --> S
+    S --> E["解法ASTとtask_id"]
+    E --> D["Learning: 共通部分式を構造Hashで集計"]
+    D --> C["SkillCandidate: body・provenance・依存関係"]
+    C --> G{"Validation: 型・来歴・body hash"}
+    G -->|OK| R["隔離したRegistryを構築"]
+    R --> X["Evaluation: Learned条件"]
+    L --> B["Evaluation: Fixed baseline"]
+    H["開発と保留課題"] --> X
+    H --> B
+    X --> M["同じ候補上限・展開後AST上限で比較"]
+    B --> M
+    M --> F["再現可能な実験run / 採否判定"]
+    F -.->|"独立レビュー後のみ"| A["将来の正式ライブラリ採用"]
+```
+
+- **実装済み:** `packages/learning` の共通部分式抽出と安全なmacro登録、`packages/evaluation` の比較CLI、学習候補の独立test。
+- **未実装:** Sleep/Dream全体ループ、永続Episodes DB、学習された検索方針、Kernelによる自律タスク選択。
+- **決定的な境界:** `learning` は訓練課題からのみ候補を作る。`evaluation` は候補を触らず開発/最終評価を計測。生成したmacroは `DEFAULT_REGISTRY` を変更しない。
+- 探索条件とデータの対応は [ARCH-002](contracts.md)、研究ゲートは [EXP-0002](../specs/EXP-0002.md)、実測は [runs](../../experiments/EXP-0002/runs/README.md) を参照。
+
+## EXP-0002 security boundary — 第3回独立レビュー指摘への対応
+
+```mermaid
+flowchart LR
+    IN["TaskSpec + caller Registry + SkillCandidate"] --> CHECK["実行前: canonical primitive allowlist照合"]
+    BASE["DEFAULT_REGISTRY: trim/lower/upper のID・型・版・実装"] --> CHECK
+    CHECK -->|偽装・順序変更・未知演算| REJECT["拒否: ValueError"]
+    CHECK -->|一致| REBUILD["技能body hash・型検証、ASTからmacroを再構築"]
+    REBUILD --> EVAL["Bounded synthesis: 展開後ASTと候補数の予算"]
+    EVAL --> VER["独立Verification"]
+    VER --> REP["結果と監査証跡"]
+```
+
+- 呼び出し元から提供されたRegistry内の実装callbackは、原始演算もmacroも実行権限の根拠にしない。primitiveは`DEFAULT_REGISTRY`の実装同一性で検査し、macroは型付きASTから再構築する。
+- PR #6の第3回P1指摘への対応。採否は[独立監査の記録](../../experiments/EXP-0002/reviews/20261024-primitive-allowlist-hardening.md)とCI/再レビューを待つ。
+
+## SEC-004: 実行用Registryの独立スナップショット（PR #6への修正案）
+
+```mermaid
+flowchart TD
+    A["Caller Registry / SkillCandidate（非信頼）"] --> V["Metadata / hash / budget validation"]
+    P["DEFAULT_PRIMITIVES（固定の原始演算定義）"] --> V
+    V -->|invalid| X["Fail closed: reject before search"]
+    V -->|valid| R["Registry(DEFAULT_PRIMITIVES): fresh maps"]
+    P --> R
+    R --> M["Rebuild macros from validated AST"]
+    M --> S["Bounded synthesis + independent verifier"]
+    S --> E["Same status / candidates / AST / trace"]
+```
+
+- `DEFAULT_REGISTRY`の`primitives`、`by_name`、`signatures`は公開属性で、可変な実行権限の根拠にしない。原始演算の正本は`DEFAULT_PRIMITIVES`、実行に使う検索表と署名表は毎回新しい`Registry`で生成する。
+- 呼出元の`Registry.by_name`を参照してmacroを認証しない。登録情報は`primitives`タプルと`SkillCandidate`のbody hashで検査し、macro callableも検証済みASTから再構築する。
+- この境界はEXP-0002の`bounded_synthesize`に限定される。任意のPythonコードや同一プロセスの攻撃者からの完全な隔離を意味しない。新Kernelの実装やFINAL評価には進んでいない。
+- [SEC-004の回帰・監査記録](../../experiments/EXP-0002/reviews/20261025-registry-snapshot-boundary.md)と[Issue #14](https://github.com/ryonakayama234/DekaSugi/issues/14)を参照。

@@ -23,6 +23,9 @@ REQUIRED = (
     "docs/specs/EXP-0001.md",
     "experiments/EXP-0001/plan.md",
     "experiments/EXP-0001/runs/README.md",
+    "docs/specs/EXP-0002.md",
+    "experiments/EXP-0002/plan.md",
+    "experiments/EXP-0002/runs/README.md",
 )
 MARKDOWN_LINK = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 

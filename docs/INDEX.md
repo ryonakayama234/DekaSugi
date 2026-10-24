@@ -18,6 +18,9 @@ tags: navigation, architecture, research, experiments
 | PROC-002 | GitHub運用・進捗管理 | active | [github](process/github.md) |
 | ROADMAP | 実験ロードマップ | proposed | [roadmap](roadmap.md) |
 | EXP-0001 | 型付きプログラム合成ベースライン | accepted baseline (EXP-0001) | [spec](specs/EXP-0001.md) / [plan](../experiments/EXP-0001/plan.md) |
+| EXP-0002 | 共通部分式の発見と未知例での比較 | functionally verified; promotion pending independent review | [spec](specs/EXP-0002.md) / [preregistered plan](../experiments/EXP-0002/plan.md) / [runs](../experiments/EXP-0002/runs/README.md) |
+| EXP-0002-SEC-003 | Registry偽装と展開予算すり抜けの安全監査 | submitted; independent review pending | [review record](../experiments/EXP-0002/reviews/20261024-primitive-allowlist-hardening.md) / [PR #6](https://github.com/ryonakayama234/DekaSugi/pull/6) |
+| SEC-004 | Mutable lookupを信用しない実行Registryの再生成 | implementation submitted; CI/review pending | [security record](../experiments/EXP-0002/reviews/20261025-registry-snapshot-boundary.md) / [Issue #14](https://github.com/ryonakayama234/DekaSugi/issues/14) |
 | RSRCH-INDEX | 研究資料の検索入口 | collecting | [research](research/INDEX.md) |
 | RSRCH-001 | プログラム合成・抽象化 | notes | [program synthesis](research/program-synthesis.md) |
 | TPL-SPEC | 仕様書テンプレート | active | [template](templates/spec.md) |

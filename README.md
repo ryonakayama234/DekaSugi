@@ -18,8 +18,8 @@
 
 ## 現在の状態
 
-**Bootstrap / Research design.** アーキテクチャは提案であり、AIが学習・性能向上したという結果はまだ存在しない。
-初回実験 EXP-0001 は計画段階。測定結果は実行後にのみ登録する。
+**EXP-0001 は技術的にPASS、固定DSLの非学習baselineとして採用済み。** [実測run](experiments/EXP-0001/runs/README.md)。
+**EXP-0002 は技能候補の発見と小規模実験を実施済み（保留課題で6→5候補、反転課題で40→47候補）。** [事前登録計画](experiments/EXP-0002/plan.md)、[再実行](experiments/EXP-0002/runs/README.md)。技能の一般的な性能向上は未実証。独立レビューまで正式採用を保留。
 
 ローカル資料検査: `python scripts/check_docs.py`（標準ライブラリのみ）。
 
@@ -43,3 +43,13 @@ python -m packages.cli --suite --output /tmp/exp0001.json
 - 出力は探索状態・候補数・解法AST・探索順ハッシュ・実行時間を含む。
 - 実行結果の採否は [実験run記録](experiments/EXP-0001/runs/README.md) で管理。
 - **EXP-0001は自動学習ではない。** 学習による改善の検証は後続の実験。
+
+## EXP-0002: 共通部分式から技能候補を作る
+
+独立した訓練エピソードの解法ASTから共通部分式を抽出し、許可済みDSLだけで新しい技能候補を実行する。学習条件と固定baselineを同じ候補数・**展開後の原始ASTノード数**で比較する。
+
+```bash
+python -m packages.evaluation --output .run/EXP-0002-result.json
+```
+
+機能/効率の実測と、技能を標準ライブラリへ正式採用する判断は別段階。[設計図](docs/architecture/system.md) / [仕様](docs/specs/EXP-0002.md)。

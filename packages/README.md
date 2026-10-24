@@ -35,3 +35,12 @@ tags: packages, modularity, api
 | `cli` | `python -m packages.cli --task/--suite` | implemented |
 
 この段階の `library` は**固定操作の管理**のみ。技能の自動獲得は未実装。
+
+## EXP-0002 で追加するパッケージ
+
+| Package | API | State |
+|---|---|---|
+| `learning` | `SkillCandidate`, `discover_skills`, `validate_skill`, `registry_with_skill` | implemented, candidate only |
+| `evaluation` | `bounded_synthesize`, `expanded_nodes`, `run_experiment` | implemented; CI evaluation pending |
+
+技能は隔離レジストリ内でのみ解釈実行され、正式ライブラリへは自動昇格しない。比較結果は [EXP-0002 runs](../experiments/EXP-0002/runs/README.md)。
