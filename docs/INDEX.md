@@ -10,7 +10,7 @@ tags: navigation, architecture, research, experiments
 
 | ID | テーマ | 状態 | 文書 |
 |---|---|---|---|
-| VISION-001 | 研究目的・前提・非目標 | proposed | [mission](vision/mission.md) |
+| VISION-001 | 合意した長期目的・成長指標・制御原則 | agreed direction; outcomes unverified | [mission](vision/mission.md) |
 | ARCH-001 | 全体システム図・モジュール関係 | proposed | [system](architecture/system.md) |
 | ARCH-002 | データ構造・境界・処理フロー | proposed | [contracts](architecture/contracts.md) |
 | ADR-0001 | 研究優先の軽量構成 | proposed | [decision](architecture/decisions/ADR-0001-research-first.md) |
