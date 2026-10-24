@@ -5,6 +5,11 @@ status: completed; candidate review pending
 updated: 2026-10-24
 tags: exp0002, runs, evidence, provenance
 
+## EXP-0002 RUN-002 — review regression test
+- [RUN-002 security/cost accounting validation](20261024-0724-42122c9.md)
+- [CI evidence and artifacts](https://github.com/ryonakayama234/DekaSugi/actions/runs/40073909590)
+- 24/24 tests PASS. The original evaluation data were **not** replaced or presented as independent fresh data.
+
 ## EXP-0002 RUN-001 — initial measured test
 - [RUN-001 human-readable measured report](20261024-0440-c849632.md)
 - [RUN-001 machine-readable JSON](20261024-0440-c849632.json)
