@@ -62,7 +62,9 @@ class LearningTests(unittest.TestCase):
         self.assertEqual(expanded_nodes(nested_body, {base.skill_id: base}), 5)
         with self.assertRaisesRegex(ValueError, "Registry and learned-skill"):
             bounded_synthesize(HOLDOUT[0], extended)
-        cyclic = replace(base, body_ast=Call(base.skill_id, Input()))
+        cyclic_body = Call(base.skill_id, Input())
+        cyclic = replace(base, body_ast=cyclic_body,
+                         body_hash=program_hash(cyclic_body))
         with self.assertRaisesRegex(ValueError, "Cyclic macro"):
             expanded_nodes(Call(base.skill_id, Input()), {base.skill_id: cyclic})
 
