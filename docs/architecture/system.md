@@ -76,3 +76,20 @@ flowchart TD
 - **未実装:** Sleep/Dream全体ループ、永続Episodes DB、学習された検索方針、Kernelによる自律タスク選択。
 - **決定的な境界:** `learning` は訓練課題からのみ候補を作る。`evaluation` は候補を触らず開発/最終評価を計測。生成したmacroは `DEFAULT_REGISTRY` を変更しない。
 - 探索条件とデータの対応は [ARCH-002](contracts.md)、研究ゲートは [EXP-0002](../specs/EXP-0002.md)、実測は [runs](../../experiments/EXP-0002/runs/README.md) を参照。
+
+## MEASURE-0001 — 実行された原始演算の計測（EXP-0002Bの前提）
+
+状態: 実験用ブランチに実装。独立レビュー・CI検証中。学習型Kernel自体は未実装。
+
+```mermaid
+flowchart LR
+    T["TaskSpec"] --> OFF["探索 OFF"]
+    T --> ON["探索 ON: 安全な技能候補"]
+    OFF --> V["既存の独立Verifier"]
+    ON --> V
+    V --> W["実行primitiveを計数"]
+    W --> O["候補数 + 呼出回数をarm別記録"]
+    O -.-> K["後続のContextual Kernel学習"]
+```
+
+新規の型付きプログラム実行器を作らず、既存の許可済みprimitiveの呼び出しを試験用ラッパーで計測する。macro内部も同じ計数対象とする。計測なし実行の意味論・候補順・検証器の正否を維持する。[計測仕様とデータフロー](measurement.md) / [試験記録](../../experiments/EXP-0002B/metering-log.md)。
