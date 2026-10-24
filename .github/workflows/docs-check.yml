@@ -24,6 +24,15 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Run preregistered EXP-0001 suite
         run: python -m packages.cli --suite --output .run/EXP-0001-result.json
+      - name: Run preregistered EXP-0002 comparison
+        run: python -m packages.evaluation --output .run/EXP-0002-result.json
+      - name: Upload EXP-0002 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: EXP-0002-result
+          path: .run/EXP-0002-result.json
+          if-no-files-found: warn
       - name: Upload experiment evidence
         if: always()
         uses: actions/upload-artifact@v4

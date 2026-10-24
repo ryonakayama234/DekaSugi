@@ -85,3 +85,62 @@ Related: [ARCH-001](system.md), [EXP-0001](../specs/EXP-0001.md)。
 **注:** `not_found` は**今回のDSLと探索上限で見つからなかった**ことを意味する。一般にその問題が解けないことの証明ではない。
 
 実装: [protocol](../../packages/protocol/__init__.py) / [synthesis](../../packages/synthesis/__init__.py) / [runtime](../../packages/runtime/__init__.py) / [verification](../../packages/verification/__init__.py)。
+
+## EXP-0002: SkillCandidate v1 / Macro evaluation data flow
+
+```mermaid
+flowchart LR
+    TE["Train TaskSpec 0.1"] --> SR["SearchResult 0.1"]
+    SR --> EX["AST subtree extractor"]
+    EX --> SC["SkillCandidate v1"]
+    SC --> VA["Safe Registry with macro"]
+    HE["Heldout TaskSpec 0.1"] --> BA["Baseline search"]
+    HE --> LA["Learned search"]
+    VA --> LA
+    BA --> ER["EvaluationReport JSON"]
+    LA --> ER
+    SC --> ER
+    ER --> RU["EXP-0002/run: measured"]
+```
+
+### SkillCandidate v1（実装されたcontract）
+
+| Field | Type | Rule |
+|---|---|---|
+| `schema_version` | String | `1.0` |
+| `skill_id` | String | `skill_` + body_hash先頭16文字 |
+| `body_ast` | Program 0.1 | 少なくとも2個のcall。既存primitiveのみを参照 |
+| `body_hash` | SHA-256 | AST正規化JSONの構造hash。登録前に検証 |
+| `dependencies` | sorted String[] | bodyに含まれる一意のprimitive ID |
+| `provenance` | sorted String[] | 異なる成功訓練task_idが2個以上 |
+| `occurrences` | Integer | distinct task_id数と一致 |
+| `status` | String | 初期値 `candidate`。正式採用は自動化しない |
+
+```json
+{
+  "schema_version": "1.0",
+  "skill_id": "skill_<body-hash-prefix>",
+  "body_ast": {
+    "node_kind": "call", "type": "String", "op_id": "lower",
+    "children": [{
+      "node_kind": "call", "type": "String", "op_id": "trim",
+      "children": [{"node_kind": "input", "type": "String"}]
+    }]
+  },
+  "body_hash": "<SHA256 of canonical AST>",
+  "dependencies": ["lower", "trim"],
+  "provenance": ["train-01", "train-02"],
+  "occurrences": 2,
+  "status": "candidate"
+}
+```
+
+### Data boundaries / 注意点
+- `discover_skills(TRAIN)` への最終保留課題の入力は禁止。重複するtask_idはエラーにする。
+- `registry_with_skill(candidate)` はbodyハッシュ、署名、来歴を検証し、許可済みの元primitiveを使った純粋なインタプリタに委譲する。任意Pythonソースは実行しない。
+- `expanded_nodes` はmacroのInput位置へ引数ASTを置いた際の展開後ノード数を計算。探索上限 `max_ast_nodes` は**両armでこの物理ノード数に適用**。候補数上限も共通。
+- `EvaluationReport` はソースcommit、Python、platform、原始演算版、train/dev/holdout task ID、候補・比較結果・判定・限界を保存。
+- `status=functional_pass` は発見機構と例照合の成立のみ。`promotion_gate_metrics_pass` は独立レビューを要求する指標条件であり、自動採用ではない。
+- EXP-0002はtrain/dev/finalの全入力を公開しているため、結果を用いた改良を行った後の独立評価は**新しい保留課題**が必要。
+
+Related: [実験事前登録](../../experiments/EXP-0002/plan.md) / [仕様](../specs/EXP-0002.md) / [全体図](system.md)。

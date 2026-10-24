@@ -50,3 +50,29 @@ EXP-0001は **学習・Wake-Sleep・外部Webアクセスを実装しない**。
 - `kernel`: 後続フェーズで課題と技能から行動を選択する。
 
 新しくコードを追加するときは、この図の実装範囲を塗り分ける代わりに各要素の実装/未実装を明記し、[データ契約](contracts.md)を同期する。
+
+## EXP-0002 の実装境界（技能の自動発見）
+
+```mermaid
+flowchart TD
+    T["Train TaskSpec x2"] --> S["Synthesis: EXP-0001の探索器"]
+    L["Library: trim / lower / upper"] --> S
+    S --> E["解法ASTとtask_id"]
+    E --> D["Learning: 共通部分式を構造Hashで集計"]
+    D --> C["SkillCandidate: body・provenance・依存関係"]
+    C --> G{"Validation: 型・来歴・body hash"}
+    G -->|OK| R["隔離したRegistryを構築"]
+    R --> X["Evaluation: Learned条件"]
+    L --> B["Evaluation: Fixed baseline"]
+    H["開発と保留課題"] --> X
+    H --> B
+    X --> M["同じ候補上限・展開後AST上限で比較"]
+    B --> M
+    M --> F["再現可能な実験run / 採否判定"]
+    F -.->|"独立レビュー後のみ"| A["将来の正式ライブラリ採用"]
+```
+
+- **実装済み:** `packages/learning` の共通部分式抽出と安全なmacro登録、`packages/evaluation` の比較CLI、学習候補の独立test。
+- **未実装:** Sleep/Dream全体ループ、永続Episodes DB、学習された検索方針、Kernelによる自律タスク選択。
+- **決定的な境界:** `learning` は訓練課題からのみ候補を作る。`evaluation` は候補を触らず開発/最終評価を計測。生成したmacroは `DEFAULT_REGISTRY` を変更しない。
+- 探索条件とデータの対応は [ARCH-002](contracts.md)、研究ゲートは [EXP-0002](../specs/EXP-0002.md)、実測は [runs](../../experiments/EXP-0002/runs/README.md) を参照。
