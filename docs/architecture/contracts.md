@@ -85,3 +85,36 @@ Related: [ARCH-001](system.md), [EXP-0001](../specs/EXP-0001.md)。
 **注:** `not_found` は**今回のDSLと探索上限で見つからなかった**ことを意味する。一般にその問題が解けないことの証明ではない。
 
 実装: [protocol](../../packages/protocol/__init__.py) / [synthesis](../../packages/synthesis/__init__.py) / [runtime](../../packages/runtime/__init__.py) / [verification](../../packages/verification/__init__.py)。
+
+## EXP-0002B — 課題別技能選択の契約・データフロー（**提案・未実装**）
+
+```mermaid
+flowchart LR
+    T["TaskSpec v0.1"] --> X["TaskFeatures v1"]
+    X --> Q["Kernel Policy v1"]
+    S["SkillCandidate v1"] --> Q
+    P["PolicySnapshot v1"] --> Q
+    Q --> D["PolicyDecision v1"]
+    D --> RUN["Bounded synthesis + verifier"]
+    RUN --> E["SkillUsageObservation v1"]
+    E --> MEM["Append-only episodes / SQLite later"]
+    MEM --> FIT["Policy training on TRAIN only"]
+    FIT --> P
+    E --> REP["EvaluationReport + independent holdout"]
+```
+
+| Object | 必須フィールド（提案） | 保存先と境界 |
+|---|---|---|
+| `TaskFeatures v1` | `feature_version`, `task_id`, `vector`, `derived_from_example_ids` | 解答前にTaskSpec入出力例から計算。未知の正解ASTは不使用 |
+| `SkillUsageObservation v1` | `observation_id`, `task_id`, `partition`, `skill_id`, `policy_arm`, `status`, `verified`, `tested_candidates`, `primitive_invocations`, `runtime_ms`, `source_commit` | 結果は追記のみ。正誤と計算量を別フィールドで保持 |
+| `PolicyDecision v1` | `task_id`, `policy_id`, `enabled_skill_ids`, `estimated_cost_delta`, `confidence`, `reason_code`, `fallback` | 初期値はbaseline・不確実ならOFF。判断は検証器の外側 |
+| `PolicySnapshot v1` | `policy_id`, `algorithm_version`, `features_version`, `training_ids`, `training_hash`, `parameters`, `candidate_skill_hashes` | 学習版をimmutableに固定。holdoutに対して再訓練しない |
+| `EvaluationReport v1` | `experiment_id`, `dataset_version`, `arm`, `metrics`, `source_commit`, `policy_snapshot_hash`, `env` | 候補数・演算回数・時間・失敗・退行を別集計 |
+
+**教師信号:** 同一訓練TaskSpecに「技能OFF」と「技能ON」を同じ予算で試した差分（正確性を優先し、次に実際の原始演算呼出数を評価）。生成した技能名を入力の正解ラベルとして直接教えない。
+
+**公平性:** holdoutの結果をPolicySnapshotへ逆流させない。oracle方式は比較の上限でしかなく、実際のKernelに使わせない。重複family/seedや、TaskSpecの入出力例を跨ぐリークを監査する。
+
+**安全性:** 不確実な場合は技能OFFに戻し、すべての探索候補は既存の型検査・allowlist実行・独立検証器を通す。macro展開後コストも計測する。新スキルの正式昇格とは無関係。
+
+Related: [EXP-0002B spec](../specs/EXP-0002B.md), [experiment proposal](../../experiments/EXP-0002B/plan.md), [architecture](system.md)。

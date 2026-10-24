@@ -43,3 +43,9 @@ python -m packages.cli --suite --output /tmp/exp0001.json
 - 出力は探索状態・候補数・解法AST・探索順ハッシュ・実行時間を含む。
 - 実行結果の採否は [実験run記録](experiments/EXP-0001/runs/README.md) で管理。
 - **EXP-0001は自動学習ではない。** 学習による改善の検証は後続の実験。
+
+## 次の学習研究: EXP-0002B（設計案、未実装）
+
+[Issue #7](https://github.com/ryonakayama234/DekaSugi/issues/7) — 課題ごとに**獲得した技能を使うべきか**を経験から予測する小さなKernel。EXP-0002の成果は[PR #6](https://github.com/ryonakayama234/DekaSugi/pull/6)でレビュー中で、mainにはまだ統合されていない。
+
+[計画（案）](experiments/EXP-0002B/plan.md) / [仕様](docs/specs/EXP-0002B.md) / [システム図](docs/architecture/system.md) / [データフロー](docs/architecture/contracts.md)。現時点の成果は**設計と検証方針の記録**であり、性能改善や学習の実装を意味しない。

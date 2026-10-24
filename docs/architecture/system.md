@@ -50,3 +50,31 @@ EXP-0001は **学習・Wake-Sleep・外部Webアクセスを実装しない**。
 - `kernel`: 後続フェーズで課題と技能から行動を選択する。
 
 新しくコードを追加するときは、この図の実装範囲を塗り分ける代わりに各要素の実装/未実装を明記し、[データ契約](contracts.md)を同期する。
+
+## EXP-0002B — 学習型の道具選択（**提案・未実装**）
+
+元の夢である「経験→抽象化→予行演習→次の経験」のうち、**技能の使い分け**を測定可能な最小機構として挿入する。EXP-0002の技能候補の存在が前提だが、mainにはPR #6未統合。
+
+```mermaid
+flowchart TD
+    T["TaskSpec: 入出力例と制約"] --> F["Features: 解答前に抽出"]
+    F --> K["Kernel: 技能の効用を予測"]
+    L["Library: primitive + candidate skills"] --> K
+    P["PolicySnapshot: 学習済み選択規則"] --> K
+    K --> D{"技能を使用? 不確実ならOFF"}
+    D -->|ON| S1["Synthesis: macro候補を許可"]
+    D -->|OFF| S0["Synthesis: primitiveのみ"]
+    S1 --> V["Verification: 独立した正誤判定"]
+    S0 --> V
+    V --> E["Episode: 成否・総演算数・候補数・時間"]
+    E --> M["Memory: 変更不可の観測記録"]
+    M --> TR["Learner: 学習集合のみで効用を推定"]
+    TR --> P
+    M --> EV["Evaluator: 分離した評価集合"]
+    EV --> A["結果の比較・採否記録"]
+```
+
+- **新たに学習するもの:** 新しい関数の本体ではなく、課題特徴と候補技能を結びつける *policy / meta-skill*。
+- **現行資産:** EXP-0001の探索器・検証器、EXP-0002の技能候補（PR #6）。ランタイム演算、検証ルール、原始演算セットは固定。
+- **今回作らないもの:** 自律的Web探索、外部コード実行、モデル重みの大規模訓練、Wake–Sleep全自動化。次段階EXP-0003の構想は維持。
+- [データ契約](contracts.md) / [仕様](../specs/EXP-0002B.md) / [計画案](../../experiments/EXP-0002B/plan.md) / [Issue #7](https://github.com/ryonakayama234/DekaSugi/issues/7)。

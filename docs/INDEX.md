@@ -18,6 +18,8 @@ tags: navigation, architecture, research, experiments
 | PROC-002 | GitHub運用・進捗管理 | active | [github](process/github.md) |
 | ROADMAP | 実験ロードマップ | proposed | [roadmap](roadmap.md) |
 | EXP-0001 | 型付きプログラム合成ベースライン | accepted baseline (EXP-0001) | [spec](specs/EXP-0001.md) / [plan](../experiments/EXP-0001/plan.md) |
+| EXP-0002 | 共通部分式から技能候補化（PR #6） | implemented in open PR; review pending | [issue](https://github.com/ryonakayama234/DekaSugi/issues/5) / [implementation PR](https://github.com/ryonakayama234/DekaSugi/pull/6) |
+| EXP-0002B | Contextual Kernel: 技能使用の学習 | **design only; not preregistered** | [spec](specs/EXP-0002B.md) / [plan](../experiments/EXP-0002B/plan.md) / [runs](../experiments/EXP-0002B/runs/README.md) |
 | RSRCH-INDEX | 研究資料の検索入口 | collecting | [research](research/INDEX.md) |
 | RSRCH-001 | プログラム合成・抽象化 | notes | [program synthesis](research/program-synthesis.md) |
 | TPL-SPEC | 仕様書テンプレート | active | [template](templates/spec.md) |
