@@ -85,3 +85,21 @@ Related: [ARCH-001](system.md), [EXP-0001](../specs/EXP-0001.md)。
 **注:** `not_found` は**今回のDSLと探索上限で見つからなかった**ことを意味する。一般にその問題が解けないことの証明ではない。
 
 実装: [protocol](../../packages/protocol/__init__.py) / [synthesis](../../packages/synthesis/__init__.py) / [runtime](../../packages/runtime/__init__.py) / [verification](../../packages/verification/__init__.py)。
+
+## VISION-001 — 外部知能のデータ原則（目標契約、未実装を含む）
+
+```mermaid
+flowchart LR
+    T["TaskSpec"] --> R["Attempt / verification"]
+    R --> E["Episodes: 事実・来歴・実測"]
+    E --> L["Library: 根拠付き知識"]
+    E --> S["Skills: 契約付き操作"]
+    E --> C["Concepts: 共通構造"]
+    E --> P["PolicySnapshot: 版付き選択規則"]
+    L --> K["Kernel"]
+    S --> K
+    C --> K
+    P --> K
+```
+
+観測と解釈を混ぜない。Episodesは事実を追記して保持し、PolicySnapshotやSkillCandidateは変更不可の版・学習データ来歴で保存する方針。現時点でこれら全ての永続化スキーマが実装済みという意味ではない。詳細は[合意したビジョン](../vision/mission.md)と各EXPのスキーマを参照。
