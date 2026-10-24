@@ -102,3 +102,19 @@ flowchart TB
 ```
 
 この図は**事前登録で固定した目標フロー**であり実装図ではない。特に、訓練データで両方の技能使用条件を試す方式は、厳密にはBandit-feedbackではなくfull-information contextual cost-sensitive learning。過去のEXP-0002公開holdoutは新しい最終試験に使わない。[確定方法・分割・採用ゲート](../../experiments/EXP-0002B/plan.md) / [データ契約](contracts.md)。
+
+## EXP-0002B v2 — 評価計画の変更（未実装）
+
+```mermaid
+flowchart LR
+    P["Protocol v2: disjoint RNG seeds"] --> TRAIN["TRAIN: 144"]
+    P --> DEV["DEV: 48 (smoke only)"]
+    P --> FINAL["FINAL: 112 (unseen)"]
+    TRAIN --> BOTH["Paired OFF/ON + audit"]
+    BOTH --> POLICY["5-NN policy snapshot"]
+    POLICY --> RESULT["Evaluation on FINAL"]
+    FINAL --> RESULT
+    DEV -.-> ENGINEER["No tuning on DEV"]
+```
+
+旧v1のseed衝突を修正した[方法の正本](../../experiments/EXP-0002B/plan-v2.md)を参照。現行システム図にあるv1の数値・方策は歴史的な設計案であり、**本番評価への採用はv2レビュー後のみ**。
