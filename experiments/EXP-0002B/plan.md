@@ -1,54 +1,107 @@
-# EXP-0002B — PROPOSED experiment plan (not preregistered yet)
-
+# EXP-0002B — Preregistered protocol v1: contextual skill utility
 id: EXP-0002B-PLAN
-status: planned; NOT preregistered; NOT executed
+status: preregistered protocol v1; no implementation / no experiment run
 updated: 2026-10-24
-tags: experiment, policy, contextual-kernel, design, holdout
+tags: experiment, preregistration, contextual-policy, paired-cost, holdout, safety
 
-> **研究設計案であり事前登録済み評価ではない。** 既存のEXP-0002最終評価データを学習・採用判断に再利用しない。実装前に、この計画の仕様を別commitでfreezeし、以降は結果に合わせて編集しない。
+> Protocol **frozen before EXP-0002B policy implementation or results** in this branch. This replaces the earlier non-preregistered proposal; the previously published EXP-0002 held-out examples are **diagnostic only**, never input to this experiment. The first commit of this branch locks the algorithm, generator, sample size, metrics, and numerical gates. Future edits affecting the hypothesis or evaluative choices require a new protocol version and fresh untouched final set.
 
-## Hypothesis / 仮説
-H1: 入出力例から抽出した課題特徴に基づき、新技能を使用するか否かを訓練エピソードから予測できる。
-H2: 選択方策の学習により、技能を常に有効化する条件よりも無駄な探索と原始演算を抑制できる。
-H3: 分布が変わると選択方策の利点は消失し得る。未知文脈で安全にOFFへ戻せることが重要。
+## Hypothesis
+- H1: task features observable **before solving** are sufficient for a tiny learned contextual selector to beat skill Always-ON on actual verifier primitive invocations on new task instances.
+- H2: conditional selection can also beat Always-OFF, while never degrading independently verified correctness, under the same search budget.
+- H3: unfamiliar / out-of-distribution contexts trigger conservative OFF more often; in-domain gains need not transfer to new operation families.
+- Null: no reproducible cost advantage versus both fixed policies. Failure, ties, and negative cost differences are published.
 
-## Scope / 対象
-- 最初の行動空間: `OFF` / `ON(skill_8fe1361cb5014f85)`。ただしPR #6のレビューと安全境界の確定後にのみ技能を使用。
-- 課題は `String → String` の型付きDSL。新しいプリミティブは導入せず、同一探索上限で比較。
-- 入力情報は**解答前**に与えられるTaskSpec（例のinput/outputを含む）と承認済み技能メタデータのみ。
-- 特徴候補は入出力例の個数、文字列長・変化量、境界空白、大/小文字の比率、identity比率等。確定次第vector schemaを別commitに固定する。
-- 訓練課題では両armを実行し、verified correctness, candidate evaluations, **primitive invocations**, wall timeの対比較を学習信号とする。
-- 近傍型または表形式の小モデルを先行候補とする。アルゴリズム、正規化、近傍数、閾値、fallback閾値を**実装前に固定**。
+This is **full-information contextual cost-sensitive learning** because TRAIN tasks evaluate both actions. It is related to contextual bandits but is *not* a bandit-feedback experiment.
 
-## Dataset / データ分割（現時点は案）
-- train / development / final_holdoutをfamilyとseed、文字列テンプレートで分離。恒等、trim、lower、upper、合成、不可解問題、混合ノイズを最低限含める。
-- 訓練で成果が出たfamilyだけを最終評価へ持ち込まない。未出現family/新種のノイズなどのOOD課題を別に用意する。
-- 例題を増やす際、入力文字列を変えただけの同一関数の複製を独立試行として過大計上しない。
-- データ生成器が正解programを持っていても、Kernelが利用できる入力には混入させない。
-- 課題数・seed・dataset hash・例外処理を実装前に確定する。
+## Locked upstream dependencies and semantics
+- Dependencies: [EXP-0002 skill PR #6](https://github.com/ryonakayama234/DekaSugi/pull/6), [policy design PR #8](https://github.com/ryonakayama234/DekaSugi/pull/8), [meter PR #9](https://github.com/ryonakayama234/DekaSugi/pull/9). Their safety reviews/merge gates remain independent.
+- Immutable candidate: `skill_8fe1361cb5014f85`, body `lower(trim(Input))`, canonical full body SHA-256 `8fe1361cb5014f8503e4a57392e45f4fc7607e788fdd598f66668fbc11338eff`; it stays **candidate**, in an isolated registry, never in `DEFAULT_REGISTRY`.
+- No extra primitives: only `trim`, `lower`, `upper`. Same `String → String` typed DSL, `max_ast_nodes=4` **after macro expansion**, `max_candidates=100`, and existing independent verifier for each trial. The source commit and semantics versions must be recorded; the protocol does not bless an unreviewed implementation.
+- All comparisons use the same TaskSpec/limits; no arbitrary Python or network calls are synthesized or run.
 
-## Conditions / 比較
-1. Always-OFF = fixed primitive baseline.
-2. Always-ON = all current candidate skills enabled.
-3. LEARNED = Kernel policy, with abstention-to-OFF.
-4. ORACLE = hindsight best arm; upper-bound diagnosis only.
+## Dataset generator specification (freeze now, generate later)
+Use standard-library `random.Random` only, with **no global RNG**. Partition master seeds: TRAIN=`260201`, DEV=`260202`, FINAL=`260203`. Determinism is defined at the generator-algorithm level; the dataset generator's source SHA and generated dataset JSON SHA-256 must be preserved before evaluating the learned policy.
 
-## Metrics / 指標
-- 各課題・全体・family別の正答率、候補評価数、原始演算呼出数、wall timeの中央値・p90・悪化例数。
-- 選択方策の真の推論/特徴抽出コスト、学習オーバーヘッド、技能body展開後ノード数。
-- ONを選ぶべきでなかった課題でONと判定した率、技能を使う方が良い課題でOFFと判定した率。
-- 既知familyとOODの成績を別々に報告。平均だけでなくworst-case cost、budget exhaustion、分割ごとのnを示す。
-- メトリクスを測りづらい場合は不明と報告し、wall timeの揺らぎを主成果にしない。
+**Six in-domain operation families**: `identity`, `trim`, `lower`, `upper`, `normalize` (`lower(trim(x))`), and `reverse` (unsupported by DSL). TRAIN: **24 tasks per family = 144**. DEV: **8 per family = 48**. FINAL: **16 per family = 96**. Additional FINAL-only OOD family `replace_first` (replace initial character with `Z`, unsupported): **16 tasks**. Thus FINAL is **112 tasks total**. No OOD tasks in TRAIN/DEV.
 
-## Acceptance / 事前登録前の受入方針
-- Correctness/safety/regression must be non-inferior to the fixed-baseline within measurement uncertainty.
-- Learningを主張するには、全ての方策の設計や閾値を固定した上で新しい最終課題を評価し、**Always-ONに対する実コスト低減**とAlways-OFFに対する影響を報告する。
-- Always-ONだけに勝ってAlways-OFFに勝てない場合、「選択方策による安全な抑制」はあり得るが「全体能力の向上」は主張しない。
-- 意思決定の確信度が不足する場合にはOFFへ戻り、取り返しのつかない外部操作は禁止。
-- 数値採用閾値、サンプル数、初期方策と学習方式、既存課題との漏洩監査を実装前に確定するまでこのplanを `preregistered` と呼ばない。
-- 実験runには失敗も保存し、独立コードレビュー・資料更新まで採用しない。
+- For task index `i` (zero-based), example index `j ∈ {0,1,2}`, family index `k` in the six-family order above (OOD index 6), instantiate a fresh `random.Random(master_seed + 100000*k + 100*i + j)`. Choose token length via `randrange(3,8)`; take exactly that many letters using repeated `choice(alphabet)`. If token has <2 distinct letters or is a palindrome, redraw using the same RNG stream until valid. Token case is upper unless the family is `upper`, where it is lower.
+- **Partition-separated alphabets**: TRAIN=`ABCDEF`, DEV=`GHIJKL`, FINAL=`MNOPQR`. For OOD `replace_first`, use FINAL uppercase alphabet and replace its first character by `Z`, guaranteeing changed output.
+- **Whitespace patterns** (cycle by `(i+j) % 3`): TRAIN `[(" "," "),("  ",""),("","  ")]`; DEV `[("\\t"," "),(" ","\\t"),("  "," ")]`; FINAL `[("\\n"," "),("\\t","\\t"),("   "," \\n")]`. Strings `\\t` and `\\n` here denote one actual tab/newline when generating, not two literal characters.
+- Family input/output generation:
+  - `identity`: `input=token`, `output=token`.
+  - `trim`: `input=prefix+token+suffix`, `output=token` (uppercase token).
+  - `lower`: `input=token`, `output=token.lower()`.
+  - `upper`: `input=token` (lowercase), `output=token.upper()`.
+  - `normalize`: `input=prefix+token+suffix`, `output=token.lower()`.
+  - `reverse`: `input=token`, `output=token[::-1]`; guaranteed non-palindrome.
+  - `replace_first` FINAL OOD: `input=token`, `output="Z"+token[1:]`.
+- `j=0,1` are the only two TaskSpec examples visible to all agents and the learned selector. `j=2` is the independent **audit example**, unavailable to the feature extractor or synthesizer until post-search scoring. Its use as a TRAIN training-utility signal is permitted, never as an input feature. The generator may retain private `family`, `seed`, `audit_example` for evaluation, but must not place those fields in TaskSpec.
+- Task IDs: `<split>-<family>-<i:03d>`. Group by `family` and `partition` in reporting; do not count near-identical same-family samples as independent conceptual transfers. No cross-split lexical tokens; seed, family, and token checks are CI assertions.
+- Freeze source and dataset-hash on generation before training; the generator is **not yet implemented** at registration time. Do not inspect or tune on FINAL outcomes before freezing the policy snapshot. Because protocol and seeds are public, this is reproducible preregistration, **not a cryptographically blinded benchmark**.
 
-## Reproduction / 現時点
-**未実装、コマンド・実験runなし。** 後続の実装PRで具体的なCLIコマンド、版管理とGitHub Actions artifactを確定する。
+## Feature vector — fixed version `task-features-v1`
+Exactly eight values from the two TaskSpec input/output pairs; no skill labels, hidden audit, program AST, prior search result, family metadata, or split ID:
+1. Mean `min(len(input),16)/16`.
+2. Mean `min(len(output),16)/16`.
+3. Mean `max(-1,min(1,(len(output)-len(input))/16))`.
+4. Fraction of examples with boundary whitespace in input (`input != input.strip()`).
+5. Fraction of input ASCII alphabetic characters that are uppercase (0 if none).
+6. Fraction of output ASCII alphabetic characters that are lowercase (0 if none).
+7. Fraction of examples with `input == output`.
+8. Mean positional equality over aligned characters, divided by max(input length,output length,1).
 
-[Specification](../../docs/specs/EXP-0002B.md) / [Data contracts](../../docs/architecture/contracts.md) / [Issue #7](https://github.com/ryonakayama234/DekaSugi/issues/7)。
+Mean and fractions are arithmetic; feature vector order and float representation are part of the version. Do not add a hand-coded `if whitespace then ON` rule.
+
+## Frozen policy `knn-cost-v1` and training labels
+- TRAIN both arms, one arm per fresh counter; measured diagnostics include correct/audit verification, candidate count, executed primitive calls, elapsed time and trace SHA. A failed audit of a `solved` AST is recorded as a **wrong solution**.
+- For each TRAIN task, prefer **audited-correct solution** over failed/unaudited solution. If correctness differs, record the safer arm as the utility-label preference, but the default selection does not override any independent verifier. If both are equally correct or both equally unsolved, utility `delta = calls_OFF - calls_ON` (positive means ON cheaper). On ties in primitive invocations, break by `candidates_OFF - candidates_ON`; exact remaining tie selects OFF.
+- Inference: compute eight-feature mean L1 distance `d(x,y) = sum(abs(x_i-y_i))/8` to every TRAIN observation, ordered deterministically by `(distance, task_id)`. Select the nearest **k=5**. If fewer than **3** of those five are at distance `<=0.18`, choose OFF (`reason="insufficient_support"`).
+- Otherwise choose ON only when **at least 4 of 5** nearest neighbours favor ON based on the label above, **and** the arithmetic mean `calls_OFF - calls_ON` of all five is **>=2.0**, **and** none of these five has an audited-wrong ON outcome that was correct in OFF. Else OFF. No probabilistically calibrated confidence claim: record neighbour support fraction, distance, reason code, and estimated mean call saving only.
+- PolicySnapshot must include `feature_version`, `algorithm_version`, ordered train observation hashes/IDs, generator/dataset hashes, skill body hash, all constants and canonical content SHA-256. Snapshot is immutable during DEV/FINAL. Re-training on FINAL is forbidden.
+- DEV is a non-tuning engineering smoke set: if it exposes a defect, fix under **new protocol version** and new FINAL seeds; do not silently reuse this preregistration or the same FINAL as confirmatory evidence.
+- The comparator `ORACLE` chooses better observed arm retrospectively; **diagnostic upper bound only**. Not an executable policy.
+
+## Measures and acceptance gates fixed before results
+For FINAL **all 112 tasks** and grouped by 7 families, compare OFF, ON and LEARNED; ORACLE is reported but excluded from adoption:
+1. Safety first: **zero additional audit-invalid solved programs** and no lower independently audited solve count relative to OFF; unchanged allowlisted interpreter and budgets.
+2. Primary improvement: total `primitive_invocations` by LEARNED must be at least **5.0% lower than both OFF and ON separately**, and total `tested_candidates` must also be at least **5.0% lower than both**. Do not subtract estimated overhead from either numerator. Report per-task differences and per-family means.
+3. OOD safety: among 16 `replace_first` tasks, at most **1** false ON activation (<=6.25%); no audit-invalid solution.
+4. Tail risk: median and p90 of per-task primitive-call regression `calls_LEARNED - calls_OFF`, worst absolute regression, and the count of worse tasks are required. Gate: p90 positive regression **<=20 calls**.
+5. Contextual-policy features/prediction overhead (wall time plus CPU time where available) and training work (both-arm calls on TRAIN, macro discovery, learning CPU/wall time) **must be reported separately**. No claim of total end-to-end compute improvement without including these costs. Model amortization must be shown at **1, 32, 128 future-task horizons** as descriptive, not adopted without a real cost model.
+6. Statistical uncertainty: report 1,000-seed deterministic `Random(260299)` **family-clustered bootstrap** paired aggregate deltas with replacement, also report simple task-paired sign counts. Low family count and small benchmark size must be acknowledged; p-values alone cannot approve promotion.
+7. Baseline, ON, LEARNED and ORACLE statuses, audit success, candidate count, primitive calls and trace IDs for every task in immutable JSON, with Python/platform, source commit and all hashes. Failures and negative results remain archived.
+
+### Interpretation gates
+- Passing numerical criteria plus independent security/code/research review permits a **candidate selection policy in experimental mode**, not default-library skill promotion and not claims about general intelligence.
+- Improvement over ON but not OFF = useful suppression, **not** improved overall capability.
+- If any strict threshold fails, label `not_demonstrated`, preserve output, and propose a **new** independent study rather than retuning on FINAL.
+- Family classification is generator-side evaluation metadata only. The policy is forbidden from receiving it.
+
+## Data and component flow (proposed, not implemented)
+```mermaid
+flowchart TD
+    G["Frozen generator v1 + seeds"] --> D["TRAIN / DEV / FINAL + separate audit"]
+    D --> TS["TaskSpec: two visible IO pairs"]
+    D --> AU["Evaluation-only hidden third pair"]
+    TS --> F["TaskFeatures v1: eight values"]
+    TS --> P["Paired OFF + ON / TRAIN only"]
+    P --> OBS["SkillUsageObservation: measured calls + audited correctness"]
+    AU --> OBS
+    OBS --> FIT["KNN cost learner / TRAIN only"]
+    F --> FIT
+    FIT --> SNAP["Frozen PolicySnapshot hash"]
+    SNAP --> H["LEARNED selector on unopened FINAL"]
+    TS --> H
+    H --> R["Bounded search with selected registry"]
+    R --> V["Independent verifier + audit scoring"]
+    AU --> V
+    V --> REP["Immutable evaluation report"]
+```
+
+## Reproduction / state
+- This document is the **preregistration artifact only**. No EXP-0002B task generator, trained policy, fresh holdout, or experiment result exists as part of this PR.
+- Implementation should add `packages/kernel` and deterministic dataset generation only in a **later** PR. All stages must preserve diagrams, contracts, AGENTS, INDEX, and immutable run records in the same PR as the corresponding code.
+- Pre-run checks must verify the frozen generator contract (including number/partition/families), no feature leakage, compatibility with reviewed skill/meter, and canonical hashes before any FINAL execution.
+
+[Issue #7](https://github.com/ryonakayama234/DekaSugi/issues/7) / [spec](../../docs/specs/EXP-0002B.md) / [contracts](../../docs/architecture/contracts.md) / [system](../../docs/architecture/system.md).
