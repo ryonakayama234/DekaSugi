@@ -7,7 +7,7 @@ import subprocess
 import sys
 from time import perf_counter
 
-from packages.library import DEFAULT_REGISTRY, Registry
+from packages.library import DEFAULT_PRIMITIVES, DEFAULT_REGISTRY, Registry
 from packages.learning import SkillCandidate, discover_skills, registry_with_skill
 from packages.protocol import (Call, Input, Program, TaskSpec, parse_task,
                                program_hash, program_to_dict, check_program, DSLValidationError)
@@ -76,7 +76,10 @@ def _trusted_search_registry(registry: Registry,
     semantics_version is not an attestation. Never execute those callables.
     Keep canonical primitive order and rebuild approved macro bodies from AST.
     """
-    approved = DEFAULT_REGISTRY.primitives
+    # DEFAULT_REGISTRY is a public mutable container: even its lookup tables
+    # or primitives attribute can be replaced by a caller. Anchor validation
+    # and execution to the canonical primitive tuple, not that object.
+    approved = DEFAULT_PRIMITIVES
     supplied = registry.primitives
     if len(supplied) != len(approved) + len(learned):
         raise ValueError("Registry and learned-skill metadata must match")
@@ -89,7 +92,9 @@ def _trusted_search_registry(registry: Registry,
             raise ValueError("Unapproved primitive registry metadata or implementation")
 
     # Never run the macro implementation supplied by the caller either.
-    trusted = DEFAULT_REGISTRY
+    # Build independent lookup/signature tables from the canonical tuple.
+    # Never borrow DEFAULT_REGISTRY.by_name or .signatures for execution.
+    trusted = Registry(DEFAULT_PRIMITIVES)
     for supplied_macro in supplied[len(approved):]:
         candidate = learned.get(supplied_macro.op_id)
         if candidate is None:
@@ -124,7 +129,12 @@ def bounded_synthesize(task: TaskSpec, registry: Registry,
         digest = program_hash(candidate.body_ast)
         if candidate.body_hash != digest:
             raise ValueError("Skill metadata body hash mismatch")
-        if registry.by_name[skill_id].semantics_version != "derived-" + digest:
+        # Inspect declarative tuple entries only. The caller may have
+        # overwritten by_name with a different executable lookup table.
+        registered = next(
+            (op for op in registry.primitives if op.op_id == skill_id), None
+        )
+        if registered is None or registered.semantics_version != "derived-" + digest:
             raise ValueError("Registered skill body hash mismatch")
         try:
             check_program(candidate.body_ast, primitive_signatures, max_nodes=32)

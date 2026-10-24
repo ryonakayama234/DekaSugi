@@ -162,3 +162,23 @@ The evaluator must verify each learned macro before any candidate search: `sha25
 - 検証済み`SkillCandidate`からmacro実行callbackを**canonicalな原始演算のみで再構築**し、呼び出し元が渡したmacro callbackは利用しない。評価の決定性と展開後ノード上限の維持を目的とする。
 - 生の`Registry`の型が安全性を保証するわけではない。上記はEXP-0002の探索評価エントリポイントでのfail-closed境界であり、`DEFAULT_REGISTRY`への自動昇格も新しい原始演算の登録も行わない。
 - [P1再現条件・テスト・検査状況](../../experiments/EXP-0002/reviews/20261024-primitive-allowlist-hardening.md)を参照。事前登録計画・歴史的runは不変更。
+
+## SEC-004: 実行用データ契約・可変Registryとの境界
+
+```mermaid
+flowchart LR
+    IN["Untrusted Registry.primitives / by_name / signatures"] --> CHECK["Tuple metadata + SkillCandidate hashes"]
+    CAN["DEFAULT_PRIMITIVES: canonical tuple"] --> CHECK
+    CHECK -->|approved| NEW["Fresh Registry: primitives / by_name / signatures"]
+    CAN --> NEW
+    NEW --> MAC["Validated macro AST -> rebuilt callable"]
+    MAC --> VER["Synthesis + verifier"]
+    VER --> OUT["SearchResult status / AST / candidates / trace"]
+    CHECK -->|rejected| ERR["ValueError before candidate search"]
+```
+
+**Boundary invariant:** `_trusted_search_registry`は固定の`DEFAULT_PRIMITIVES`のID、順序、型、意味版、実装オブジェクトと、呼出元`Registry.primitives`を照合する。実行用`Registry`は`Registry(DEFAULT_PRIMITIVES)`から新規生成し、公開`DEFAULT_REGISTRY`も呼出元の`by_name`/`signatures`も実行に流用しない。学習済みmacroは検査済み`SkillCandidate`からのみ生成する。
+
+**Contract:** callerが提供した検索表・署名表は実行権限ではない。登録済みmacroの照合は`primitives`の宣言値とbody hashを使用する。未承認primitive/偽装macro/不正ASTは探索前に拒否し、正常系は既存の探索状態、AST、候補数、順序hashを保存する。実CPU時間の一致は保証しない。Pythonプロセス全体を悪意あるコードから隔離する仕組みではない。
+
+この変更は安全性回帰の修正のみで、研究計画v1の事前登録条件、過去の実験run、EXP-0002Bの保留課題には変更を加えない。[監査記録](../../experiments/EXP-0002/reviews/20261025-registry-snapshot-boundary.md)。
