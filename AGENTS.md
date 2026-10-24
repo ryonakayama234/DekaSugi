@@ -69,3 +69,9 @@
 - 第3audit例、正解プログラム、生成family/partition、先の評価結果がTaskFeaturesに混入しないことをコードレビューと検査で確認する。
 - TRAINだけでPolicySnapshotを作り、生成器/データ/学習器のバージョン・hashを固定してからFINALを開く。
 - PR #6のP1安全レビューが未解決の間は未審査macroの正式採用・自動統合を行わない。
+
+## 10. EXP-0002B v2 — 改訂事前登録の研究整合性
+- 旧[plan v1](experiments/EXP-0002B/plan.md)は不変の履歴資料とし、**評価実装の正本は[plan v2](experiments/EXP-0002B/plan-v2.md)**。v1のsplit seed重複・達成不能に近い採用条件を未修正のまま実行しない。
+- v2で指定したTRAIN/DEV/FINALの別seed領域、監査例と公開TaskSpecの分離、方策の固定閾値、OFF/ON比較、総原始呼出数と候補数のゲートを、実装前の独立レビューで点検する。
+- 未使用のFINALを初めて開く前にデータ生成器・学習版・コスト計測器・dataset hashを固定。結果を見て調整するときは新しい版と未使用データが必要。
+- [改訂経緯](experiments/EXP-0002B/preregistration-v2-log.md)は削除せず、失敗や不合格も記録する。計画を更新しても新しい学習成果を得たと報告しない。
