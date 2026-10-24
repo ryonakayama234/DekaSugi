@@ -1,7 +1,7 @@
 # SEC-004 — Mutable Registry lookupを実行権限としない
 
 id: SEC-004
-status: ci-verified-at-b2a311e; codex-review-completed-no-findings; stacked-integration-pending
+status: integrated-in-main; regression-ci-pass; codex-code-review-no-findings; no-scientific-promotion
 updated: 2026-10-25
 tags: security, registry, exp0002, audit, regression, architecture
 
@@ -42,7 +42,7 @@ tags: security, registry, exp0002, audit, regression, architecture
 - [PR #15](https://github.com/ryonakayama234/DekaSugi/pull/15)に`@codex review`依頼済み。head `b2a311e`のレビュー要約は`completed`, `has_any_findings=false`, `has_unresolved_findings=false`。明示的なAPPROVED reviewとは異なる。
 - この監査文書を追記するcommit自体にも、CIとレビュー要約の対象SHA確認を必要とする。PR #15をPR #6のブランチへ統合後は、PR #6の最新headにも改めてレビューを要求する。
 
-**採否:** SEC-004の修正はCIとCodexコードレビューを通過したが、stack統合とPR #6のP1再レビューが完了するまで、`main`へのマージと技能の正式昇格は保留。
+**採否（2026-10-25）:** SEC-004修正はPR #15からPR #6へ統合した上で、`main`のmerge commit `ecc42cbcc5cb2b2f99adef02712f7e16b3decbcb`として取り込み済み。[main CI #40111083052](https://github.com/ryonakayama234/DekaSugi/actions/runs/40111083052)はsuccess。PR #6最終head `edc81f0` の`@codex review`はfindingsなしで完了、過去のP1 4スレッドには個別返信後に解決処理を実施した。別途依頼した`@codex security review`は完了結果未確認のため承認とみなさない。**安全性修正の統合であり、技能の一般的な性能向上・EXP-0002BのFINAL・正式技能昇格を認定したものではない。**
 
 
 関連：[Issue #14](https://github.com/ryonakayama234/DekaSugi/issues/14) / [PR #6](https://github.com/ryonakayama234/DekaSugi/pull/6) / [ARCH-001](../../../docs/architecture/system.md) / [ARCH-002](../../../docs/architecture/contracts.md) / [資料目録](../../../docs/INDEX.md)。

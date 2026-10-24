@@ -72,3 +72,8 @@
 - マクロの実行権限は、呼出元のPython callbackでなく、検証済み型付きASTと固定された原始演算定義からのみ与える。
 - 依存PRは品質ゲートごとに合流する。CI成功のみでP1を解決済みにせず、GitHubの`@codex review`を現実的な独立レビュー資源として使用する。レビュー依頼とレビュー完了、指摘解消は別々に記録する。
 - セキュリティ修正の正常系の探索結果・候補数・traceの回帰を記録。研究上の正式採用やFINAL結果の新規主張は行わない。[SEC-004記録](experiments/EXP-0002/reviews/20261025-registry-snapshot-boundary.md)。
+
+## 11. SEC-004 統合記録（2026-10-25）
+- 安全修正は[PR #15](https://github.com/ryonakayama234/DekaSugi/pull/15)から[PR #6](https://github.com/ryonakayama234/DekaSugi/pull/6)へ取り込み、`main`へmerge commit `ecc42cbcc5cb2b2f99adef02712f7e16b3decbcb`として統合した。
+- [main CI](https://github.com/ryonakayama234/DekaSugi/actions/runs/40111083052)はsuccess。PR #6の最終headの`@codex review`は指摘なし、従来のP1スレッド4件は修正根拠の返信後に解決済み。別途要求したsecurity reviewの完了は確認していない。
+- この記録は**コードの品質ゲート**であり、技能の一般的な能力向上・実験結果の科学的採用ではない。後続のEXP-0002B・PR #9計測統合は別の受入基準に従う。
