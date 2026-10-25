@@ -182,3 +182,28 @@ flowchart LR
 **Contract:** callerが提供した検索表・署名表は実行権限ではない。登録済みmacroの照合は`primitives`の宣言値とbody hashを使用する。未承認primitive/偽装macro/不正ASTは探索前に拒否し、正常系は既存の探索状態、AST、候補数、順序hashを保存する。実CPU時間の一致は保証しない。Pythonプロセス全体を悪意あるコードから隔離する仕組みではない。
 
 この変更は安全性回帰の修正のみで、研究計画v1の事前登録条件、過去の実験run、EXP-0002Bの保留課題には変更を加えない。[監査記録](../../experiments/EXP-0002/reviews/20261025-registry-snapshot-boundary.md)。
+
+## MEASURE-0001: PrimitiveCallMeter observation contract
+
+```mermaid
+flowchart LR
+    U["Untrusted Registry + SkillCandidate"] --> C["Validate against canonical DEFAULT_PRIMITIVES"]
+    P["Canonical fixed tuple"] --> C
+    C --> R["Fresh Registry, validated macro AST"]
+    P --> W["Canonical primitive wrappers"]
+    R --> E["Enumerated AST + expanded budget"]
+    W --> V["Independent verifier"]
+    R --> V
+    E --> V
+    V --> M["Per-arm primitive invocations + by_op"]
+    E --> S["Unchanged SearchResult"]
+    M --> O["Paired diagnostic JSON"]
+    S --> O
+```
+
+- `PrimitiveCallMeter`: mutable `total: int`, `by_op: dict[str,int]`; `to_dict() -> {primitive_invocations, by_op}`. Each arm creates a fresh instance.
+- `bounded_synthesize(..., *, meter: PrimitiveCallMeter | None)` returns the unchanged `SearchResult`. Optional meter counts **only canonical primitive invocation within verifier examples**, including macro expansions. It does not count synthesis or total compute.
+- `run_experiment` adds optional diagnostic `primitive_measurement_version="runtime-canonical-v1"` and `comparisons[].primitive_measurements.off/on`. Historical EXP-0002 RUN-001/002 remain unchanged.
+- Untrusted executable Registry lookups are never consumed as execution authority: prior to wrapping, `_trusted_search_registry` checks primitive identity, version, order and typed macro metadata, then reconstructs a fresh execution registry; rejecting inputs produces no meter calls.
+- No learned Kernel or fresh policy FINAL evaluation here; public EXP-0002 holdout results are diagnostic and cannot confirm EXP-0002B generalization.
+- [Full measurement boundary](measurement.md) / [engineering audit](../../experiments/EXP-0002B/metering-log.md) / [SEC-004](../../experiments/EXP-0002/reviews/20261025-registry-snapshot-boundary.md).

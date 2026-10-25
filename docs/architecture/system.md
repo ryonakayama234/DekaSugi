@@ -111,3 +111,27 @@ flowchart TD
 - 呼出元の`Registry.by_name`を参照してmacroを認証しない。登録情報は`primitives`タプルと`SkillCandidate`のbody hashで検査し、macro callableも検証済みASTから再構築する。
 - この境界はEXP-0002の`bounded_synthesize`に限定される。任意のPythonコードや同一プロセスの攻撃者からの完全な隔離を意味しない。新Kernelの実装やFINAL評価には進んでいない。
 - [SEC-004の回帰・監査記録](../../experiments/EXP-0002/reviews/20261025-registry-snapshot-boundary.md)と[Issue #14](https://github.com/ryonakayama234/DekaSugi/issues/14)を参照。
+
+## MEASURE-0001: 実行時primitive計測（統合PR、まだKernel学習なし）
+
+```mermaid
+flowchart TD
+    I["TaskSpec + caller Registry + SkillCandidate"] --> V["SEC-004 validation"]
+    P["DEFAULT_PRIMITIVES: canonical definitions"] --> V
+    V -->|invalid| X["Reject before executing"]
+    V -->|valid| T["Fresh trusted Registry"]
+    T --> E["Enumerate same AST candidates"]
+    P --> W["Wrap canonical primitive implementations only"]
+    T --> M["Rebuild macros from validated AST"]
+    W --> M
+    M --> F["Metered independent verifier"]
+    E --> F
+    F --> C["PrimitiveCallMeter.total / by_op"]
+    F --> R["SearchResult invariants"]
+    C --> D["Diagnostic comparison, not Kernel training"]
+    R --> D
+```
+
+- `packages/evaluation`: optional per-arm counter for verifier-time canonical primitive calls. The DSL/AST/limits/enumerator are unchanged.
+- **Not implemented:** EXP-0002B feature extraction, training, contextual policy, future sealed FINAL. An original public EXP-0002 holdout rerun is diagnostic only.
+- [計測仕様](measurement.md) / [データフロー](contracts.md) / [監査記録](../../experiments/EXP-0002B/metering-log.md)。

@@ -77,3 +77,10 @@
 - 安全修正は[PR #15](https://github.com/ryonakayama234/DekaSugi/pull/15)から[PR #6](https://github.com/ryonakayama234/DekaSugi/pull/6)へ取り込み、`main`へmerge commit `ecc42cbcc5cb2b2f99adef02712f7e16b3decbcb`として統合した。
 - [main CI](https://github.com/ryonakayama234/DekaSugi/actions/runs/40111083052)はsuccess。PR #6の最終headの`@codex review`は指摘なし、従来のP1スレッド4件は修正根拠の返信後に解決済み。別途要求したsecurity reviewの完了は確認していない。
 - この記録は**コードの品質ゲート**であり、技能の一般的な能力向上・実験結果の科学的採用ではない。後続のEXP-0002B・PR #9計測統合は別の受入基準に従う。
+
+## 12. MEASURE-0001: 計測もSEC-004信頼境界を守る
+- `bounded_synthesize(..., meter=PrimitiveCallMeter())`では、先に呼出元RegistryとSkillCandidateを検証し、承認済みの`DEFAULT_PRIMITIVES`から独立実行Registryを作る。計測器はその**canonical primitive実装のみ**を包む。
+- 外部Registryの`primitives`・`by_name`・`signatures`や渡されたmacro callableを計測経路の実行根拠としない。macroは検証済みtyped ASTを計測用原始演算に再束縛する。
+- 1課題×1armで1meter。検証中の実行原始演算を測り、候補数・展開後ASTノード数・総CPU費用とは分ける。無計測との差異（status, AST, candidates, trace）があれば不合格。
+- 元のEXP-0002 holdoutを計測診断に使っても、EXP-0002Bの新たなFINALや学習性能の証拠にしない。元の計画・不変runは改変禁止。
+- 統合ゲート：CIと最新headへのGitHub `@codex review`、未解決P1の解消。詳細は[計測契約](docs/architecture/measurement.md)と[監査記録](experiments/EXP-0002B/metering-log.md)。
