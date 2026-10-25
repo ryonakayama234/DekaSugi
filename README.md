@@ -23,6 +23,8 @@
 
 **MEASURE-0001**: 次段階の技能価値学習に向け、`bounded_synthesize`に安全な原始演算呼出数カウンタを[PR #18](https://github.com/ryonakayama234/DekaSugi/pull/18)で実装し、CIとCodexコードレビューで検証。これは計測装置であって、Kernelの学習や新しいFINAL実験の成功ではない。[計測仕様](docs/architecture/measurement.md) / [監査記録](experiments/EXP-0002B/metering-log.md)。
 
+**EXP-0002Bの研究計画v2**：[固定プロトコル](experiments/EXP-0002B/plan-v2.md)を評価方法の正本として保存。旧[v1](experiments/EXP-0002B/plan.md)は歴史的参考に限定し、学習Kernel・新規FINALの実装結果はまだない。[仕様](docs/specs/EXP-0002B.md)。
+
 ローカル資料検査: `python scripts/check_docs.py`（標準ライブラリのみ）。
 
 ## 原則

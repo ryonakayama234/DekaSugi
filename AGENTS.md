@@ -84,3 +84,10 @@
 - 1課題×1armで1meter。検証中の実行原始演算を測り、候補数・展開後ASTノード数・総CPU費用とは分ける。無計測との差異（status, AST, candidates, trace）があれば不合格。
 - 元のEXP-0002 holdoutを計測診断に使っても、EXP-0002Bの新たなFINALや学習性能の証拠にしない。元の計画・不変runは改変禁止。
 - 統合ゲート：CIと最新headへのGitHub `@codex review`、未解決P1の解消。詳細は[計測契約](docs/architecture/measurement.md)と[監査記録](experiments/EXP-0002B/metering-log.md)。
+
+## 13. EXP-0002B：研究方法v2の固定と統合（Issue #19）
+- 旧[事前登録v1](experiments/EXP-0002B/plan.md)はsplit seed衝突と不適切な閾値のため**現行実験に使用しない**。実験の唯一の方法正本は[事前登録v2](experiments/EXP-0002B/plan-v2.md)であり、文面はPR #12から不変コピーとする。
+- EXP-0002BはTRAIN 144 / DEV 48 / FINAL 112（OOD16含む）。公開2例と非公開audit例を分離。TRAINのみで8次元features、固定`knn-cost-v1`と5近傍選択を学習。DEVは不具合検査専用、FINALを評価前に開かない。
+- Generator、データ全体のhash、training observation、PolicySnapshot、source commitを記録してからFINALに進む。科学的な変更を要する場合は既存plan-v2を改変せず、v3と新FINAL seedを**実装・評価前に人間と再合意**する。
+- 既にSEC-004とMEASURE-0001はmainへ統合済み。古いPR #9は問題を残した実装として未マージ・クローズ。過去の静的監査記録やv1に書かれた『#6/#9未統合』は歴史的状態であり、現在の権威ではない。
+- 新たな実装・FINAL結果は今回の文書PRには含めない。各段階で`@codex review`、CI、AGENTS/INDEX/ARCH-001/ARCH-002/plan/run同期を行う。
