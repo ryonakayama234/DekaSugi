@@ -91,3 +91,11 @@
 - Generator、データ全体のhash、training observation、PolicySnapshot、source commitを記録してからFINALに進む。科学的な変更を要する場合は既存plan-v2を改変せず、v3と新FINAL seedを**実装・評価前に人間と再合意**する。
 - 既にSEC-004とMEASURE-0001はmainへ統合済み。古いPR #9は問題を残した実装として未マージ・クローズ。過去の静的監査記録やv1に書かれた『#6/#9未統合』は歴史的状態であり、現在の権威ではない。
 - 新たな実装・FINAL結果は今回の文書PRには含めない。各段階で`@codex review`、CI、AGENTS/INDEX/ARCH-001/ARCH-002/plan/run同期を行う。
+
+## 14. EXP-0002B：TRAINだけで学習するKernel（Issue #21）
+- v2の内容と閾値は**変更禁止**。`packages/kernel`でgenerator・公開TaskSpec特徴抽出・TRAINペア計測・独立監査・KNN cost policy・hash付snapshotだけを実装する。
+- FINALについてはgeneratorで事前のdataset hashを作成しても、Kernelの判断や検索・正誤・費用集計の実行は禁止。DEVも初期学習PRでは結果を開かない。
+- `features`と`choose`の引数は公開TaskSpecだけ。generator側のfamily/split/seed/audit例は渡さない。監査用第3例はTRAIN教師ラベルの検査にのみ使う。
+- 正本計測器MEASURE-0001とSEC-004の実行境界、候補上限、技能candidate隔離を維持。推論・学習・開発環境のオーバーヘッドをprimitive呼出数に混ぜない。
+- 本PRの品質ゲートは全ユニットテスト・文書・TRAIN-only CLI smoke + artifact・最新head Codexレビュー。FINAL前には別PRでコード・生成器source SHA・dataset hash・policy snapshotを確定し、独立レビューする。
+- [実装監査](experiments/EXP-0002B/reviews/20261025-train-only-kernel.md) / [v2方法](experiments/EXP-0002B/plan-v2.md) / [Issue #21](https://github.com/ryonakayama234/DekaSugi/issues/21)。

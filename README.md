@@ -23,7 +23,7 @@
 
 **MEASURE-0001**: 次段階の技能価値学習に向け、`bounded_synthesize`に安全な原始演算呼出数カウンタを[PR #18](https://github.com/ryonakayama234/DekaSugi/pull/18)で実装し、CIとCodexコードレビューで検証。これは計測装置であって、Kernelの学習や新しいFINAL実験の成功ではない。[計測仕様](docs/architecture/measurement.md) / [監査記録](experiments/EXP-0002B/metering-log.md)。
 
-**EXP-0002Bの研究計画v2**：[固定プロトコル](experiments/EXP-0002B/plan-v2.md)を評価方法の正本として保存。旧[v1](experiments/EXP-0002B/plan.md)は歴史的参考に限定し、学習Kernel・新規FINALの実装結果はまだない。[仕様](docs/specs/EXP-0002B.md)。
+**EXP-0002Bの研究計画v2**：[固定プロトコル](experiments/EXP-0002B/plan-v2.md)を評価方法の正本として保存。旧[v1](experiments/EXP-0002B/plan.md)は歴史的参考に限定し、学習KernelはTRAIN-onlyの実装・レビュー段階であり、新規FINALの実行結果はまだない。[仕様](docs/specs/EXP-0002B.md)。
 
 ローカル資料検査: `python scripts/check_docs.py`（標準ライブラリのみ）。
 
@@ -57,3 +57,12 @@ python -m packages.evaluation --output .run/EXP-0002-result.json
 ```
 
 機能/効率の実測と、技能を標準ライブラリへ正式採用する判断は別段階。[設計図](docs/architecture/system.md) / [仕様](docs/specs/EXP-0002.md)。
+
+## EXP-0002B：訓練専用Kernel（研究段階）
+
+```bash
+python -m packages.kernel --mode preflight --output .run/EXP-0002B-preflight.json
+python -m packages.kernel --mode train --output .run/EXP-0002B-train-only.json
+```
+
+上の実装段階で生じる結果は**TRAINのみ**。データセットhashは計算するが、FINALの探索・評価は実行しない。参照：[事前登録v2](experiments/EXP-0002B/plan-v2.md) / [実装監査](experiments/EXP-0002B/reviews/20261025-train-only-kernel.md)。
