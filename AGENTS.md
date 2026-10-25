@@ -111,3 +111,8 @@
 - evaluatorのPRではTESTにTRAIN fixtureのみを使う。CIの`pull_request`でDEVやFINAL実行は禁止。レビューとCI後のmain`push`でDEV48問のsmokeのみ実行し、DEVを学習に流用しない。
 - FINAL112問の実験は別のトリガー追加PRを改めてレビューした後、main pushで一度だけ実行。方法を変えず、全taskと負の結果、統計、原始演算・CPU/推論時間の違いを開示する。
 - [監査記録](experiments/EXP-0002B/reviews/20261025-evaluator-gate.md) / [固定方法v2](experiments/EXP-0002B/plan-v2.md)。
+
+## 17. EXP-0002B DEV完了後の研究境界（2026-10-25）
+- [DEV48 engineering run](experiments/EXP-0002B/runs/20261025-dev-smoke.md)をCI Artifact ID・JSON hash・main SHA付きで保存済み。DEV結果で方策・特徴・閾値を修正しない。
+- `FINAL112` は引き続き未実行。新しい独立レビュー・承認済みactivation PRなしに `--phase final` をCI・ローカル・テストから呼び出さない。FINALデータセットhashの照合と採点の実行を区別する。
+- 将来の作業者はrun indexとARCH-001/002を同じPRで更新し、証拠の `source_commit` / `policy_sha256` / `dataset_sha256` を照合する。数値上のDEV改善を科学的採用や総CPU高速化と記述しない。

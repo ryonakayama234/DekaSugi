@@ -48,13 +48,16 @@ tags: packages, modularity, api
 ## EXP-0002B TRAIN-only研究実装
 | Package | API | State |
 |---|---|---|
-| `kernel` | `generate_partition`, `dataset_manifest`, `features`, `train`, `choose`, `PolicySnapshot` | experimental TRAIN-only; CI/review pending |
+| `kernel` | `generate_partition`, `dataset_manifest`, `features`, `train`, `choose`, `PolicySnapshot` | TRAIN-only integrated and frozen; DEV evaluated separately |
 
 Generatorは3分割の内容hashを計算するが、Kernelの判断と監査付き費用実験はTRAINでのみ実行する。FINAL評価経路と技能の自動昇格は未実装。[Audit](../experiments/EXP-0002B/reviews/20261025-train-only-kernel.md)。
 
 ## EXP-0002B 実験評価器
 | Module | API | State |
 |---|---|---|
-| `kernel.evaluation` | `load_and_check_freeze`, `evaluate_record`, `run_evaluation`, `summarize` | code review pending; PR no DEV/FINAL outcomes; main DEV smoke only |
+| `kernel.evaluation` | `load_and_check_freeze`, `evaluate_record`, `run_evaluation`, `summarize` | reviewed and main-integrated; DEV smoke completed; FINAL not activated |
 
 原始演算の計数は既存のcanonical meterに委譲。FINALは別のレビューゲートでのみ実行。[監査](../experiments/EXP-0002B/reviews/20261025-evaluator-gate.md)。
+
+## EXP-0002B DEV工程
+`kernel.evaluation`はTRAIN方策・凍結実行ソースを検証してからDEVの3armを独立実行する。[実測run](../experiments/EXP-0002B/runs/20261025-dev-smoke.md)はmainのCI Artifactとhashに紐づけた工学的検査であり、FINALの研究採用ではない。
