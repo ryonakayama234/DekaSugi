@@ -158,3 +158,27 @@ flowchart TD
 - **統合済み基盤:** SEC-004の正本RegistryとMEASURE-0001（[PR #18](https://github.com/ryonakayama234/DekaSugi/pull/18)）。古い計測[PR #9](https://github.com/ryonakayama234/DekaSugi/pull/9)は安全性問題により未マージ・クローズ済み。
 - **今回の作業は方法と図のみ:** v1原本を歴史資料として追加し、[v2現行正本](../../experiments/EXP-0002B/plan-v2.md)を一文字も変更せず載せる。新規Generator・Kernel・学習済Policy・FINAL結果は依然として未実装。
 - [v2改訂理由](../../experiments/EXP-0002B/preregistration-v2-log.md) / [仕様](../specs/EXP-0002B.md) / [データフロー](contracts.md) / [Issue #19](https://github.com/ryonakayama234/DekaSugi/issues/19)。
+
+## EXP-0002B TRAIN-only Kernel（実装候補、FINALは未実行）
+
+```mermaid
+flowchart TD
+    V["Frozen protocol v2"] --> G["Generator: separated train/dev/final seeds"]
+    G --> T["TRAIN 144 with visible two examples"]
+    G --> H["TRAIN private third audit example"]
+    T --> F["8D pre-solve features"]
+    T --> S["Canonical metered OFF / ON search"]
+    H --> O["Audited training observations"]
+    S --> O
+    F --> K["5-NN fit and conservative ON/OFF"]
+    O --> K
+    K --> SNAP["Immutable PolicySnapshot + SHA256"]
+    G --> HASH["All-split dataset content hashes only"]
+    SNAP --> NO["FINAL evaluation disabled in this PR"]
+    HASH --> NO
+```
+
+- `packages/kernel`: v2仕様に固定したsplit生成器、8次元特徴、TRAIN 144問のfull-information paired search、監査付き教師ラベル、5近傍の選択、PolicySnapshot hash。
+- `packages/evaluation`の安全な `bounded_synthesize(..., meter=...)` を再利用し、原始演算・独立Verifier・候補予算を変更しない。
+- FINALについては**データセットの内容hashだけ**計算可能とする。最終課題での技能選択・探索・正誤評価を行うコード経路は本PRに追加しない。
+- [実装監査](../../experiments/EXP-0002B/reviews/20261025-train-only-kernel.md) / [方法正本](../../experiments/EXP-0002B/plan-v2.md)。

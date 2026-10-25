@@ -44,3 +44,10 @@ tags: packages, modularity, api
 | `evaluation` | `bounded_synthesize`, `expanded_nodes`, `run_experiment` | implemented; CI evaluation pending |
 
 技能は隔離レジストリ内でのみ解釈実行され、正式ライブラリへは自動昇格しない。比較結果は [EXP-0002 runs](../experiments/EXP-0002/runs/README.md)。
+
+## EXP-0002B TRAIN-only研究実装
+| Package | API | State |
+|---|---|---|
+| `kernel` | `generate_partition`, `dataset_manifest`, `features`, `train`, `choose`, `PolicySnapshot` | experimental TRAIN-only; CI/review pending |
+
+Generatorは3分割の内容hashを計算するが、Kernelの判断と監査付き費用実験はTRAINでのみ実行する。FINAL評価経路と技能の自動昇格は未実装。[Audit](../experiments/EXP-0002B/reviews/20261025-train-only-kernel.md)。
