@@ -211,13 +211,20 @@ class PolicySnapshot:
     def from_dict(raw: dict[str, object]) -> PolicySnapshot:
         obj = dict(raw)
         checksum = obj.pop("policy_sha256")
-        obj.pop("training_ids")
-        obj.pop("training_observations_sha256")
+        if digest(obj) != checksum:
+            raise ValueError("PolicySnapshot content hash mismatch")
+        training_ids = obj.pop("training_ids")
+        training_hash = obj.pop("training_observations_sha256")
+        raw_rows = obj.pop("observations")
+        if training_ids != [row["task_id"] for row in raw_rows]:
+            raise ValueError("PolicySnapshot training ID provenance mismatch")
+        if training_hash != digest(raw_rows):
+            raise ValueError("PolicySnapshot training observation hash mismatch")
         objects = tuple(TrainingObservation(
-            **{**p, "vector": tuple(p["vector"])}) for p in obj.pop("observations"))
+            **{**row, "vector": tuple(row["vector"])}) for row in raw_rows)
         snapshot = PolicySnapshot(observations=objects, **obj)
         if snapshot.to_dict()["policy_sha256"] != checksum:
-            raise ValueError("PolicySnapshot content hash mismatch")
+            raise ValueError("PolicySnapshot normalized content hash mismatch")
         return snapshot
 
 
@@ -271,7 +278,9 @@ def choose(task: TaskSpec, snapshot: PolicySnapshot) -> PolicyDecision:
 
 
 def _candidate() -> SkillCandidate:
-    candidates = discover_skills(SKILL_TRAIN)
+    # Never trust the mutable DEFAULT_REGISTRY lookup, even during discovery.
+    # This entire training pipeline retains SEC-004's execution boundary.
+    candidates = discover_skills(SKILL_TRAIN, registry=Registry(DEFAULT_PRIMITIVES))
     if len(candidates) != 1:
         raise ValueError("EXP-0002 candidate changed")
     skill = candidates[0]
@@ -288,6 +297,7 @@ def train() -> dict[str, object]:
     enabled = registry_with_skill(skill, base)
     learned = {skill.skill_id: skill}
     rows: list[TrainingObservation] = []
+    trial_records: list[dict[str, object]] = []
     begin_wall, begin_cpu = perf_counter(), process_time()
     training_calls = 0
     for item in generate_partition("train"):
@@ -311,6 +321,27 @@ def train() -> dict[str, object]:
             item.task.task_id, features(item.task), prefer_on,
             off_meter.total, on_meter.total, off.tested_candidates,
             on.tested_candidates, bool(off_valid), bool(on_valid), bool(on_invalid)))
+        # Full trial evidence is separate from the minimal immutable KNN
+        # observations. It permits independent inspection of each search
+        # status, solution AST, trace hash, elapsed time and audit verdict.
+        trial_records.append({
+            "task_id": item.task.task_id,
+            "partition": "train",
+            "family_for_evaluator_only": item.family,
+            "audit_example_sha256": digest(asdict(item.audit)),
+            "off": {
+                "search": off.to_dict(),
+                "audit_correct": bool(off_valid),
+                "audit_invalid_solved": bool(off.status == "solved" and not off_valid),
+                "meter": off_meter.to_dict(),
+            },
+            "on": {
+                "search": on.to_dict(),
+                "audit_correct": bool(on_valid),
+                "audit_invalid_solved": bool(on_invalid),
+                "meter": on_meter.to_dict(),
+            },
+        })
         training_calls += off_meter.total + on_meter.total
     wall, cpu = (perf_counter() - begin_wall) * 1000, (process_time() - begin_cpu) * 1000
     snapshot = PolicySnapshot(
@@ -327,6 +358,8 @@ def train() -> dict[str, object]:
         "training_cpu_ms": cpu,
         "manifest": manifest,
         "snapshot": snapshot.to_dict(),
+        "training_trial_evidence": trial_records,
+        "training_trial_evidence_sha256": digest(trial_records),
         "limitations": "TRAIN full-information observations only. No DEV or FINAL outcome; cost excludes macro discovery and global system CPU.",
     }
 

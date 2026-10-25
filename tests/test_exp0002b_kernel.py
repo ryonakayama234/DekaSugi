@@ -1,6 +1,7 @@
 """Independent EXP-0002B train-only generator and policy contract tests."""
 import unittest
 from dataclasses import replace
+from unittest.mock import patch
 
 from packages.evaluation import _task
 from packages.kernel import (
@@ -9,6 +10,7 @@ from packages.kernel import (
     features, generate_partition, train,
 )
 from packages.protocol import Example, parse_task
+from packages.library import DEFAULT_PRIMITIVES, DEFAULT_REGISTRY
 
 
 class GeneratorTests(unittest.TestCase):
@@ -126,9 +128,29 @@ class PolicyTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "content hash mismatch"):
             PolicySnapshot.from_dict(obj)
 
+    def test_snapshot_rejects_forged_training_ids_and_derived_hash(self):
+        task = _task("probe", ((" A ", "a"), (" B ", "b")))
+        source = self._snapshot(task).to_dict()
+        bad_ids = {**source, "training_ids": ["final-forged-000"]}
+        with self.assertRaisesRegex(ValueError, "content hash mismatch"):
+            PolicySnapshot.from_dict(bad_ids)
+        bad_digest = {**source, "training_observations_sha256": "0" * 64}
+        with self.assertRaisesRegex(ValueError, "content hash mismatch"):
+            PolicySnapshot.from_dict(bad_digest)
+
     def test_frozen_training_only_no_final_or_dev_outcomes(self):
         evidence = train()
         self.assertEqual(evidence["training_task_count"], 144)
+        self.assertEqual(len(evidence["training_trial_evidence"]), 144)
+        self.assertEqual(len(evidence["training_trial_evidence_sha256"]), 64)
+        for record in evidence["training_trial_evidence"]:
+            self.assertEqual(record["partition"], "train")
+            self.assertEqual(record["off"]["search"]["task_id"], record["task_id"])
+            self.assertEqual(record["on"]["search"]["task_id"], record["task_id"])
+            self.assertEqual(len(record["off"]["search"]["trace_sha256"]), 64)
+            self.assertIn("elapsed_ms", record["off"]["search"])
+            self.assertIn("status", record["on"]["search"])
+            self.assertIn("audit_correct", record["on"])
         self.assertEqual(evidence["phase"], "TRAIN_ONLY")
         self.assertEqual(evidence["state"], "policy_trained_no_dev_or_final_outcome")
         self.assertGreater(evidence["training_primitive_invocations"], 0)
@@ -143,6 +165,20 @@ class PolicyTests(unittest.TestCase):
         # Training observations do not contain generator-side family or audit input strings.
         self.assertNotIn("audit", snap.to_dict()["observations"][0])
         self.assertNotIn("family", snap.to_dict()["observations"][0])
+
+    def test_poisoned_default_registry_cannot_execute_in_skill_discovery(self):
+        def poison(_value: str) -> str:
+            raise AssertionError("Poisoned mutable DEFAULT_REGISTRY callback executed")
+        forged = replace(DEFAULT_PRIMITIVES[0], implementation=poison)
+        poisoned = dict(DEFAULT_REGISTRY.by_name)
+        poisoned["trim"] = forged
+        with (patch.object(DEFAULT_REGISTRY, "by_name", poisoned),
+              patch.object(DEFAULT_REGISTRY, "signatures", {}),
+              patch.object(DEFAULT_REGISTRY, "primitives",
+                           (forged, *DEFAULT_PRIMITIVES[1:]))):
+            evidence = train()
+        self.assertEqual(evidence["training_task_count"], 144)
+        self.assertEqual(evidence["snapshot"]["skill_body_sha256"], SKILL_HASH)
 
 
 if __name__ == "__main__":
