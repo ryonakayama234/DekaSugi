@@ -66,3 +66,7 @@ python -m packages.kernel --mode train --output .run/EXP-0002B-train-only.json
 ```
 
 上の実装段階で生じる結果は**TRAINのみ**。データセットhashは計算するが、FINALの探索・評価は実行しない。参照：[事前登録v2](experiments/EXP-0002B/plan-v2.md) / [実装監査](experiments/EXP-0002B/reviews/20261025-train-only-kernel.md)。
+
+## EXP-0002B — 評価前に固定した学習方策
+
+TRAIN144問での学習と復元可能なKNN方策がCIで一致。**[DatasetとPolicySnapshotの凍結記録](experiments/EXP-0002B/freeze-v2.md)**を先に保存してから、DEVとFINALの別工程で独立評価する。現在の記録はTRAIN証拠のみであり、汎化性能の主張ではない。

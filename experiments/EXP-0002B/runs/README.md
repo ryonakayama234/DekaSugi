@@ -20,3 +20,10 @@ EXP-0002B has **no train/learned-Kernel/fresh FINAL result**. MEASURE-0001 uses 
 - `python -m packages.kernel --mode preflight` は全splitのデータ内容hash・seed一意性だけを記録。
 - `python -m packages.kernel --mode train` はTRAIN144課題のpaired実測・ハッシュ付きPolicySnapshotを生成。Github Actions artifact名`EXP-0002B-train-only`に保存する（実装PRのCI実行後）。
 - **DEV smokeとFINAL112問の技能選択・検索・採否結果は含まない。** [TRAIN-only実装監査](../reviews/20261025-train-only-kernel.md)。
+
+## TRAIN政策の凍結 (2026-10-25)
+- **TRAIN-onlyの2回のCI再実行でsnapshot SHA一致**。[freeze-v2](../freeze-v2.md) / [JSON](../freeze-v2.json)。
+- 元のCI evidenceは[main run #40154262757](https://github.com/ryonakayama234/DekaSugi/actions/runs/40154262757)の`EXP-0002B-train-only` artifactで追跡可能。
+- DEV/FINALは未実施、採否未判定。
+
+- DEV/FINALの開始前に、方策・全データhashに加え、[凍結した実行基盤9ソースのGit blob hash](../freeze-v2.json)の一致を要求する。不一致なら拒否。

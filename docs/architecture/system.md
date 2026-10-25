@@ -182,3 +182,20 @@ flowchart TD
 - `packages/evaluation`の安全な `bounded_synthesize(..., meter=...)` を再利用し、原始演算・独立Verifier・候補予算を変更しない。
 - FINALについては**データセットの内容hashだけ**計算可能とする。最終課題での技能選択・探索・正誤評価を行うコード経路は本PRに追加しない。
 - [実装監査](../../experiments/EXP-0002B/reviews/20261025-train-only-kernel.md) / [方法正本](../../experiments/EXP-0002B/plan-v2.md)。
+
+## EXP-0002B 再現可能な学習方策の固定点（DEV/FINALより前）
+
+```mermaid
+flowchart TD
+    M["Immutable protocol v2"] --> G["Generator source SHA + dataset content SHA"]
+    T["TRAIN: 144 measured pairs"] --> O["Training observation SHA"]
+    G --> F["freeze-v2.json"]
+    O --> P["Frozen PolicySnapshot SHA"]
+    P --> F
+    F --> V{"Hash and method match?"}
+    V -->|no| X["Fail closed, no evaluation"]
+    V -->|yes| D["Later DEV engineering smoke"]
+    D --> H["Later FINAL, after review gate"]
+```
+
+学習済みPolicySnapshotはTRAIN-only CIで再現一致を確認。後続評価では新しい課題を見て再学習せず、[凍結記録](../../experiments/EXP-0002B/freeze-v2.md)に固定したhashを照合する。

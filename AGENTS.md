@@ -99,3 +99,8 @@
 - 正本計測器MEASURE-0001とSEC-004の実行境界、候補上限、技能candidate隔離を維持。推論・学習・開発環境のオーバーヘッドをprimitive呼出数に混ぜない。
 - 本PRの品質ゲートは全ユニットテスト・文書・TRAIN-only CLI smoke + artifact・最新head Codexレビュー。FINAL前には別PRでコード・生成器source SHA・dataset hash・policy snapshotを確定し、独立レビューする。
 - [実装監査](experiments/EXP-0002B/reviews/20261025-train-only-kernel.md) / [v2方法](experiments/EXP-0002B/plan-v2.md) / [Issue #21](https://github.com/ryonakayama234/DekaSugi/issues/21)。
+
+## 15. EXP-0002B TRAIN方策・データの固定点 (Issue #23)
+- FINALを開く前に[freeze-v2.json](experiments/EXP-0002B/freeze-v2.json)にsource commit、generator SHA、全split dataset hash、TRAIN observations hash、PolicySnapshot SHAを記録。CI artifactの元データと照合する。
+- 後続DEV/FINALはこの凍結点に一致する学習方策**のみ**使用する。実装は別モジュールで、既存`packages/kernel`の方法を結果に合わせて変更しない。方法変更が必要なら別v3と新FINALで再合意。
+- devは工学的な欠陥発見専用。finalは正誤・費用・悪化を全て記録し、負の結果を隠さない。[凍結の監査](experiments/EXP-0002B/freeze-v2.md)。
