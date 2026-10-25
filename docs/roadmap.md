@@ -47,3 +47,9 @@ tags: milestones, roadmap, planning
 - main `37b3075`で[CI #40176125696](https://github.com/ryonakayama234/DekaSugi/actions/runs/40176125696)が一度だけFINAL112を実施。独立に再集計し、正確性・OFF比削減・ON比削減・OOD・尾部悪化の五つの数値基準すべてPASS。結論 `metrics_pass_not_promoted`（技能正式昇格なし）。
 - 学習費用11,904 primitive calls、推論CPU約29.68msを含む総費用利益は示されず、7 family/bootstrapの区間は0を含む。正解が80/112にとどまるのはreverse/replace_first未解決のため。[実測FINAL](../experiments/EXP-0002B/runs/20261025-final112.md)。
 - 本docs-only PRで限定FINAL起動トリガーを削除。次のEXP-0003（Wake–Sleep / Dream）へ進む前に、未知の能力を新たに構成する方法と独立保留評価を**別途提案して合意**する。
+
+## EXP-0003A: 設計と事前登録 (2026-10-25; proposal in Issue #30)
+- [plan-v1](../experiments/EXP-0003A/plan.md) / [spec](specs/EXP-0003A.md) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) / [UI map](architecture/ui-panels.md)を実装前に揃える。PR1はdocs-only、EXP-0003Aの実測は存在しない。
+- 4arm (B0 primitive only, B1 WAKE+SLEEP, B2 random Dream, B3 counterfactual Dream) を同じ原始演算・評価制約・新FINALで比較する。Dream2条件はfamilyと件数を揃える。
+- PR2 WAKE/SkillProposal、PR3 Dream/Policy、PR4凍結・独立評価の順。各ゲートで図/契約/実験記録/UI責務を同期し、重大な方法変更・FINAL起動は人間と別合意。正式技能昇格なし。
+- EXP-0002B元Artifactは2027-01-23期限。元ZIP・JSONをSHA一致で長期保存する別運用作業が必要（PR1では実データ保存しない）。

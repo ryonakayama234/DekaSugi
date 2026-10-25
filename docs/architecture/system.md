@@ -272,3 +272,33 @@ flowchart TD
 
 - 過去の設計・工程図に残る「未開放」「未実装」「結果未取得」はその時点の履歴を表す。現行状態は[FINAL run](../../experiments/EXP-0002B/runs/20261025-final112.md)が正本。独立再集計で112件、7 family各16件、OOD誤ON0、LEARNED80/112、五つの数値ゲートを確認した。
 - 一度限りのFINAL起動ステップはこの文書同期PRで削除。予め凍結したKernel、評価器、実行ソースは変更しない。今後の通常CIはDEV工程まで。総CPU高速化は未実証で、技能の正式採用もしない。
+
+## EXP-0003A: WAKE–SLEEP / Counterfactual DREAM design (proposed, PR1)
+本節は提案図。現在実装済みのEXP-0002B Kernel/evaluatorや技能抽出器を置き換えず、versioned new componentsを**将来追加**する。EXP-0003Aの実行結果はまだない。
+
+```mermaid
+flowchart TD
+    UI["Research Chat + read-only panels (proposed)"] --> C["Cycle controller (proposed)"]
+    C --> W["WAKE: existing Kernel / Synthesis / Verifier"]
+    W --> E[("WakeEpisode store (proposed)")]
+    E --> S["SLEEP: learning / candidate discovery"]
+    S --> P[("SkillProposal store (proposed; isolated)")]
+    P --> D["DREAM: 512-case pool / random vs counterfactual selection"]
+    D --> K["TRAIN-only policy learner / per-arm snapshots"]
+    K --> F[("Frozen CycleSnapshot")]
+    F --> V["Independent 4-arm evaluator (proposed)"]
+    H[("Private fresh FINAL; never in learner")] --> V
+    V --> R[("EvaluationEvidence (proposed)")]
+    R --> G{"Independent review + human promotion"}
+    G -->|approved later only| L[("Library accepted skills")]
+    G -->|withheld/rejected| P
+    L -.-> W
+    E -.-> UI
+    P -.-> UI
+    R -.-> UI
+```
+
+- **Existing**: typed TaskSpec, constrained Synthesis, pure interpreter, Verification, EXP-0002 SkillCandidate extraction, canonical Registry SEC-004, primitive meter MEASURE-0001, EXP-0002B Kernel (その凍結方法は変更禁止)。
+- **Proposed only**: cycle orchestration、append-only Episodes/Proposal/Dream/CycleSnapshot/Evidence、versioned Dream generator and selection、4arm Evaluatorとread-only UI投影。中央のboxesは論理保存領域であって新DB製品の採用を意味しない。
+- **Trust boundary**: ID-v1では`TaskSpec.task_id`は公開2例だけをhash化した不透明な識別子で、family/split/seedを含むgenerator/evaluator専用の`source_record_id`/`pool_id`は別管理（[契約](contracts.md)）。Dreamの合成正解やpublic examplesをFINALの代わりにしない。private audit・family・seed・splitはlearner APIへ流さない。未承認技能は隔離されたRegistryのみに載せ、標準Libraryへ自動昇格しない。
+- **Research scope**: 1周期、原始演算はtrim/lower/upper固定。未知のprimitive意味論・異領域転移は未実証。詳細は[pre-registration](../../experiments/EXP-0003A/plan.md)、[spec](../specs/EXP-0003A.md)、[ARCH-002](contracts.md)、[UI map](ui-panels.md)。
