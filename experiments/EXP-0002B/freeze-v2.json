@@ -1,0 +1,35 @@
+{
+  "status": "train_snapshot_frozen_before_dev_and_final",
+  "protocol": "EXP-0002B-PLAN-V2",
+  "source_main_commit": "2cd159af1815690d46105bc785c7d31cd88919fd",
+  "generator_source_sha256": "734598f4f9db91096fa4aff78cc9f3d423184ddc05dcf8309c7e8663409ee7ab",
+  "dataset_sha256": "ce6f4bec90479295b1e465ab8eb9e2fbd6124f254bad37166ffbd5886a2d944a",
+  "split_sha256": {
+    "train": "c60cf0669c8db9d7319a8ff7d3b9ba56b54fef1b0b42f71055a8dcbd9e63291c",
+    "dev": "3dc79b09178016fa5d31fe28a2f7d4979e1acc64dbd194892f6b4acf58ee0642",
+    "final": "2206a870e3c7d4a6b8123b6d9e82a3b39b52c1cebf8c1e349fe3aee39b22136c"
+  },
+  "partitions": {
+    "train": 144,
+    "dev": 48,
+    "final": 112
+  },
+  "unique_rng_seeds": 912,
+  "skill_body_sha256": "8fe1361cb5014f8503e4a57392e45f4fc7607e788fdd598f66668fbc11338eff",
+  "algorithm_version": "knn-cost-v1",
+  "features_version": "task-features-v1",
+  "measurement_version": "runtime-canonical-v1",
+  "policy_sha256": "1e85d06958bf65abc11eb14f4fc2f98645a9480d14618f6e7f477fee5b1affe7",
+  "training_observations_sha256": "48d322d923500b7b73be6d08cc738bf1e680f049d0d090ccafb91068fd80747b",
+  "training_task_count": 144,
+  "training_off_on_primitive_calls_total": 11904,
+  "training_preferred_on_count": 24,
+  "training_ci_run": 40154262757,
+  "training_ci_artifact_id": 12584495213,
+  "training_ci_zip_sha256": "b1547129e46b8a8a779b7561229a87dfdb06829c9e1dbc7c0ce4fe4292b81ef9",
+  "independent_replay_pr_ci_run": 40154074074,
+  "independent_replay_policy_sha256": "1e85d06958bf65abc11eb14f4fc2f98645a9480d14618f6e7f477fee5b1affe7",
+  "important_limitations": "These are deterministic TRAIN-only results. FINAL outcomes unobserved; dataset seeds public, not blinded. The per-trial timing-dependent evidence hash is intentionally not used as a deterministic policy fingerprint.",
+  "dev_evaluated": false,
+  "final_evaluated": false
+}
