@@ -121,3 +121,9 @@
 - 2026-10-25に人間から、凍結監査・専用PR・CI・最新head独立レビューを通過した場合のみ、FINAL112を一度だけ実施し、独立集計と文書同期まで行う許可を得た。重大な不一致があればFINALを開かず停止する。
 - [起動監査](experiments/EXP-0002B/reviews/20261025-final-activation.md)に従い、`pull_request`はTRAIN-fixtureのみ。FINALは、最新headレビュー成功後にPR #28を指定タイトル `EXP-0002B FINAL112 activation [20261025-APPROVED]` でsquash-mergeした**最初のmain push試行だけ**実行。通常push・ワークフロー再実行ではスキップする。
 - 実測結果を得た後は元Artifactとhashを保存し、このゲートを削除する文書同期PRを独立レビューして統合。方策・閾値・凍結実行ソースは編集せず、失敗もそのまま報告する。上記は本PRがレビュー中の間、FINALの実行許可を意味しない。
+
+## 19. EXP-0002B FINAL112の正式runと起動ゲート退役（2026-10-25）
+- [PR #28](https://github.com/ryonakayama234/DekaSugi/pull/28)の最終head `a4ee859`はPR CI #40176002565成功、Codex独立再レビューの指摘なし。最初のP1文書不整合も同PR内で修正・解決。
+- 承認済みsquash-merge `37b30752b46ea108d18dbdb531797e0106f52dc0`で、[Actions #40176125696](https://github.com/ryonakayama234/DekaSugi/actions/runs/40176125696) の初回pushのみFINAL112を実行。Artifact ID `12592665362`、生データJSON hash、全112件の独立再集計は[FINAL run](experiments/EXP-0002B/runs/20261025-final112.md)に保存。
+- 事前登録した5つの**数値**ゲートはすべてPASS（OFF比16候補・64 primitive削減、ON比224候補・1280 primitive削減、OOD誤ONゼロ、正確性と尾部悪化は非回帰）。状態は `metrics_pass_not_promoted`。標準Registryへの自動昇格・一般知能や総CPU利益の主張は行わない。
+- この文書同期PRでFINAL起動の2ステップをCIから除去し、以後のPR/main更新ではFINALを実行しない。保留課題はすでに公開済みであり、同じFINALを新たな方法の確認に再利用しない。次の仮説・EXP-0003は別提案・別合意が必要。

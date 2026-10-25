@@ -50,3 +50,6 @@ flowchart TD
 
 ## 後続のFINAL専用activation PR #28（実行前・別PR）
 この文書の「FINALトリガー未追加」はPR #26 / DEV工程完了時の履歴を表す。2026-10-25に人間の承認を受けた[PR #28](https://github.com/ryonakayama234/DekaSugi/pull/28)で、指定subjectのsquash-mergeによるmain push初回attemptだけFINAL112を許可するステップを提案。PR CIと独立Codexレビュー完了までは統合・起動しない。詳細は[一度限りの起動ゲート](20261025-final-activation.md)と[run index](../runs/README.md)。
+
+## FINAL112の完了記録（2026-10-25）
+独立した後続[PR #28](https://github.com/ryonakayama234/DekaSugi/pull/28)の品質ゲートを通過し、main `37b3075`の[Actions #40176125696](https://github.com/ryonakayama234/DekaSugi/actions/runs/40176125696)でFINAL112を一度実行。原始演算・候補・独立監査の112件再集計と5数値条件はすべて一致し、科学的結論 `metrics_pass_not_promoted`。詳細[FINAL実測run](../runs/20261025-final112.md)。当初の「FINAL未実行」は評価器作成時の履歴として維持するが、現時点の正本は実測run。実行トリガーは結果同期PRで削除。

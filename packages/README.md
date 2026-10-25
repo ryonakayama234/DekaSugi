@@ -55,9 +55,12 @@ Generatorは3分割の内容hashを計算するが、Kernelの判断と監査付
 ## EXP-0002B 実験評価器
 | Module | API | State |
 |---|---|---|
-| `kernel.evaluation` | `load_and_check_freeze`, `evaluate_record`, `run_evaluation`, `summarize` | reviewed and main-integrated; DEV smoke completed; FINAL not activated |
+| `kernel.evaluation` | `load_and_check_freeze`, `evaluate_record`, `run_evaluation`, `summarize` | reviewed and main-integrated; FINAL112 evaluated once, numeric gates PASS, no promotion |
 
 原始演算の計数は既存のcanonical meterに委譲。FINALは別のレビューゲートでのみ実行。[監査](../experiments/EXP-0002B/reviews/20261025-evaluator-gate.md)。
 
 ## EXP-0002B DEV工程
 `kernel.evaluation`はTRAIN方策・凍結実行ソースを検証してからDEVの3armを独立実行する。[実測run](../experiments/EXP-0002B/runs/20261025-dev-smoke.md)はmainのCI Artifactとhashに紐づけた工学的検査であり、FINALの研究採用ではない。
+
+## EXP-0002B FINAL112 outcome
+[唯一のFINAL112 run](../experiments/EXP-0002B/runs/20261025-final112.md)で凍結されたKernelを独立検証し、五つの事前登録済み数値条件を満たした。独立再集計済みだがデフォルトのRegistryには何も自動昇格していない。起動ゲートは文書同期PRで撤去。次の研究方法変更には新しい評価セットが必要。
