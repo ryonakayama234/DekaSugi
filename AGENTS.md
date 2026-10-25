@@ -116,3 +116,8 @@
 - [DEV48 engineering run](experiments/EXP-0002B/runs/20261025-dev-smoke.md)をCI Artifact ID・JSON hash・main SHA付きで保存済み。DEV結果で方策・特徴・閾値を修正しない。
 - `FINAL112` は引き続き未実行。新しい独立レビュー・承認済みactivation PRなしに `--phase final` をCI・ローカル・テストから呼び出さない。FINALデータセットhashの照合と採点の実行を区別する。
 - 将来の作業者はrun indexとARCH-001/002を同じPRで更新し、証拠の `source_commit` / `policy_sha256` / `dataset_sha256` を照合する。数値上のDEV改善を科学的採用や総CPU高速化と記述しない。
+
+## 18. EXP-0002B FINAL112：承認済み一度限りの評価起動（PR #28）
+- 2026-10-25に人間から、凍結監査・専用PR・CI・最新head独立レビューを通過した場合のみ、FINAL112を一度だけ実施し、独立集計と文書同期まで行う許可を得た。重大な不一致があればFINALを開かず停止する。
+- [起動監査](experiments/EXP-0002B/reviews/20261025-final-activation.md)に従い、`pull_request`はTRAIN-fixtureのみ。FINALは、最新headレビュー成功後にPR #28を指定タイトル `EXP-0002B FINAL112 activation [20261025-APPROVED]` でsquash-mergeした**最初のmain push試行だけ**実行。通常push・ワークフロー再実行ではスキップする。
+- 実測結果を得た後は元Artifactとhashを保存し、このゲートを削除する文書同期PRを独立レビューして統合。方策・閾値・凍結実行ソースは編集せず、失敗もそのまま報告する。上記は本PRがレビュー中の間、FINALの実行許可を意味しない。

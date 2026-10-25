@@ -30,7 +30,7 @@ EXP-0002B has a reproducible TRAIN-only learned Kernel and a separate [DEV48 eng
 
 ## DEV/FINALの分離した実行ゲート
 - `python -m packages.kernel.eval_cli --phase dev --output .run/EXP-0002B-DEV-smoke.json` はレビュー済み**main pushだけ**で自動実行するengineering smoke。学習・閾値調整には使わない。
-- `--phase final`の評価コードは独立レビューの対象だが、FINALへのGitHub Actions実行トリガーは**現在も追加していない**。
+- `--phase final`の評価コードを使う**一度限りのFINAL起動ゲート**は[PR #28](https://github.com/ryonakayama234/DekaSugi/pull/28)で追加、**独立レビューとPR CIの確認待ち**。現時点でFINAL成績は未取得。PRではFINALを実行せず、指定タイトルのreviewed squash-mergeによる最初のmain pushだけが実行可能。
 - [ゲート監査](../reviews/20261025-evaluator-gate.md) / [freeze](../freeze-v2.md)。
 
 - DEV/FINALでは最初に[実行器・Verifier・meter等9ファイルの固定Git blobハッシュ](../freeze-v2.json)もチェックする。不一致なら評価前に停止する。
@@ -38,3 +38,8 @@ EXP-0002B has a reproducible TRAIN-only learned Kernel and a separate [DEV48 eng
 ## DEV48 工学的run（実測）
 - [20261025-dev-smoke.md](20261025-dev-smoke.md)：main `f81b656` / [Actions #40162804951](https://github.com/ryonakayama234/DekaSugi/actions/runs/40162804951) / artifact `12586733583` / JSON SHA-256 を保存。
 - 48問すべてで3armの記録あり、正解40/48（3armとも）、誤成功0、LEARNEDのprimitive合計1808。研究上の採用は未判定。FINAL112は未実行。
+
+## FINAL112 起動の承認（結果未取得）
+- [起動ゲート監査](../reviews/20261025-final-activation.md) / [PR #28](https://github.com/ryonakayama234/DekaSugi/pull/28) を参照。凍結されたv2の方策・データ・数値ゲートは維持。
+- 許可条件は `push(main)`、`github.run_attempt==1`、レビュー後のsquash-merge commit subject `EXP-0002B FINAL112 activation [20261025-APPROVED]`。それ以外のCIはFINALをスキップする。
+- FINALを観測した後はArtifact ID / ZIP・JSON SHA-256 / source_commit / 元の方策・全dataset hash / 112問の生データ検算と結論を**別runファイル**として保存し、起動ゲートも削除する。未実行時には採否や性能の結果を書かない。

@@ -35,3 +35,9 @@ tags: milestones, roadmap, planning
 - [PR #26](https://github.com/ryonakayama234/DekaSugi/pull/26)が競合解消・PR CI success・最新head Codexレビュー後にmain `f81b656`へ統合。
 - [DEV48のrun](../experiments/EXP-0002B/runs/20261025-dev-smoke.md)の工学的検査は完了（全arm40/48監査正解、誤成功0）。方策はDEVから再学習していない。
 - 次の研究ゲートはFINAL112の独立activationレビュー。**現時点では起動禁止**。採用判定、Wake-Sleep、領域転移の結果は未取得。
+
+## 2026-10-25 次の品質ゲート：EXP-0002B FINAL112 の1回限りの起動（PR #28）
+- 人間が最終監査からFINAL112まで承認。凍結9ソースのGit blob hash照合に成功、DEV48は工学的成功、方法v2を変更せず独立PRで起動ゲートのみ追加。
+- PR #28はCIと**最新headのCodex独立レビュー**が通るまでmainへ統合しない。前節の「現在地」はDEV実施時点の履歴である。
+- 成功したレビュー後に指定squash-merge subjectと初回main pushでFINALを一度だけ評価、全結果の監査と学習・推論CPU償却を別記。失敗条件があればFINAL開始前に停止し、成功・失敗を同じ採否基準で報告する。[起動ゲート](../experiments/EXP-0002B/reviews/20261025-final-activation.md)。
+- EXP-0003/Wake–Sleepや技能の自動昇格は引き続き未着手。FINAL評価後の別提案・合意が必要。

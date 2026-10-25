@@ -235,4 +235,24 @@ flowchart TD
   RECORD -.-> FUTURE["FINAL 112: gated by separate activation PR; not executed"]
 ```
 
-[DEV実測run](../../experiments/EXP-0002B/runs/20261025-dev-smoke.md)はmainコミット・CI Artifact・JSON SHA-256を保存。実装済みの境界は凍結照合、独立した3arm、監査、DEVのレポートまで。FINALへのCI実行経路は未開放。
+[DEV実測run](../../experiments/EXP-0002B/runs/20261025-dev-smoke.md)はmainコミット・CI Artifact・JSON SHA-256を保存。実装済みの境界は凍結照合、独立した3arm、監査、DEVのレポートまで。当時のFINALへのCI実行経路は未開放であった。最新の起動承認条件は下記「FINAL112限定起動ゲート」に記録する。
+
+## EXP-0002B FINAL112限定起動ゲート（PR #28：レビュー待ち、結果未取得）
+
+```mermaid
+flowchart TD
+    PR["PR #28: CI + exact-head independent Codex review"] --> DEC{"重大指摘なし・CI成功?"}
+    DEC -->|No| STOP["FINAL停止・修正して再レビュー"]
+    DEC -->|Yes| MERGE["Approved squash-merge title; main push attempt #1"]
+    MERGE --> FREEZE["Frozen 9 source blobs + Dataset + PolicySnapshot check"]
+    FREEZE -->|Mismatch| STOP
+    FREEZE -->|Match| FINAL["FINAL112: OFF / ON / LEARNED + private audit"]
+    FINAL --> ART["Artifact: complete raw evaluation JSON"]
+    ART --> DOC["Independent reaggregation + run audit + disable gate"]
+    PR -.-> SKIP["PR CI: FINAL skipped"]
+    MERGE -.-> OTHER["Ordinary pushes / rerun attempts: FINAL skipped"]
+```
+
+- 上記承認subjectは `EXP-0002B FINAL112 activation [20261025-APPROVED]`。有効なのは `push(main)` かつ `github.run_attempt == 1` の場合のみで、通常のPR CIおよびmain pushでは評価しない。フリーズした方策・評価実装は変更しない。
+- 自動的な「永久に一度」の排他的ロックではないため、結果確保後に起動ステップを削除し、当該subjectを意図的に再利用しない。科学的ゲート通過と標準Registry昇格は別判定。
+- [起動ゲート監査](../../experiments/EXP-0002B/reviews/20261025-final-activation.md) / [既存DEV run](../../experiments/EXP-0002B/runs/20261025-dev-smoke.md)。
