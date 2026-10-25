@@ -50,7 +50,7 @@ EXPECTED_EXECUTION_BLOBS = {
 
 def _git_blob_hash(path: Path) -> str:
     content = path.read_bytes()
-    return sha1(b"blob " + str(len(content)).encode("ascii") + b"\\0" + content).hexdigest()
+    return sha1(b"blob " + str(len(content)).encode("ascii") + b"\0" + content).hexdigest()
 
 
 def _check_execution_sources(frozen: dict[str, object]) -> None:
