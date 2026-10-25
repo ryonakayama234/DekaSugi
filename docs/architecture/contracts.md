@@ -207,3 +207,25 @@ flowchart LR
 - Untrusted executable Registry lookups are never consumed as execution authority: prior to wrapping, `_trusted_search_registry` checks primitive identity, version, order and typed macro metadata, then reconstructs a fresh execution registry; rejecting inputs produces no meter calls.
 - No learned Kernel or fresh policy FINAL evaluation here; public EXP-0002 holdout results are diagnostic and cannot confirm EXP-0002B generalization.
 - [Full measurement boundary](measurement.md) / [engineering audit](../../experiments/EXP-0002B/metering-log.md) / [SEC-004](../../experiments/EXP-0002/reviews/20261025-registry-snapshot-boundary.md).
+
+## EXP-0002B — 研究計画v2を現行mainへ整合（方法は不変更）
+
+```mermaid
+flowchart LR
+    T["TRAIN TaskSpec: 2 visible examples"] --> F["TaskFeatures v1: 8 pre-solve dimensions"]
+    T --> B["Paired OFF/ON + canonical meter"]
+    A["Private 3rd audit example: TRAIN"] --> O["SkillUsageObservation"]
+    B --> O
+    F --> L["5-NN cost policy: TRAIN-only"]
+    O --> L
+    L --> P["PolicySnapshot: ordered train IDs/hash, thresholds, skill/hash"]
+    H["Unopened FINAL TaskSpec"] --> D["PolicyDecision ON/OFF/abstain"]
+    P --> D
+    D --> S["SEC-004 + MEASURE-0001 search"]
+    S --> V["Independent verifier + separate FINAL audit"]
+    V --> R["EvaluationReport: OFF/ON/LEARNED and ORACLE diagnostic"]
+```
+
+- **予定された型:** `TaskFeatures v1`（公開2例からの8次元）、`SkillUsageObservation`（TRAINのpaired OFF/ONと第3例audit）、`PolicyDecision`（ON/OFF、理由、5近傍の支持度）、`PolicySnapshot`（TRAIN ID/hash・方策/特徴版・技能body hash・定数）、`EvaluationReport`（全112問の正解、探索候補、primitive invocations、p90、OOD、回帰と欠損を記録）。
+- **権限境界:** Kernel入力にgeneratorのfamily/split/seed、audit例、正解変換の識別子、FINAL結果を入れない。独立Verifier/予算/registry意味論は不変更。ORACLEは評価後だけの非実用診断。
+- **計測は実装済み・学習は未実装:** [計測契約](measurement.md) / [事前登録v2](../../experiments/EXP-0002B/plan-v2.md) / [改訂履歴](../../experiments/EXP-0002B/preregistration-v2-log.md)。

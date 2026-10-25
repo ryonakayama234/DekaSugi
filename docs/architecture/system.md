@@ -135,3 +135,26 @@ flowchart TD
 - `packages/evaluation`: optional per-arm counter for verifier-time canonical primitive calls. The DSL/AST/limits/enumerator are unchanged.
 - **Not implemented:** EXP-0002B feature extraction, training, contextual policy, future sealed FINAL. An original public EXP-0002 holdout rerun is diagnostic only.
 - [計測仕様](measurement.md) / [データフロー](contracts.md) / [監査記録](../../experiments/EXP-0002B/metering-log.md)。
+
+## EXP-0002B — 研究計画v2を現行mainへ整合（方法は不変更）
+
+```mermaid
+flowchart TD
+    PROTO["事前登録v2: immutable protocol"] --> GENERATE["Dataset generator: planned, split-disjoint seeds"]
+    GENERATE --> TRAIN["TRAIN 144; private audit separately held"]
+    GENERATE --> DEV["DEV 48; engineering smoke only"]
+    GENERATE --> FINAL["FINAL 112; unopened"]
+    TRAIN --> PAIR["Canonical metered OFF/ON trials"]
+    PAIR --> FEATURE["TaskFeatures v1, public examples only"]
+    PAIR --> OBS["Audited costs and outcomes"]
+    FEATURE --> FIT["5-NN knn-cost-v1 training: planned"]
+    OBS --> FIT
+    FIT --> SNAP["Immutable PolicySnapshot: planned"]
+    SNAP --> EVAL["Learned vs OFF vs ON vs oracle evaluation: planned"]
+    FINAL --> EVAL
+    DEV --> CHECK["No threshold fitting"]
+```
+
+- **統合済み基盤:** SEC-004の正本RegistryとMEASURE-0001（[PR #18](https://github.com/ryonakayama234/DekaSugi/pull/18)）。古い計測[PR #9](https://github.com/ryonakayama234/DekaSugi/pull/9)は安全性問題により未マージ・クローズ済み。
+- **今回の作業は方法と図のみ:** v1原本を歴史資料として追加し、[v2現行正本](../../experiments/EXP-0002B/plan-v2.md)を一文字も変更せず載せる。新規Generator・Kernel・学習済Policy・FINAL結果は依然として未実装。
+- [v2改訂理由](../../experiments/EXP-0002B/preregistration-v2-log.md) / [仕様](../specs/EXP-0002B.md) / [データフロー](contracts.md) / [Issue #19](https://github.com/ryonakayama234/DekaSugi/issues/19)。
