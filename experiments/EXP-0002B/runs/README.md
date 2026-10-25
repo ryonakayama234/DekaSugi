@@ -25,3 +25,5 @@ EXP-0002B has **no train/learned-Kernel/fresh FINAL result**. MEASURE-0001 uses 
 - **TRAIN-onlyの2回のCI再実行でsnapshot SHA一致**。[freeze-v2](../freeze-v2.md) / [JSON](../freeze-v2.json)。
 - 元のCI evidenceは[main run #40154262757](https://github.com/ryonakayama234/DekaSugi/actions/runs/40154262757)の`EXP-0002B-train-only` artifactで追跡可能。
 - DEV/FINALは未実施、採否未判定。
+
+- DEV/FINALの開始前に、方策・全データhashに加え、[凍結した実行基盤9ソースのGit blob hash](../freeze-v2.json)の一致を要求する。不一致なら拒否。

@@ -31,5 +31,16 @@
   "independent_replay_policy_sha256": "1e85d06958bf65abc11eb14f4fc2f98645a9480d14618f6e7f477fee5b1affe7",
   "important_limitations": "These are deterministic TRAIN-only results. FINAL outcomes unobserved; dataset seeds public, not blinded. The per-trial timing-dependent evidence hash is intentionally not used as a deterministic policy fingerprint.",
   "dev_evaluated": false,
-  "final_evaluated": false
+  "final_evaluated": false,
+  "frozen_execution_source_git_blob_sha1": {
+    "packages/__init__.py": "91918ba4b6a59ec51bb1f8ca28683a9319dcbc2d",
+    "packages/evaluation/__init__.py": "c966d28bf42287d4f653eb56a59741e1e6d5cc4f",
+    "packages/kernel/__init__.py": "5e19e2921301ead325c31d2dbc1a63f8f8c41e28",
+    "packages/learning/__init__.py": "7345ab338bd374bbe856ef9a30af1798b0638f5e",
+    "packages/library/__init__.py": "3fdecc6a5425432f936c32a396d0cb8d9870b710",
+    "packages/protocol/__init__.py": "4083e8b49a863007a86ba26deaf0147802b558d9",
+    "packages/runtime/__init__.py": "e7d1796968fc41ce63bdf02707bd1757a3cdae3a",
+    "packages/synthesis/__init__.py": "4e850285b257da97b023a599bfeeaae375972d6d",
+    "packages/verification/__init__.py": "2b7e2bf9dcfd0934c632f6eeb7690faabf95b4d6"
+  }
 }
