@@ -104,3 +104,10 @@
 - FINALを開く前に[freeze-v2.json](experiments/EXP-0002B/freeze-v2.json)にsource commit、generator SHA、全split dataset hash、TRAIN observations hash、PolicySnapshot SHAを記録。CI artifactの元データと照合する。
 - 後続DEV/FINALはこの凍結点に一致する学習方策**のみ**使用する。実装は別モジュールで、既存`packages/kernel`の方法を結果に合わせて変更しない。方法変更が必要なら別v3と新FINALで再合意。
 - devは工学的な欠陥発見専用。finalは正誤・費用・悪化を全て記録し、負の結果を隠さない。[凍結の監査](experiments/EXP-0002B/freeze-v2.md)。
+
+## 16. EXP-0002B: DEVとFINALの評価ゲート (Issue #25)
+- `packages/kernel/evaluation.py`はKernel学習コードとは別。凍結[freeze-v2.json](experiments/EXP-0002B/freeze-v2.json)のgenerator/dataset/policy SHAを検証してから実験を行う。合わなければ探索を始めない。
+- `choose(TaskSpec, PolicySnapshot)`はOFF/ON観測より**先**に呼ぶ。監査例とfamilyはKernelへ渡さない。OFF/ON/LEARNEDはそれぞれ新meterを使う独立のtrial。ORACLEは事後比較にしか使わない。
+- evaluatorのPRではTESTにTRAIN fixtureのみを使う。CIの`pull_request`でDEVやFINAL実行は禁止。レビューとCI後のmain`push`でDEV48問のsmokeのみ実行し、DEVを学習に流用しない。
+- FINAL112問の実験は別のトリガー追加PRを改めてレビューした後、main pushで一度だけ実行。方法を変えず、全taskと負の結果、統計、原始演算・CPU/推論時間の違いを開示する。
+- [監査記録](experiments/EXP-0002B/reviews/20261025-evaluator-gate.md) / [固定方法v2](experiments/EXP-0002B/plan-v2.md)。
