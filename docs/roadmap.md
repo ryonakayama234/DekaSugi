@@ -30,3 +30,8 @@ tags: milestones, roadmap, planning
 ## EXP-0002B 評価器の実装ゲート (2026-10-25)
 - 凍結したTRAIN方策でのみDEV smokeとFINALを評価。PRのCIはTRAIN-fixtureだけ、main pushではDEVだけを実行。
 - FINAL112問の実行トリガーは評価コードの独立レビューとDEV証拠取得の後に別PRで開く。学習方法のretune、性能の過大主張は禁止。[評価監査](../experiments/EXP-0002B/reviews/20261025-evaluator-gate.md)。
+
+## 2026-10-25 マイルストーン：EXP-0002B DEV工程
+- [PR #26](https://github.com/ryonakayama234/DekaSugi/pull/26)が競合解消・PR CI success・最新head Codexレビュー後にmain `f81b656`へ統合。
+- [DEV48のrun](../experiments/EXP-0002B/runs/20261025-dev-smoke.md)の工学的検査は完了（全arm40/48監査正解、誤成功0）。方策はDEVから再学習していない。
+- 次の研究ゲートはFINAL112の独立activationレビュー。**現時点では起動禁止**。採用判定、Wake-Sleep、領域転移の結果は未取得。

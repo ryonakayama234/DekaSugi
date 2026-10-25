@@ -216,3 +216,23 @@ flowchart TD
 
 - [評価実装](../../packages/kernel/evaluation.py)は[凍結点](../../experiments/EXP-0002B/freeze-v2.md)に一致する学習方策のみ受け入れる。
 - PRのCIで実DEV/FINALの成果を開かない。現PRのmain pushはDEV engineering smokeのみ、FINALは別PRの品質ゲートが必要。[詳細](../../experiments/EXP-0002B/reviews/20261025-evaluator-gate.md)。
+
+## EXP-0002B 現在地：DEV48実測・FINAL封印 (2026-10-25)
+
+```mermaid
+flowchart TD
+  PR["PR #26: freeze-validated evaluator (merged main)"] --> CI["main-only DEV smoke: CI #40162804951"]
+  F["freeze-v2: source/data/policy hashes"] --> G{"integrity gate"}
+  G -->|mismatch| STOP["fail closed: no task results"]
+  G -->|match| CI
+  CI --> T["TaskSpec (two visible examples)"]
+  T --> K["Kernel chooses ON/OFF before trials"]
+  K --> E["OFF / ON / LEARNED independent trials"]
+  AUD["Withheld third audit example"] --> V["Verifier & primitive meter"]
+  E --> V
+  V --> LOG["DEV artifact: 48 task records + per-family report"]
+  LOG --> RECORD["DEV run record: engineering PASS, no tuning"]
+  RECORD -.-> FUTURE["FINAL 112: gated by separate activation PR; not executed"]
+```
+
+[DEV実測run](../../experiments/EXP-0002B/runs/20261025-dev-smoke.md)はmainコミット・CI Artifact・JSON SHA-256を保存。実装済みの境界は凍結照合、独立した3arm、監査、DEVのレポートまで。FINALへのCI実行経路は未開放。

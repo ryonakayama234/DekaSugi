@@ -1,7 +1,7 @@
 # EXP-0002B — DEV engineering smoke / FINAL独立評価ゲート
 
 id: EXP-0002B-EVAL-GATE
-status: evaluator PR; no DEV/FINAL outcome before review and main integration
+status: evaluator reviewed and merged; DEV smoke complete; FINAL activation pending
 updated: 2026-10-25
 tags: evaluator, preregistration, dev-smoke, final-gate, integrity, exp0002b
 
@@ -41,3 +41,9 @@ flowchart TD
 ## Codex指摘への修正（第2回）
 - **P1:** 方策／dataset hashだけではruntime・Verifier・meterの変更が検出できない。TRAIN元main commit `2cd159af1815690d46105bc785c7d31cd88919fd`の**9つの実行ソースGit blob hash**を凍結し、評価を開く前にファイル内容から照合。基準commitとmanifestの一致も必須、欠落・改変ならfail closed。評価器ソースは別PRの独立レビューを要求。
 - **P2:** 各armの探索～独立auditを含むCPU時間（process_time）・wall時間（perf_counter）、全評価のCPU/wall、およびKernel推論CPUをprimitive callsと区別してレポートへ追加。数値ゲート・アルゴリズム・generator・採否は変更しない。
+
+## 統合後の実測確認（2026-10-25）
+- [PR #26](https://github.com/ryonakayama234/DekaSugi/pull/26)の競合をmain凍結記録と整合。PR CI [#40162639945](https://github.com/ryonakayama234/DekaSugi/actions/runs/40162639945)はsuccess、PR上DEV/FINALはskipped。Codexによる修正後最新head `1a96bfb` の独立レビューは重大指摘なし。
+- main統合 `f81b656` の[Actions #40162804951](https://github.com/ryonakayama234/DekaSugi/actions/runs/40162804951)はsuccess、main限定DEV48ステップとArtifact upload成功。
+- 機械用ハッシュ・48件の3arm結果・実行環境・統計・費用・監査は[DEV evidence record](../runs/20261025-dev-smoke.md)へ集約し、歴史的事前登録は書き換えない。
+- FINAL実行トリガー未追加、FINAL結果未取得。
