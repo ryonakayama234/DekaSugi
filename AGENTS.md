@@ -134,3 +134,8 @@
 - 新しいコードのPRは[ARCH-001](docs/architecture/system.md)・[ARCH-002](docs/architecture/contracts.md)・[ARCH-UI-001](docs/architecture/ui-panels.md)・[run index](experiments/EXP-0003A/runs/README.md)を**同時**に更新。画面の各パネルは唯一のbackend/data責務に対応し、UIによる独立判定・技能昇格は禁止。
 - ID-v1は公開TaskSpec由来hashの`task_id`で5NN同距離を処理し、出典`source_record_id`/Dream `pool_id`はprivate manifestだけに保持。IDと同点規則は[plan](experiments/EXP-0003A/plan.md)に事前固定し、学習器へfamily/split/seedを渡さない。
 - 任意コード/外部I/O禁止、SEC-004 canonical trust gate、MEASURE-0001の原始演算meter、型付きAST展開後予算、候補Registry隔離、非公開audit/family/seed/splitの学習漏洩防止を維持。重大な設計不整合やP1/P0レビュー指摘はmain統合前に停止。
+
+## 21. EXP-0003A PR2 TRAIN-only 実装境界 (Issue #32)
+- `packages/exp0003a`はTRAIN160の固定生成・WAKE公開探索/独立監査・エピソード由来SLEEP候補まで。`--mode train`以外を追加せず、Dream/DEV/FINALには一切触れない。過去のEXP-0002B実装/計画・原始Registry・plan-v1は変更禁止。
+- audit第三例とgenerator-private family/seedはKernel/SkillCandidateへ渡さない。`discover_skills(tasks)`が再探索を行うため、PR2は監査済みWAKE ASTを直接`_subexpressions`抽出し、成功の捏造と結果依存再探索を禁止する。
+- 候補・runは正式Registry採用でも未知課題での性能改善でもない。source SHA/記録hash/traceとSEC-004/MEASURE-0001の検証を同期し、CIと最新headの`@codex review`後に統合を判断。

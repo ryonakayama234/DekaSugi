@@ -122,7 +122,7 @@ class Exp0003ATrainTests(TestCase):
             self.assertTrue(set(p.candidate.provenance).issubset(successes))
             self.assertEqual(p.source_episode_ids,
                              tuple("wake:" + x for x in p.candidate.provenance))
-        self.assertEqual(tuple(p.skill_id for p in DEFAULT_REGISTRY.primitives),
+        self.assertEqual(tuple(p.op_id for p in DEFAULT_REGISTRY.primitives),
                          tuple(p.op_id for p in DEFAULT_PRIMITIVES))
 
     def test_evidence_and_replay_are_train_only(self):

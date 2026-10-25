@@ -2,7 +2,7 @@
 
 id: ROADMAP
 status: proposed
-updated: 2026-10-24
+updated: 2026-10-26
 tags: milestones, roadmap, planning
 
 | Phase | 課題 | 成立条件 | 状態 |
@@ -53,3 +53,8 @@ tags: milestones, roadmap, planning
 - 4arm (B0 primitive only, B1 WAKE+SLEEP, B2 random Dream, B3 counterfactual Dream) を同じ原始演算・評価制約・新FINALで比較する。Dream2条件はfamilyと件数を揃える。
 - PR2 WAKE/SkillProposal、PR3 Dream/Policy、PR4凍結・独立評価の順。各ゲートで図/契約/実験記録/UI責務を同期し、重大な方法変更・FINAL起動は人間と別合意。正式技能昇格なし。
 - EXP-0002B元Artifactは2027-01-23期限。元ZIP・JSONをSHA一致で長期保存する別運用作業が必要（PR1では実データ保存しない）。
+
+## 2026-10-26 EXP-0003A PR2：TRAIN限定WAKE/SLEEP実装
+- [Issue #32](https://github.com/ryonakayama234/DekaSugi/issues/32)の境界で8 family×20問の固定TRAIN生成器、ID-v1、監査付きWakeEpisodeと成功Episodeの部分ASTに基づくSkillProposal候補を実装。PR2はDream/DEV/FINAL/標準Registry採用を起動しない。
+- 学習の意味論は、監査合格した実際のWAKEプログラムのみを根拠にする。既存`discover_skills(tasks)`での再探索を実施しない。候補0件や不一致は研究方法を勝手に変更せず報告する。
+- 現在の実装状況は[run index](../experiments/EXP-0003A/runs/README.md)が正本。CI、独立`@codex review`で監査してからmain統合する。

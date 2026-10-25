@@ -10,7 +10,9 @@ from hashlib import sha256
 import json
 import platform
 import random
+import subprocess
 import sys
+from pathlib import Path
 from time import perf_counter, process_time
 from typing import Literal, Sequence
 
@@ -320,6 +322,29 @@ def sleep(episodes: Sequence[WakeEpisode]) -> tuple[SkillProposal, ...]:
     ))
 
 
+def _source_metadata() -> dict[str, object]:
+    """Source code provenance, kept separate from deterministic evidence hashes."""
+    paths = {
+        "generator_wake_sleep": Path(__file__),
+        "protocol": Path(sys.modules["packages.protocol"].__file__),
+        "evaluation": Path(sys.modules["packages.evaluation"].__file__),
+        "learning": Path(sys.modules["packages.learning"].__file__),
+        "verification": Path(sys.modules["packages.verification"].__file__),
+    }
+    try:
+        commit = subprocess.run(
+            ["git", "rev-parse", "HEAD"], capture_output=True,
+            check=True, text=True, timeout=3,
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired):
+        commit = None
+    return {
+        "source_commit": commit,
+        "source_file_sha256": {key: sha256(path.read_bytes()).hexdigest()
+                               for key, path in paths.items()},
+    }
+
+
 def train_report() -> dict[str, object]:
     """TRAIN engineering evidence; never opens DEV/FINAL/DREAM."""
     cases = generate_train()
@@ -350,6 +375,6 @@ def train_report() -> dict[str, object]:
         "registry_promotion": "not_authorized",
         "preregistered_final_evaluated": False,
         "source_runtime": {"python": sys.version.split()[0], "platform": platform.platform()},
-        "measurement": "runtime-canonical-v1",
+        "measurement": "runtime-canonical-v1", "source": _source_metadata(),
         "notes": "Public search costs and separate audit costs are not the same as total CPU benefit.",
     }
