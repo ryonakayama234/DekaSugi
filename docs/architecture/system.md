@@ -2,7 +2,7 @@
 
 id: ARCH-001
 status: proposed
-updated: 2026-10-24
+updated: 2026-10-26
 tags: diagram, architecture, components, wake-sleep
 
 > 目標全体図は**提案**。EXP-0001に限定した型付き探索・実行・検証は実装済み（採否は実験runを参照）。各モジュールは [packages目録](../../packages/README.md) で管理。
@@ -273,7 +273,7 @@ flowchart TD
 - 過去の設計・工程図に残る「未開放」「未実装」「結果未取得」はその時点の履歴を表す。現行状態は[FINAL run](../../experiments/EXP-0002B/runs/20261025-final112.md)が正本。独立再集計で112件、7 family各16件、OOD誤ON0、LEARNED80/112、五つの数値ゲートを確認した。
 - 一度限りのFINAL起動ステップはこの文書同期PRで削除。予め凍結したKernel、評価器、実行ソースは変更しない。今後の通常CIはDEV工程まで。総CPU高速化は未実証で、技能の正式採用もしない。
 
-## EXP-0003A: WAKE–SLEEP / Counterfactual DREAM design (proposed, PR1)
+## EXP-0003A: WAKE–SLEEP / Counterfactual DREAM design (PR2 TRAIN base, later stages planned)
 本節は提案図。現在実装済みのEXP-0002B Kernel/evaluatorや技能抽出器を置き換えず、versioned new componentsを**将来追加**する。EXP-0003Aの実行結果はまだない。
 
 ```mermaid
@@ -298,6 +298,8 @@ flowchart TD
     R -.-> UI
 ```
 
+- **PR2 evidence trust boundary**: 評価器がWAKE直後に原本`WakeReceipt`を作り、SLEEPは原本との整合性チェックを行ってから監査済みASTのみを学習。private TRAIN元データと原本receiptは、学習器と分離したActions Artifact内別ファイルに保存（第三者非公開を意味しない）。生成器/WAKE/SLEEPのCPU/wallを別々に計測。
+- **PR2 implementation (TRAIN-only)**: `packages/exp0003a.generate_train` → 公開`TaskSpec` + generator-private`TrainCase` → `wake` (SEC-004 public search + isolated private audit) → `WakeEpisode` → `sleep` (audited-success AST only) → `SkillProposal`。実装範囲はTRAIN160のみ。Dream選別、B1/B2/B3 policy、DEV/FINAL/Registry昇格は計画のまま。
 - **Existing**: typed TaskSpec, constrained Synthesis, pure interpreter, Verification, EXP-0002 SkillCandidate extraction, canonical Registry SEC-004, primitive meter MEASURE-0001, EXP-0002B Kernel (その凍結方法は変更禁止)。
 - **Proposed only**: cycle orchestration、append-only Episodes/Proposal/Dream/CycleSnapshot/Evidence、versioned Dream generator and selection、4arm Evaluatorとread-only UI投影。中央のboxesは論理保存領域であって新DB製品の採用を意味しない。
 - **Trust boundary**: ID-v1では`TaskSpec.task_id`は公開2例だけをhash化した不透明な識別子で、family/split/seedを含むgenerator/evaluator専用の`source_record_id`/`pool_id`は別管理（[契約](contracts.md)）。Dreamの合成正解やpublic examplesをFINALの代わりにしない。private audit・family・seed・splitはlearner APIへ流さない。未承認技能は隔離されたRegistryのみに載せ、標準Libraryへ自動昇格しない。

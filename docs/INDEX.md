@@ -2,7 +2,7 @@
 
 id: DOC-INDEX
 status: active
-updated: 2026-10-25
+updated: 2026-10-26
 tags: navigation, architecture, research, experiments
 
 **探す → 該当する小さな文書を読む → 必要な依存文書だけを辿る。**
@@ -29,7 +29,8 @@ tags: navigation, architecture, research, experiments
 | EXP-0002B | 文脈付き技能ON/OFF価値の学習 | FINAL112 numeric acceptance PASS; independent audit done; not promoted | [spec](specs/EXP-0002B.md) / [current v2 protocol](../experiments/EXP-0002B/plan-v2.md) / [historical v1](../experiments/EXP-0002B/plan.md) / [change log](../experiments/EXP-0002B/preregistration-v2-log.md) / [static audit](../experiments/EXP-0002B/reviews/20261024-audit-001.md) / [run index](../experiments/EXP-0002B/runs/README.md) / [Issue #7](https://github.com/ryonakayama234/DekaSugi/issues/7) |
 | MEASURE-0001 | verifier内primitive実行費用の観測（Kernel学習の前提） | CI and Codex code review passed; PR #18; no policy | [measurement](architecture/measurement.md) / [audit](../experiments/EXP-0002B/metering-log.md) / [runs index](../experiments/EXP-0002B/runs/README.md) / [Issue #17](https://github.com/ryonakayama234/DekaSugi/issues/17) |
 | SEC-004 | Mutable lookupを信用しない実行Registryの再生成 | main-integrated; CI and Codex code-review verified | [security record](../experiments/EXP-0002/reviews/20261025-registry-snapshot-boundary.md) / [Issue #14](https://github.com/ryonakayama234/DekaSugi/issues/14) |
-| EXP-0003A | WAKE–SLEEP/Counterfactual DREAMの設計・事前登録 | proposed; design-only, no outcomes | [spec](specs/EXP-0003A.md) / [plan-v1](../experiments/EXP-0003A/plan.md) / [runs](../experiments/EXP-0003A/runs/README.md) |
+| EXP-0003A | WAKE–SLEEP/Counterfactual DREAMの設計・事前登録 | PR2 TRAIN-only foundation implemented; later outcomes not evaluated | [spec](specs/EXP-0003A.md) / [plan-v1](../experiments/EXP-0003A/plan.md) / [runs](../experiments/EXP-0003A/runs/README.md) |
+| EXP-0003A-TRAIN | PR2の固定生成器・監査付きWAKE/SLEEP技能候補 | TRAIN engineering only, no performance claim | [code](../packages/exp0003a/__init__.py) / [run index](../experiments/EXP-0003A/runs/README.md) / [Issue #32](https://github.com/ryonakayama234/DekaSugi/issues/32) |
 | ARCH-UI-001 | Research Consoleパネル→module→data正本 | proposed interface contract, UI not implemented | [UI responsibility map](architecture/ui-panels.md) |
 | RSRCH-INDEX | 研究資料の検索入口 | collecting | [research](research/INDEX.md) |
 | RSRCH-001 | プログラム合成・抽象化 | notes | [program synthesis](research/program-synthesis.md) |
