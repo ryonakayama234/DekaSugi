@@ -16,16 +16,15 @@
 | 実験を再現する人 | [初回実験](experiments/EXP-0001/plan.md) → [実験プロセス](docs/process/workflow.md) |
 | 進捗を確認する人 | [ロードマップ](docs/roadmap.md) とGitHub Issues / Pull Requests |
 
-## 現在の状態
+## 現在の状態 (2026-10-25)
 
-**EXP-0002B**: TRAIN-only PolicySnapshot凍結と独立評価器はmain統合済み。[DEV48 engineering smoke](experiments/EXP-0002B/runs/20261025-dev-smoke.md)は2026-10-25に正常終了（OFF/ON/LEARNEDとも40/48監査正解、学習型は候補440・primitive1808）。**FINAL112問は未実行、科学的採用は未判定**。[CI #40162804951](https://github.com/ryonakayama234/DekaSugi/actions/runs/40162804951)。
+**EXP-0002B はFINAL112の一回限りの評価まで完了しました。** [正式実測](experiments/EXP-0002B/runs/20261025-final112.md)で4条件ではなく既定3arm (OFF/ON/LEARNED) を比較し、監査正解はすべて80/112、LEARNEDは候補1520・原始演算6880（OFF1536/6944、ON1744/8160）。事前登録の5数値基準はPASS、ただし**正式技能昇格なし・総CPU利益は未実証**。FINAL起動ステップは削除済み。[統合後CI](https://github.com/ryonakayama234/DekaSugi/actions/runs/40176764493)。
 
-**EXP-0001 は技術的にPASS、固定DSLの非学習baselineとして採用済み。** [実測run](experiments/EXP-0001/runs/README.md)。
-**EXP-0002 は技能候補の発見と小規模実験を実施済み（保留課題で6→5候補、反転課題で40→47候補）。** [事前登録計画](experiments/EXP-0002/plan.md)、[再実行](experiments/EXP-0002/runs/README.md)。技能の一般的な性能向上は未実証。安全修正を含む[PR #6](https://github.com/ryonakayama234/DekaSugi/pull/6)はCIとCodexコードレビューを経てmainへ統合済み。技能の科学的な正式採用は別判断として保留。
+**EXP-0003A は新規の設計・事前登録段階です（未実装・未実行）。** [新計画](experiments/EXP-0003A/plan.md) / [仕様](docs/specs/EXP-0003A.md) / [アーキテクチャ](docs/architecture/system.md) / [データ契約](docs/architecture/contracts.md) / [研究コンソールのUI責務](docs/architecture/ui-panels.md) / [run目録](experiments/EXP-0003A/runs/README.md)。WAKE・SLEEP・DREAMの未知課題評価はまだありません。
 
-**MEASURE-0001**: 次段階の技能価値学習に向け、`bounded_synthesize`に安全な原始演算呼出数カウンタを[PR #18](https://github.com/ryonakayama234/DekaSugi/pull/18)で実装し、CIとCodexコードレビューで検証。これは計測装置であって、Kernelの学習や新しいFINAL実験の成功ではない。[計測仕様](docs/architecture/measurement.md) / [監査記録](experiments/EXP-0002B/metering-log.md)。
+**既存の成果**: EXP-0001は非学習baselineとして技術的PASS、EXP-0002は技能候補発見を実装済み（候補の一般的正式採用なし）。SEC-004の実行信頼境界とMEASURE-0001のcanonical primitive meterは継承。
 
-**EXP-0002Bの研究計画v2**：[固定プロトコル](experiments/EXP-0002B/plan-v2.md)を評価方法の正本として保存。旧[v1](experiments/EXP-0002B/plan.md)は歴史的参考に限定し、学習KernelはTRAIN-onlyの実装・レビュー段階であり、新規FINALの実行結果はまだない。[仕様](docs/specs/EXP-0002B.md)。
+## EXP-0002B の過去の開発コマンド・工程（当時の位置づけ）
 
 ローカル資料検査: `python scripts/check_docs.py`（標準ライブラリのみ）。
 
@@ -67,12 +66,12 @@ python -m packages.kernel --mode preflight --output .run/EXP-0002B-preflight.jso
 python -m packages.kernel --mode train --output .run/EXP-0002B-train-only.json
 ```
 
-上の実装段階で生じる結果は**TRAINのみ**。データセットhashは計算するが、FINALの探索・評価は実行しない。参照：[事前登録v2](experiments/EXP-0002B/plan-v2.md) / [実装監査](experiments/EXP-0002B/reviews/20261025-train-only-kernel.md)。
+このコマンドが出力する内容は**TRAINのみ**。データセットhashは計算するが、FINALの探索・評価は実行しない。参照：[事前登録v2](experiments/EXP-0002B/plan-v2.md) / [実装監査](experiments/EXP-0002B/reviews/20261025-train-only-kernel.md)。
 
 ## EXP-0002B — 評価前に固定した学習方策
 
-TRAIN144問での学習と復元可能なKNN方策がCIで一致。**[DatasetとPolicySnapshotの凍結記録](experiments/EXP-0002B/freeze-v2.md)**を先に保存してから、DEVとFINALの別工程で独立評価する。TRAIN証拠は凍結済み。DEV48の工学的診断結果は別runとして保存し、FINALの汎化性能は未判定。
+TRAIN144問での学習と復元可能なKNN方策がCIで一致。**[DatasetとPolicySnapshotの凍結記録](experiments/EXP-0002B/freeze-v2.md)**を先に保存してから、DEVとFINALの別工程で独立評価する。TRAIN証拠は凍結済み。DEV48の工学的診断結果および後続FINAL112の正式結果は別runとして保存した。
 
 ## EXP-0002B — DEVとFINALの独立ゲート
 
-学習済みKernelの改変を検出する評価器を[監査手順](experiments/EXP-0002B/reviews/20261025-evaluator-gate.md)として追加。コードPR内では訓練fixturesのみをテストし、レビュー済みmainでDEV48 smokeを実施し、その証拠を保存した。FINALは独立レビューを経た別トリガーが設定されるまで実行しない。
+学習済みKernelの改変を検出する評価器を[監査手順](experiments/EXP-0002B/reviews/20261025-evaluator-gate.md)として追加。コードPR内では訓練fixturesのみをテストし、レビュー済みmainでDEV48 smokeを実施し、その証拠を保存した。FINALは独立レビュー後に専用トリガーから実行済みであり、トリガーは削除済み。

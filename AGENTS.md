@@ -127,3 +127,9 @@
 - 承認済みsquash-merge `37b30752b46ea108d18dbdb531797e0106f52dc0`で、[Actions #40176125696](https://github.com/ryonakayama234/DekaSugi/actions/runs/40176125696) の初回pushのみFINAL112を実行。Artifact ID `12592665362`、生データJSON hash、全112件の独立再集計は[FINAL run](experiments/EXP-0002B/runs/20261025-final112.md)に保存。
 - 事前登録した5つの**数値**ゲートはすべてPASS（OFF比16候補・64 primitive削減、ON比224候補・1280 primitive削減、OOD誤ONゼロ、正確性と尾部悪化は非回帰）。状態は `metrics_pass_not_promoted`。標準Registryへの自動昇格・一般知能や総CPU利益の主張は行わない。
 - この文書同期PRでFINAL起動の2ステップをCIから除去し、以後のPR/main更新ではFINALを実行しない。保留課題はすでに公開済みであり、同じFINALを新たな方法の確認に再利用しない。次の仮説・EXP-0003は別提案・別合意が必要。
+
+## 20. EXP-0003A 設計の事前登録と研究コンソール契約 (Issue #30)
+- [plan-v1](experiments/EXP-0003A/plan.md)の方法・数値採否・split・seed・Dream配分・凍結ゲートは、コード実装や新結果の前に独立レビューし、採用後は歴史的記録として不変。方法上の矛盾があれば人間へ相談し、別version・新FINALで再合意。PR1はdocs-only、EXP-0003AのTRAIN/DEV/FINALやDreamを実行しない。
+- WAKE→SLEEP→DREAM→独立Evaluatorで、技能発見と既存DSL外の表現力増加を厳密に区別。EXP-0002B FINAL112は既採点のためEXP-0003Aのholdoutとして再利用しない。
+- 新しいコードのPRは[ARCH-001](docs/architecture/system.md)・[ARCH-002](docs/architecture/contracts.md)・[ARCH-UI-001](docs/architecture/ui-panels.md)・[run index](experiments/EXP-0003A/runs/README.md)を**同時**に更新。画面の各パネルは唯一のbackend/data責務に対応し、UIによる独立判定・技能昇格は禁止。
+- 任意コード/外部I/O禁止、SEC-004 canonical trust gate、MEASURE-0001の原始演算meter、型付きAST展開後予算、候補Registry隔離、非公開audit/family/seed/splitの学習漏洩防止を維持。重大な設計不整合やP1/P0レビュー指摘はmain統合前に停止。
