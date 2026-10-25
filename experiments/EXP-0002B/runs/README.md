@@ -26,6 +26,8 @@ EXP-0002B has **no train/learned-Kernel/fresh FINAL result**. MEASURE-0001 uses 
 - 元のCI evidenceは[main run #40154262757](https://github.com/ryonakayama234/DekaSugi/actions/runs/40154262757)の`EXP-0002B-train-only` artifactで追跡可能。
 - DEV/FINALは未実施、採否未判定。
 
+- DEV/FINALの開始前に、方策・全データhashに加え、[凍結した実行基盤9ソースのGit blob hash](../freeze-v2.json)の一致を要求する。不一致なら拒否。
+
 ## DEV/FINALの分離した実行ゲート
 - `python -m packages.kernel.eval_cli --phase dev --output .run/EXP-0002B-DEV-smoke.json` はレビュー済み**main pushだけ**で自動実行するengineering smoke。学習・閾値調整には使わない。
 - `--phase final`の評価コードは独立レビューの対象だが、FINALへのGitHub Actions実行トリガーは**このPRには含めない**。
