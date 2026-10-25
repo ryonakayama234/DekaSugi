@@ -139,3 +139,5 @@
 - `packages/exp0003a`はTRAIN160の固定生成・WAKE公開探索/独立監査・エピソード由来SLEEP候補まで。`--mode train`以外を追加せず、Dream/DEV/FINALには一切触れない。過去のEXP-0002B実装/計画・原始Registry・plan-v1は変更禁止。
 - audit第三例とgenerator-private family/seedはKernel/SkillCandidateへ渡さない。`discover_skills(tasks)`が再探索を行うため、PR2は監査済みWAKE ASTを直接`_subexpressions`抽出し、成功の捏造と結果依存再探索を禁止する。
 - 候補・runは正式Registry採用でも未知課題での性能改善でもない。source SHA/記録hash/traceとSEC-004/MEASURE-0001の検証を同期し、CIと最新headの`@codex review`後に統合を判断。
+
+- PR2の技術的追記: SLEEPでは候補2件以上あってもランキング首位1件だけ`candidate`とし他は`withheld`。TRAINエピソードは上書き禁止のJSONLと集計JSONでCI Artifactに保存し、ファイルSHA-256を別途記録する。
