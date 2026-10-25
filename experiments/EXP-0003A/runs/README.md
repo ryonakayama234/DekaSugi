@@ -11,6 +11,7 @@ tags: exp0003a, run-index, preregistration, evidence
 - 初回PR CI [#40242971478](https://github.com/ryonakayama234/DekaSugi/actions/runs/40242971478) は成功（55 unit tests、既存回帰、TRAIN160実行）。[Artifact 12618215378](https://github.com/ryonakayama234/DekaSugi/actions/runs/40242971478/artifacts/12618215378) に初回TRAINのJSON証拠を保持。初回WAKE結果: 監査付き成功120、not_found40、監査不合格0、予算枯渇0、SLEEP候補2。**これはPR2途中の工程診断であって、最新版headの最終証拠ではない**。最終headではappend-only JSONLも同Artifactへ保持する。
 - TRAIN初回の結果は技能候補の発見可否の工程診断であり、H2/H3の性能検証ではない。候補0件・監査不合格・run異常を失敗のまま保存し閾値やseedを変更しない。
 - 今回のCIで既存のEXP-0001/0002/0002B回帰が走っても、それをEXP-0003Aのrunと呼ばない。
+- Codex再レビューでP1×2（エピソードAST差し替え・監査元レコード不保存）、P2×1（generator/SLEEP CPU/wall未計測）を検出し、PR #33を一度Draftに戻した。合意済み修正は、監査器所有の`WakeReceipt`原本照合、TRAINの第三例・公開TaskSpec・出典対応を評価器用別ファイルで保全、生成器/SLEEPのCPU/wall計測。現行のTRAIN成果はreview/CIゲートを再通過するまで暫定証拠である。
 - PR2以降の各作業は専用の不変run記録とCI SHAを追記し、`planned` / `engineering` / `confirmatory`を区別。失敗も保存。
 - FINALはplanの事前固定・source/data/snapshot freeze・独立レビュー・人間による一度限りの実行承認より前に開かない。
 - 生Artifactは保存期間・ZIP/JSON SHAと長期アーカイブの有無を明記。EXP-0002Bの既存FINAL Artifactの期限は2027-01-23であり、新研究のデータと混同しない。

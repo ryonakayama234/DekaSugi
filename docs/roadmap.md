@@ -58,3 +58,5 @@ tags: milestones, roadmap, planning
 - [Issue #32](https://github.com/ryonakayama234/DekaSugi/issues/32)の境界で8 family×20問の固定TRAIN生成器、ID-v1、監査付きWakeEpisodeと成功Episodeの部分ASTに基づくSkillProposal候補を実装。PR2はDream/DEV/FINAL/標準Registry採用を起動しない。
 - 学習の意味論は、監査合格した実際のWAKEプログラムのみを根拠にする。既存`discover_skills(tasks)`での再探索を実施しない。候補0件や不一致は研究方法を勝手に変更せず報告する。
 - 現在の実装状況は[run index](../experiments/EXP-0003A/runs/README.md)が正本。CI、独立`@codex review`で監査してからmain統合する。
+
+- PR2 CodexレビューP1×2/P2×1に対し、学習器からの監査元情報隔離を維持しつつ、独立WakeReceiptと監査元データ・工数計測の証拠修正を行う。ユーザー承認済みだが、独立レビューを再通過するまでmain統合しない。

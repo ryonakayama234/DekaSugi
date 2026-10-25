@@ -137,24 +137,49 @@ def generate_train() -> tuple[TrainCase, ...]:
     return tuple(cases)
 
 
-def private_train_manifest(cases: Sequence[TrainCase]) -> dict[str, object]:
-    """Private generator/evaluator manifest, never a learner argument."""
-    rows = [{
-        "source_record_id": c.source_record_id,
-        "family": c.family,
-        "seeds": list(c.seeds),
-        "task_id": c.task.task_id,
-        "public_task_sha256": c.task.task_id[2:],
-        "audit": asdict(c.private_audit),
-    } for c in cases]
-    if len(rows) != TRAIN_TOTAL or len(set(c.source_record_id for c in cases)) != TRAIN_TOTAL:
+def _private_train_rows(cases: Sequence[TrainCase]) -> list[dict[str, object]]:
+    """Actual evaluator-only generation records, including all three examples.
+
+    These rows go to a separate audit artifact; never to TaskSpec or SLEEP.
+    """
+    rows = []
+    for case in cases:
+        if case.task.task_id != opaque_id(case.task.examples):
+            raise ValueError("Public task hash mismatch in private rows")
+        rows.append({
+            "source_record_id": case.source_record_id,
+            "family": case.family,
+            "seeds": list(case.seeds),
+            "task_id": case.task.task_id,
+            "public_task_sha256": case.task.task_id[2:],
+            "public_task": {
+                **public_shape(case.task.examples), "task_id": case.task.task_id,
+            },
+            "audit": asdict(case.private_audit),
+            "audit_evidence_ref": _audit_ref(case.task.task_id, case.private_audit),
+        })
+    if (len(rows) != TRAIN_TOTAL
+            or len({row["source_record_id"] for row in rows}) != TRAIN_TOTAL
+            or len({row["task_id"] for row in rows}) != TRAIN_TOTAL):
         raise ValueError("Bad manifest cardinality")
+    return rows
+
+
+def private_train_manifest(cases: Sequence[TrainCase]) -> dict[str, object]:
+    """Public *hash-only* index; raw rows remain in evaluator-only artifact."""
+    rows = _private_train_rows(cases)
     return {
         "method": METHOD, "id_version": ID_VERSION, "partition": "TRAIN",
         "count": len(rows), "private_rows_sha256": digest(rows),
         "ordered_source_ids_sha256": digest([x["source_record_id"] for x in rows]),
         "ordered_public_ids_sha256": digest([x["task_id"] for x in rows]),
     }
+
+
+def _audit_ref(task_id: str, audit: Example) -> str:
+    return "audit-sha256:" + digest({
+        "task_id": task_id, "private_example": asdict(audit),
+    })
 
 
 def _trusted_audit_meter(meter: PrimitiveCallMeter) -> Registry:
@@ -240,9 +265,7 @@ def wake(task: TaskSpec, *, private_audit: Example) -> WakeEpisode:
         status = search.status
     else:
         raise ValueError("Unrecognized search result")
-    audit_ref = "audit-sha256:" + digest({
-        "task_id": task.task_id, "private_example": asdict(private_audit),
-    })
+    audit_ref = _audit_ref(task.task_id, private_audit)
     return WakeEpisode(
         task_id=task.task_id, episode_id="wake:" + task.task_id,
         public_task_sha256=task.task_id[2:],
@@ -254,6 +277,45 @@ def wake(task: TaskSpec, *, private_audit: Example) -> WakeEpisode:
         audit_primitive_invocations=audit_meter.total,
         search_cpu_ms=search_cpu_ms, search_wall_ms=search_wall_ms,
         audit_cpu_ms=audit_cpu_ms, audit_wall_ms=audit_wall_ms,
+    )
+
+
+def stable_episode_payload(episode: WakeEpisode) -> dict[str, object]:
+    """Deterministic content, excluding all timing noise."""
+    return {key: value for key, value in episode.to_dict().items()
+            if not key.endswith("_ms")}
+
+
+@dataclass(frozen=True, slots=True)
+class WakeReceipt:
+    """Evaluator-owned authoritative evidence, issued immediately after WAKE.
+
+    The receipt is NOT an authentication token or signature. The trusted
+    orchestrator owns its immutable original and archives it separately.
+    SLEEP may compare against the original but cannot self-issue receipts.
+    """
+    task_id: str
+    episode_id: str
+    episode_sha256: str
+    program_sha256: str | None
+    trace_sha256: str
+    audit_evidence_ref: str
+    audit_correct: bool
+    status: str
+
+
+def _issue_wake_receipt(episode: WakeEpisode) -> WakeReceipt:
+    """Evaluator-only issuance, before any learner-facing transport."""
+    return WakeReceipt(
+        task_id=episode.task_id,
+        episode_id=episode.episode_id,
+        episode_sha256=digest(stable_episode_payload(episode)),
+        program_sha256=program_hash(episode.program_ast)
+        if episode.program_ast is not None else None,
+        trace_sha256=episode.trace_sha256,
+        audit_evidence_ref=episode.audit_evidence_ref,
+        audit_correct=episode.audit_correct,
+        status=episode.status,
     )
 
 
@@ -274,15 +336,39 @@ class SkillProposal:
         }
 
 
-def sleep(episodes: Sequence[WakeEpisode]) -> tuple[SkillProposal, ...]:
-    """Extract skill from audited-success recorded ASTs, never re-synthesize."""
+def sleep(
+    episodes: Sequence[WakeEpisode], *,
+    trusted_receipts: Sequence[WakeReceipt],
+) -> tuple[SkillProposal, ...]:
+    """Consume only episodes bound to evaluator-owned original WAKE receipts.
+
+    This is an integrity comparison against the independently retained original,
+    not self-attestation and not a re-synthesis or hidden-audit learner input.
+    """
     if len({e.task_id for e in episodes}) != len(episodes):
         raise ValueError("Duplicate episode task ID")
+    if len({r.task_id for r in trusted_receipts}) != len(trusted_receipts):
+        raise ValueError("Duplicate trusted receipt task ID")
+    trusted = {r.task_id: r for r in trusted_receipts}
+    if set(trusted) != {e.task_id for e in episodes}:
+        raise ValueError("Missing or extra trusted WAKE receipts")
     canonical = Registry(DEFAULT_PRIMITIVES)
     groups: dict[str, tuple[Call, set[str]]] = {}
     for episode in episodes:
         if episode.task_id != "t-" + episode.public_task_sha256:
             raise ValueError("Episode task hash mismatch")
+        receipt = trusted[episode.task_id]
+        if (type(receipt) is not WakeReceipt
+                or receipt.episode_id != episode.episode_id
+                or receipt.episode_sha256 != digest(stable_episode_payload(episode))
+                or receipt.program_sha256 != (
+                    program_hash(episode.program_ast)
+                    if episode.program_ast is not None else None)
+                or receipt.trace_sha256 != episode.trace_sha256
+                or receipt.audit_evidence_ref != episode.audit_evidence_ref
+                or receipt.audit_correct != episode.audit_correct
+                or receipt.status != episode.status):
+            raise ValueError("WAKE evidence/receipt mismatch: tampered episode")
         if episode.status != "success":
             if episode.audit_correct:
                 raise ValueError("Inconsistent audit verdict")
@@ -349,36 +435,84 @@ def _source_metadata() -> dict[str, object]:
     }
 
 
-def train_report() -> dict[str, object]:
-    """TRAIN engineering evidence; never opens DEV/FINAL/DREAM."""
+def train_bundle() -> tuple[dict[str, object], dict[str, object]]:
+    """Separate learner-safe report from evaluator-only private replay evidence.
+
+    Generator, WAKE and SLEEP run once; raw input/audit pairs are preserved
+    exactly as consumed. The private bundle is archived separately.
+    """
+    gen_cpu, gen_wall = process_time(), perf_counter()
     cases = generate_train()
+    generation_cpu_ms = (process_time() - gen_cpu) * 1000
+    generation_wall_ms = (perf_counter() - gen_wall) * 1000
+    private_rows = _private_train_rows(cases)
     manifest = private_train_manifest(cases)
-    episodes = tuple(wake(case.task, private_audit=case.private_audit) for case in cases)
-    proposals = sleep(episodes)
+    if digest(private_rows) != manifest["private_rows_sha256"]:
+        raise ValueError("Private manifest rows hash mismatch")
+    episodes_buffer: list[WakeEpisode] = []
+    receipts_buffer: list[WakeReceipt] = []
+    for case in cases:
+        episode = wake(case.task, private_audit=case.private_audit)
+        # Trusted evaluator retains the ORIGINAL receipt before SLEEP access.
+        receipt = _issue_wake_receipt(episode)
+        if (receipt.audit_evidence_ref
+                != _audit_ref(case.task.task_id, case.private_audit)):
+            raise ValueError("Private audit provenance mismatch")
+        episodes_buffer.append(episode)
+        receipts_buffer.append(receipt)
+    episodes = tuple(episodes_buffer)
+    receipts = tuple(receipts_buffer)
+    sleep_cpu, sleep_wall = process_time(), perf_counter()
+    proposals = sleep(episodes, trusted_receipts=receipts)
+    sleep_cpu_ms = (process_time() - sleep_cpu) * 1000
+    sleep_wall_ms = (perf_counter() - sleep_wall) * 1000
+
     stats = {status: sum(e.status == status for e in episodes)
              for status in ("success", "audit_rejected", "not_found", "budget_exhausted")}
     rows = [e.to_dict() for e in episodes]
-    proposals_rows = [p.to_dict() for p in proposals]
+    proposal_rows = [p.to_dict() for p in proposals]
+    receipt_rows = [asdict(receipt) for receipt in receipts]
     public_tasks = [{
         "task_id": case.task.task_id,
         "public_examples": [asdict(x) for x in case.task.examples],
     } for case in cases]
-    return {
+    receipts_hash = digest(receipt_rows)
+    private_evidence = {
+        "schema_version": "train-private-evidence-v1",
+        "partition": "TRAIN", "method": METHOD, "id_version": ID_VERSION,
+        "rows": private_rows, "private_rows_sha256": digest(private_rows),
+        "wake_receipts": receipt_rows,
+        "wake_receipts_sha256": receipts_hash,
+    }
+    return ({
         "experiment_id": "EXP-0003A", "phase": "TRAIN", "status": "engineering",
         "method": METHOD, "id_version": ID_VERSION,
         "partition_counts": {"TRAIN": TRAIN_TOTAL},
         "public_tasks_sha256": digest(public_tasks),
-        "private_manifest": manifest, "episodes": rows,
-        "episodes_sha256": digest([
-            {k: v for k, v in row.items() if not k.endswith("_ms")} for row in rows
-        ]),
-        "wake_status": stats, "proposals": proposals_rows,
-        "proposals_sha256": digest(proposals_rows),
+        "private_manifest": manifest, "trusted_receipts_sha256": receipts_hash,
+        "episodes": rows,
+        "episodes_sha256": digest([stable_episode_payload(e) for e in episodes]),
+        "wake_status": stats, "proposals": proposal_rows,
+        "proposals_sha256": digest(proposal_rows),
         "top_proposal_id": proposals[0].proposal_id if proposals else None,
         "functional_gate": "candidate_found" if proposals else "failed_no_candidate",
         "registry_promotion": "not_authorized",
         "preregistered_final_evaluated": False,
+        "train_cost_ms": {
+            "generator_cpu": generation_cpu_ms, "generator_wall": generation_wall_ms,
+            "sleep_cpu": sleep_cpu_ms, "sleep_wall": sleep_wall_ms,
+            "wake_search_cpu": sum(e.search_cpu_ms for e in episodes),
+            "wake_search_wall": sum(e.search_wall_ms for e in episodes),
+            "wake_audit_cpu": sum(e.audit_cpu_ms for e in episodes),
+            "wake_audit_wall": sum(e.audit_wall_ms for e in episodes),
+        },
         "source_runtime": {"python": sys.version.split()[0], "platform": platform.platform()},
         "measurement": "runtime-canonical-v1", "source": _source_metadata(),
-        "notes": "Public search costs and separate audit costs are not the same as total CPU benefit.",
-    }
+        "notes": "TRAIN engineering only; no Dream/DEV/FINAL. CPU/wall and primitive calls are distinct.",
+    }, private_evidence)
+
+
+def train_report() -> dict[str, object]:
+    """Learner-safe report only; private audit data never returned here."""
+    report, _private_evidence = train_bundle()
+    return report

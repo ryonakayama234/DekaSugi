@@ -36,6 +36,7 @@ jobs:
           path: |
             .run/EXP-0003A-TRAIN-engineering.json
             .run/EXP-0003A-TRAIN-engineering.episodes.jsonl
+            .run/EXP-0003A-TRAIN-engineering.evaluator-private.json
           if-no-files-found: warn
       - name: EXP-0002B preregistered split manifest (hash only; no FINAL search)
         run: python -m packages.kernel --mode preflight --output .run/EXP-0002B-preflight.json

@@ -5,7 +5,8 @@ from unittest.mock import patch
 
 from packages.exp0003a import (
     FAMILIES, ID_VERSION, TRAIN_TOTAL, digest, generate_train, opaque_id,
-    private_train_manifest, sleep, train_report, wake,
+    private_train_manifest, sleep, train_bundle, train_report,
+    _issue_wake_receipt, stable_episode_payload, wake,
 )
 from packages.library import DEFAULT_PRIMITIVES, DEFAULT_REGISTRY
 from packages.protocol import Example, parse_task, program_hash
@@ -98,15 +99,17 @@ class Exp0003ATrainTests(TestCase):
                          (good.trace_sha256, good.tested_candidates, good.primitive_invocations))
         self.assertEqual(bad.audit_correct, False)
         self.assertNotEqual(bad.audit_evidence_ref, good.audit_evidence_ref)
-        self.assertEqual(len(sleep((bad,))), 0)
-        with self.assertRaisesRegex(ValueError, "Unaudited"):
-            sleep((replace(bad, status="success"),))
+        receipt = _issue_wake_receipt(bad)
+        self.assertEqual(len(sleep((bad,), trusted_receipts=(receipt,))), 0)
+        with self.assertRaisesRegex(ValueError, "receipt mismatch"):
+            sleep((replace(bad, status="success"),), trusted_receipts=(receipt,))
 
     def test_sleep_extracts_from_recorded_ast_not_oracle_or_resynthesis(self):
         selected = self.cases[80:120]  # both normalize families
         episodes = tuple(wake(c.task, private_audit=c.private_audit) for c in selected)
+        receipts = tuple(_issue_wake_receipt(e) for e in episodes)
         with patch("packages.synthesis.synthesize", side_effect=AssertionError("must not search")):
-            proposals = sleep(episodes)
+            proposals = sleep(episodes, trusted_receipts=receipts)
         self.assertGreater(len(proposals), 0)
         self.assertEqual(
             [(p.candidate.occurrences, p.candidate.skill_id) for p in proposals],
@@ -125,6 +128,68 @@ class Exp0003ATrainTests(TestCase):
                              tuple("wake:" + x for x in p.candidate.provenance))
         self.assertEqual(tuple(p.op_id for p in DEFAULT_REGISTRY.primitives),
                          tuple(p.op_id for p in DEFAULT_PRIMITIVES))
+
+    def test_evaluator_receipts_reject_ast_status_and_trace_tampering(self):
+        from packages.protocol import Call, Input
+        cases = (self.cases[0], self.cases[1])
+        episodes = tuple(wake(c.task, private_audit=c.private_audit) for c in cases)
+        receipts = tuple(_issue_wake_receipt(e) for e in episodes)
+        alternative = Call("upper", Call("trim", Input()))
+        for field, modified in (
+            ("program_ast", replace(episodes[0], program_ast=alternative)),
+            ("status", replace(episodes[0], status="audit_rejected")),
+            ("audit", replace(episodes[0], audit_evidence_ref="audit-sha256:" + "0" * 64)),
+            ("trace", replace(episodes[0], trace_sha256="0" * 64)),
+            ("count", replace(episodes[0], tested_candidates=999)),
+        ):
+            with self.subTest(field=field):
+                with self.assertRaisesRegex(ValueError, "receipt mismatch"):
+                    sleep((modified, episodes[1]), trusted_receipts=receipts)
+        with self.assertRaisesRegex(ValueError, "Missing or extra"):
+            sleep(episodes, trusted_receipts=receipts[:1])
+        with self.assertRaisesRegex(ValueError, "Duplicate trusted"):
+            sleep(episodes, trusted_receipts=(receipts[0], receipts[0]))
+        # Timestamp noise can change but never authenticates a different AST.
+        noisy = replace(episodes[0], search_cpu_ms=episodes[0].search_cpu_ms + 100)
+        self.assertEqual(stable_episode_payload(noisy),
+                         stable_episode_payload(episodes[0]))
+        self.assertEqual(len(sleep((noisy, episodes[1]), trusted_receipts=receipts)), 0)
+
+    def test_private_replay_evidence_and_cost_separation(self):
+        public, private = train_bundle()
+        self.assertEqual(len(private["rows"]), 160)
+        self.assertEqual(len(private["wake_receipts"]), 160)
+        self.assertEqual(digest(private["rows"]), private["private_rows_sha256"])
+        self.assertEqual(private["private_rows_sha256"],
+                         public["private_manifest"]["private_rows_sha256"])
+        self.assertEqual(digest(private["wake_receipts"]),
+                         public["trusted_receipts_sha256"])
+        self.assertEqual(private["wake_receipts_sha256"],
+                         public["trusted_receipts_sha256"])
+        for row, episode, receipt in zip(
+            private["rows"], public["episodes"], private["wake_receipts"]
+        ):
+            self.assertEqual(row["task_id"], episode["task_id"])
+            self.assertEqual(row["audit_evidence_ref"], episode["audit_evidence_ref"])
+            self.assertEqual(receipt["episode_sha256"],
+                             digest({k: v for k, v in episode.items()
+                                     if not k.endswith("_ms")}))
+            self.assertEqual(len(row["public_task"]["examples"]), 2)
+            self.assertIn("input", row["audit"])
+            self.assertIn("output", row["audit"])
+            self.assertEqual(row["seeds"].__len__(), 3)
+        self.assertNotIn("private_example", str(public))
+        self.assertNotIn("seeds", str(public))
+        self.assertIn("generator_cpu", public["train_cost_ms"])
+        self.assertIn("generator_wall", public["train_cost_ms"])
+        self.assertIn("sleep_cpu", public["train_cost_ms"])
+        self.assertIn("sleep_wall", public["train_cost_ms"])
+        for value in public["train_cost_ms"].values():
+            self.assertGreaterEqual(value, 0)
+        # Altering public task or raw audit must break the private manifest hash.
+        altered = list(private["rows"])
+        altered[0] = {**altered[0], "audit": {"input": "bad", "output": "bad"}}
+        self.assertNotEqual(digest(altered), public["private_manifest"]["private_rows_sha256"])
 
     def test_evidence_and_replay_are_train_only(self):
         report = train_report()

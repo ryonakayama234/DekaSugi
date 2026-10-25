@@ -298,6 +298,7 @@ flowchart TD
     R -.-> UI
 ```
 
+- **PR2 evidence trust boundary**: 評価器がWAKE直後に原本`WakeReceipt`を作り、SLEEPは原本との整合性チェックを行ってから監査済みASTのみを学習。private TRAIN元データと原本receiptは、学習器と分離したActions Artifact内別ファイルに保存（第三者非公開を意味しない）。生成器/WAKE/SLEEPのCPU/wallを別々に計測。
 - **PR2 implementation (TRAIN-only)**: `packages/exp0003a.generate_train` → 公開`TaskSpec` + generator-private`TrainCase` → `wake` (SEC-004 public search + isolated private audit) → `WakeEpisode` → `sleep` (audited-success AST only) → `SkillProposal`。実装範囲はTRAIN160のみ。Dream選別、B1/B2/B3 policy、DEV/FINAL/Registry昇格は計画のまま。
 - **Existing**: typed TaskSpec, constrained Synthesis, pure interpreter, Verification, EXP-0002 SkillCandidate extraction, canonical Registry SEC-004, primitive meter MEASURE-0001, EXP-0002B Kernel (その凍結方法は変更禁止)。
 - **Proposed only**: cycle orchestration、append-only Episodes/Proposal/Dream/CycleSnapshot/Evidence、versioned Dream generator and selection、4arm Evaluatorとread-only UI投影。中央のboxesは論理保存領域であって新DB製品の採用を意味しない。

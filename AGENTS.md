@@ -141,3 +141,5 @@
 - 候補・runは正式Registry採用でも未知課題での性能改善でもない。source SHA/記録hash/traceとSEC-004/MEASURE-0001の検証を同期し、CIと最新headの`@codex review`後に統合を判断。
 
 - PR2の技術的追記: SLEEPでは候補2件以上あってもランキング首位1件だけ`candidate`とし他は`withheld`。TRAINエピソードは上書き禁止のJSONLと集計JSONでCI Artifactに保存し、ファイルSHA-256を別途記録する。
+
+- 2026-10-26 合意: PR2は監査器が発行したoriginal `WakeReceipt`でAST/trace/監査判定を拘束し、SLEEPの任意改変入力を拒否する。公開repoのTRAIN監査元データは外部秘匿ではなく学習入力から隔離し、実際に使用したprivate行を別Artifactファイルへ保存して独立照合を可能にする。generator/WAKE/SLEEP CPU/wallは区分計測し、変更後の独立Codexレビューまで統合禁止。

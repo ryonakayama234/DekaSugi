@@ -37,6 +37,7 @@ flowchart TD
 - read-modelはIDs、参照hash、権限、run状態を投影するのみ。原始結果の数値をUI上で勝手に独立計算しない。
 - `cycle_id` / `episode_id` / `proposal_id` / `dream_case_id` / `evaluation_id` の相互参照で、パネル横断ドリルダウンを支える。`dream_case_id`/`pool_id`/非公開`source_record_id`と公開TaskSpec由来の不透明な`task_id`は[ID-v1](../../experiments/EXP-0003A/plan.md)で区別する。家系・split・seedをUI閲覧用に投影できても、Kernelの入力には混ぜない。削除されたPR/実験ではリンク切れ・欠測を表示する。
 - 状態は`planned -> implemented -> evaluated -> accepted/rejected/withheld`を混同せず、同じ`status`と`evidence_ref`に従う。FINAL非公開の間はhash/件数等のメタデータを表示可、正答・結果は不可。
+- PR2の監査元データ・`WakeReceipt`原本は評価器用の証拠ファイルの責務。UI-05は公開可能な監査hash・検証状態のみを投影し、第三例の生入力/出力を学習器の入力へ取り込まない。
 - PR2で`WakeEpisode.to_dict()`と`SkillProposal.to_dict()`のTRAIN側投影元が実装済み。UI-05とUI-02の出典として参照可能だが、画面・read-model API・永続DBはまだ未実装。UI-01/03/04は引き続き計画のみ。read-only projectionは生private auditを出さない。
 - 実装がUI未対応でも、モジュール追加ごとに本対応表を更新。新パネル追加の条件は独立責務と参照データの定義があること。
 
