@@ -132,4 +132,5 @@
 - [plan-v1](experiments/EXP-0003A/plan.md)の方法・数値採否・split・seed・Dream配分・凍結ゲートは、コード実装や新結果の前に独立レビューし、採用後は歴史的記録として不変。方法上の矛盾があれば人間へ相談し、別version・新FINALで再合意。PR1はdocs-only、EXP-0003AのTRAIN/DEV/FINALやDreamを実行しない。
 - WAKE→SLEEP→DREAM→独立Evaluatorで、技能発見と既存DSL外の表現力増加を厳密に区別。EXP-0002B FINAL112は既採点のためEXP-0003Aのholdoutとして再利用しない。
 - 新しいコードのPRは[ARCH-001](docs/architecture/system.md)・[ARCH-002](docs/architecture/contracts.md)・[ARCH-UI-001](docs/architecture/ui-panels.md)・[run index](experiments/EXP-0003A/runs/README.md)を**同時**に更新。画面の各パネルは唯一のbackend/data責務に対応し、UIによる独立判定・技能昇格は禁止。
+- ID-v1は公開TaskSpec由来hashの`task_id`で5NN同距離を処理し、出典`source_record_id`/Dream `pool_id`はprivate manifestだけに保持。IDと同点規則は[plan](experiments/EXP-0003A/plan.md)に事前固定し、学習器へfamily/split/seedを渡さない。
 - 任意コード/外部I/O禁止、SEC-004 canonical trust gate、MEASURE-0001の原始演算meter、型付きAST展開後予算、候補Registry隔離、非公開audit/family/seed/splitの学習漏洩防止を維持。重大な設計不整合やP1/P0レビュー指摘はmain統合前に停止。

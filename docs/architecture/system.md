@@ -300,5 +300,5 @@ flowchart TD
 
 - **Existing**: typed TaskSpec, constrained Synthesis, pure interpreter, Verification, EXP-0002 SkillCandidate extraction, canonical Registry SEC-004, primitive meter MEASURE-0001, EXP-0002B Kernel (その凍結方法は変更禁止)。
 - **Proposed only**: cycle orchestration、append-only Episodes/Proposal/Dream/CycleSnapshot/Evidence、versioned Dream generator and selection、4arm Evaluatorとread-only UI投影。中央のboxesは論理保存領域であって新DB製品の採用を意味しない。
-- **Trust boundary**: Dreamの合成正解やpublic examplesをFINALの代わりにしない。private audit・family・seed・splitはlearner APIへ流さない。未承認技能は隔離されたRegistryのみに載せ、標準Libraryへ自動昇格しない。
+- **Trust boundary**: ID-v1では`TaskSpec.task_id`は公開2例だけをhash化した不透明な識別子で、family/split/seedを含むgenerator/evaluator専用の`source_record_id`/`pool_id`は別管理（[契約](contracts.md)）。Dreamの合成正解やpublic examplesをFINALの代わりにしない。private audit・family・seed・splitはlearner APIへ流さない。未承認技能は隔離されたRegistryのみに載せ、標準Libraryへ自動昇格しない。
 - **Research scope**: 1周期、原始演算はtrim/lower/upper固定。未知のprimitive意味論・異領域転移は未実証。詳細は[pre-registration](../../experiments/EXP-0003A/plan.md)、[spec](../specs/EXP-0003A.md)、[ARCH-002](contracts.md)、[UI map](ui-panels.md)。

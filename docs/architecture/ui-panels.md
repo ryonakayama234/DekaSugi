@@ -35,7 +35,7 @@ flowchart TD
   G --> E
 ```
 - read-modelはIDs、参照hash、権限、run状態を投影するのみ。原始結果の数値をUI上で勝手に独立計算しない。
-- `cycle_id` / `episode_id` / `proposal_id` / `dream_case_id` / `evaluation_id` の相互参照で、パネル横断ドリルダウンを支える。削除されたPR/実験ではリンク切れ・欠測を表示する。
+- `cycle_id` / `episode_id` / `proposal_id` / `dream_case_id` / `evaluation_id` の相互参照で、パネル横断ドリルダウンを支える。`dream_case_id`/`pool_id`/非公開`source_record_id`と公開TaskSpec由来の不透明な`task_id`は[ID-v1](../../experiments/EXP-0003A/plan.md)で区別する。家系・split・seedをUI閲覧用に投影できても、Kernelの入力には混ぜない。削除されたPR/実験ではリンク切れ・欠測を表示する。
 - 状態は`planned -> implemented -> evaluated -> accepted/rejected/withheld`を混同せず、同じ`status`と`evidence_ref`に従う。FINAL非公開の間はhash/件数等のメタデータを表示可、正答・結果は不可。
 - 実装がUI未対応でも、モジュール追加ごとに本対応表を更新。新パネル追加の条件は独立責務と参照データの定義があること。
 
