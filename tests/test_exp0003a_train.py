@@ -114,8 +114,9 @@ class Exp0003ATrainTests(TestCase):
                    key=lambda v: (-v[0], v[1])),
         )
         successes = {e.task_id: e for e in episodes if e.status == "success"}
+        self.assertEqual([p.status for p in proposals],
+                         ["candidate"] + ["withheld"] * (len(proposals) - 1))
         for p in proposals:
-            self.assertEqual(p.status, "candidate")
             self.assertGreaterEqual(p.candidate.occurrences, 2)
             self.assertEqual(p.candidate.body_hash, program_hash(p.candidate.body_ast))
             self.assertEqual(p.candidate.occurrences, len(p.candidate.provenance))

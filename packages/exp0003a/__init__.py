@@ -5,7 +5,7 @@ The sole method authority is experiments/EXP-0003A/plan.md (ID-v1).
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from hashlib import sha256
 import json
 import platform
@@ -262,7 +262,7 @@ class SkillProposal:
     proposal_id: str
     candidate: SkillCandidate
     source_episode_ids: tuple[str, ...]
-    status: Literal["candidate"] = "candidate"
+    status: Literal["candidate", "withheld"] = "candidate"
 
     def to_dict(self) -> dict[str, object]:
         return {
@@ -317,9 +317,13 @@ def sleep(episodes: Sequence[WakeEpisode]) -> tuple[SkillProposal, ...]:
             candidate=skill,
             source_episode_ids=tuple("wake:" + task_id for task_id in skill.provenance),
         ))
-    return tuple(sorted(
+    ranked = sorted(
         proposals, key=lambda p: (-p.candidate.occurrences, p.candidate.skill_id),
-    ))
+    )
+    return tuple(
+        replace(proposal, status="candidate" if index == 0 else "withheld")
+        for index, proposal in enumerate(ranked)
+    )
 
 
 def _source_metadata() -> dict[str, object]:
