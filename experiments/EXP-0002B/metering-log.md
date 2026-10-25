@@ -1,7 +1,7 @@
 # MEASURE-0001 — Canonical-meter integration and audit
 
 id: MEASURE-0001-AUDIT
-status: implementation committed; independent review and CI pending
+status: CI-passed and Codex code-reviewed; integration tracked by PR #18
 updated: 2026-10-25
 tags: experiment, audit, measurement, security, exp0002b
 
@@ -24,9 +24,10 @@ An optional per-arm counter can observe verifier-time **canonical primitive invo
 6. The metric excludes AST/hash/feature/kernel and wall/CPU total; do not claim speed or fresh generalization.
 
 ## Execution record
-- Code/tests PR head: pending CI at exact commit.
-- Docs check, unittest and EXP-0001/EXP-0002 smoke: pending.
-- `@codex review`: pending; all serious findings must be resolved before merge.
+- Implementation PR [#18](https://github.com/ryonakayama234/DekaSugi/pull/18) code-and-doc head `00e8bee8e30cbcd0514c2f989b9a89fdc67e4669`: [GitHub Actions run #40152416447](https://github.com/ryonakayama234/DekaSugi/actions/runs/40152416447) **success**.
+- Job `verify`: docs validation, full unit test suite, EXP-0001 preregistered suite, EXP-0002 diagnostic rerun and both artifact uploads reported success. New nine metering tests augment the existing 26 regression tests. Local WSL2 execution was not performed.
+- GitHub `@codex review` code-review status for head `00e8bee`: **completed, has_any_findings=false, has_unresolved_findings=false**. This is not an explicit APPROVED review or a separately completed security review.
+- Audit document updates after head `00e8bee` require CI and Codex recheck on their own final SHA before merge. Main integration/closure recorded on PR #18 and Issue #17; do not retroactively rewrite historical runs.
 - Old [PR #9 smoke observation](https://github.com/ryonakayama234/DekaSugi/blob/exp/0002b-primitive-meter/experiments/EXP-0002B/runs/20261024-0758-metering-smoke.md) is historical **diagnostic**, not validation of the newly secured implementation.
 - Future EXP-0002B FINAL and learned policy: **not run**.
 

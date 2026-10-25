@@ -1,7 +1,7 @@
 # MEASURE-0001 — Canonical primitive invocation meter
 
 id: MEASURE-0001
-status: implemented in integration PR; CI/review pending
+status: implemented; CI and Codex code review passed; integration tracked via PR #18
 updated: 2026-10-25
 tags: architecture, instrumentation, cost-accounting, security, exp0002b
 
@@ -55,7 +55,7 @@ For each same-task paired comparison, two **fresh** `PrimitiveCallMeter` objects
 }
 ```
 
-The example illustrates the format; totals alone are the experimental assertions. For precise `by_op` observations, use machine-readable CI artifacts rather than treating the illustrative breakdown as measured evidence.
+The example illustrates the schema and is not a measured comparison. Tests assert precise total and by-operation values in controlled examples; machine-readable artifacts hold actual observations. For precise `by_op` observations, use machine-readable CI artifacts rather than treating the illustrative breakdown as measured evidence.
 
 - Primitive calls count **actual invocations during verifier example checks**, including `trim/lower` inside macros. The increment precedes the canonical primitive call. Identity can use zero primitives.
 - This does **not** count AST construction/type checks, candidate hashing, macro reconstruction, task features, Kernel selection/training, memory, Python execution overhead or total CPU time. `elapsed_ms` includes metering overhead; do not interpret measured vs unmeasured elapsed time as a speedup.

@@ -112,7 +112,7 @@ flowchart TD
 - この境界はEXP-0002の`bounded_synthesize`に限定される。任意のPythonコードや同一プロセスの攻撃者からの完全な隔離を意味しない。新Kernelの実装やFINAL評価には進んでいない。
 - [SEC-004の回帰・監査記録](../../experiments/EXP-0002/reviews/20261025-registry-snapshot-boundary.md)と[Issue #14](https://github.com/ryonakayama234/DekaSugi/issues/14)を参照。
 
-## MEASURE-0001: 実行時primitive計測（統合PR、まだKernel学習なし）
+## MEASURE-0001: 実行時primitive計測（PR #18、まだKernel学習なし）
 
 ```mermaid
 flowchart TD
