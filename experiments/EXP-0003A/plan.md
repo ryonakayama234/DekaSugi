@@ -11,7 +11,7 @@ tags: exp0003a, preregistration, wake-sleep, dream, ablation
 - H0: 同じ基本演算と探索予算では、経験から作ったマクロもDreamも未知課題の監査付き正答と実際の探索費用を改善しない。
 - H1: WAKEの成功解法から、手動で技能本体を教えずに、型・body hash・出典を持つ再利用可能なSkillCandidateを決定的に抽出できる。
 - H2: その候補をTRAINだけで使い分けると、独立FINALで基本演算のみの条件より探索費用が減ることがある。
-- H3 (primary): 同数・同family配分の仮想課題について、反証に近い例を選ぶDreamは、ランダムDreamより未知課題での技能使用の費用を減らす。**効果ゼロ/悪化も正規の結果**。
+- H3 (primary): 同数・同family配分の仮想課題について、技能の正例に特徴が近い例を選ぶDreamは、ランダムDreamより未知課題での技能使用の費用を減らす。**効果ゼロ/悪化も正規の結果**。
 - この実験はマクロの探索上の有用性を調べる。既存DSLで表現不能な変換、新原始演算、領域間転移、総CPU高速化を初期から仮定しない。
 
 ## Scope / 介入と固定対象
@@ -27,10 +27,10 @@ tags: exp0003a, preregistration, wake-sleep, dream, ablation
 - 8 familyをこの順で固定: `identity`, `trim`, `lower`, `upper`, `normalize_lower` (lower(trim(x))), `normalize_upper` (upper(trim(x))), `reverse_ood`, `replace_first_ood`。後二者はprimitive-only DSLで表現できない陰性/領域外対照。新しい表現能力を獲得したという主張はしない。
 - TRAIN=8 family ×20 = **160問**、DEV=8×8 = **64問**、FINAL=8×16 = **128問**。各問にpublic 2例と非公開audit 1例。splitごとに異なる文字集合: TRAIN `abcdeFGHIJ`、DEV `klmnoPQRST`、FINAL `uvwxyUVWXY`（ASCIIのみ）。3例は個別乱数系列で生成。文字列長3〜7、異なる文字を2種以上含み、非回文。identity以外のfamilyは表記・前後空白などを調整して非自明な変換になるよう、後述条件で棄却サンプリングする。
 - 条件: identityは空白なし、trimは前後にASCII空白を必ず含む、lowerは大文字を1個以上含み空白なし、upperは小文字1個以上含み空白なし、normalize_lowerは前後空白と大文字を含む、normalize_upperは前後空白と小文字を含む、reverse_oodは入力非回文、replace_first_oodは先頭がZ以外で先頭のみZに置換。trim/normalizeの空白は`(" ", ""), ("  ", " "), ("\t", "\n")`を問番号+例番号で周期選択。無限ループ回避の上限4096回を超えたらfail closed。
-- 生成器は`random.Random(seed)`。シードは衝突しない名前空間: TRAIN 110000000、DEV 210000000、FINAL 310000000、DREAM 410000000。各レコード例の`seed = master + 100000*family_index + 10*task_index + example_index` (example_index=0,1,2)。dream poolのtask_index=0..63。各split task_indexは0始まり。同一seed/同一task_id/公開入力重複はfail closed（重複の際に結果を見て再抽選しない）。
+- 生成器は`random.Random(seed)`。シードは衝突しない名前空間: TRAIN 110000000、DEV 210000000、FINAL 310000000、DREAM 410000000。各レコード例の`seed = master + 100000*family_index + 10*task_index + example_index` (example_index=0,1,2)。dream poolのtask_index=0..63。各split task_indexは0始まり。同一seed・同一task_idやsplitをまたぐ同一公開I/Oレコードはfail closed。**同一split内で偶然重なる文字列入力は許容し重複件数をmanifestで報告**（結果に合わせた再抽選は禁止）。
 - DREAM候補プールはTRAINアルファベット、family各64問の**512問**を独立DREAM seedで生成し、B2/B3共通の入力プールにする。両方とも各familyから12問ずつ計**96問**を追加教師観測に使用。
 - B2ランダムDream: 各familyの64プールを固定seedから導出した順序（`random.Random(510000000 + family_index).shuffle(indices)`）で先頭12件採用。B3 Counterfactual Dream: 各familyの候補と**WAKEで技能ONが監査正解・OFFよりprimitive削減になった課題**との8次元feature平均L1距離の最小値が小さい順に12件選択。同距離ならpool ID辞書順。各familyの層化件数を同じに保ち、**類似しているのに技能が役立たない負例**を狙う（positive familyも同じ規則を適用）。参照用ON正例が0件ならB3生成をFAILとし、恣意的に条件を変更しない。
-- Dreamでは生成根拠のプログラムまたは変換familyとその第三auditから教師信号を独立確認するが、Kernel方策の入力は公開2例のTaskSpec特徴と、実際に行ったpaired search/cost観測だけ。非公開audit・family・seed・split・正解変換ID・生成元programは選択関数に渡さない。
+- Dreamでは生成根拠のプログラムまたは変換familyとその第三auditから教師信号を独立確認する。\`reverse_ood\`/\`replace_first_ood\`の参照変換は信頼された**benchmark generator内の正解データ生成**に限り、DekaSugiのDSL primitive/実行用Registryには追加しない。Kernel方策の入力は公開2例のTaskSpec特徴と、実際に行ったpaired search/cost観測だけ。非公開audit・family・seed・split・正解変換ID・生成元programはKernel方策の\`choose\`関数に渡さない。
 - 公開seedの合成family評価であり、blindな自然分布テストではない。FINALの課題を事前登録後に採点したら、同じFINALを方法修正後の確認試験には用いない。
 
 ## Experimental arms / 厳密な対照
