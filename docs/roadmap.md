@@ -26,3 +26,7 @@ tags: milestones, roadmap, planning
 ## EXP-0002B TRAIN-only実装 (2026-10-25)
 - 計画v2を不変更で使い、別PRでsplit generator、8D features、TRAIN 144 paired comparison、conservative 5NN policy and hash snapshotを実装する。
 - 後続のDEV/FINAL研究評価は独立レビューとfreezeの後。今回の実装・テストだけで改善・汎化成功を主張しない。[監査記録](../experiments/EXP-0002B/reviews/20261025-train-only-kernel.md)。
+
+## EXP-0002B 評価器の実装ゲート (2026-10-25)
+- 凍結したTRAIN方策でのみDEV smokeとFINALを評価。PRのCIはTRAIN-fixtureだけ、main pushではDEVだけを実行。
+- FINAL112問の実行トリガーは評価コードの独立レビューとDEV証拠取得の後に別PRで開く。学習方法のretune、性能の過大主張は禁止。[評価監査](../experiments/EXP-0002B/reviews/20261025-evaluator-gate.md)。

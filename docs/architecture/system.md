@@ -199,3 +199,20 @@ flowchart TD
 ```
 
 学習済みPolicySnapshotはTRAIN-only CIで再現一致を確認。後続評価では新しい課題を見て再学習せず、[凍結記録](../../experiments/EXP-0002B/freeze-v2.md)に固定したhashを照合する。
+
+## EXP-0002B 評価器の境界（PRではDEV/FINAL未実行）
+
+```mermaid
+flowchart TD
+    H["Freeze manifest and reproduced policy"] --> V{"Source / data / policy hashes match?"}
+    V -->|no| STOP["No evaluation"]
+    V -->|yes| S["PolicyDecision before any outcome"]
+    S --> F["OFF, ON, LEARNED separate measured trials"]
+    F --> A["Independent audit: withheld third example"]
+    A --> R["Report per task and per family"]
+    R --> D["DEV smoke on main push after code review"]
+    R -.-> G["Separate future FINAL activation review"]
+```
+
+- [評価実装](../../packages/kernel/evaluation.py)は[凍結点](../../experiments/EXP-0002B/freeze-v2.md)に一致する学習方策のみ受け入れる。
+- PRのCIで実DEV/FINALの成果を開かない。現PRのmain pushはDEV engineering smokeのみ、FINALは別PRの品質ゲートが必要。[詳細](../../experiments/EXP-0002B/reviews/20261025-evaluator-gate.md)。

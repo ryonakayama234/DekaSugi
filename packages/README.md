@@ -51,3 +51,10 @@ tags: packages, modularity, api
 | `kernel` | `generate_partition`, `dataset_manifest`, `features`, `train`, `choose`, `PolicySnapshot` | experimental TRAIN-only; CI/review pending |
 
 Generatorは3分割の内容hashを計算するが、Kernelの判断と監査付き費用実験はTRAINでのみ実行する。FINAL評価経路と技能の自動昇格は未実装。[Audit](../experiments/EXP-0002B/reviews/20261025-train-only-kernel.md)。
+
+## EXP-0002B 実験評価器
+| Module | API | State |
+|---|---|---|
+| `kernel.evaluation` | `load_and_check_freeze`, `evaluate_record`, `run_evaluation`, `summarize` | code review pending; PR no DEV/FINAL outcomes; main DEV smoke only |
+
+原始演算の計数は既存のcanonical meterに委譲。FINALは別のレビューゲートでのみ実行。[監査](../experiments/EXP-0002B/reviews/20261025-evaluator-gate.md)。

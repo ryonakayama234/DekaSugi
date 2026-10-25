@@ -70,3 +70,7 @@ python -m packages.kernel --mode train --output .run/EXP-0002B-train-only.json
 ## EXP-0002B — 評価前に固定した学習方策
 
 TRAIN144問での学習と復元可能なKNN方策がCIで一致。**[DatasetとPolicySnapshotの凍結記録](experiments/EXP-0002B/freeze-v2.md)**を先に保存してから、DEVとFINALの別工程で独立評価する。現在の記録はTRAIN証拠のみであり、汎化性能の主張ではない。
+
+## EXP-0002B — DEVとFINALの独立ゲート
+
+学習済みKernelの改変を検出する評価器を[監査手順](experiments/EXP-0002B/reviews/20261025-evaluator-gate.md)として追加。コードPR内では訓練fixturesのみをテストし、レビュー済みmainでDEV smokeを実施する。FINALは独立レビューを経た別トリガーが設定されるまで実行しない。
