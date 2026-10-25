@@ -1,5 +1,6 @@
 """EXP-0002B freeze-gated evaluation tests; NEVER invoke DEV or FINAL outcomes."""
 import json
+from dataclasses import replace
 from pathlib import Path
 import tempfile
 import unittest
@@ -22,6 +23,7 @@ class FreezeGatedEvaluationTests(unittest.TestCase):
         self.assertEqual(manifest["generator_source_sha256"],
                          fixed["generator_source_sha256"])
         self.assertEqual(evidence["training_task_count"], 144)
+        self.assertEqual(len(fixed["frozen_execution_source_git_blob_sha1"]), 9)
         self.assertEqual(fixed["partitions"], {"train": 144, "dev": 48, "final": 112})
 
     def test_tamper_fails_closed_before_dev_evaluation(self):
@@ -36,6 +38,25 @@ class FreezeGatedEvaluationTests(unittest.TestCase):
                     run_evaluation("dev", freeze_path=path)
         with self.assertRaises(ValueError):
             run_evaluation("invalid")
+
+    def test_runtime_source_mismatch_fails_closed_before_any_outcomes(self):
+        original = json.loads(FROZEN_RECORD.read_text(encoding="utf-8"))
+        forged = json.loads(json.dumps(original))
+        forged["frozen_execution_source_git_blob_sha1"]["packages/runtime/__init__.py"] = "0"*40
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "bad-sources.json"
+            path.write_text(json.dumps(forged), encoding="utf-8")
+            with patch("packages.kernel.evaluation.evaluate_record",
+                       side_effect=AssertionError("DEV search executed")):
+                with self.assertRaisesRegex(ValueError, "execution source manifest"):
+                    run_evaluation("dev", freeze_path=path)
+        from packages.kernel.evaluation import _git_blob_hash
+        original_hash = _git_blob_hash(Path(__file__).resolve().parents[1] /
+                                      "packages/runtime/__init__.py")
+        with patch("packages.kernel.evaluation._git_blob_hash", return_value="0"*40):
+            with self.assertRaisesRegex(ValueError, "execution source"):
+                load_and_check_freeze()
+        self.assertEqual(len(original_hash), 40)
 
     def test_train_only_fixture_uses_independent_three_arms(self):
         evidence = train()
@@ -61,6 +82,10 @@ class FreezeGatedEvaluationTests(unittest.TestCase):
         self.assertEqual(report["oracle_source_action"], "ON")
         self.assertNotIn("audit", report["policy_decision"])
         self.assertNotIn("family", report["policy_decision"])
+        for arm in ("off", "on", "learned"):
+            self.assertGreaterEqual(report[arm]["trial_cpu_ms_including_audit"], 0)
+            self.assertGreaterEqual(report[arm]["trial_wall_ms_including_audit"], 0)
+        self.assertGreaterEqual(report["policy_inference_cpu_ms"], 0)
 
     def test_oracle_correctness_priority_and_tie_off(self):
         a = {"audit_correct": True, "primitive_invocations": 9,
@@ -84,6 +109,8 @@ class FreezeGatedEvaluationTests(unittest.TestCase):
         self.assertEqual(out["policy_adoption"], "not_applicable")
         self.assertEqual(out["numeric_acceptance_gates"], {})
         self.assertEqual(out["bootstrap"]["resamples"], 1000)
+        self.assertIn("trial_cpu_ms_including_audit", out["comparison"]["off"])
+        self.assertIn("inference_cpu_ms", out["policy_decisions"])
         # Do not evaluate any actual FINAL instance in this test suite.
 
 

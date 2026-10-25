@@ -34,3 +34,6 @@ tags: experiment, freeze, policy-snapshot, provenance, pre-final, exp0002b
 4. いずれの採用ゲートにも達しなければ`not_demonstrated`を明記し、失敗を含めて結果を保存。
 
 [研究Issue #7](https://github.com/ryonakayama234/DekaSugi/issues/7) / [TRAIN-only監査](reviews/20261025-train-only-kernel.md) / [run索引](runs/README.md)。
+
+## 実行ソースの追加保全（DEV/FINAL開始前）
+実行時コード`runtime`・`verification`・`evaluation`・`learning`・`kernel`・`protocol`・`synthesis`・`library`等の9ソースについて、最初の学習済み方策を作ったmain commit `2cd159af1815690d46105bc785c7d31cd88919fd`のGit blob SHA-1を[freeze-v2.json](freeze-v2.json)に追記した。後続評価では生成器・方策hashに加えて**これらのファイルの中身の一致**を検査し、変更がある場合はDEV/FINALを開く前に拒否する。科学的方法とTRAIN方策hashは変更しない。評価器自体は独立のコードレビュー対象。

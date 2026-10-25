@@ -30,3 +30,5 @@ EXP-0002B has **no train/learned-Kernel/fresh FINAL result**. MEASURE-0001 uses 
 - `python -m packages.kernel.eval_cli --phase dev --output .run/EXP-0002B-DEV-smoke.json` はレビュー済み**main pushだけ**で自動実行するengineering smoke。学習・閾値調整には使わない。
 - `--phase final`の評価コードは独立レビューの対象だが、FINALへのGitHub Actions実行トリガーは**このPRには含めない**。
 - [ゲート監査](../reviews/20261025-evaluator-gate.md) / [freeze](../freeze-v2.md)。
+
+- DEV/FINALでは最初に[実行器・Verifier・meter等9ファイルの固定Git blobハッシュ](../freeze-v2.json)もチェックする。不一致なら評価前に停止する。

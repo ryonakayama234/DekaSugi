@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from dataclasses import asdict
-from hashlib import sha256
+from hashlib import sha1, sha256
 import json
 import math
 from pathlib import Path
@@ -32,6 +32,41 @@ from packages.verification import verify
 
 FROZEN_RECORD = Path(__file__).resolve().parents[2] / "experiments/EXP-0002B/freeze-v2.json"
 
+# Trust anchor: exact Git blob IDs read from the ORIGINAL, pre-DEV/FINAL
+# integration main tree 2cd159af1815690d46105bc785c7d31cd88919fd. The evaluator may evolve
+# separately under review; all executable dependencies must remain identical.
+EXPECTED_EXECUTION_BLOBS = {
+    "packages/__init__.py": "91918ba4b6a59ec51bb1f8ca28683a9319dcbc2d",
+    "packages/evaluation/__init__.py": "c966d28bf42287d4f653eb56a59741e1e6d5cc4f",
+    "packages/kernel/__init__.py": "5e19e2921301ead325c31d2dbc1a63f8f8c41e28",
+    "packages/learning/__init__.py": "7345ab338bd374bbe856ef9a30af1798b0638f5e",
+    "packages/library/__init__.py": "3fdecc6a5425432f936c32a396d0cb8d9870b710",
+    "packages/protocol/__init__.py": "4083e8b49a863007a86ba26deaf0147802b558d9",
+    "packages/runtime/__init__.py": "e7d1796968fc41ce63bdf02707bd1757a3cdae3a",
+    "packages/synthesis/__init__.py": "4e850285b257da97b023a599bfeeaae375972d6d",
+    "packages/verification/__init__.py": "2b7e2bf9dcfd0934c632f6eeb7690faabf95b4d6"
+}
+
+
+def _git_blob_hash(path: Path) -> str:
+    content = path.read_bytes()
+    return sha1(b"blob " + str(len(content)).encode("ascii") + b"\\0" + content).hexdigest()
+
+
+def _check_execution_sources(frozen: dict[str, object]) -> None:
+    if frozen.get("source_main_commit") != "2cd159af1815690d46105bc785c7d31cd88919fd":
+        raise ValueError("Freeze mismatch: training source commit")
+    if frozen.get("frozen_execution_source_git_blob_sha1") != EXPECTED_EXECUTION_BLOBS:
+        raise ValueError("Freeze mismatch: trusted execution source manifest")
+    root = Path(__file__).resolve().parents[2]
+    for filename, expected in EXPECTED_EXECUTION_BLOBS.items():
+        try:
+            current = _git_blob_hash(root / filename)
+        except OSError as error:
+            raise ValueError(f"Freeze mismatch: missing execution source {filename}") from error
+        if current != expected:
+            raise ValueError(f"Freeze mismatch: execution source {filename}")
+
 
 def load_and_check_freeze(path: Path = FROZEN_RECORD):
     frozen = json.loads(path.read_text(encoding="utf-8"))
@@ -41,6 +76,7 @@ def load_and_check_freeze(path: Path = FROZEN_RECORD):
         raise ValueError("Frozen method version mismatch")
     if frozen["measurement_version"] != MEASUREMENT_VERSION or frozen["skill_body_sha256"] != SKILL_HASH:
         raise ValueError("Frozen canonical meter or skill mismatch")
+    _check_execution_sources(frozen)
     manifest = dataset_manifest()
     for key, a, b in (
         ("dataset_sha256", frozen["dataset_sha256"], manifest["dataset_sha256"]),
@@ -68,12 +104,17 @@ def load_and_check_freeze(path: Path = FROZEN_RECORD):
 
 def _trial(task, audit: Example, registry: Registry, learned: dict):
     meter = PrimitiveCallMeter()
+    trial_wall, trial_cpu = perf_counter(), process_time()
     result = bounded_synthesize(task, registry, learned, meter=meter)
     audit_valid = bool(result.status == "solved" and result.program is not None and
                        verify(result.program, (audit,), registry,
                               max_nodes=task.limits.max_ast_nodes).matched)
     invalid = result.status == "solved" and not audit_valid
+    trial_elapsed_wall_ms = (perf_counter() - trial_wall) * 1000
+    trial_elapsed_cpu_ms = (process_time() - trial_cpu) * 1000
     return {
+        "trial_wall_ms_including_audit": trial_elapsed_wall_ms,
+        "trial_cpu_ms_including_audit": trial_elapsed_cpu_ms,
         "search": result.to_dict(),
         "audit_correct": audit_valid,
         "audit_invalid_solved": bool(invalid),
@@ -100,7 +141,9 @@ def _oracle_choice(off: dict, on: dict) -> str:
 def evaluate_record(item, policy, skill, base, enabled):
     """Run one set of three independent measurements; no hidden labels for Kernel."""
     # CRITICAL: decision is computed before OFF/ON results, using TaskSpec only.
+    prediction_cpu_begin = process_time()
     decision = choose(item.task, policy)
+    prediction_cpu_ms = (process_time() - prediction_cpu_begin) * 1000
     choice = decision.action
     learned = {skill.skill_id: skill}
     off = _trial(item.task, item.audit, base, {})
@@ -126,6 +169,7 @@ def evaluate_record(item, policy, skill, base, enabled):
                                                        ensure_ascii=False,
                                                        separators=(",", ":")).encode()).hexdigest(),
         "policy_decision": asdict(decision),
+        "policy_inference_cpu_ms": prediction_cpu_ms,
         "off": off,
         "on": on,
         "learned": selected,
@@ -149,6 +193,8 @@ def _score(rows: list[dict], arm: str) -> dict[str, object]:
         "tested_candidates": sum(int(r[arm]["search"]["tested_candidates"]) for r in rows),
         "solved_status": sum(r[arm]["search"]["status"] == "solved" for r in rows),
         "not_found_status": sum(r[arm]["search"]["status"] == "not_found" for r in rows),
+        "trial_cpu_ms_including_audit": sum(r[arm]["trial_cpu_ms_including_audit"] for r in rows),
+        "trial_wall_ms_including_audit": sum(r[arm]["trial_wall_ms_including_audit"] for r in rows),
         "budget_exhausted_status": sum(r[arm]["search"]["status"] == "budget_exhausted" for r in rows),
     }
 
@@ -250,6 +296,7 @@ def summarize(rows: list[dict], training_evidence: dict, phase: str) -> dict[str
             "reasons": dict(sorted((reason, sum(d["reason"] == reason for d in decisions))
                                    for reason in {d["reason"] for d in decisions})),
             "inference_wall_ms": sum(d["inference_wall_ms"] for d in decisions),
+            "inference_cpu_ms": sum(r["policy_inference_cpu_ms"] for r in rows),
         },
         "training_primitive_invocations": training_cost,
         "training_wall_ms": training_evidence["training_wall_ms"],
@@ -269,10 +316,11 @@ def run_evaluation(phase: str, *, freeze_path: Path = FROZEN_RECORD):
     skill = _candidate()
     baseline = Registry(DEFAULT_PRIMITIVES)
     extended = registry_with_skill(skill, baseline)
-    before = perf_counter()
+    before, before_cpu = perf_counter(), process_time()
     rows = [evaluate_record(item, policy, skill, baseline, extended)
             for item in generate_partition(phase)]
     total_wall = (perf_counter() - before) * 1000
+    total_cpu = (process_time() - before_cpu) * 1000
     report = summarize(rows, training, phase)
     try:
         code_sha = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True,
@@ -291,6 +339,7 @@ def run_evaluation(phase: str, *, freeze_path: Path = FROZEN_RECORD):
         "python": sys.version.split()[0],
         "platform": platform.platform(),
         "run_total_wall_ms_excluding_train": total_wall,
+        "run_total_cpu_ms_excluding_train": total_cpu,
         "training_evidence_excludes_final": True,
         "final_has_been_scored": phase == "final",
         "report": report,

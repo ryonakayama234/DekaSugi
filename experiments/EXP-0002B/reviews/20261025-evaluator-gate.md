@@ -37,3 +37,7 @@ flowchart TD
 5. 成功・失敗の統計を恣意的に省略しない。FINALのいずれかの数値採用ゲートを下回れば`not_demonstrated`として記録し、デフォルト技能・Kernelに自動採用しない。
 
 [Issue #25](https://github.com/ryonakayama234/DekaSugi/issues/25) / [v2方法](../plan-v2.md) / [freeze](../freeze-v2.md) / [ARCH-001](../../../docs/architecture/system.md) / [ARCH-002](../../../docs/architecture/contracts.md)。
+
+## Codex指摘への修正（第2回）
+- **P1:** 方策／dataset hashだけではruntime・Verifier・meterの変更が検出できない。TRAIN元main commit `2cd159af1815690d46105bc785c7d31cd88919fd`の**9つの実行ソースGit blob hash**を凍結し、評価を開く前にファイル内容から照合。基準commitとmanifestの一致も必須、欠落・改変ならfail closed。評価器ソースは別PRの独立レビューを要求。
+- **P2:** 各armの探索～独立auditを含むCPU時間（process_time）・wall時間（perf_counter）、全評価のCPU/wall、およびKernel推論CPUをprimitive callsと区別してレポートへ追加。数値ゲート・アルゴリズム・generator・採否は変更しない。
