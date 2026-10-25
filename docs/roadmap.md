@@ -41,3 +41,9 @@ tags: milestones, roadmap, planning
 - PR #28はCIと**最新headのCodex独立レビュー**が通るまでmainへ統合しない。前節の「現在地」はDEV実施時点の履歴である。
 - 成功したレビュー後に指定squash-merge subjectと初回main pushでFINALを一度だけ評価、全結果の監査と学習・推論CPU償却を別記。失敗条件があればFINAL開始前に停止し、成功・失敗を同じ採否基準で報告する。[起動ゲート](../experiments/EXP-0002B/reviews/20261025-final-activation.md)。
 - EXP-0003/Wake–Sleepや技能の自動昇格は引き続き未着手。FINAL評価後の別提案・合意が必要。
+
+## 2026-10-25 研究上のマイルストーン：EXP-0002B FINAL112完了
+- [PR #28](https://github.com/ryonakayama234/DekaSugi/pull/28)：最初のCodex P1を文書同期で修正、最新head `a4ee859`に対する独立レビューは指摘なし、CI #40176002565成功、PR上FINALをスキップ。
+- main `37b3075`で[CI #40176125696](https://github.com/ryonakayama234/DekaSugi/actions/runs/40176125696)が一度だけFINAL112を実施。独立に再集計し、正確性・OFF比削減・ON比削減・OOD・尾部悪化の五つの数値基準すべてPASS。結論 `metrics_pass_not_promoted`（技能正式昇格なし）。
+- 学習費用11,904 primitive calls、推論CPU約29.68msを含む総費用利益は示されず、7 family/bootstrapの区間は0を含む。正解が80/112にとどまるのはreverse/replace_first未解決のため。[実測FINAL](../experiments/EXP-0002B/runs/20261025-final112.md)。
+- 本docs-only PRで限定FINAL起動トリガーを削除。次のEXP-0003（Wake–Sleep / Dream）へ進む前に、未知の能力を新たに構成する方法と独立保留評価を**別途提案して合意**する。

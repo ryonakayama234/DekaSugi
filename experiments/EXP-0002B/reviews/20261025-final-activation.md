@@ -1,7 +1,7 @@
 # EXP-0002B — FINAL112 activation gate / independent review
 
 id: EXP-0002B-FINAL-ACTIVATION
-status: approved by human; one-shot CI activation PR pending review; FINAL not evaluated
+status: reviewed and executed once; FINAL112 audited; trigger retired in follow-up PR
 updated: 2026-10-25
 tags: exp0002b, final, gate, preregistration, audit
 
@@ -23,3 +23,9 @@ tags: exp0002b, final, gate, preregistration, audit
 - If any frozen v2 numeric acceptance gate fails, record `not_demonstrated`. Even all numeric passes do **not** automatically promote to the default Registry; adoption requires a separate independent research decision.
 
 Related: [DEV run](../runs/20261025-dev-smoke.md) / [independent evaluator review](20261025-evaluator-gate.md) / [plan-v2](../plan-v2.md).
+
+## 実施完了・起動ゲート解除（2026-10-25）
+- 最初の[PR #28](https://github.com/ryonakayama234/DekaSugi/pull/28)レビューの文書整合性P1を修正し、修正後最終head `a4ee8592a94d1d091aeaac47475c97e1446db4be`は[PR CI #40176002565](https://github.com/ryonakayama234/DekaSugi/actions/runs/40176002565)成功、Codexの再レビュー `has_any_findings=false`、`has_unresolved_findings=false`。古いP1スレッドは返信・解決済み。
+- 承認タイトルでsquash-mergeしたmain `37b30752b46ea108d18dbdb531797e0106f52dc0`の[Actions #40176125696](https://github.com/ryonakayama234/DekaSugi/actions/runs/40176125696)が成功。FINALの実行とArtifact uploadは各1回のみ成功、後続runでは再実行しない。
+- 成果Artifact `12592665362`、ZIP SHA-256 `1a013bb9fc2a4fa70006c0b0e3e52b7120217f2e66364459a5d615b3db4b6304`。112問を読み出し、独立に五つの数値ゲートと7 cluster bootstrapを再集計して一致。詳細は[正式FINAL run](../runs/20261025-final112.md)。
+- 同じFINALへの偶発的な再計測を防ぐため、この文書同期PRでworkflowからFINAL実行・uploadの2ステップを削除。今後再実行はせず、新しい研究は別未使用holdoutで行う。

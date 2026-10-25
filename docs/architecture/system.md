@@ -256,3 +256,19 @@ flowchart TD
 - 上記承認subjectは `EXP-0002B FINAL112 activation [20261025-APPROVED]`。有効なのは `push(main)` かつ `github.run_attempt == 1` の場合のみで、通常のPR CIおよびmain pushでは評価しない。フリーズした方策・評価実装は変更しない。
 - 自動的な「永久に一度」の排他的ロックではないため、結果確保後に起動ステップを削除し、当該subjectを意図的に再利用しない。科学的ゲート通過と標準Registry昇格は別判定。
 - [起動ゲート監査](../../experiments/EXP-0002B/reviews/20261025-final-activation.md) / [既存DEV run](../../experiments/EXP-0002B/runs/20261025-dev-smoke.md)。
+
+## EXP-0002B FINAL112実測完了：数値ゲートPASS、トリガー退役 (2026-10-25)
+
+```mermaid
+flowchart TD
+    F["Frozen plan-v2 / 9 source blobs / snapshot hash"] --> A["Reviewed activation PR #28, main 37b3075"]
+    A --> R["CI #40176125696: FINAL112 one time"]
+    R --> E["Complete OFF / ON / LEARNED task evidence + audit"]
+    E --> I["Independent sum / hash / threshold / bootstrap reaggregation"]
+    I --> P["All five numeric gates PASS; no promotion"]
+    P --> D["Docs + provenance + one-shot CI removal PR"]
+    D --> NEXT["Next hypotheses require fresh holdout and approval"]
+```
+
+- 過去の設計・工程図に残る「未開放」「未実装」「結果未取得」はその時点の履歴を表す。現行状態は[FINAL run](../../experiments/EXP-0002B/runs/20261025-final112.md)が正本。独立再集計で112件、7 family各16件、OOD誤ON0、LEARNED80/112、五つの数値ゲートを確認した。
+- 一度限りのFINAL起動ステップはこの文書同期PRで削除。予め凍結したKernel、評価器、実行ソースは変更しない。今後の通常CIはDEV工程まで。総CPU高速化は未実証で、技能の正式採用もしない。
