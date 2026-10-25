@@ -190,16 +190,14 @@ def summarize(rows: list[dict], training_evidence: dict, phase: str) -> dict[str
     differences = [int(r["learned"]["primitive_invocations"] - r["off"]["primitive_invocations"])
                    for r in rows]
     ood = [r for r in rows if r["family_for_evaluator_only"] == "replace_first"]
-    oracle_off = [r for r in rows if r["oracle_source_action"] == "OFF"]
-    oracle_on = [r for r in rows if r["oracle_source_action"] == "ON"]
     oracle_score = {}
     for metric in ("primitive_invocations", "tested_candidates", "audited_solved"):
         col = {"primitive_invocations": "primitive_invocations",
                "tested_candidates": "tested_candidates",
                "audited_solved": "audit_correct"}[metric]
         oracle_score[metric] = sum(
-            r[r["oracle_source_action"]][col] if col != "tested_candidates"
-            else r[r["oracle_source_action"]]["search"][col]
+            r[r["oracle_source_action"].lower()][col] if col != "tested_candidates"
+            else r[r["oracle_source_action"].lower()]["search"][col]
             for r in rows)
     families = {fam: {arm: _score([r for r in rows if r["family_for_evaluator_only"] == fam], arm)
                       for arm in ("off", "on", "learned")}
