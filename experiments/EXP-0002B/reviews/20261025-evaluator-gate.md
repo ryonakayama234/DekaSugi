@@ -47,3 +47,6 @@ flowchart TD
 - main統合 `f81b656` の[Actions #40162804951](https://github.com/ryonakayama234/DekaSugi/actions/runs/40162804951)はsuccess、main限定DEV48ステップとArtifact upload成功。
 - 機械用ハッシュ・48件の3arm結果・実行環境・統計・費用・監査は[DEV evidence record](../runs/20261025-dev-smoke.md)へ集約し、歴史的事前登録は書き換えない。
 - FINAL実行トリガー未追加、FINAL結果未取得。
+
+## 後続のFINAL専用activation PR #28（実行前・別PR）
+この文書の「FINALトリガー未追加」はPR #26 / DEV工程完了時の履歴を表す。2026-10-25に人間の承認を受けた[PR #28](https://github.com/ryonakayama234/DekaSugi/pull/28)で、指定subjectのsquash-mergeによるmain push初回attemptだけFINAL112を許可するステップを提案。PR CIと独立Codexレビュー完了までは統合・起動しない。詳細は[一度限りの起動ゲート](20261025-final-activation.md)と[run index](../runs/README.md)。
