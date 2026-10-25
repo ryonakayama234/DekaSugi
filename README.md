@@ -21,6 +21,8 @@
 **EXP-0001 は技術的にPASS、固定DSLの非学習baselineとして採用済み。** [実測run](experiments/EXP-0001/runs/README.md)。
 **EXP-0002 は技能候補の発見と小規模実験を実施済み（保留課題で6→5候補、反転課題で40→47候補）。** [事前登録計画](experiments/EXP-0002/plan.md)、[再実行](experiments/EXP-0002/runs/README.md)。技能の一般的な性能向上は未実証。安全修正を含む[PR #6](https://github.com/ryonakayama234/DekaSugi/pull/6)はCIとCodexコードレビューを経てmainへ統合済み。技能の科学的な正式採用は別判断として保留。
 
+**MEASURE-0001**: 次段階の技能価値学習に向け、`bounded_synthesize`に安全な原始演算呼出数カウンタを[PR #18](https://github.com/ryonakayama234/DekaSugi/pull/18)で実装し、CIとCodexコードレビューで検証。これは計測装置であって、Kernelの学習や新しいFINAL実験の成功ではない。[計測仕様](docs/architecture/measurement.md) / [監査記録](experiments/EXP-0002B/metering-log.md)。
+
 ローカル資料検査: `python scripts/check_docs.py`（標準ライブラリのみ）。
 
 ## 原則

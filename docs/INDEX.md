@@ -20,6 +20,7 @@ tags: navigation, architecture, research, experiments
 | EXP-0001 | 型付きプログラム合成ベースライン | accepted baseline (EXP-0001) | [spec](specs/EXP-0001.md) / [plan](../experiments/EXP-0001/plan.md) |
 | EXP-0002 | 共通部分式の発見と未知例での比較 | implemented in main; scientific promotion unaccepted | [spec](specs/EXP-0002.md) / [preregistered plan](../experiments/EXP-0002/plan.md) / [runs](../experiments/EXP-0002/runs/README.md) |
 | EXP-0002-SEC-003 | Registry偽装と展開予算すり抜けの安全監査 | security remediations reviewed and merged to main | [review record](../experiments/EXP-0002/reviews/20261024-primitive-allowlist-hardening.md) / [PR #6](https://github.com/ryonakayama234/DekaSugi/pull/6) |
+| MEASURE-0001 | verifier内primitive実行費用の観測（Kernel学習の前提） | CI and Codex code review passed; PR #18; no policy | [measurement](architecture/measurement.md) / [audit](../experiments/EXP-0002B/metering-log.md) / [runs index](../experiments/EXP-0002B/runs/README.md) / [Issue #17](https://github.com/ryonakayama234/DekaSugi/issues/17) |
 | SEC-004 | Mutable lookupを信用しない実行Registryの再生成 | main-integrated; CI and Codex code-review verified | [security record](../experiments/EXP-0002/reviews/20261025-registry-snapshot-boundary.md) / [Issue #14](https://github.com/ryonakayama234/DekaSugi/issues/14) |
 | RSRCH-INDEX | 研究資料の検索入口 | collecting | [research](research/INDEX.md) |
 | RSRCH-001 | プログラム合成・抽象化 | notes | [program synthesis](research/program-synthesis.md) |
