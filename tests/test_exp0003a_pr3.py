@@ -144,6 +144,17 @@ class DreamPolicyTests(unittest.TestCase):
         self.assertEqual(len(private["train_rows"]), 160)
         self.assertEqual(len(private["dream_rows"]), 512)
         self.assertEqual(len(private["wake_receipts"]), 160)
+        from packages.exp0003a import digest
+        self.assertEqual(
+            digest(private["train_rows"] + private["dream_rows"]),
+            report["source_manifest_sha256"],
+        )
+        self.assertEqual(report["source_manifest_sha256"],
+                         private["source_manifest_sha256"])
+        self.assertEqual(
+            digest([row["public_task"]["task_id"][2:] for row in private["dream_rows"]]),
+            report["pool_public_input_sha256"],
+        )
         self.assertEqual(len(private["train_paired_trials"]), 160)
         self.assertEqual(len(private["dream_paired_trials"]),
                          report["selected_distinct_total"])
