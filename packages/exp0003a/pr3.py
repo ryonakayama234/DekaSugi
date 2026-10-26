@@ -270,11 +270,28 @@ def select_dream(
 
 
 def _snapshot_payload(snapshot: "ArmSnapshot") -> dict[str, object]:
+    """Canonical semantic record: sort WAKE, retain selected DREAM order.
+
+    Paired WAKE observations and their evaluator-issued provenance travel as
+    aligned pairs. Their transport order does not affect KNN or semantic SHA.
+    B2/B3 selected DREAM order is an explicit ID-v1 scientific commitment.
+    """
+    wake = sorted(
+        zip(snapshot.observations[:TRAIN_TOTAL], snapshot.wake_episode_ids),
+        key=lambda pair: pair[0].task_id,
+    )
+    canonical_observations = (
+        [observation for observation, _ in wake]
+        + list(snapshot.observations[TRAIN_TOTAL:])
+    )
+    canonical_wake_ids = [episode_id for _, episode_id in wake]
+    observation_rows = [observation.to_dict()
+                        for observation in canonical_observations]
     return {
         "schema_version": "exp0003a-policy-snapshot-v1",
         "method": METHOD, "id_version": ID_VERSION,
         "arm": snapshot.arm, "cycle_id": snapshot.cycle_id,
-        "wake_episode_ids": list(snapshot.wake_episode_ids),
+        "wake_episode_ids": canonical_wake_ids,
         "dream_case_ids": list(snapshot.dream_case_ids),
         "algorithm_version": snapshot.algorithm_version,
         "feature_version": snapshot.feature_version,
@@ -286,9 +303,9 @@ def _snapshot_payload(snapshot: "ArmSnapshot") -> dict[str, object]:
         "pool_public_input_sha256": snapshot.pool_public_input_sha256,
         "ordered_selected_pool_ids": list(snapshot.ordered_selected_pool_ids),
         "ordered_selected_task_ids": list(snapshot.ordered_selected_task_ids),
-        "training_ids": [x.task_id for x in snapshot.observations],
-        "observations_sha256": digest([x.to_dict() for x in snapshot.observations]),
-        "observations": [x.to_dict() for x in snapshot.observations],
+        "training_ids": [x.task_id for x in canonical_observations],
+        "observations_sha256": digest(observation_rows),
+        "observations": observation_rows,
         "status": "TRAIN_DREAM_ENGINEERING_UNFROZEN",
     }
 
