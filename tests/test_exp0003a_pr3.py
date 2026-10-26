@@ -184,7 +184,10 @@ class DreamPolicyTests(unittest.TestCase):
         b1 = ArmSnapshot.from_dict(report["snapshots"]["B1"])
         swapped = list(reversed(b1.observations))
         # KNN must not depend on training row order.
-        alternate = replace(b1, observations=tuple(swapped))
+        alternate = replace(
+            b1, observations=tuple(swapped),
+            wake_episode_ids=tuple(reversed(b1.wake_episode_ids)),
+        )
         self.assertEqual(choose(self.train[90].task, b1),
                          choose(self.train[90].task, alternate))
         raw = json.loads(json.dumps(report["snapshots"]["B3"]))
