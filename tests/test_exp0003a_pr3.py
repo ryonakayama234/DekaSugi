@@ -94,8 +94,13 @@ class DreamPolicyTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "No audited positive"):
             select_dream(self.pool, "counterfactual", positives=())
         fake = replace(positives[0], on_calls=positives[0].off_calls)
-        with self.assertRaisesRegex(ValueError, "Invalid positive"):
+        # The zero-positive fail-closed gate precedes other validation.
+        with self.assertRaisesRegex(ValueError, "No audited positive"):
             select_dream(self.pool, "counterfactual", positives=(fake,))
+        # With a real positive also present, malformed refs are rejected.
+        with self.assertRaisesRegex(ValueError, "Invalid positive"):
+            select_dream(self.pool, "counterfactual",
+                         positives=(positives[0], fake))
 
     def test_paired_trial_public_search_is_audited_separately(self):
         cases = self.train[80:100]
