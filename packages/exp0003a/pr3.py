@@ -273,7 +273,10 @@ def _snapshot_payload(snapshot: "ArmSnapshot") -> dict[str, object]:
     return {
         "schema_version": "exp0003a-policy-snapshot-v1",
         "method": METHOD, "id_version": ID_VERSION,
-        "arm": snapshot.arm, "algorithm_version": snapshot.algorithm_version,
+        "arm": snapshot.arm, "cycle_id": snapshot.cycle_id,
+        "wake_episode_ids": list(snapshot.wake_episode_ids),
+        "dream_case_ids": list(snapshot.dream_case_ids),
+        "algorithm_version": snapshot.algorithm_version,
         "feature_version": snapshot.feature_version,
         "k": snapshot.k, "max_distance": snapshot.max_distance,
         "min_close": snapshot.min_close, "min_support_on": snapshot.min_support_on,
@@ -300,6 +303,9 @@ class ArmSnapshot:
     pool_public_input_sha256: str
     ordered_selected_pool_ids: tuple[str, ...]
     ordered_selected_task_ids: tuple[str, ...]
+    cycle_id: str = "exp0003a-cycle-v1"
+    wake_episode_ids: tuple[str, ...] = ()
+    dream_case_ids: tuple[str, ...] = ()
     algorithm_version: str = POLICY_VERSION
     feature_version: str = FEATURE_VERSION
     k: int = K
@@ -309,6 +315,18 @@ class ArmSnapshot:
     min_call_delta: float = MIN_CALL_DELTA
 
     def validate(self) -> None:
+        if (self.arm not in ARMS or self.algorithm_version != POLICY_VERSION
+                or self.cycle_id != "exp0003a-cycle-v1"):
+            raise ValueError("Unknown arm/cycle/policy version")
+        if (len(self.wake_episode_ids) != 160
+                or self.wake_episode_ids != tuple("wake:" + o.task_id
+                    for o in self.observations[:160])):
+            raise ValueError("WAKE source episode references mismatch")
+        if len(self.dream_case_ids) != (0 if self.arm == "B1" else 96):
+            raise ValueError("DREAM case provenance mismatch")
+        if self.dream_case_ids != tuple(self.arm.lower() + ":" + pool_id
+                                        for pool_id in self.ordered_selected_pool_ids):
+            raise ValueError("DREAM case provenance mismatch")
         if self.arm not in ARMS or self.algorithm_version != POLICY_VERSION:
             raise ValueError("Unknown arm or policy version")
         if self.feature_version != FEATURE_VERSION or (
@@ -387,6 +405,9 @@ class ArmSnapshot:
             pool_public_input_sha256=data["pool_public_input_sha256"],
             ordered_selected_pool_ids=tuple(data["ordered_selected_pool_ids"]),
             ordered_selected_task_ids=tuple(data["ordered_selected_task_ids"]),
+            cycle_id=data["cycle_id"],
+            wake_episode_ids=tuple(data["wake_episode_ids"]),
+            dream_case_ids=tuple(data["dream_case_ids"]),
             algorithm_version=data["algorithm_version"],
             feature_version=data["feature_version"],
             k=data["k"], max_distance=data["max_distance"],
@@ -537,6 +558,9 @@ def run_train_dream() -> tuple[dict[str, object], dict[str, object]]:
             source_hash, pool_public_hash,
             tuple(c.source_record_id for c in selected),
             tuple(c.task.task_id for c in selected),
+            wake_episode_ids=tuple("wake:" + task_id for task_id in train_ids),
+            dream_case_ids=tuple(arm.lower() + ":" + c.source_record_id
+                                 for c in selected),
         )
         snapshots[arm] = snap.to_dict()
         if ArmSnapshot.from_dict(snapshots[arm]) != snap:
@@ -555,6 +579,9 @@ def run_train_dream() -> tuple[dict[str, object], dict[str, object]]:
             "ordered_selected_pool_ids": [
                 c.source_record_id for c in cases],
             "ordered_selected_task_ids": [c.task.task_id for c in cases],
+            "ordered_dream_case_ids": [
+                arm.lower() + ":" + c.source_record_id for c in cases
+            ],
             "selected_sha256": digest([{
                 "pool_id": c.source_record_id, "task_id": c.task.task_id
             } for c in cases]),
