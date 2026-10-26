@@ -312,10 +312,55 @@ def preflight_record() -> dict[str, object]:
 
 
 def verify_frozen(*, path: Path = FREEZE_FILE) -> dict[str, object]:
-    """Fail closed on ANY source/data/selection/policy/environment drift."""
+    """Check the immutable source lock BEFORE executing any TRAIN/DREAM logic.
+
+    The initial guard only reads an inert JSON manifest and source bytes; it
+    does not call the generator, synthesizer, verifier or learning pipeline.
+    This is an integrity check against accidental or unreviewed drift, not a
+    cryptographic signature or sandbox for malicious Python import-time code.
+    """
     if not path.is_file():
         raise FileNotFoundError("No reviewed EXP-0003A freeze file")
     raw = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(raw, dict):
+        raise ValueError("Freeze drift: malformed freeze document")
+    seal = raw.get("freeze_payload_sha256")
+    payload = {k: v for k, v in raw.items() if k != "freeze_payload_sha256"}
+    if seal != digest(payload):
+        raise ValueError("Freeze drift: corrupt frozen manifest seal")
+    if (raw.get("schema_version") != SCHEMA
+            or raw.get("experiment_id") != "EXP-0003A"
+            or raw.get("plan") != METHOD
+            or raw.get("id_version") != ID_VERSION
+            or raw.get("status") != "SOURCE_DATA_TRAIN_DREAM_PREDEV_LOCK"
+            or raw.get("holdout_scoring_permitted") is not False
+            or raw.get("registry_promotion_permitted") is not False
+            or raw.get("python_implementation") != platform.python_implementation()
+            or raw.get("python_version")
+            != f"{sys.version_info.major}.{sys.version_info.minor}"
+            or platform.python_implementation() != "CPython"
+            or sys.version_info[:2] != (3, 12)):
+        raise ValueError("Freeze drift: schema, method, safety or Python runtime")
+
+    # Verify the whole tracked source identity BEFORE invoking preflight_record:
+    # source_hashes reads source files only, never executes their content.
+    pinned_sources = raw.get("sources")
+    if not isinstance(pinned_sources, dict):
+        raise ValueError("Freeze drift: source manifest missing")
+    expected_source_paths = set(SOURCE_FILES)
+    source_rows = pinned_sources.get("files")
+    if (not isinstance(source_rows, dict)
+            or set(source_rows) != expected_source_paths
+            or pinned_sources.get("git_blob_manifest_sha256") != digest({
+                name: row.get("git_blob_sha1") for name, row in source_rows.items()
+            })):
+        raise ValueError("Freeze drift: malformed pinned source identity")
+    if source_hashes() != pinned_sources:
+        raise ValueError("Freeze drift: source hash mismatch before regeneration")
+
+    # The pinned, reviewed source bytes are now identical. Only now run the
+    # reference data generator and TRAIN/DREAM paired learner to compare
+    # source-bound split, skill, selections and semantic policy hashes.
     expected = preflight_record()
     if raw != expected:
         raise ValueError(
