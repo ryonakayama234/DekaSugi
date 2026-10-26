@@ -151,7 +151,12 @@ class DreamPolicyTests(unittest.TestCase):
             self.assertEqual(parsed.to_dict(), raw)
             self.assertEqual(len(parsed.ordered_selected_pool_ids),
                              0 if arm == "B1" else 96)
+            self.assertEqual(len(parsed.wake_episode_ids), 160)
+            self.assertEqual(len(parsed.dream_case_ids),
+                             0 if arm == "B1" else 96)
             if arm != "B1":
+                self.assertEqual(list(parsed.dream_case_ids),
+                                 report["selection"][arm]["ordered_dream_case_ids"])
                 self.assertEqual(list(parsed.ordered_selected_pool_ids),
                                  report["selection"][arm]["ordered_selected_pool_ids"])
                 self.assertEqual(list(parsed.ordered_selected_task_ids),
@@ -173,6 +178,11 @@ class DreamPolicyTests(unittest.TestCase):
         fake_policy = replace(b1, k=4)
         with self.assertRaisesRegex(ValueError, "Altered KNN"):
             fake_policy.to_dict()
+        with self.assertRaisesRegex(ValueError, "WAKE source"):
+            replace(b1, wake_episode_ids=("wake:forged",)).to_dict()
+        b3 = ArmSnapshot.from_dict(report["snapshots"]["B3"])
+        with self.assertRaisesRegex(ValueError, "DREAM case provenance"):
+            replace(b3, dream_case_ids=tuple(reversed(b3.dream_case_ids))).to_dict()
         for value in report["cost_ms"].values():
             self.assertGreaterEqual(value, 0)
         self.assertEqual(report["registry_promotion"], "not_authorized")
