@@ -1,6 +1,6 @@
 {
   "experiment_id": "EXP-0003A",
-  "freeze_payload_sha256": "e6c44802938ff4c9975a4aaae72e1f1c2cbad0dc3bff904bdb67d7f65e3d0262",
+  "freeze_payload_sha256": "1e0f6daf1cb80262c187c60a3e0a4d2e76dafea911f0633feed3c40f93db8f44",
   "holdout_scoring_permitted": false,
   "id_version": "ID-v1",
   "plan": "EXP-0003A-PLAN-V1",
@@ -427,8 +427,8 @@
         "raw_sha256": "2f77a9d8a27dcfa860dfb797ef7d3cd53916ee2987070200c62efb6d8dbd60aa"
       },
       "packages/exp0003a/freeze.py": {
-        "git_blob_sha1": "8e45ebd702d124899fe09c11356329ee6dab9fe9",
-        "raw_sha256": "19afee879d718e182ddd5d3a90ab323f4d63fe0ffc36f380baa92734f5e5d3a7"
+        "git_blob_sha1": "9b26a7bbe8b226dfd5c6f7232c2d87730ba84569",
+        "raw_sha256": "d42ed6c889d3908528921ee3bbc733f19456e5d4f9d76930c76ac18df9a3643f"
       },
       "packages/exp0003a/freeze_cli.py": {
         "git_blob_sha1": "23d440791d26e250f6e5e80e449d1d0f94ea0e57",
@@ -471,7 +471,7 @@
         "raw_sha256": "27ee6d0423742018d57ec2f9986bff976bde4aeb268323ebfb192173daf552e1"
       }
     },
-    "git_blob_manifest_sha256": "860d787dba517b2339bf8a0aca78377cc5c41d6ca18375dfd698a2821290929a"
+    "git_blob_manifest_sha256": "b007533bd1f06f37b740d8f05df463915a8f03cef61cff32fc4b7c92bce91394"
   },
   "split_data": {
     "all_seed_count": 2592,
