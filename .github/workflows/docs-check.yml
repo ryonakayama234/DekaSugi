@@ -38,6 +38,17 @@ jobs:
             .run/EXP-0003A-TRAIN-engineering.episodes.jsonl
             .run/EXP-0003A-TRAIN-engineering.evaluator-private.json
           if-no-files-found: warn
+      - name: EXP-0003A PR3 TRAIN/DREAM engineering only (never EXP-0003A DEV/FINAL)
+        run: python -m packages.exp0003a.pr3_cli --mode train-dream --output .run/EXP-0003A-PR3-TRAIN-DREAM.json
+      - name: Upload EXP-0003A PR3 TRAIN/DREAM evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: EXP-0003A-PR3-TRAIN-DREAM
+          path: |
+            .run/EXP-0003A-PR3-TRAIN-DREAM.json
+            .run/EXP-0003A-PR3-TRAIN-DREAM.evaluator-private.json
+          if-no-files-found: warn
       - name: EXP-0002B preregistered split manifest (hash only; no FINAL search)
         run: python -m packages.kernel --mode preflight --output .run/EXP-0002B-preflight.json
       - name: EXP-0002B TRAIN-only snapshot (no DEV/FINAL search)

@@ -1,0 +1,5 @@
+undefined
+## 22. EXP-0003A PR3 TRAIN/DREAM工程 (Issue #34)
+- ユーザー合意済み：PR2のWAKE/SLEEPが自動抽出した同一最上位1技能をB1/B2/B3で固定し、TRAIN160の独立OFF/ON実測観測に追加するDreamの**選び方だけ**を比較する。B2は各familyの固定seedランダム12件、B3はTRAIN正例(public8D)への近傍順12件、共通512問・各96件。Dreamは技能自体の書換え・新原始演算追加を行わない。
+- 8D public TaskSpecだけが `choose` 入力。private auditは教師結果/評価器用証拠だけ、family/seed/pool IDは選別・manifest用。DIST mean-L1 binary64と公開opaque task IDが5NN同距離順。固定5NN閾値はplan-v1から変えない。合成課題での性能改善は未検証。
+- PR3 CIはTRAIN/DREAMの生成・選別・paired監査・snapshotのみ。EXP-0003A DEV/FINALの合成/採点/承認は別工程、標準Registry採用なし。source/hash証拠・ARCH-001/002/ARCH-UI・spec・run index同期と最新head独立Codexレビュー必須。重大な方法論の差異はplan書換えず停止相談。
