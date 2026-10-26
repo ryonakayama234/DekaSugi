@@ -39,6 +39,8 @@ tags: navigation, architecture, research, experiments
 | TPL-EXP | 実験テンプレート | active | [template](templates/experiment.md) |
 | PKG-INDEX | packages責務の一覧 | proposed | [packages](../packages/README.md) |
 
+| EXP-0003A-FREEZE | source/split/policy/selectionのpre-DEV凍結 | PR4準備、DEV/FINAL未採点 | [PR4 code](../packages/exp0003a/freeze.py) / [run index](../experiments/EXP-0003A/runs/README.md) / [Issue #36](https://github.com/ryonakayama234/DekaSugi/issues/36) |
+
 ## AI向け検索方針
 1. 質問に関連するIDかタグをこの目録で探す。
 2. 目的が実装なら `specs` → `architecture/contracts` → 対応する `packages`。

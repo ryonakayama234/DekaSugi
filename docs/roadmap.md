@@ -60,3 +60,7 @@ tags: milestones, roadmap, planning
 - 現在の実装状況は[run index](../experiments/EXP-0003A/runs/README.md)が正本。CI、独立`@codex review`で監査してからmain統合する。
 
 - PR2 CodexレビューP1×2/P2×1に対し、学習器からの監査元情報隔離を維持しつつ、独立WakeReceiptと監査元データ・工数計測の証拠修正を行う。ユーザー承認済みだが、独立レビューを再通過するまでmain統合しない。
+
+## 2026-10-26 EXP-0003A PR4：評価前ソース/データ/方策凍結（Issue #36）
+- TRAIN/DREAMのPR3工学結果を安定hashで固定するため、4splitの生成元レコード・重複/seed・ソースGit blob・トップ技能・B1/B2/B3方策・B2/B3選別順序をhash-only preflightし、独立レビュー後にimmutable `freeze-v1.json`をピン留めする。
+- DEV64/FINAL128の参照例はデータハッシュを作るためにだけ生成し、方策選択・DSL探索・検証・正答結果は一切実行しない。DEVは凍結後に別の工学評価工程で、FINALは新たな人間承認付き一度限りのPRでのみ採点可能にする。
