@@ -7,6 +7,8 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from hashlib import sha256
+import math
+from pathlib import Path
 import random
 from time import perf_counter, process_time
 from typing import Literal, Sequence
@@ -203,21 +205,29 @@ def positive_train(trials: Sequence[PairedTrial]) -> tuple[PairedObservation, ..
                  and t.observation.on_calls < t.observation.off_calls)
 
 
-def _validate_pool(pool: Sequence[TrainCase]) -> None:
+def _canonical_pool(pool: Sequence[TrainCase]) -> tuple[TrainCase, ...]:
+    """Validate exact 512 IDs and return generator order, independent of input order."""
     if len(pool) != DREAM_POOL_SIZE:
         raise ValueError("DREAM pool must be 512 tasks")
     if len({c.task.task_id for c in pool}) != DREAM_POOL_SIZE:
         raise ValueError("Duplicate DREAM public ID")
     if len({c.source_record_id for c in pool}) != DREAM_POOL_SIZE:
         raise ValueError("Duplicate DREAM pool ID")
+    by_id = {}
     for case in pool:
         _check_case(case)
+        by_id[case.source_record_id] = case
+    ordered = []
     for index, family in enumerate(FAMILIES):
-        group = pool[index * 64:(index + 1) * 64]
-        if any(c.family != family or
-               c.source_record_id != f"dream-f{index:02d}-i{j:03d}"
-               for j, c in enumerate(group)):
-            raise ValueError("DREAM pool not in preregistered family/index order")
+        for j in range(DREAM_PER_FAMILY):
+            source_id = f"dream-f{index:02d}-i{j:03d}"
+            case = by_id.get(source_id)
+            if case is None or case.family != family:
+                raise ValueError("DREAM pool missing preregistered family/index")
+            ordered.append(case)
+    if len(ordered) != len(by_id):
+        raise ValueError("Unexpected DREAM pool ID")
+    return tuple(ordered)
 
 
 def select_dream(
@@ -226,7 +236,7 @@ def select_dream(
     *, positives: Sequence[PairedObservation] = (),
 ) -> tuple[TrainCase, ...]:
     """Family is only an evaluator stratum; selection score uses public 8D."""
-    _validate_pool(pool)
+    pool = _canonical_pool(pool)
     if strategy not in ("random", "counterfactual"):
         raise ValueError("Unknown DREAM strategy")
     if strategy == "counterfactual":
@@ -312,12 +322,20 @@ class ArmSnapshot:
                 or len({o.task_id for o in self.observations}) != len(self.observations)):
             raise ValueError("Bad training IDs or cardinality")
         for o in self.observations:
-            if not o.task_id.startswith("t-") or len(o.task_id) != 66:
+            if (not o.task_id.startswith("t-") or len(o.task_id) != 66
+                    or any(ch not in "0123456789abcdef" for ch in o.task_id[2:])):
                 raise ValueError("Non-opaque learner ID")
-            if len(o.vector) != 8 or any(not 0 <= x <= 1 for x in o.vector[:2]):
+            if (len(o.vector) != 8 or any(not math.isfinite(x) for x in o.vector)
+                    or any(not 0 <= x <= 1 for x in o.vector[:2])
+                    or not -1 <= o.vector[2] <= 1):
                 raise ValueError("Malformed 8D public features")
-            if min(o.off_calls, o.on_calls, o.off_candidates, o.on_candidates) < 0:
-                raise ValueError("Negative search cost")
+            if (any(type(x) is not int or x < 0 for x in (
+                    o.off_calls, o.on_calls, o.off_candidates, o.on_candidates))
+                    or type(o.prefer_on) is not bool
+                    or type(o.off_correct) is not bool
+                    or type(o.on_correct) is not bool
+                    or type(o.on_audit_invalid) is not bool):
+                raise ValueError("Invalid paired observation")
         n = 0 if self.arm == "B1" else 96
         if (len(self.ordered_selected_pool_ids) != n
                 or len(self.ordered_selected_task_ids) != n
@@ -332,9 +350,13 @@ class ArmSnapshot:
                 group = self.ordered_selected_pool_ids[family_index * 12:(family_index + 1) * 12]
                 if any(not x.startswith(f"dream-f{family_index:02d}-i") for x in group):
                     raise ValueError("DREAM family strata mismatch")
-        if (not self.source_manifest_sha256
-                or not self.pool_public_input_sha256):
-            raise ValueError("Missing source/pool manifest integrity")
+        if any(
+            type(x) is not str or len(x) != 64
+            or any(ch not in "0123456789abcdef" for ch in x)
+            for x in (self.skill_body_sha256, self.source_manifest_sha256,
+                      self.pool_public_input_sha256)
+        ):
+            raise ValueError("Malformed source/pool/skill hashes")
 
     def to_dict(self) -> dict[str, object]:
         self.validate()
@@ -498,7 +520,9 @@ def run_train_dream() -> tuple[dict[str, object], dict[str, object]]:
     } for c in pool]
     full_rows = _case_rows(train) + pool_rows
     source_hash = digest(full_rows)
-    pool_public_hash = digest(pool_public)
+    # ID-v1: canonical JSON list of full public 64hex SHA256 values in
+    # family-index/task-index order; not the selection or private IDs.
+    pool_public_hash = digest([c.task.task_id[2:] for c in pool])
     snapshot_cost_cpu, snapshot_cost_wall = process_time(), perf_counter()
     snapshots = {}
     for arm, selected in (
@@ -522,6 +546,10 @@ def run_train_dream() -> tuple[dict[str, object], dict[str, object]]:
     if tuple(snapshots) != ARMS:
         raise ValueError("Arm snapshot order mismatch")
     source = _source_metadata()
+    source["pr3_source_file_sha256"] = sha256(Path(__file__).read_bytes()).hexdigest()
+    source["feature_source_file_sha256"] = sha256(
+        Path(__import__("packages.kernel", fromlist=["features"]).__file__).read_bytes()
+    ).hexdigest()
     selection = {
         arm: {
             "ordered_selected_pool_ids": [
