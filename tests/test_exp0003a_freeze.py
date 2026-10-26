@@ -101,6 +101,49 @@ class FreezeV1Tests(unittest.TestCase):
             with self.assertRaises(FileNotFoundError):
                 verify_frozen(path=path)
 
+    def test_source_guard_precedes_any_executable_regeneration(self):
+        record = preflight_record()
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "freeze.json"
+            path.write_text(json.dumps(record), encoding="utf-8")
+            # A changed generator, DSL, learning or freeze source MUST stop
+            # before the first call to preflight_record/run_train_dream.
+            with patch("packages.exp0003a.freeze.source_hashes",
+                       return_value={"files": {}, "git_blob_manifest_sha256": "0" * 64}), \
+                 patch("packages.exp0003a.freeze.preflight_record",
+                       side_effect=AssertionError("unreviewed code executed")) as rerun:
+                with self.assertRaisesRegex(ValueError,
+                                            "source hash mismatch before regeneration"):
+                    verify_frozen(path=path)
+                rerun.assert_not_called()
+
+            # A forged source manifest seal must be rejected without either
+            # source scan or generator invocation.
+            tampered = json.loads(json.dumps(record))
+            tampered["policy"]["top_skill_id"] = "forged"
+            path.write_text(json.dumps(tampered), encoding="utf-8")
+            with patch("packages.exp0003a.freeze.source_hashes",
+                       side_effect=AssertionError("tampered manifest reached source")), \
+                 patch("packages.exp0003a.freeze.preflight_record",
+                       side_effect=AssertionError("tampered manifest reached generator")):
+                with self.assertRaisesRegex(ValueError, "corrupt frozen manifest seal"):
+                    verify_frozen(path=path)
+
+            # Runtime guard precedes source access and scoring too.
+            changed_runtime = json.loads(json.dumps(record))
+            changed_runtime["python_version"] = "0.0"
+            changed_runtime["freeze_payload_sha256"] = digest({
+                k: v for k, v in changed_runtime.items()
+                if k != "freeze_payload_sha256"
+            })
+            path.write_text(json.dumps(changed_runtime), encoding="utf-8")
+            with patch("packages.exp0003a.freeze.source_hashes",
+                       side_effect=AssertionError("wrong runtime reached source")), \
+                 patch("packages.exp0003a.freeze.preflight_record",
+                       side_effect=AssertionError("wrong runtime reached generator")):
+                with self.assertRaisesRegex(ValueError, "Python runtime"):
+                    verify_frozen(path=path)
+
     def test_committed_freeze_required_and_exact(self):
         self.assertTrue(FREEZE_FILE.is_file(), "Committed freeze is mandatory")
         frozen = verify_frozen()
