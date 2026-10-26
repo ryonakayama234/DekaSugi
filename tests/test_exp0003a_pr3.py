@@ -165,6 +165,22 @@ class DreamPolicyTests(unittest.TestCase):
             self.assertEqual(parsed.skill_body_sha256,
                              report["top_skill"]["body_hash"])
             self.assertEqual(parsed.to_dict(), raw)
+            # ID-v1 semantic SHA: WAKE paired transport order is irrelevant
+            # for ALL three arms. Selected DREAM order stays untouched.
+            reordered = replace(
+                parsed,
+                observations=(tuple(reversed(parsed.observations[:160]))
+                              + parsed.observations[160:]),
+                wake_episode_ids=tuple(reversed(parsed.wake_episode_ids)),
+            )
+            self.assertEqual(reordered.to_dict(), raw)
+            self.assertEqual(
+                reordered.to_dict()["policy_snapshot_sha256"],
+                raw["policy_snapshot_sha256"],
+            )
+            self.assertEqual(choose(self.train[90].task, reordered),
+                             choose(self.train[90].task, parsed))
+            self.assertEqual(ArmSnapshot.from_dict(reordered.to_dict()).to_dict(), raw)
             self.assertEqual(len(parsed.ordered_selected_pool_ids),
                              0 if arm == "B1" else 96)
             self.assertEqual(len(parsed.wake_episode_ids), 160)
@@ -190,6 +206,19 @@ class DreamPolicyTests(unittest.TestCase):
         )
         self.assertEqual(choose(self.train[90].task, b1),
                          choose(self.train[90].task, alternate))
+        self.assertEqual(b1.to_dict(), alternate.to_dict())
+        # A transport-order payload is not the canonical serialized snapshot,
+        # even if a caller recomputes the unkeyed integrity digest.
+        from packages.exp0003a import digest
+        noncanonical = json.loads(json.dumps(b1.to_dict()))
+        for key in ("observations", "training_ids", "wake_episode_ids"):
+            noncanonical[key][:160] = list(reversed(noncanonical[key][:160]))
+        noncanonical["observations_sha256"] = digest(noncanonical["observations"])
+        unsigned = {k: v for k, v in noncanonical.items()
+                    if k != "policy_snapshot_sha256"}
+        noncanonical["policy_snapshot_sha256"] = digest(unsigned)
+        with self.assertRaisesRegex(ValueError, "Non-canonical"):
+            ArmSnapshot.from_dict(noncanonical)
         raw = json.loads(json.dumps(report["snapshots"]["B3"]))
         raw["max_distance"] = .99
         with self.assertRaisesRegex(ValueError, "hash mismatch"):
