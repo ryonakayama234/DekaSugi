@@ -1,7 +1,7 @@
-# EXP-0003A — Run index (PR2 TRAIN engineering; DREAM/DEV/FINAL not run)
+# EXP-0003A — Run index (PR3 TRAIN/DREAM engineering; DEV/FINAL not run)
 
 id: EXP-0003A-RUNS
-status: PR2 TRAIN evidence implemented; no DREAM/DEV/FINAL outcomes
+status: PR3 TRAIN/DREAM engineering implemented on feature branch; no DEV/FINAL outcomes
 updated: 2026-10-26
 tags: exp0003a, run-index, preregistration, evidence
 
@@ -12,6 +12,7 @@ tags: exp0003a, run-index, preregistration, evidence
 - TRAIN初回の結果は技能候補の発見可否の工程診断であり、H2/H3の性能検証ではない。候補0件・監査不合格・run異常を失敗のまま保存し閾値やseedを変更しない。
 - 今回のCIで既存のEXP-0001/0002/0002B回帰が走っても、それをEXP-0003Aのrunと呼ばない。
 - Codex再レビューでP1×2（エピソードAST差し替え・監査元レコード不保存）、P2×1（generator/SLEEP CPU/wall未計測）を検出し、PR #33を一度Draftに戻した。合意済み修正は、監査器所有の`WakeReceipt`原本照合、TRAINの第三例・公開TaskSpec・出典対応を評価器用別ファイルで保全、生成器/SLEEPのCPU/wall計測。現行のTRAIN成果はreview/CIゲートを再通過するまで暫定証拠である。
+- PR3 [Issue #34](https://github.com/ryonakayama234/DekaSugi/issues/34) / [PR #35](https://github.com/ryonakayama234/DekaSugi/pull/35): DREAM pool512からB2 fixed random96、B3 near-positive96を各family12選択。TRAIN160の独立OFF/ON paired観測と合わせB1/B2/B3の独立snapshot hashを保存。CI Artifact `EXP-0003A-PR3-TRAIN-DREAM`には公開run JSONと評価者専用raw trial/監査例/候補プールを保存。**PR3ではEXP-0003A DEV/FINALを生成・採点しない**。選別と方策の学習自体はH2/H3の性能優位を示さない。CI/runの確定SHAは検証後に記録。
 - PR2以降の各作業は専用の不変run記録とCI SHAを追記し、`planned` / `engineering` / `confirmatory`を区別。失敗も保存。
 - FINALはplanの事前固定・source/data/snapshot freeze・独立レビュー・人間による一度限りの実行承認より前に開かない。
 - 生Artifactは保存期間・ZIP/JSON SHAと長期アーカイブの有無を明記。EXP-0002Bの既存FINAL Artifactの期限は2027-01-23であり、新研究のデータと混同しない。

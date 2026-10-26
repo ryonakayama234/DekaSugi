@@ -31,6 +31,7 @@ tags: navigation, architecture, research, experiments
 | SEC-004 | Mutable lookupを信用しない実行Registryの再生成 | main-integrated; CI and Codex code-review verified | [security record](../experiments/EXP-0002/reviews/20261025-registry-snapshot-boundary.md) / [Issue #14](https://github.com/ryonakayama234/DekaSugi/issues/14) |
 | EXP-0003A | WAKE–SLEEP/Counterfactual DREAMの設計・事前登録 | PR2 TRAIN-only foundation implemented; later outcomes not evaluated | [spec](specs/EXP-0003A.md) / [plan-v1](../experiments/EXP-0003A/plan.md) / [runs](../experiments/EXP-0003A/runs/README.md) |
 | EXP-0003A-TRAIN | PR2の固定生成器・監査付きWAKE/SLEEP技能候補 | TRAIN engineering only, no performance claim | [code](../packages/exp0003a/__init__.py) / [run index](../experiments/EXP-0003A/runs/README.md) / [Issue #32](https://github.com/ryonakayama234/DekaSugi/issues/32) |
+| EXP-0003A-PR3 | 固定Dream512プール・B2/B3各96例の選別とB1/B2/B3保守的方策 | TRAIN/DREAM engineering only; DEV/FINAL sealed | [source](../packages/exp0003a/pr3.py) / [CLI](../packages/exp0003a/pr3_cli.py) / [Issue #34](https://github.com/ryonakayama234/DekaSugi/issues/34) / [run index](../experiments/EXP-0003A/runs/README.md) |
 | ARCH-UI-001 | Research Consoleパネル→module→data正本 | proposed interface contract, UI not implemented | [UI responsibility map](architecture/ui-panels.md) |
 | RSRCH-INDEX | 研究資料の検索入口 | collecting | [research](research/INDEX.md) |
 | RSRCH-001 | プログラム合成・抽象化 | notes | [program synthesis](research/program-synthesis.md) |
