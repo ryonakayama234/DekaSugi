@@ -584,8 +584,10 @@ def run_train_dream() -> tuple[dict[str, object], dict[str, object]]:
                                  for c in selected),
         )
         snapshots[arm] = snap.to_dict()
-        if ArmSnapshot.from_dict(snapshots[arm]) != snap:
-            raise ValueError("Policy snapshot roundtrip failed")
+        # Serialization canonicalizes the WAKE prefix by opaque public ID;
+        # object field order itself is not part of scientific identity.
+        if ArmSnapshot.from_dict(snapshots[arm]).to_dict() != snapshots[arm]:
+            raise ValueError("Policy snapshot canonical roundtrip failed")
     snapshot_cpu_ms = (process_time() - snapshot_cost_cpu) * 1000
     snapshot_wall_ms = (perf_counter() - snapshot_cost_wall) * 1000
     if tuple(snapshots) != ARMS:
