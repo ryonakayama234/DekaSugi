@@ -289,7 +289,7 @@ def _snapshot_payload(snapshot: "ArmSnapshot") -> dict[str, object]:
         "training_ids": [x.task_id for x in snapshot.observations],
         "observations_sha256": digest([x.to_dict() for x in snapshot.observations]),
         "observations": [x.to_dict() for x in snapshot.observations],
-        "status": "TRAIN_DREAM_FROZEN_ENGINEERING",
+        "status": "TRAIN_DREAM_ENGINEERING_UNFROZEN",
     }
 
 
@@ -391,7 +391,7 @@ class ArmSnapshot:
             raise ValueError("Policy snapshot hash mismatch")
         if (data.get("schema_version") != "exp0003a-policy-snapshot-v1"
                 or data.get("method") != METHOD or data.get("id_version") != ID_VERSION
-                or data.get("status") != "TRAIN_DREAM_FROZEN_ENGINEERING"):
+                or data.get("status") != "TRAIN_DREAM_ENGINEERING_UNFROZEN"):
             raise ValueError("Unsupported snapshot schema/method")
         rows = tuple(PairedObservation(
             **{**row, "vector": tuple(row["vector"])}) for row in data["observations"])
@@ -501,9 +501,12 @@ def run_train_dream() -> tuple[dict[str, object], dict[str, object]]:
     start_cpu, start_wall = process_time(), perf_counter()
     episodes = tuple(wake(c.task, private_audit=c.private_audit) for c in train)
     receipts = tuple(_issue_wake_receipt(e) for e in episodes)
+    wake_cpu_ms = (process_time() - start_cpu) * 1000
+    wake_wall_ms = (perf_counter() - start_wall) * 1000
+    start_cpu, start_wall = process_time(), perf_counter()
     proposals = sleep(episodes, trusted_receipts=receipts)
-    wake_sleep_cpu_ms = (process_time() - start_cpu) * 1000
-    wake_sleep_wall_ms = (perf_counter() - start_wall) * 1000
+    sleep_cpu_ms = (process_time() - start_cpu) * 1000
+    sleep_wall_ms = (perf_counter() - start_wall) * 1000
     if not proposals or proposals[0].status != "candidate":
         raise ValueError("TRAIN SLEEP produced no approved proposal")
     skill = proposals[0].candidate
@@ -539,7 +542,8 @@ def run_train_dream() -> tuple[dict[str, object], dict[str, object]]:
         "task_id": c.task.task_id,
         "public_task_sha256": c.task.task_id[2:],
     } for c in pool]
-    full_rows = _case_rows(train) + pool_rows
+    train_raw_rows = _private_train_rows(train)
+    full_rows = train_raw_rows + pool_rows
     source_hash = digest(full_rows)
     # ID-v1: canonical JSON list of full public 64hex SHA256 values in
     # family-index/task-index order; not the selection or private IDs.
@@ -620,7 +624,8 @@ def run_train_dream() -> tuple[dict[str, object], dict[str, object]]:
         },
         "cost_ms": {
             "generator_cpu": generator_cpu_ms, "generator_wall": generator_wall_ms,
-            "wake_sleep_cpu": wake_sleep_cpu_ms, "wake_sleep_wall": wake_sleep_wall_ms,
+            "wake_cpu": wake_cpu_ms, "wake_wall": wake_wall_ms,
+            "sleep_cpu": sleep_cpu_ms, "sleep_wall": sleep_wall_ms,
             "train_paired_cpu": train_paired_cpu_ms,
             "train_paired_wall": train_paired_wall_ms,
             "dream_selection_cpu": selection_cpu_ms,
@@ -643,7 +648,7 @@ def run_train_dream() -> tuple[dict[str, object], dict[str, object]]:
         "method": METHOD, "partition": "TRAIN_DREAM",
         "source_manifest_sha256": source_hash,
         "pool_public_input_sha256": pool_public_hash,
-        "train_rows": _private_train_rows(train),
+        "train_rows": train_raw_rows,
         "dream_rows": pool_rows,
         "wake_receipts": [asdict(x) for x in receipts],
         "train_paired_trials": [{
@@ -659,6 +664,6 @@ def run_train_dream() -> tuple[dict[str, object], dict[str, object]]:
             "on": dream_trials[c.task.task_id].on_evidence,
         } for c in selected_unique.values()],
     }
-    if digest(_case_rows(train) + private["dream_rows"]) != source_hash:
+    if digest(private["train_rows"] + private["dream_rows"]) != source_hash:
         raise ValueError("Private evidence manifest mismatch")
     return public, private
