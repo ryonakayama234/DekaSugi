@@ -26,5 +26,9 @@ Related: [preregistration](../plan.md) / [previous FINAL](../../EXP-0002B/runs/2
 
 ## Freeze-v1 preregistered hash lock pinned (2026-10-26; pending PR4 merge)
 - 完整な[freeze-v1.json](../freeze-v1.json)をPRE-DEV研究用にピン留めし、[初回preflight CI #40321644523](https://github.com/ryonakayama234/DekaSugi/actions/runs/40321644523)と[凍結照合CI #40321874173](https://github.com/ryonakayama234/DekaSugi/actions/runs/40321874173)で**68件のunit全成功、preflight/check-freeze双方成功**。工学記録[Artifact #12649706107](https://github.com/ryonakayama234/DekaSugi/actions/runs/40321874173/artifacts/12649706107) (2027-01-24T12:21:12Z失効予定)を保存。こちらは最終レビューヘッドではなく、レビュー完了とCI後に最終結果をIssueに追記する。
-- immutable `freeze_payload_sha256=e6c44802938ff4c9975a4aaae72e1f1c2cbad0dc3bff904bdb67d7f65e3d0262`、全4分割 `dataset_sha256=491e1b930d363c2550ba756f45e88a1873784a22eb503216b04c4e43b2278e49`、14ソースGit blob manifest `860d787dba517b2339bf8a0aca78377cc5c41d6ca18375dfd698a2821290929a`。
+- immutable `freeze_payload_sha256=1e0f6daf1cb80262c187c60a3e0a4d2e76dafea911f0633feed3c40f93db8f44`、全4分割 `dataset_sha256=491e1b930d363c2550ba756f45e88a1873784a22eb503216b04c4e43b2278e49`、14ソースGit blob manifest `b007533bd1f06f37b740d8f05df463915a8f03cef61cff32fc4b7c92bce91394`。
 - DEV64/FINAL128は参照例生成による**データhashだけ**、未採点。独立学習結果B1/B2/B3のsemantic SHA、B2/B3選択順序は[freeze-v1.md](../freeze-v1.md)およびJSONが正本。PR4後もDEVの工学的診断は別ゲート、FINALは別途人間承認まで保留。
+
+## Review P1: source-first validation and repinning
+- [PR #37](https://github.com/ryonakayama234/DekaSugi/pull/37)のreviewで発見したP1は、凍結hashの検査より先にTRAIN/DREAM処理が実行されること。`verify_frozen()`をJSON自己hash・schema・Python環境・14 source byte SHAの照合を先に行う順序に修正。未承認ソースでは`preflight_record()`を呼ばないnegative testを追加した。
+- 上の`freeze_payload_sha256`とsource manifest SHAは**P1修正後の再固定値**である。初回commitの旧source hashは正式freezeとしない。新候補証拠[CI #40352073490](https://github.com/ryonakayama234/DekaSugi/actions/runs/40352073490)は旧凍結ファイル不整合でunitが意図通りFAILした時のpreflightのみであり、再固定後に別途all-pass CI/レビューが必要。
