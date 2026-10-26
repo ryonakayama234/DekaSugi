@@ -100,7 +100,7 @@ class DreamPolicyTests(unittest.TestCase):
         # With a real positive also present, malformed refs are rejected.
         with self.assertRaisesRegex(ValueError, "Invalid positive"):
             select_dream(self.pool, "counterfactual",
-                         positives=(positives[0], fake))
+                         positives=(positives[1], fake))
 
     def test_paired_trial_public_search_is_audited_separately(self):
         cases = self.train[80:100]
