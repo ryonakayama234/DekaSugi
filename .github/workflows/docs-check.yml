@@ -52,9 +52,7 @@ jobs:
       - name: EXP-0003A PR4 preflight split/data/source/policy hashes (never DEV/FINAL score)
         run: |
           python -m packages.exp0003a.freeze_cli --mode preflight --output .run/EXP-0003A-PR4-preflight.json
-          if test -f experiments/EXP-0003A/freeze-v1.json; then
-            python -m packages.exp0003a.freeze_cli --mode check-freeze --output .run/EXP-0003A-PR4-freeze-check.json
-          fi
+          python -m packages.exp0003a.freeze_cli --mode check-freeze --output .run/EXP-0003A-PR4-freeze-check.json
       - name: Upload EXP-0003A PR4 hash-only preflight evidence
         if: always()
         uses: actions/upload-artifact@v4

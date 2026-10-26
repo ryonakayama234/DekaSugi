@@ -101,12 +101,10 @@ class FreezeV1Tests(unittest.TestCase):
             with self.assertRaises(FileNotFoundError):
                 verify_frozen(path=path)
 
-    def test_committed_freeze_when_present(self):
-        # Initial PR stage produces candidate hash-only preflight. The later
-        # commit pins freeze-v1.json, enabling real strict verification.
-        if FREEZE_FILE.exists():
-            frozen = verify_frozen()
-            self.assertEqual(frozen, preflight_record())
+    def test_committed_freeze_required_and_exact(self):
+        self.assertTrue(FREEZE_FILE.is_file(), "Committed freeze is mandatory")
+        frozen = verify_frozen()
+        self.assertEqual(frozen, preflight_record())
 
 
 if __name__ == "__main__":
