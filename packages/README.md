@@ -70,3 +70,13 @@ Generatorは3分割の内容hashを計算するが、Kernelの判断と監査付
 - `tests/test_metro0001_calibration.py`: exact F01/F02 gold SHA / invalid-vs-non_comparable / M3 existing meter invariant.
 - This adapter intentionally rejects all production experiment evidence. No new learner/evaluator/holdout scoring, skill promotion or network access.
 - [Scientific contract](../docs/metrology/evidence-model.md) / [plan](../experiments/METRO-0001/plan.md).
+
+
+## EXP-0003A PR5 — independent DEV engineering evaluator
+| Package | API | State |
+|---|---|---|
+| `exp0003a_dev` | `load_frozen_assets`, `validate_dev_cases`, `evaluate_case`, `summarize`, `run_dev` | PR5 implementation; no DEV/FINAL outcomes |
+
+This module is deliberately **outside** the 14 pinned source blobs and does
+not alter `packages/exp0003a`, `packages/evaluation` or the CAL-01-only
+`packages/metrology`. [Spec](../docs/specs/EXP-0003A-DEV-EVALUATOR.md).

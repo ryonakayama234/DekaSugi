@@ -87,3 +87,13 @@ TRAIN144問での学習と復元可能なKNN方策がCIで一致。**[Datasetと
 - 設計・事前登録 [PR #39](https://github.com/ryonakayama234/DekaSugi/pull/39) と合成fixture測定器 [PR #41](https://github.com/ryonakayama234/DekaSugi/pull/41) はmain統合済み。merge後 [CI #40460951680](https://github.com/ryonakayama234/DekaSugi/actions/runs/40460951680)成功。
 - [CAL-01工学採用判断](experiments/METRO-0001/reviews/20261027-cal01-adoption.md): M1–M4を人工F01–F08で校正PASS、86 testsとArtifact hash独立照合。**METRO-0001の限定された工学目標は完了**。実験評価器やAI知能の向上が証明されたわけではない。
 - 今後の実際のTRAIN証拠への接続、未知課題への転移の検証、EXP-0003AのDEV/FINALは別研究・別ゲートで扱う。上記の以前の「未実装」「レビュー中」は各時点の歴史的記録。
+
+
+## EXP-0003A PR5 — Independent DEV evaluation (2026-10-27)
+[Issue #44](https://github.com/ryonakayama234/DekaSugi/issues/44)
+starts the source-first, frozen-policy independent four-arm DEV64
+engineering evaluator in `packages/exp0003a_dev`. **Implementation-stage
+proposal: DEV64/FINAL128 are not scored, no new performance result exists.**
+No frozen learner code or manifest may be changed; DEV requires a separately
+reviewed main-only gate, and FINAL128 needs a separate explicit approval.
+[Specification](docs/specs/EXP-0003A-DEV-EVALUATOR.md).

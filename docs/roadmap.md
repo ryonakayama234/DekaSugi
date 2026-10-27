@@ -81,3 +81,13 @@ tags: milestones, roadmap, planning
 ## METRO-0001 scoped completion — 2026-10-27
 - [独立校正採用決定](../experiments/METRO-0001/reviews/20261027-cal01-adoption.md)に従い、PR #39/#41 merged、post-merge CI #40460951680成功。M1–M4はsynthetic CAL-01でengineering calibration PASS。
 - メトロロジー一般化、実際のTRAIN証拠接続、可塑性・保持・転移の研究は後続候補であり、**未検証の知能能力の採用ではない**。EXP-0003AのFINALは独立承認まで封印。
+
+
+## EXP-0003A PR5 (2026-10-27): independent DEV evaluator
+[Issue #44](https://github.com/ryonakayama234/DekaSugi/issues/44).
+The frozen source/data/policy baseline is in main. New work lives in
+`packages/exp0003a_dev` to preserve the frozen 14 blobs and separate
+learner/evaluator roles. First gate: fixture/TRAIN-only tests, exact-head
+CI and independent review; no DEV in PR. Second gate: separately reviewed
+main-push engineering DEV64. FINAL128 remains sealed and requires a
+distinct explicit approval. [spec](specs/EXP-0003A-DEV-EVALUATOR.md).

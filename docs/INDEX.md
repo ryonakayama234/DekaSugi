@@ -80,3 +80,9 @@ tags: navigation, architecture, research, experiments
 | METRO-CAL01-PROVENANCE | artifact元bytes/fixture hash・工学実測run | recorded | [run](../experiments/METRO-0001/runs/20261027-cal01-provenance-verified.md) |
 
 科学的能力・学習改善・領域間転移は未実証。METRO-0001自体を汎用知能測定器と解釈しない。
+
+
+## EXP-0003A PR5 — Independent DEV evaluation (not yet executed)
+| ID | Theme | Status | Document |
+|---|---|---|---|
+| EXP-0003A-DEV-EVAL-PR5 | frozen source/policy -> independent B0/B1/B2/B3 DEV64 evaluator | implementation PR; DEV/FINAL not run | [spec](specs/EXP-0003A-DEV-EVALUATOR.md) / [code](../packages/exp0003a_dev/__init__.py) / [engineering plan](../experiments/EXP-0003A/dev-evaluation-pr5.md) / [runs](../experiments/EXP-0003A/runs/README.md) / [Issue #44](https://github.com/ryonakayama234/DekaSugi/issues/44) |

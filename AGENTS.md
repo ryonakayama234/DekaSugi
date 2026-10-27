@@ -168,3 +168,18 @@
 - [CAL-01独立採用判断](experiments/METRO-0001/reviews/20261027-cal01-adoption.md)により、synthetic F01–F08の校正器だけ `accepted_engineering_calibration`。PR #39/#41とmerge後CI証拠を根拠にする。
 - これはAgentの知能成長・技能獲得効果・転移能力・実験用評価データの採点の採用ではない。実際のTRAIN証拠Adapterや科学的な能力主張は、新しいIssue/plan/PRと独立データの境界検討を先に行う。
 - [観測器](packages/metrology/__init__.py)が現在受理するのはCAL-01人工入力のみ。既存のEXP-0003Aのholdoutと凍結ロジックにはアクセスさせない。
+
+
+## 26. EXP-0003A PR5 independent DEV engineering evaluator (Issue #44)
+- Treat `packages/exp0003a_dev` as independent *evaluator*, not a learner. Freeze-v1,
+  all 14 pinned source blobs, TRAIN/DREAM artifacts, and old experiments are immutable.
+- Before any DEV generation or score, require `verify_frozen()` source-first
+  (including source bytes and exact policy) and complete DEV manifest comparison.
+- No DEV64/FINAL128 scoring in PR, unit tests, preflight or unreviewed CI. Activation
+  is a separately reviewed **main push** only; FINAL128 needs a separate explicit
+  human approval and one-shot gate.
+- Public TaskSpec alone flows into `choose`; family/seeds/private audit and
+  evaluator-only provenance never flow into the learner. No promotion/retraining.
+- Record independent four-arm search/audit/primitive metering and CPU/wall;
+  store raw evidence, failures and independent review. DEV results are engineering
+  diagnostics and cannot revise frozen H2/H3 protocol. [Spec](docs/specs/EXP-0003A-DEV-EVALUATOR.md).
