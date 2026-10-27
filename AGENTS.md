@@ -148,3 +148,11 @@
 - PR3 main `55af90d`で学習したsingle top1 skill、B1/B2/B3 snapshot/ordered Dream selectionsを変更しない。CPython3.12のpreflightでTRAIN160/DREAM512/DEV64/FINAL128の参照例を生成して全データをhash化。ただしDEV/FINALの検索・方策選択・独立audit採点は**完全禁止**。
 - PLAN-V1/原始DSL/Registry/生成器/評価器/KNN/新preflightなど全14ソースのGit blob SHA1・raw SHA256、4splitのcanonical SHAとPR3 policy/skill/selection SHAを`freeze-v1.json`へ記録。`check-freeze`は編集済みmanifest・source drift・ID衝突・version driftで即停止し、DEV/FINAL起動口を付けない。
 - PR CIはfreeze-preflightとunit回帰のみ。正式freezeまで全source hashが追跡され、別の独立Codexレビュー済みhashと比較する。PR4でDEV/FINALは未実行、FINALの承認権限は人間の別PRのみ。スコープ外の再学習・標準Registry昇格は禁止。
+
+## 24. METRO-0001: 独立した知能の測定科学（Issue #38; design-only）
+- 観測値、分布・予算で条件付けた能力推定、因果・汎用化に関する研究上の主張を三層に分ける。能力・可塑性・転移を単一スコアに還元しない。
+- 既存MEASURE-0001のcanonical primitive call数はverifier内実行コストであり、総CPU、高次能力、技能の発明を直接測っていない。
+- 試験前に [METRO-0001 CAL-01](experiments/METRO-0001/plan.md) のschema/metrics/比較条件/失敗基準を固定。PR1はdocs-only、PR2は独立したread-only metrologyの校正実装として分離。
+- EXP-0003A plan-v1、freeze-v1.jsonと凍結対象の14ソース、旧EXP-0002B FINALは変更しない。DEV64/FINAL128は本作業で採点せず、許可なく評価する入口も追加しない。
+- source_record_id、family、split、seed、private auditやFINALの原答をlearnerへ供給しない。メトロロジー/UIはread-only。元証拠と分析を分離し、run hashと欠測理由を保持。
+- 設計/実装のいずれもARCH-001/ARCH-002/UI/INDEX/校正runを同期。exact-headのCIと独立レビューがなければmergeせず、P0/P1や方法不整合があれば状態と証拠を記録して停止。[測定定義](docs/metrology/ontology.md) / [指標](docs/metrology/metrics.md) / [証拠契約](docs/metrology/evidence-model.md) / [妥当性](docs/metrology/validity.md) / [ADR](docs/architecture/decisions/ADR-0002-metrology-boundary.md)。

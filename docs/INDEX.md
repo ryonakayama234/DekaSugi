@@ -41,6 +41,16 @@ tags: navigation, architecture, research, experiments
 
 | EXP-0003A-FREEZE | source/split/policy/selectionのpre-DEV凍結 | PR4準備、DEV/FINAL未採点 | [frozen manifest](../experiments/EXP-0003A/freeze-v1.json) / [freeze record](../experiments/EXP-0003A/freeze-v1.md) / [PR4 code](../packages/exp0003a/freeze.py) / [run index](../experiments/EXP-0003A/runs/README.md) / [Issue #36](https://github.com/ryonakayama234/DekaSugi/issues/36) |
 
+## METRO-0001 — Intelligence Metrology Foundation (design-only)
+| ID | テーマ | 状態 | 文書 |
+|---|---|---|---|
+| METRO-ONTOLOGY | 能力・可塑性・転移と観測/推定/主張の区別 | proposed | [ontology](metrology/ontology.md) |
+| METRO-METRICS | 指標の定義・単位・欠測・比較条件 | proposed | [metrics](metrology/metrics.md) |
+| METRO-EVIDENCE | EvidenceEnvelopeと読み取り専用の信頼境界 | proposed | [evidence-model](metrology/evidence-model.md) |
+| METRO-VALIDITY | 構成概念妥当性・因果比較・不確実性 | proposed | [validity](metrology/validity.md) |
+| ADR-0002 | Agent/Evaluatorから独立した測定層 | proposed | [metrology-boundary](architecture/decisions/ADR-0002-metrology-boundary.md) |
+| METRO-0001 | 校正CAL-01：M1–M4の工学的受入条件 | preregistered proposal; not_run | [plan](../experiments/METRO-0001/plan.md) / [runs](../experiments/METRO-0001/runs/README.md) / [Issue #38](https://github.com/ryonakayama234/DekaSugi/issues/38) |
+
 ## AI向け検索方針
 1. 質問に関連するIDかタグをこの目録で探す。
 2. 目的が実装なら `specs` → `architecture/contracts` → 対応する `packages`。

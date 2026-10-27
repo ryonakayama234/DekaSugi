@@ -64,3 +64,9 @@ tags: milestones, roadmap, planning
 ## 2026-10-26 EXP-0003A PR4：評価前ソース/データ/方策凍結（Issue #36）
 - TRAIN/DREAMのPR3工学結果を安定hashで固定するため、4splitの生成元レコード・重複/seed・ソースGit blob・トップ技能・B1/B2/B3方策・B2/B3選別順序をhash-only preflightし、独立レビュー後にimmutable `freeze-v1.json`をピン留めする。
 - DEV64/FINAL128の参照例はデータハッシュを作るためにだけ生成し、方策選択・DSL探索・検証・正答結果は一切実行しない。DEVは凍結後に別の工学評価工程で、FINALは新たな人間承認付き一度限りのPRでのみ採点可能にする。
+
+## METRO-0001 (2026-10-27): 測定科学の横断研究基盤
+- Issue #38のもとで、達成能力・効率・可塑性・保持・転移・能動的適応を操作的に区別する。測定器のデータ品質を能力スコアに混合しない。[METRO ontology](metrology/ontology.md)。
+- PR1: docs-onlyでMetricSpec・EvidenceEnvelope・科学的妥当性・ARCH-001/002・UI・CAL-01の事前登録を固定する。[CAL-01](../experiments/METRO-0001/plan.md)。
+- PR2: 初回実装はstdlib-onlyのread-only metrology reducer/fixture校正。旧FINALを新仮説の確認試験には再利用せず、EXP-0003A DEV64/FINAL128を起動しない。
+- 校正PASSは計量器の工学的品質の証拠であり、技能の有効性や汎用知能の実証ではない。

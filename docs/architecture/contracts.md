@@ -372,3 +372,23 @@ Related: [experiment plan](../../experiments/EXP-0003A/plan.md) / [UI responsibi
 
 ### PR4 source-guard validation order (P1 review remediation)
 - `check-freeze`は評価者のtraining/生成処理に到達する前に、**保存済みJSONの自己hash、schema/plan/runtime、固定14ソースのGit blob SHA1/raw SHA256**を不活性なbyte readだけで照合し、不一致なら即失敗。これらの合格後のみ`preflight_record`がTRAIN/DREAMの再生成・学習を行ってsplit/skill/policy hashと照合する。Pythonの悪意あるimport-time codeをsandboxする設計ではないので、実行環境自体の隔離も別責務である。初回凍結値はP1修正で再固定し、source identityが同一な限り保存データSHAとpolicy SHAは変わらない。
+
+## METRO-0001 — EvidenceEnvelope / measurement / claim data flow (proposal)
+
+```mermaid
+flowchart LR
+    P["Public TaskSpec"] --> T["TrialRef"]
+    S["AgentStateRef: fixed primitive/skill/policy hash"] --> T
+    T --> O["Raw Observation"]
+    T --> V["Independent VerificationRef"]
+    O --> M["MetricSpec + Measurement"]
+    V --> M
+    M --> C["Comparable paired Comparison"]
+    C --> I["Claim with scope / uncertainty / review"]
+    H["Private audit / FINAL"] --> V
+```
+
+- 記録の正本は既存のraw JSON/JSONLとハッシュ。METRO EvidenceEnvelopeはread-only参照。原始計測値、metric version、欠測・分母を必須にして結果と解釈を区別する。
+- 必須の比較キーは同じtask_id・arm・予算・primitive意味版・検証基準・source scope。異なる場合はnon_comparableとし、効果量を計算しない。raw証拠不一致・偽造hash・禁止学習経路はinvalidとして拒否。
+- private出典識別子/監査生行/FINALデータはEvaluator以外へ渡さない。現在のEXP-0003Aの凍結済みschemaやplan-v1は一切変更しない。
+- 正式契約（提案）: [METRO Evidence v0.1](../metrology/evidence-model.md) / [MetricSpec](../metrology/metrics.md) / [妥当性](../metrology/validity.md) / [CAL-01 plan](../../experiments/METRO-0001/plan.md)。
