@@ -72,3 +72,11 @@ tags: navigation, architecture, research, experiments
 
 ## METRO-0001 CAL-01 Artifact独立再照合
 [CAL-01 provenance-verified run](../experiments/METRO-0001/runs/20261027-cal01-provenance-verified.md) — 86 tests PASS / full synthetic fixture manifest and ZIP byte hashes / PR #41 before merge; no intelligence gain claimed.
+
+## METRO-0001 decision — 2026-10-27
+| ID | テーマ | 状態 | 文書 |
+|---|---|---|---|
+| METRO-CAL01-DECISION | 合成校正の独立レビュー・工学採用・限定事項 | accepted_engineering_calibration | [decision](../experiments/METRO-0001/reviews/20261027-cal01-adoption.md) |
+| METRO-CAL01-PROVENANCE | artifact元bytes/fixture hash・工学実測run | recorded | [run](../experiments/METRO-0001/runs/20261027-cal01-provenance-verified.md) |
+
+科学的能力・学習改善・領域間転移は未実証。METRO-0001自体を汎用知能測定器と解釈しない。

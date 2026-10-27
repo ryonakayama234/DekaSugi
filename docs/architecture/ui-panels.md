@@ -56,3 +56,7 @@ Related: [ARCH-001](system.md) / [ARCH-002](contracts.md) / [experiment spec](..
 ## METRO-0001 PR2: UIは依然未実装
 - 合成fixtureのcalibration reportを、将来UI-06の出典としてread-onlyで参照する方針のみ。CLIはreport(JSON)を出力するが画面、API、データベースは持たない。
 - real intelligence scores / final holdout dataは提供しない。[run index](../../experiments/METRO-0001/runs/README.md)。
+
+## METRO-0001 integrated CAL-01 evidence status (2026-10-27)
+- [adoption decision](../../experiments/METRO-0001/reviews/20261027-cal01-adoption.md)がUI-06将来用のread-only provenance投影元となる（artifact hash・校正判定・実験の対象範囲）。**UIそのものは未実装**。
+- CAL-01で受理したのは人工fixtureのみ。UIはデータ品質の監査結果を「能力・学習改善」を意味する数値へ変換しない。

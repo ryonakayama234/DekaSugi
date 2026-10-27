@@ -163,3 +163,8 @@
 - M3は既存のcanonical meterのon/offで同じstatus/program/candidates/traceを、**公開人工TaskSpec**だけで照合する。新Evaluator/FINAL実行はしない。
 - CLIは--mode calibrateのみ、reportはexclusive create（上書き禁止）。calibration工程結果と一般知能の学習改善/正式採用は厳格に区別。
 - PR2はCI・独立review・正確なhead SHA・run evidenceが揃うまでmergeしない。[measure](docs/metrology/metrics.md) / [run目録](experiments/METRO-0001/runs/README.md)。
+
+## 26. METRO-0001 初回校正の採用境界 (2026-10-27)
+- [CAL-01独立採用判断](experiments/METRO-0001/reviews/20261027-cal01-adoption.md)により、synthetic F01–F08の校正器だけ `accepted_engineering_calibration`。PR #39/#41とmerge後CI証拠を根拠にする。
+- これはAgentの知能成長・技能獲得効果・転移能力・実験用評価データの採点の採用ではない。実際のTRAIN証拠Adapterや科学的な能力主張は、新しいIssue/plan/PRと独立データの境界検討を先に行う。
+- [観測器](packages/metrology/__init__.py)が現在受理するのはCAL-01人工入力のみ。既存のEXP-0003Aのholdoutと凍結ロジックにはアクセスさせない。

@@ -349,3 +349,15 @@ flowchart LR
 ```
 - [packages/metrology](../../packages/metrology/__init__.py) は既存Agentからの呼び出し依存を持たず、calibration fixtureのみを受け取る。private audit/FINALや実モデルへは接続しない。
 - 校正のM3は[unit regression](../../tests/test_metro0001_calibration.py)から既存bounded_synthesize+meterを人工公開TaskSpecで比較する。将来の別領域Adapterは未実装。
+
+## METRO-0001 工学的校正の統合後状態 (2026-10-27)
+```mermaid
+flowchart LR
+    F["人工CAL-01 fixture (accepted calibration scope)"] --> M["packages/metrology read-only reducer"]
+    M --> E["正規化集計と差分"]
+    E --> A["8/8校正・元証拠SHA"]
+    A --> D["独立レビュー付き採用記録"]
+    X["EXP-0003A private audit/DEV/FINAL: separate authorization, no connector"]
+```
+- 前節のPR2提案機構のうち **人工fixture-only校正器** は[PR #41](https://github.com/ryonakayama234/DekaSugi/pull/41)としてmain統合済み。より汎用的な実験証拠Gateway、異領域Adapter、Claim Registry、Research Consoleは引き続きproposed-only。
+- [CAL-01採用判断](../../experiments/METRO-0001/reviews/20261027-cal01-adoption.md)のscopeはsyntheticのみ。[ARCH-002](contracts.md)と[run](../../experiments/METRO-0001/runs/20261027-cal01-provenance-verified.md)と整合する。計測器の状態は知能能力の状態ではない。
