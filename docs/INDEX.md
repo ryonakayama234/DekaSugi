@@ -116,3 +116,8 @@ tags: navigation, architecture, research, experiments
 
 ## POLICY-DIAG-001 — implementation (independent read-only module)
 - [diagnostic code](../packages/policy_diagnostics/__init__.py) / [synthetic + TRAIN-only tests](../tests/test_policy_diagnostics.py) / [diagnostic run index](../experiments/POLICY-DIAG-001/runs/README.md). The code does not evaluate DEV/FINAL; actual DEV per-task results remain not_observed unless authorized archived public evidence is supplied.
+
+
+## POLICY-DIAG-001 original-public evidence analysis (complete within archived-public scope)
+- [Descriptive diagnosis run](../experiments/POLICY-DIAG-001/runs/20261028-archive-public-diagnosis.md) / [aggregate JSON](../experiments/POLICY-DIAG-001/runs/20261028-archive-public-diagnosis.json) / [hash-gated script](../scripts/analyze_policy_diag_archives.py) / [archive validation tests](../tests/test_policy_diag_archives.py).
+- Results: Dream overlap 24/96; 5NN overlap mean 2.890625/5; different neighbors 61/64 yet different vote/saving only 1/64; different action 1/64 but observed primitive costs identical 64/64. This is an exploratory **partial** explanation, not fresh holdout inference or H3 confirmation. DEV public TaskSpecs absent: distances/close_support not_observed; FINAL128 sealed.
