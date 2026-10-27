@@ -408,3 +408,17 @@ Activation is restricted to `main` push with review marker and first run
 attempt. Auditor independently recounts 64 task IDs × B0–B3 using only the
 public/private output and frozen manifest, not the scoring code. This does not
 authorize FINAL128.
+
+## EXP-0003A DEV64 post-run original evidence audit (Issue #48)
+```mermaid
+flowchart LR
+  X["Original scoring run: FAILED at auditor"] --> O["Fixed Artifact 12739684056"]
+  O --> H["Exact original byte SHA256 precheck"]
+  H --> A["Read-only independent audit with float-only tolerance"]
+  A --> P["Derived audit + public summary SHA256"]
+  P --> R["Public immutable ledger + restricted private archive gate"]
+  O -.->|"No scorer or generator"| F["FINAL128 sealed"]
+```
+Original failure stays provenance. A new reviewed main workflow is
+**audit-only** and must not rerun DEV or import the frozen scorer. No raw
+evaluator-private records in public Git.

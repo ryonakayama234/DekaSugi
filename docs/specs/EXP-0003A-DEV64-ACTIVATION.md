@@ -59,3 +59,12 @@ OOD false ON and tail regressions must be disclosed.
   into SHA256SUMS even if scoring, preflight or independent audit fails.
 - New negative and positive synthetic evidence tests run in PR CI. No DEV/FINAL
   generation/scoring may be performed before reviewed main activation.
+
+## Post-activation correction: original evidence audit-only (Issue #48)
+The one-shot DEV64 job is irrevocably used: 64×4 scoring completed on main
+`26eaf3b4`; independent audit CI failed on binary64 clock aggregation.
+Do not repeat the scored workflow. Fix the independent read-only auditor's
+CPU/wall-only tolerance, review the change and use a distinct main-push
+**audit-only** workflow over exact original Artifact `12739684056`.
+Preserve failed run as failed; derive new audit SHA separately. No private
+raw records in the public source repository. FINAL128 stays sealed.

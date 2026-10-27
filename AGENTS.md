@@ -220,3 +220,23 @@
   into SHA256SUMS even if scoring, preflight or independent audit fails.
 - New negative and positive synthetic evidence tests run in PR CI. No DEV/FINAL
   generation/scoring may be performed before reviewed main activation.
+
+## 28. EXP-0003A DEV64 post-run audit-only correction (Issue #48)
+- One-shot DEV64 was **already** scored on main commit `26eaf3b4`, run
+  `40518246537`; the original independent auditor failed CPU/wall exact
+  float comparison *after* scoring. Never re-run or rerate this DEV64.
+- PR must change **only** independent read-only auditor, its synthetic tests,
+  audit-only workflow, metadata/architecture and immutable public records.
+  Do not touch the `exp0003a_dev` scorer, `freeze-v1.json`, 14 pinned source
+  files or scored main-only activation workflow.
+- In independent audit, exact compare counts/verdicts/IDs/AST/meter/hash;
+  compare CPU/wall totals only using documented strictly bounded float tolerance
+  (rtol `1e-12`, atol `1e-10` milliseconds). Audit log must expose maximum
+  accepted discrepancy.
+- Audit-only main workflow downloads pinned original Artifact `12739684056`,
+  verifies exact SHA256 of original public/private/attempt before **read-only**
+  recount, uploads *derived* audit and public summary. No score/generator imports.
+- Repository is **public**: do NOT commit evaluator-private raw records or
+  hidden third-audit examples. Preserve original raw ZIP in restricted storage
+  outside public Git. A repository hash record alone is not a full private-data
+  archive; disclose expiration `2027-01-25` and remaining preservation gate.

@@ -76,3 +76,15 @@ Latest evidence is PR CI, not a held-out experimental result.
   into SHA256SUMS even if scoring, preflight or independent audit fails.
 - New negative and positive synthetic evidence tests run in PR CI. No DEV/FINAL
   generation/scoring may be performed before reviewed main activation.
+
+## EXP-0003A DEV64 scored once — evidence correction pending (2026-10-27)
+- Actual original [job #40518246537](https://github.com/ryonakayama234/DekaSugi/actions/runs/40518246537)
+  **scored** 64 tasks × four arms on main `26eaf3b4`. Its **independent
+  audit failed** because of last-bit CPU/wall rounding; the original job
+  remains FAILURE. All raw public/private bytes and SHA256SUMS were retained
+  as [Artifact #12739684056](https://github.com/ryonakayama234/DekaSugi/actions/runs/40518246537/artifacts/12739684056).
+- [Immutable result/retention ledger](20261027-dev64.md) records observed
+  outcomes, exact original hashes, audit-only readout gate and restricted
+  archival obligation. This **supersedes the historic** "DEV not_run" headings
+  above without changing their original historical text.
+- No scorer rerun; FINAL128 remains not_run.

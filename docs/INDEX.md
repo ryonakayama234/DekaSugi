@@ -96,3 +96,13 @@ tags: navigation, architecture, research, experiments
 - Independent artifact verifier:
   `scripts/audit_exp0003a_dev_evidence.py` (read-only, stdlib; no DEV in PR).
   The activation workflow is an execution boundary, not FINAL authorization.
+
+## EXP-0003A DEV64 audit-only recovery and original-evidence chain (Issue #48)
+- [Run ledger](../experiments/EXP-0003A/runs/20261027-dev64.md) records
+  original one-shot status, raw public/private SHA256, measured arm totals,
+  audit-only fix, CI provenance and data-retention limits.
+- Read-only `scripts/audit_exp0003a_dev_evidence.py` permits bounded binary64
+  CPU/wall rounding only, with integer/verdict/source-hash checks exact.
+- Separate `.github/workflows/exp0003a-dev64-audit-original.yml` downloads
+  immutable original Artifact by fixed run/ID; it cannot score DEV or FINAL.
+  Original workflow failure is never overwritten.
