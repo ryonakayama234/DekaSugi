@@ -1,5 +1,6 @@
 """Archive diagnostic verification: synthetic data only, no holdout access."""
 import hashlib
+import tempfile
 import importlib.util
 from pathlib import Path
 import unittest
@@ -62,6 +63,33 @@ class PolicyDiagArchiveTests(unittest.TestCase):
         self.assertEqual(data["archived_query_5NN"]["overlap_histogram"],{"5":64})
         self.assertEqual(data["unobserved"]["query_public_TaskSpec"],True)
         self.assertNotIn("synthetic-query-",str(data))
+
+    def test_verify_all_14_real_source_bytes_and_tampering(self):
+        """Synthetic source tree, no import and no holdout access."""
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)
+            frozen_path=root/"experiments"/"EXP-0003A"/"freeze-v1.json"
+            frozen_path.parent.mkdir(parents=True)
+            frozen_path.write_text("{}",encoding="utf-8")
+            files={}
+            for i in range(14):
+                relative=f"packages/synthetic_source_{i:02d}.py"
+                path=root/relative
+                path.parent.mkdir(parents=True,exist_ok=True)
+                payload=f"synthetic = {i}\\n".encode()
+                path.write_bytes(payload)
+                git_header=b"blob "+str(len(payload)).encode()+b"\0"+payload
+                files[relative]={"raw_sha256":hashlib.sha256(payload).hexdigest(),
+                    "git_blob_sha1":hashlib.sha1(git_header).hexdigest()}
+            freeze={"sources":{"files":files}}
+            self.assertEqual(analyzer.verify_frozen_source_bytes(freeze,frozen_path),14)
+            victim=root/"packages/synthetic_source_06.py"
+            victim.write_text("synthetic = 999\\n",encoding="utf-8")
+            with self.assertRaisesRegex(ValueError,"raw hash mismatch"):
+                analyzer.verify_frozen_source_bytes(freeze,frozen_path)
+            victim.unlink()
+            with self.assertRaisesRegex(ValueError,"Missing frozen source"):
+                analyzer.verify_frozen_source_bytes(freeze,frozen_path)
 
     def test_duplicate_public_task_rejected(self):
         dev,dream,freeze=self.fixture()
