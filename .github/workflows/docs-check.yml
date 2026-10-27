@@ -23,13 +23,15 @@ jobs:
       - name: METRO-0001 CAL-01 fixed synthetic fixture calibration (no EXP holdouts)
         run: |
           mkdir -p .run
-          python -m packages.metrology --mode calibrate --output .run/METRO-0001-CAL-01.json
+          python -m packages.metrology --mode calibrate --output .run/METRO-0001-CAL-01.json --fixtures-output .run/METRO-0001-CAL-01.fixtures.json
       - name: Upload METRO-0001 CAL-01 synthetic evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: METRO-0001-CAL-01
-          path: .run/METRO-0001-CAL-01.json
+          path: |
+            .run/METRO-0001-CAL-01.json
+            .run/METRO-0001-CAL-01.fixtures.json
           if-no-files-found: error
       - name: EXP-0003A PR4 generate hash-only candidate BEFORE tests (no holdout evaluation)
         run: python -m packages.exp0003a.freeze_cli --mode preflight --output .run/EXP-0003A-PR4-preflight.json
