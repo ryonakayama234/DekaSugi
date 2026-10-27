@@ -6,6 +6,7 @@ import json
 import math
 from pathlib import Path
 import random
+import re
 
 ARMS = ("B0", "B1", "B2", "B3")
 FAMILIES = ("identity", "trim", "lower", "upper", "normalize_lower",
@@ -23,11 +24,14 @@ def require(ok, why):
     if not ok:
         raise ValueError(why)
 
-def audit(public, private, freeze):
+def audit(public, private, freeze, expected_sha):
     require(public["phase"] == private["phase"] == "DEV_ENGINEERING", "Not DEV")
     require(public["final_evaluated"] is False and
             public["registry_promoted"] is False, "FINAL/promotion drift")
-    require(public["source_commit"] == private["source_commit"], "Source SHA mismatch")
+    require(type(expected_sha) is str and
+            re.fullmatch(r"[0-9a-f]{40}", expected_sha) is not None and
+            public["source_commit"] == private["source_commit"] == expected_sha,
+            "Source SHA mismatch against runner GITHUB_SHA")
     require(public["freeze_payload_sha256"] == freeze["freeze_payload_sha256"],
             "Freeze drift")
     sealed = freeze["split_data"]["split_sha256"]["dev"]
@@ -92,6 +96,28 @@ def audit(public, private, freeze):
             require(tr["search"]["tested_candidates"] == tr["tested_candidates"] and
                     tr["meter"]["primitive_invocations"] == tr["primitive_invocations"],
                     "Canonical meter/search mismatch")
+            by_op = tr["meter"]["by_op"]
+            require(type(by_op) is dict and all(
+                op in ("trim", "lower", "upper") and type(n) is int and n > 0
+                for op, n in by_op.items()) and
+                sum(by_op.values()) == tr["primitive_invocations"],
+                "Meter by_op breakdown differs from total primitive invocations")
+            search = tr["search"]
+            status = search["status"]
+            require(status in ("solved", "not_found", "budget_exhausted") and
+                    search["task_id"] == task_id and
+                    type(search["solved"]) is bool and
+                    search["solved"] == (status == "solved"),
+                    "Audit/search status mismatch")
+            program, selected = search["program"], tr["selected_ast"]
+            require((status == "solved" and program is not None and
+                     program == selected) or
+                    (status != "solved" and program is None and selected is None),
+                    "Audit/search program/selected AST mismatch")
+            require((not tr["audited_correct"] or status == "solved") and
+                    tr["false_solved"] == (status == "solved" and
+                                           not tr["audited_correct"]),
+                    "Audit/search verdict mismatch")
             for k in CLOCKS:
                 v = tr[k]
                 require(type(v) in (int, float) and math.isfinite(v) and v >= 0,
@@ -159,20 +185,27 @@ def audit(public, private, freeze):
         "interpretation": "DEV engineering only; FINAL sealed; no retuning.",
     }
 
-def audit_paths(public_path, private_path, freeze_path):
+def audit_paths(public_path, private_path, freeze_path, expected_sha, attempt_path):
     raw_public, raw_private = public_path.read_bytes(), private_path.read_bytes()
+    attempt = json.loads(attempt_path.read_bytes())
+    require(attempt["source_sha"] == expected_sha and
+            attempt["event"] == "push" and attempt["ref"] == "refs/heads/main" and
+            str(attempt["run_attempt"]) == "1",
+            "Attempt metadata disagrees with exact main-run SHA")
     report = audit(json.loads(raw_public), json.loads(raw_private),
-                   json.loads(freeze_path.read_bytes()))
+                   json.loads(freeze_path.read_bytes()), expected_sha)
     report["public_json_sha256"] = sha256(raw_public).hexdigest()
     report["private_json_sha256"] = sha256(raw_private).hexdigest()
     return report
 
 def main():
     p = argparse.ArgumentParser()
-    for name in ("public", "private", "freeze", "output"):
+    for name in ("public", "private", "freeze", "output", "attempt"):
         p.add_argument("--" + name, required=True, type=Path)
+    p.add_argument("--source-sha", required=True)
     a = p.parse_args()
-    report = audit_paths(a.public, a.private, a.freeze)
+    report = audit_paths(a.public, a.private, a.freeze,
+                         a.source_sha, a.attempt)
     with a.output.open("x", encoding="utf-8") as f:
         json.dump(report, f, ensure_ascii=False, sort_keys=True, indent=2)
         f.write("\n")

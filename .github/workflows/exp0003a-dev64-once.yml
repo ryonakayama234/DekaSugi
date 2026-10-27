@@ -78,11 +78,11 @@ jobs:
             --public .run/EXP-0003A-DEV64/public.json \
             --private .run/EXP-0003A-DEV64/public.evaluator-private.json \
             --freeze experiments/EXP-0003A/freeze-v1.json \
+            --attempt .run/EXP-0003A-DEV64/attempt.json \
+            --source-sha "$GITHUB_SHA" \
             --output .run/EXP-0003A-DEV64/independent-audit.json
-      - name: Record original byte SHA-256 and summary
+      - name: Record independently verified summary
         run: |
-          (cd .run/EXP-0003A-DEV64 && sha256sum *.json > SHA256SUMS)
-          cat .run/EXP-0003A-DEV64/SHA256SUMS
           python - <<'PY'
           import json, os
           from pathlib import Path
@@ -99,6 +99,12 @@ jobs:
                   a["paired_B2_minus_B3"]["primitive_invocations"]) + "\n")
               f.write("\nFull original byte hashes stored in SHA256SUMS.\n")
           PY
+      - name: Finalize SHA256SUMS of all available original JSON, even on failure
+        if: always()
+        run: |
+          mkdir -p .run/EXP-0003A-DEV64
+          (cd .run/EXP-0003A-DEV64 && find . -maxdepth 1 -type f -name '*.json' -print0 | sort -z | xargs -0 -r sha256sum > SHA256SUMS)
+          cat .run/EXP-0003A-DEV64/SHA256SUMS
       - name: Archive evidence or partial failed-attempt record
         if: always()
         uses: actions/upload-artifact@v4

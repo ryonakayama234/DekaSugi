@@ -47,3 +47,15 @@ OOD false ON and tail regressions must be disclosed.
 [Data contract](../architecture/contracts.md) /
 [Run index](../../experiments/EXP-0003A/runs/README.md) /
 [PR5 evaluator](EXP-0003A-DEV-EVALUATOR.md).
+
+### Independent Codex P2 review hardening (2026-10-27)
+- Each primitive meter's `by_op` canonical positive counters must sum to
+  `primitive_invocations` (not just agree with copied top-level total).
+- Check search status/solved/program/selected AST against audited_correct and
+  false_solved, including consistent unsolved/null-program outcomes.
+- Verify BOTH evidence source_commit values match the externally supplied
+  40-character runner `GITHUB_SHA`; attempt must match main/first run/SHA.
+- A finalization step with `always()` hashes **all extant** original JSON
+  into SHA256SUMS even if scoring, preflight or independent audit fails.
+- New negative and positive synthetic evidence tests run in PR CI. No DEV/FINAL
+  generation/scoring may be performed before reviewed main activation.

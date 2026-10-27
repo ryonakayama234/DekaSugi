@@ -29,10 +29,13 @@ def synthetic_evidence():
             inv = 2 if a == "B2" else 1
             arms[a] = {
                 "audit_ref": ref, "policy_snapshot_sha256": None if a == "B0" else a,
-                "decision": "OFF", "audited_correct": bool(i % 2 == 0),
+                "decision": "OFF", "audited_correct": False,
                 "false_solved": False, "tested_candidates": 3,
                 "primitive_invocations": inv, "search": {"tested_candidates": 3,
-                "status": "solved"}, "meter": {"primitive_invocations": inv},
+                "task_id": tid, "status": "not_found", "solved": False,
+                "program": None}, "selected_ast": None,
+                "meter": {"primitive_invocations": inv,
+                          "by_op": {"trim": inv}},
                 "policy_inference_cpu_ms": 0.0, "policy_inference_wall_ms": 0.0,
                 "search_cpu_ms": 0.0, "search_wall_ms": 0.0,
                 "audit_cpu_ms": 0.0, "audit_wall_ms": 0.0,
@@ -41,7 +44,7 @@ def synthetic_evidence():
     freeze = {"freeze_payload_sha256": "test-seal",
               "policy": {"snapshot_sha256": {a: a for a in ARMS[1:]}},
               "split_data": {"split_sha256": {"dev": digest(records)}}}
-    pub = {"phase": "DEV_ENGINEERING", "source_commit": "test-sha",
+    pub = {"phase": "DEV_ENGINEERING", "source_commit": "a" * 40,
            "freeze_payload_sha256": "test-seal", "final_evaluated": False,
            "registry_promoted": False, "dev_dataset_sha256": digest(records),
            "snapshot_sha256": {a: a for a in ARMS[1:]},
@@ -52,7 +55,7 @@ def synthetic_evidence():
                    "freeze_verify_wall": 1.0, "second_train_dream_replay_wall": 2.0,
                    "snapshot_validation_wall": 1.0, "asset_load_total_wall": 4.0,
                }}}
-    prv = {"phase": "DEV_ENGINEERING", "source_commit": "test-sha",
+    prv = {"phase": "DEV_ENGINEERING", "source_commit": "a" * 40,
            "dev_dataset_sha256": digest(records), "source_records": records,
            "public_trial_rows_sha256": digest(rows)}
     return pub, prv, freeze
@@ -63,24 +66,79 @@ class IndependentAuditTests(TestCase):
         pub, prv, freeze = synthetic_evidence()
         prv["public_trial_rows_sha256"] = "0" * 64
         with self.assertRaisesRegex(ValueError, "Public trial evidence digest"):
-            audit(pub, prv, freeze)
+            audit(pub, prv, freeze, 'a' * 40)
 
     def test_private_split_fails_closed(self):
         pub, prv, freeze = synthetic_evidence()
         prv["source_records"][0]["seeds"][0] = -1
         with self.assertRaisesRegex(ValueError, "Private DEV raw split"):
-            audit(pub, prv, freeze)
+            audit(pub, prv, freeze, 'a' * 40)
 
     def test_forbid_b0_policy_on(self):
         pub, prv, freeze = synthetic_evidence()
         pub["trial_rows"][0]["arms"]["B0"]["decision"] = "ON"
         prv["public_trial_rows_sha256"] = digest(pub["trial_rows"])
         with self.assertRaisesRegex(ValueError, "Illegal arm decision"):
-            audit(pub, prv, freeze)
+            audit(pub, prv, freeze, 'a' * 40)
 
     def test_forbid_noncanonical_meter(self):
         pub, prv, freeze = synthetic_evidence()
         pub["trial_rows"][0]["arms"]["B1"]["meter"]["primitive_invocations"] = 999
         prv["public_trial_rows_sha256"] = digest(pub["trial_rows"])
         with self.assertRaisesRegex(ValueError, "Canonical meter/search"):
-            audit(pub, prv, freeze)
+            audit(pub, prv, freeze, 'a' * 40)
+
+    def test_meter_per_op_tamper_rejected(self):
+        pub, prv, freeze = synthetic_evidence()
+        pub["trial_rows"][0]["arms"]["B2"]["meter"]["by_op"]["trim"] = 3
+        prv["public_trial_rows_sha256"] = digest(pub["trial_rows"])
+        with self.assertRaisesRegex(ValueError, "Meter by_op breakdown"):
+            audit(pub, prv, freeze, "a" * 40)
+
+    def test_search_audit_contradiction_rejected(self):
+        pub, prv, freeze = synthetic_evidence()
+        trial = pub["trial_rows"][0]["arms"]["B2"]
+        trial["audited_correct"] = True
+        prv["public_trial_rows_sha256"] = digest(pub["trial_rows"])
+        with self.assertRaisesRegex(ValueError, "Audit/search verdict"):
+            audit(pub, prv, freeze, "a" * 40)
+
+    def test_mismatched_runner_sha_rejected(self):
+        pub, prv, freeze = synthetic_evidence()
+        with self.assertRaisesRegex(ValueError, "Source SHA mismatch"):
+            audit(pub, prv, freeze, "b" * 40)
+
+    def test_synthetic_success_independent_recount(self):
+        pub, prv, freeze = synthetic_evidence()
+        totals = {}
+        for a in ARMS:
+            totals[a] = {
+                "audited_correct": 0, "false_solved": 0,
+                "tested_candidates": 192,
+                "primitive_invocations": 128 if a == "B2" else 64,
+                "selected_on": 0,
+                "policy_inference_cpu_ms": 0.0, "policy_inference_wall_ms": 0.0,
+                "search_cpu_ms": 0.0, "search_wall_ms": 0.0,
+                "audit_cpu_ms": 0.0, "audit_wall_ms": 0.0,
+            }
+        pub["summary"] = {
+            "task_count": 64, "arm_totals": totals,
+            "ood_false_on_counts": {a: 0 for a in ARMS},
+            "family_summary": {
+                f: {a: {"audited_correct": 0,
+                        "primitive_invocations": 16 if a == "B2" else 8}
+                    for a in ARMS} for f in FAMILIES
+            },
+            "paired_B2_minus_B3": {
+                "primitive_invocations": 64,
+                "tested_candidates": 0,
+                "audited_correct_B3_minus_B2": 0,
+                "primitive_regressions": 0,
+                "primitive_improvements": 64,
+                "family_cluster_bootstrap_95pct_total_calls_delta": [64, 64],
+                "bootstrap_seed": 260303, "bootstrap_rounds": 1000,
+            },
+        }
+        result = audit(pub, prv, freeze, "a" * 40)
+        self.assertEqual(result["status"], "pass")
+        self.assertEqual(result["arm_trial_count"], 256)

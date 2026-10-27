@@ -208,3 +208,15 @@
   failures. Report OS/Python/source commit/run ID and artifact retention.
 - DEV conclusions are exploratory/engineering; even a favorable B3−B2 paired
   reduction is **not** confirmatory H3. FINAL128 remains not_run.
+
+### Independent Codex P2 review hardening (2026-10-27)
+- Each primitive meter's `by_op` canonical positive counters must sum to
+  `primitive_invocations` (not just agree with copied top-level total).
+- Check search status/solved/program/selected AST against audited_correct and
+  false_solved, including consistent unsolved/null-program outcomes.
+- Verify BOTH evidence source_commit values match the externally supplied
+  40-character runner `GITHUB_SHA`; attempt must match main/first run/SHA.
+- A finalization step with `always()` hashes **all extant** original JSON
+  into SHA256SUMS even if scoring, preflight or independent audit fails.
+- New negative and positive synthetic evidence tests run in PR CI. No DEV/FINAL
+  generation/scoring may be performed before reviewed main activation.
