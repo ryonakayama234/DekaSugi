@@ -60,6 +60,38 @@ class CAL01Test(unittest.TestCase):
         with self.assertRaisesRegex(EvidenceError, "invalid_unit"):
             analyze(data)
 
+    def test_valid_budget_change_is_non_comparable_not_invalid(self):
+        rows = gold_evidence()
+        rows[1]["trial_ref"]["limits"]["max_candidates"] = 99
+        rows[1] = seal(rows[1])
+        validate(rows[1])
+        report = analyze(rows)
+        self.assertEqual(report["status"], "non_comparable")
+        self.assertEqual(report["reason"], "budget_mismatch")
+        self.assertNotIn("summary", report)
+
+    def test_invalid_budget_not_accepted(self):
+        rows = gold_evidence()
+        rows[1]["trial_ref"]["limits"]["max_candidates"] = 0
+        rows[1] = seal(rows[1])
+        with self.assertRaisesRegex(EvidenceError, "invalid_budget"):
+            analyze(rows)
+
+    def test_false_solved_audit_mismatch_rejected(self):
+        rows = gold_evidence()
+        rows[0]["trial_ref"]["audit_correct"] = False
+        rows[0] = seal(rows[0])
+        with self.assertRaisesRegex(EvidenceError, "inconsistent_verification"):
+            analyze(rows)
+
+    def test_fixture_manifest_retains_all_raw_cases_and_hashes(self):
+        from packages.metrology import fixture_manifest
+        manifest = fixture_manifest()
+        self.assertEqual(len(manifest["cases"]), 8)
+        for case in manifest["cases"]:
+            self.assertEqual(case["raw_rows_sha256"], digest(case["raw_rows"]))
+        self.assertEqual(manifest["cases"][0]["raw_rows"], gold_evidence())
+
     def test_f07_partition_leak_rejected(self):
         with self.assertRaisesRegex(EvidenceError, "partition_leak"):
             analyze(_tampered_case("F07"))
