@@ -70,3 +70,10 @@ tags: milestones, roadmap, planning
 - PR1: docs-onlyでMetricSpec・EvidenceEnvelope・科学的妥当性・ARCH-001/002・UI・CAL-01の事前登録を固定する。[CAL-01](../experiments/METRO-0001/plan.md)。
 - PR2: 初回実装はstdlib-onlyのread-only metrology reducer/fixture校正。旧FINALを新仮説の確認試験には再利用せず、EXP-0003A DEV64/FINAL128を起動しない。
 - 校正PASSは計量器の工学的品質の証拠であり、技能の有効性や汎用知能の実証ではない。
+
+## METRO-0001 CAL-01 PR2 synthetic calibration (2026-10-27)
+- [run](../experiments/METRO-0001/runs/20261027-cal01-synthetic.md): F01–F08 8/8工学校正PASS、GitHub CI #40457141475、unittest82件PASS。人工fixtureの集計検査であり知能能力の改善ではない。
+- Source/metrics/受入済みpreregistrationは変更せず、PR2のレビュー終了まで正式完了としない。
+
+## METRO-0001 CAL-01 fixture manifest / metrology run checkpoint
+- [original-byte audit](../experiments/METRO-0001/runs/20261027-cal01-provenance-verified.md) records CI #40458100322 / source `0a01cdb` / F01–F08 8/8 / 86 tests PASS / artifact ZIP and raw fixture/report hashes / CPU+wall sampling. Calibration only; independent final head review/merge gate remains.

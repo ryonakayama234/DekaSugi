@@ -156,3 +156,10 @@
 - EXP-0003A plan-v1、freeze-v1.jsonと凍結対象の14ソース、旧EXP-0002B FINALは変更しない。DEV64/FINAL128は本作業で採点せず、許可なく評価する入口も追加しない。
 - source_record_id、family、split、seed、private auditやFINALの原答をlearnerへ供給しない。メトロロジー/UIはread-only。元証拠と分析を分離し、run hashと欠測理由を保持。
 - 設計/実装のいずれもARCH-001/ARCH-002/UI/INDEX/校正runを同期。exact-headのCIと独立レビューがなければmergeせず、P0/P1や方法不整合があれば状態と証拠を記録して停止。[測定定義](docs/metrology/ontology.md) / [指標](docs/metrology/metrics.md) / [証拠契約](docs/metrology/evidence-model.md) / [妥当性](docs/metrology/validity.md) / [ADR](docs/architecture/decisions/ADR-0002-metrology-boundary.md)。
+
+## 25. METRO-0001 CAL-01: fixture-only計測器（PR2）
+- 実装`packages/metrology`は人工fixtureのみを処理するread-only集計器。raw evidence sealのSHAは同一性確認に限り、認証や外部秘密保持を保証しない。
+- CAL-01のF01/F02期待整数値・summary hashを[plan-v1](experiments/METRO-0001/plan.md)から変えず、invalid証拠とnon_comparable合法観測を別扱いにする。
+- M3は既存のcanonical meterのon/offで同じstatus/program/candidates/traceを、**公開人工TaskSpec**だけで照合する。新Evaluator/FINAL実行はしない。
+- CLIは--mode calibrateのみ、reportはexclusive create（上書き禁止）。calibration工程結果と一般知能の学習改善/正式採用は厳格に区別。
+- PR2はCI・独立review・正確なhead SHA・run evidenceが揃うまでmergeしない。[measure](docs/metrology/metrics.md) / [run目録](experiments/METRO-0001/runs/README.md)。

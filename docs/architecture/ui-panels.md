@@ -52,3 +52,7 @@ Related: [ARCH-001](system.md) / [ARCH-002](contracts.md) / [experiment spec](..
 - **唯一の正本**: METRO Measurement/Comparison/ScientificClaim read-only projection。数字の由来、MetricSpec版、評価課題分布、母数、代替説明、CI/独立レビュー状態とreplay用raw hashを表示する。
 - UI-04 Evidence & Reviewを置換せず、UI-06は能力の成長/測定妥当性という問いを横断検索する将来のビューとする。数値の再採点、Skill昇格、DEV/FINAL起動、学習器へのprivate evidence返却は禁止。
 - 画面実装は今回対象外。リンク元は[ontology](../metrology/ontology.md)、[metrics](../metrology/metrics.md)、[evidence](../metrology/evidence-model.md)、[CAL-01 plan](../../experiments/METRO-0001/plan.md)。
+
+## METRO-0001 PR2: UIは依然未実装
+- 合成fixtureのcalibration reportを、将来UI-06の出典としてread-onlyで参照する方針のみ。CLIはreport(JSON)を出力するが画面、API、データベースは持たない。
+- real intelligence scores / final holdout dataは提供しない。[run index](../../experiments/METRO-0001/runs/README.md)。

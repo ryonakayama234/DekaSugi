@@ -63,3 +63,12 @@ tags: navigation, architecture, research, experiments
 - 各文書は一つの責務だけ持つ。内容のコピーを増やさずリンクする。
 - 変更時は参照元の図や契約を確認し、この索引も更新する。
 - Mermaid図はMarkdown内に埋め込み、GitHub上で読めるようにする。
+
+## METRO-0001 PR2 — 実装時に読む入口
+[Fixture-only reducer](../packages/metrology/__init__.py) / [CAL-01 CLI](../packages/metrology/__main__.py) / [regression](../tests/test_metro0001_calibration.py) / [run目録](../experiments/METRO-0001/runs/README.md)。**本体は人工fixture-only**、領域転移やEXP-0003A FINALの独立評価器ではない。
+
+## METRO-0001 CAL-01 実測記録（工学校正のみ）
+[CAL-01 CI run record](../experiments/METRO-0001/runs/20261027-cal01-synthetic.md) — synthetic F01–F08 / status engineering_fixture_pass / no intelligence-growth claim。Source PR2独立レビューと採用は別ゲート。
+
+## METRO-0001 CAL-01 Artifact独立再照合
+[CAL-01 provenance-verified run](../experiments/METRO-0001/runs/20261027-cal01-provenance-verified.md) — 86 tests PASS / full synthetic fixture manifest and ZIP byte hashes / PR #41 before merge; no intelligence gain claimed.

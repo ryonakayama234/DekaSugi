@@ -334,3 +334,18 @@ flowchart TD
 - カウントとCPUを別単位にし、測定器追加が探索・政策判断へ影響しないよう統合ポイントはraw evidenceの **後段** のみとする。正式採用/FINAL起動権限をMETROに与えない。
 
 Related: [METRO ontology](../metrology/ontology.md) / [decision](decisions/ADR-0002-metrology-boundary.md) / [contract](contracts.md) / [CAL-01](../../experiments/METRO-0001/plan.md).
+
+## METRO-0001 PR2 — synthetic fixture calibration implementation
+```mermaid
+flowchart LR
+    F["F01–F08 fixed synthetic fixtures"] --> S["Evidence Seal (SHA-256)"]
+    S --> V["Read-only schema / provenance validator"]
+    V -->|invalid| X["Reject before aggregation"]
+    V -->|valid| P["Pair task IDs across OFF and ON"]
+    P -->|non-comparable| N["No effect delta"]
+    P -->|compatible| R["Deterministic metric reducer"]
+    R --> H["Frozen CAL-01 summary SHA"]
+    H --> O["Append-only engineering report"]
+```
+- [packages/metrology](../../packages/metrology/__init__.py) は既存Agentからの呼び出し依存を持たず、calibration fixtureのみを受け取る。private audit/FINALや実モデルへは接続しない。
+- 校正のM3は[unit regression](../../tests/test_metro0001_calibration.py)から既存bounded_synthesize+meterを人工公開TaskSpecで比較する。将来の別領域Adapterは未実装。
