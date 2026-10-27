@@ -42,3 +42,22 @@ Calibration PASS means instrument correctness on specified fixtures, not general
 No human/AI dialog evaluation, cross-domain transfer, latent single intelligence score, skill utility causal proof or production UI in CAL-01. These need separate experiment and fresh holdout. The data contracts keep future domain adapters possible.
 
 Related: [runs](runs/README.md) / [ontology](../../docs/metrology/ontology.md) / [metrics](../../docs/metrology/metrics.md) / [evidence](../../docs/metrology/evidence-model.md) / [validity](../../docs/metrology/validity.md).
+
+## CAL-01: F01/F02 gold fixture v1 (固定した既知解)
+これらは文字列DSLの実際の結果ではない **人工の測定器検証入力** である。IDはfixture名前空間 `cal-t01` 等であり、EXP-0003Aの公開TaskSpec ID-v1として再利用しない。同一分割、同じprimitive版・予算・監査設定をfixture metadataに持つ。OFF/ONの双方でstatus=solvedの成否と独立audit verdictは一致すること。
+
+| fixture task | OFF audited_correct / calls / candidates | ON audited_correct / calls / candidates |
+|---|---|---|
+| cal-t01 | true / 9 / 4 | true / 7 / 3 |
+| cal-t02 | true / 12 / 6 | true / 17 / 7 |
+| cal-t03 | false / 3 / 2 | false / 3 / 2 |
+
+期待集計: task_count=3、OFF audited_correct=2、ON audited_correct=2、OFF candidate_count=12、ON candidate_count=12、OFF primitive_invocations=24、ON primitive_invocations=27、OFF_minus_ON_calls=-3。監査付き成功率は両arm 2/3（統計的推論なし）。paired unitは各cal-taskで厳密一致させる。失敗taskも費用合計に含める。
+
+Normalized summary hashの対象は次の値だけを含むcanonical JSON（UTF-8, ensure_ascii=False, sort_keys=True, separators=(",",":"), allow_nan=False）である。元evidence hashとsummary hashを同一とみなさない。
+
+```json
+{"arm_totals":{"OFF":{"audited_correct":2,"candidate_count":12,"primitive_invocations":24},"ON":{"audited_correct":2,"candidate_count":12,"primitive_invocations":27}},"paired":{"OFF_minus_ON_calls":-3},"task_count":3}
+```
+
+expected SHA-256 = `0ef732ea2bc266d8d4da2139f665c0240fc1866d71e52a57151ba31f01e89373`。F02ではraw record順序を入れ替えてもこのsummaryとhashは一致。F03–F08はF01の一箇所のみを改変する反例として生成し、異なる失敗種別を予め固定する。source recordの実際のSHAはPR2のfixture作成時にimmutable evidenceとして保存し、事後に期待値を書換えない。
