@@ -69,3 +69,6 @@ tags: navigation, architecture, research, experiments
 
 ## METRO-0001 CAL-01 実測記録（工学校正のみ）
 [CAL-01 CI run record](../experiments/METRO-0001/runs/20261027-cal01-synthetic.md) — synthetic F01–F08 / status engineering_fixture_pass / no intelligence-growth claim。Source PR2独立レビューと採用は別ゲート。
+
+## METRO-0001 CAL-01 Artifact独立再照合
+[CAL-01 provenance-verified run](../experiments/METRO-0001/runs/20261027-cal01-provenance-verified.md) — 86 tests PASS / full synthetic fixture manifest and ZIP byte hashes / PR #41 before merge; no intelligence gain claimed.
