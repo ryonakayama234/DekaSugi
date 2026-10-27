@@ -522,3 +522,17 @@ flowchart LR
 
 ## POLICY-DIAG-001 implementation contract (not a new Evaluator)
 `packages/policy_diagnostics` implements `snapshot_profile(snapshot)`, `dream_overlap(B2,B3)`, `replay(public_task,snapshot)`, and `compare_public_tasks(archived_public_tasks,B2,B3,optional_archived_rows)`. `replay` asserts exact `choose()` parity, with the ordered five neighbors, exact gate precedence and no synthesis. Data is labeled `not_observed` for absent archived costs. Caller must perform an independent pinned-source/freeze and archived-evidence integrity check before treating its outputs as authenticated research evidence; the module alone is not a complete raw-artifact provenance gateway.
+
+
+## POLICY-DIAG-001 — archived-public analyzed record contract v0.1
+```mermaid
+flowchart LR
+    A["Frozen source + policy SHA"] --> V["archive gateway validates pinned bytes"]
+    B["Existing scored DEV public.json (5NN IDs and decisions)"] --> V
+    C["PR3 public TRAIN/DREAM observations"] --> V
+    V --> J["join archived nearest IDs to fixed observations"]
+    J --> O["aggregate counters, overlap and candidate mechanisms"]
+    O --> R["Report: aggregate-only, status partial"]
+    T["Archived public TaskSpec.examples: absent"] -. "not_observed" .-> R
+```
+Only original `public.json` and PR3 public snapshot member are read; ZIP evaluator-private members are not parsed. `archive-policy-diag/0.1` input is a pair of byte-checksummed immutable public JSON payloads, plus source-blob-checked `freeze-v1.json`. Output has original-public evidence SHA, frozen snapshot SHA, denominators and descriptive aggregates, without task IDs, private examples, source rows, evaluation execution or query features. Since archived TaskSpecs are absent, exact 8D query features, neighbor distances and `close_support` are `not_observed`; replay of the 5NN *membership* from precomputed archived IDs is not an independent KNN search. [Report](../../experiments/POLICY-DIAG-001/runs/20261028-archive-public-diagnosis.md).
