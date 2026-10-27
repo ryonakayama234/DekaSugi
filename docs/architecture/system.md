@@ -437,3 +437,6 @@ flowchart TD
   R -.->|"学習器を変更しない"| S
 ```
 本計画は既存の方策の変更、新規DEV/FINAL採点、技能昇格を含まない。主要観測対象は`packages/exp0003a/pr3.py`の`choose`。診断の実装は今後の別PRのみ。詳細：[Issue #52](https://github.com/ryonakayama234/DekaSugi/issues/52)。
+
+## POLICY-DIAG-001 implementation boundary (no holdout scoring)
+`packages/policy_diagnostics` accepts validated `ArmSnapshot` and already archived *public* TaskSpec records, reproduces 8D/5NN/gates against the frozen `choose()`, and outputs read-only explanation. It never imports a DEV/FINAL generator or invokes a verifier/synthesizer. Missing public task-level records mean diagnostics are `not_observed`, not reconstructed. [Code](../../packages/policy_diagnostics/__init__.py) / [plan](../../experiments/POLICY-DIAG-001/plan.md).
