@@ -427,9 +427,9 @@ evaluator-private records in public Git.
 ## POLICY-DIAG-001 — 独立した方策診断の設計案（未実装）
 ```mermaid
 flowchart TD
-  S["凍結済み B2/B3 PolicySnapshot"] --> G["source-first freeze/hash guard"]
+  S["凍結済み B2/B3 PolicySnapshot"] --> G["外部caller: source-first freeze/hash guard"]
   P["既存DEV64公開記録（採点済み）"] --> G
-  G --> F["features(TaskSpec) + 5NN read-only replay"]
+  G --> F["独立helper: features(TaskSpec) + 5NN read-only replay"]
   F --> T["5NN支持・veto・閾値のtrace"]
   T --> M["差異と識別可能性の診断"]
   M --> R["研究記録（observed / reconstructed / interpretation）"]
@@ -437,3 +437,6 @@ flowchart TD
   R -.->|"学習器を変更しない"| S
 ```
 本計画は既存の方策の変更、新規DEV/FINAL採点、技能昇格を含まない。主要観測対象は`packages/exp0003a/pr3.py`の`choose`。診断の実装は今後の別PRのみ。詳細：[Issue #52](https://github.com/ryonakayama234/DekaSugi/issues/52)。
+
+## POLICY-DIAG-001 implementation boundary (no holdout scoring)
+`packages/policy_diagnostics` accepts validated `ArmSnapshot` and already archived *public* TaskSpec records, reproduces 8D/5NN/gates against the frozen `choose()`, and outputs read-only explanation. It never imports a DEV/FINAL generator or invokes a verifier/synthesizer. Missing public task-level records mean diagnostics are `not_observed`, not reconstructed. [Code](../../packages/policy_diagnostics/__init__.py) / [plan](../../experiments/POLICY-DIAG-001/plan.md).

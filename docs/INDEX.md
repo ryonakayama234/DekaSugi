@@ -113,3 +113,6 @@ tags: navigation, architecture, research, experiments
 - [Issue #52](https://github.com/ryonakayama234/DekaSugi/issues/52) — EXP-0003A B2/B3の凍結方策・保存済みDEV64公開証拠の読み取り専用メカニズム診断。
 - 主要実装観測対象：`packages/exp0003a/pr3.py` `ArmSnapshot`/`choose`。提案モジュール：`packages/policy_diagnostics`（**未実装**）。
 - 実装着手前に測定対象・仮説P-H1〜P-H5・データ出典・欠測規則・合否条件を固定する。既存EXP-0003A v1/FINAL128は不変更。
+
+## POLICY-DIAG-001 — implementation (independent read-only module)
+- [diagnostic code](../packages/policy_diagnostics/__init__.py) / [synthetic + TRAIN-only tests](../tests/test_policy_diagnostics.py) / [diagnostic run index](../experiments/POLICY-DIAG-001/runs/README.md). The code does not evaluate DEV/FINAL; actual DEV per-task results remain not_observed unless authorized archived public evidence is supplied.

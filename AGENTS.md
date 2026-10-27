@@ -247,3 +247,6 @@
 - P-H1経験冗長性、P-H2特徴衝突、P-H3閾値飽和、P-H4行動効果不感、P-H5選別目的不整合を競合・併存可能な探索的仮説として扱い、識別不能も結果として記録。
 - 実装に進む場合は別のIssue/PRで、source-first freeze検証、B2/B3 Snapshot一致、`choose`との完全一致、private監査例/FINAL128非使用、合成fixtureでの負例試験、計測契約とMermaid/実験runの同時更新、独立レビューとCIを必須とする。
 - DEV64はすでに観測済みなので、本診断をH3の新しい確証・DEV後変更の妥当化には使わない。<https://github.com/ryonakayama234/DekaSugi/issues/52>
+
+## POLICY-DIAG-001 implementation scope
+- `packages/policy_diagnostics` is a **read-only** diagnostic helper, not a trustworthy new DEV or FINAL scorer. Its tests use synthetic snapshots and TRAIN-only public cases. Any production historical DEV analysis requires independently verified archived public TaskSpecs and digest, plus frozen snapshot provenance. Do not generate DEV/FINAL to fill missing observations; no private audit examples in public repository.
