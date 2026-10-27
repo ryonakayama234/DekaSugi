@@ -74,3 +74,6 @@ tags: milestones, roadmap, planning
 ## METRO-0001 CAL-01 PR2 synthetic calibration (2026-10-27)
 - [run](../experiments/METRO-0001/runs/20261027-cal01-synthetic.md): F01–F08 8/8工学校正PASS、GitHub CI #40457141475、unittest82件PASS。人工fixtureの集計検査であり知能能力の改善ではない。
 - Source/metrics/受入済みpreregistrationは変更せず、PR2のレビュー終了まで正式完了としない。
+
+## METRO-0001 CAL-01 fixture manifest / metrology run checkpoint
+- [original-byte audit](../experiments/METRO-0001/runs/20261027-cal01-provenance-verified.md) records CI #40458100322 / source `0a01cdb` / F01–F08 8/8 / 86 tests PASS / artifact ZIP and raw fixture/report hashes / CPU+wall sampling. Calibration only; independent final head review/merge gate remains.
