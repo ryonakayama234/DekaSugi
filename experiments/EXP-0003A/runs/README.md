@@ -88,3 +88,8 @@ Latest evidence is PR CI, not a held-out experimental result.
   archival obligation. This **supersedes the historic** "DEV not_run" headings
   above without changing their original historical text.
 - No scorer rerun; FINAL128 remains not_run.
+
+## DEV64 original-data independent audit PASS (2026-10-27)
+- The *original scoring* job [#40518246537](https://github.com/ryonakayama234/DekaSugi/actions/runs/40518246537) remains FAILED only at its original float-exact auditor. Do **not** change that history.
+- Separate **audit-only** [run #40522186710](https://github.com/ryonakayama234/DekaSugi/actions/runs/40522186710) PASSED exact original SHA256 and independent recount of all 64×4 trials. Derived [Artifact #12742377403](https://github.com/ryonakayama234/DekaSugi/actions/runs/40522186710/artifacts/12742377403): `independent-audit.json` SHA256 `815249008c4121954053ee8fee5e2ff37efe7a81f6dab149ac6b9b1a0719bc19`, public summary SHA256 `4c68e510745a6b45a17daeb1fece94199f20dd18467eaafb8951dd4b93a72aa3`. The initial audit-only run #40521440278 failed before SHA due to Artifact layout; preserved in [run ledger](20261027-dev64.md).
+- B3−B2 DEV64 paired calls/accuracy/candidate differences remain **0**; no H3 support from DEV, no FINAL scored. Public hashes/metrics retained in Git; restricted backup of private raw ZIP remains a user-controlled retention gate before 2027-01-25.
