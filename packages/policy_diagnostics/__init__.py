@@ -78,6 +78,8 @@ def replay(task, snapshot):
 
 def compare_public_tasks(tasks, b2, b3, archived_rows=None):
     """TaskSpecs MUST originate from already archived public evidence; never synthesize holdouts."""
+    if b2.arm != "B2" or b3.arm != "B3":
+        raise ValueError("Expected B2 and B3 snapshots in that order")
     _validate_snapshot(b2); _validate_snapshot(b3)
     task_ids = [t.task_id for t in tasks]
     if len(set(task_ids)) != len(task_ids): raise ValueError("Duplicate query task IDs")
