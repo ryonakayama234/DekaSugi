@@ -47,7 +47,7 @@ def load_verified(original_dev_zip: Path, train_dream_zip: Path,
                   frozen_json: Path) -> tuple[dict, dict, dict]:
     # Source-first: load pinned declared freeze BEFORE accepting evidence.
     frozen_bytes = frozen_json.read_bytes()
-    blob = b"blob " + str(len(frozen_bytes)).encode("ascii") + b"\\0" + frozen_bytes
+    blob = b"blob " + str(len(frozen_bytes)).encode("ascii") + b"\0" + frozen_bytes
     if sha1(blob).hexdigest() != FROZEN_JSON_GIT_BLOB:
         raise ValueError("Frozen JSON Git blob differs from pinned immutable source")
     freeze = json.loads(frozen_bytes)
