@@ -422,3 +422,18 @@ flowchart LR
 Original failure stays provenance. A new reviewed main workflow is
 **audit-only** and must not rerun DEV or import the frozen scorer. No raw
 evaluator-private records in public Git.
+
+
+## POLICY-DIAG-001 — 独立した方策診断の設計案（未実装）
+```mermaid
+flowchart TD
+  S["凍結済み B2/B3 PolicySnapshot"] --> G["source-first freeze/hash guard"]
+  P["既存DEV64公開記録（採点済み）"] --> G
+  G --> F["features(TaskSpec) + 5NN read-only replay"]
+  F --> T["5NN支持・veto・閾値のtrace"]
+  T --> M["差異と識別可能性の診断"]
+  M --> R["研究記録（observed / reconstructed / interpretation）"]
+  X["非公開監査例・封印済みFINAL128"] -.->|"接続禁止"| F
+  R -.->|"学習器を変更しない"| S
+```
+本計画は既存の方策の変更、新規DEV/FINAL採点、技能昇格を含まない。主要観測対象は`packages/exp0003a/pr3.py`の`choose`。診断の実装は今後の別PRのみ。詳細：[Issue #52](https://github.com/ryonakayama234/DekaSugi/issues/52)。
