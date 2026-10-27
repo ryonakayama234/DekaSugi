@@ -82,3 +82,8 @@ TRAIN144問での学習と復元可能なKNN方策がCIで一致。**[Datasetと
 
 ## METRO-0001 CAL-01 engineering (PR2)
 [Issue #40](https://github.com/ryonakayama234/DekaSugi/issues/40) は凍結済み[校正計画](experiments/METRO-0001/plan.md)をstd-libのread-only測定器とsynthetic fixtureで検査する独立作業。プログラム合成の性能向上、未使用holdoutの評価、一般知能の検証とは独立。[run目録](experiments/METRO-0001/runs/README.md)を参照。
+
+## METRO-0001 initial calibration completion (2026-10-27)
+- 設計・事前登録 [PR #39](https://github.com/ryonakayama234/DekaSugi/pull/39) と合成fixture測定器 [PR #41](https://github.com/ryonakayama234/DekaSugi/pull/41) はmain統合済み。merge後 [CI #40460951680](https://github.com/ryonakayama234/DekaSugi/actions/runs/40460951680)成功。
+- [CAL-01工学採用判断](experiments/METRO-0001/reviews/20261027-cal01-adoption.md): M1–M4を人工F01–F08で校正PASS、86 testsとArtifact hash独立照合。**METRO-0001の限定された工学目標は完了**。実験評価器やAI知能の向上が証明されたわけではない。
+- 今後の実際のTRAIN証拠への接続、未知課題への転移の検証、EXP-0003AのDEV/FINALは別研究・別ゲートで扱う。上記の以前の「未実装」「レビュー中」は各時点の歴史的記録。

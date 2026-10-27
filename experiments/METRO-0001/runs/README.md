@@ -1,14 +1,14 @@
 # METRO-0001 — 校正run目録
 
 id: METRO-0001-RUNS
-status: engineering_fixture_pass; pending_independent_review
+status: accepted_engineering_calibration; synthetic_fixture_only
 updated: 2026-10-27
 tags: metrology, calibration, run-index, preregistration
 
 ## Run index
 | run ID | phase | status | measurement | source |
 |---|---|---|---|---|
-| CAL-01 | synthetic F01–F08 | engineering_fixture_pass (not intelligence result) | [run record](20261027-cal01-synthetic.md) | [plan-v1](../plan.md) |
+| CAL-01 | synthetic F01–F08 | accepted_engineering_calibration; not intelligence result | [original run](20261027-cal01-synthetic.md) / [provenance-verified](20261027-cal01-provenance-verified.md) | [adoption decision](../reviews/20261027-cal01-adoption.md) |
 
 ## 必須run属性
 source_commit, metric_spec_version, adapter_version, fixture_hash, original_evidence_hashes, Python/OS, test command, CI job/URL, expected/observed integer metrics, missing/invalid reason, independent review, and acceptance decision。未実行や接続不能は結果ではない。
@@ -26,3 +26,6 @@ Related: [calibration plan](../plan.md) / [measure contract](../../../docs/metro
 
 ## Artifact原本SHA付き独立照合 (2026-10-27)
 - [CAL-01 follow-up run: provenance verification](20261027-cal01-provenance-verified.md) — source `0a01cdb`, CI #40458100322、86 tests、F01–F08 8/8、Artifact ZIP/JSON/fixture SHA-256 verified。過去runを上書きせず追記。PR2最終HEAD reviewとmergeは別ゲート。
+
+## CAL-01 採用判断の最新版 (2026-10-27)
+- [独立採用決定](../reviews/20261027-cal01-adoption.md): PR #41 merged、latest exact-head Codex zero findings、postmerge CI #40460951680成功。合成fixtureのみ工程校正完了。過去の『PR2レビュー待ち』の記述は当時の履歴である。

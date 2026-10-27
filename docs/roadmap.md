@@ -77,3 +77,7 @@ tags: milestones, roadmap, planning
 
 ## METRO-0001 CAL-01 fixture manifest / metrology run checkpoint
 - [original-byte audit](../experiments/METRO-0001/runs/20261027-cal01-provenance-verified.md) records CI #40458100322 / source `0a01cdb` / F01–F08 8/8 / 86 tests PASS / artifact ZIP and raw fixture/report hashes / CPU+wall sampling. Calibration only; independent final head review/merge gate remains.
+
+## METRO-0001 scoped completion — 2026-10-27
+- [独立校正採用決定](../experiments/METRO-0001/reviews/20261027-cal01-adoption.md)に従い、PR #39/#41 merged、post-merge CI #40460951680成功。M1–M4はsynthetic CAL-01でengineering calibration PASS。
+- メトロロジー一般化、実際のTRAIN証拠接続、可塑性・保持・転移の研究は後続候補であり、**未検証の知能能力の採用ではない**。EXP-0003AのFINALは独立承認まで封印。
