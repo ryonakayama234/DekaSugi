@@ -23,3 +23,6 @@ Related: [calibration plan](../plan.md) / [measure contract](../../../docs/metro
 - [Implementation](../../../packages/metrology/__init__.py) / [CLI](../../../packages/metrology/__main__.py) / [tests](../../../tests/test_metro0001_calibration.py).
 
 - [CAL-01 engineering run (2026-10-27)](20261027-cal01-synthetic.md): CI #40457141475 PASS, F01–F08 8/8、unit82件PASS; 正式ゲートは最新HEAD独立レビュー後。raw Artifact ZIPとJSONのSHA-256を元バイト列から独立照合済み（[run record](20261027-cal01-synthetic.md)）。
+
+## Artifact原本SHA付き独立照合 (2026-10-27)
+- [CAL-01 follow-up run: provenance verification](20261027-cal01-provenance-verified.md) — source `0a01cdb`, CI #40458100322、86 tests、F01–F08 8/8、Artifact ZIP/JSON/fixture SHA-256 verified。過去runを上書きせず追記。PR2最終HEAD reviewとmergeは別ゲート。
