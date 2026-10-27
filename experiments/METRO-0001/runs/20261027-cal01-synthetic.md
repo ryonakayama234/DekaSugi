@@ -12,7 +12,7 @@ tags: metrology, calibration, engineering, provenance, synthetic-only
 - source PR2 head: `ff97ac8a6a942be6b52119c5421f25d3af6407e1` （CAL-01 CLIとCI uploadを含む版）。
 - [GitHub Actions #40457141475](https://github.com/ryonakayama234/DekaSugi/actions/runs/40457141475): workflow `Research verification`、event=pull_request、conclusion=success。
 - job ID `122032978048`、CPython `3.12.15`、GitHub-hosted `ubuntu-latest`。
-- Artifact `METRO-0001-CAL-01` ID `12712349141`、ZIP 549 bytes、2027-01-25T05:45:37Z失効予定（Actions環境で表示）。元ArtifactのZIP/JSONのバイト列SHA-256は本runでは**未取得**。内容を再計算した値と、取得・監査したoriginal bytesを同一と主張しない。
+- Artifact `METRO-0001-CAL-01` ID `12712349141`、ZIP 549 bytes、2027-01-25T05:45:37Z失効予定（Actions環境で表示）。GitHub Actionsから**元ZIPを直接取得し、内部のJSONを読み取ってSHA-256を独立再計算**：ZIP `8c5e69b822bb595ab0ae574e13424fbd6786832b106c4c0d67c54adf0cb9c84c`、内部 `METRO-0001-CAL-01.json` `8a3d95763a32db813bd506c3172afcfd9e86eaad7e931e540afa92af3b5a2fa3`。report status=engineering_fixture_pass、cases=8すべてpassを原本で再確認。
 - CLI: `python -m packages.metrology --mode calibrate --output .run/METRO-0001-CAL-01.json`、新規ファイルへの排他的書込み。
 - 全unit test: **82 tests、PASS**。文書リンク検査、EXP-0001/0002回帰、EXP-0003A preflight/check-freeze、TRAIN/DREAM工学工程もActionsで成功。EXP-0003A DEV/FINALは未採点。
 
