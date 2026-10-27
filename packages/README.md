@@ -64,3 +64,9 @@ Generatorは3分割の内容hashを計算するが、Kernelの判断と監査付
 
 ## EXP-0002B FINAL112 outcome
 [唯一のFINAL112 run](../experiments/EXP-0002B/runs/20261025-final112.md)で凍結されたKernelを独立検証し、五つの事前登録済み数値条件を満たした。独立再集計済みだがデフォルトのRegistryには何も自動昇格していない。起動ゲートは文書同期PRで撤去。次の研究方法変更には新しい評価セットが必要。
+
+## METRO-0001 — metrology (fixture-only calibration)
+- `packages/metrology` (PR2 implementation): immutable synthetic fixture evidence sealing/validation, paired metric reducer, negative controls F01–F08 and CLI `python -m packages.metrology --mode calibrate --output <fresh.json>`.
+- `tests/test_metro0001_calibration.py`: exact F01/F02 gold SHA / invalid-vs-non_comparable / M3 existing meter invariant.
+- This adapter intentionally rejects all production experiment evidence. No new learner/evaluator/holdout scoring, skill promotion or network access.
+- [Scientific contract](../docs/metrology/evidence-model.md) / [plan](../experiments/METRO-0001/plan.md).

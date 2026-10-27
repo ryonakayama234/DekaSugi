@@ -17,3 +17,7 @@ source_commit, metric_spec_version, adapter_version, fixture_hash, original_evid
 生証拠と集計を分離、追記専用。結論はcalibration/engineering/confirmatoryを区別。EXP-0003Aのholdoutは触らず、旧FINALは新規能力仮説に流用しない。
 
 Related: [calibration plan](../plan.md) / [measure contract](../../../docs/metrology/metrics.md) / [evidence model](../../../docs/metrology/evidence-model.md).
+
+## PR2 calibration implementation status (2026-10-27)
+- `packages/metrology` adds synthetic CAL-01 cases F01–F08 and exact preregistered SHA comparison. Source code and unit tests exist on PR2 feature branch; CI result and immutable run record must be added **only after execution**. This does not imply an AI learning result.
+- [Implementation](../../../packages/metrology/__init__.py) / [CLI](../../../packages/metrology/__main__.py) / [tests](../../../tests/test_metro0001_calibration.py).

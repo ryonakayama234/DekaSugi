@@ -63,3 +63,6 @@ tags: navigation, architecture, research, experiments
 - 各文書は一つの責務だけ持つ。内容のコピーを増やさずリンクする。
 - 変更時は参照元の図や契約を確認し、この索引も更新する。
 - Mermaid図はMarkdown内に埋め込み、GitHub上で読めるようにする。
+
+## METRO-0001 PR2 — 実装時に読む入口
+[Fixture-only reducer](../packages/metrology/__init__.py) / [CAL-01 CLI](../packages/metrology/__main__.py) / [regression](../tests/test_metro0001_calibration.py) / [run目録](../experiments/METRO-0001/runs/README.md)。**本体は人工fixture-only**、領域転移やEXP-0003A FINALの独立評価器ではない。
