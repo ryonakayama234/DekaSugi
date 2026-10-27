@@ -44,3 +44,9 @@ Related: [preregistration](../plan.md) / [previous FINAL](../../EXP-0002B/runs/2
 - Future DEV record requires exact source SHA, full raw artifact bytes SHA,
   run URL, private manifest hash, independent recomputation and stated
   failure/invalid/inconclusive counts. No forward revision of old run reports.
+
+### PR5 review gate correction (2026-10-27)
+Addressed two P2 code review findings in evaluator-only timing contract:
+complete frozen asset loading (two TRAIN/DREAM replays) and per-arm B1/B2/B3
+inference CPU/wall. Tests run TRAIN only; DEV64/FINAL128 remain **not_run**.
+Latest evidence is PR CI, not a held-out experimental result.

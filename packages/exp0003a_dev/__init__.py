@@ -40,6 +40,7 @@ class FrozenAssets:
     snapshot_hashes: Mapping[str, str]
     skill: SkillCandidate
     training_cost_ms: dict[str, object]
+    asset_load_cost_ms: dict[str, float]
 
 
 def _rehydrate_skill(raw: object) -> SkillCandidate:
@@ -64,10 +65,18 @@ def load_frozen_assets() -> FrozenAssets:
     bytes, then deterministically rebuilds TRAIN/DREAM. The second rebuild
     obtains ephemeral snapshots/skill without writing or modifying the freeze.
     """
+    load_cpu_start, load_wall_start = process_time(), perf_counter()
+    freeze_cpu_start, freeze_wall_start = process_time(), perf_counter()
     frozen = verify_frozen()
+    freeze_cpu_ms = (process_time() - freeze_cpu_start) * 1000
+    freeze_wall_ms = (perf_counter() - freeze_wall_start) * 1000
     if frozen.get("holdout_scoring_permitted") is not False:
         raise ValueError("Freeze permission drift; DEV requires a separate gate")
+    replay_cpu_start, replay_wall_start = process_time(), perf_counter()
     report, _private = run_train_dream()
+    replay_cpu_ms = (process_time() - replay_cpu_start) * 1000
+    replay_wall_ms = (perf_counter() - replay_wall_start) * 1000
+    validation_cpu_start, validation_wall_start = process_time(), perf_counter()
     if report.get("dev_or_final_evaluated") is not False:
         raise ValueError("Training pipeline unexpectedly scored holdout")
     if report.get("registry_promotion") != "not_authorized":
@@ -98,7 +107,24 @@ def load_frozen_assets() -> FrozenAssets:
             raise ValueError(f"Frozen {arm} DREAM selection mismatch")
         snapshots[arm] = snapshot
         hashes[arm] = expected
-    return FrozenAssets(frozen, snapshots, hashes, skill, report["cost_ms"])
+    validation_cpu_ms = (process_time() - validation_cpu_start) * 1000
+    validation_wall_ms = (perf_counter() - validation_wall_start) * 1000
+    load_cpu_ms = (process_time() - load_cpu_start) * 1000
+    load_wall_ms = (perf_counter() - load_wall_start) * 1000
+    cost_ms = {
+        "freeze_verify_cpu": freeze_cpu_ms,
+        "freeze_verify_wall": freeze_wall_ms,
+        "second_train_dream_replay_cpu": replay_cpu_ms,
+        "second_train_dream_replay_wall": replay_wall_ms,
+        "snapshot_validation_cpu": validation_cpu_ms,
+        "snapshot_validation_wall": validation_wall_ms,
+        "asset_load_total_cpu": load_cpu_ms,
+        "asset_load_total_wall": load_wall_ms,
+    }
+    if (load_cpu_ms + 1e-6 < freeze_cpu_ms + replay_cpu_ms + validation_cpu_ms
+            or load_wall_ms + 1e-6 < freeze_wall_ms + replay_wall_ms + validation_wall_ms):
+        raise ValueError("Invalid overlapping asset-load phase clocks")
+    return FrozenAssets(frozen, snapshots, hashes, skill, report["cost_ms"], cost_ms)
 
 
 def validate_dev_cases(cases: tuple[TrainCase, ...],
@@ -133,8 +159,16 @@ def evaluate_case(case: TrainCase, assets: FrozenAssets) -> dict[str, object]:
     if case.task.task_id != opaque_id(case.task.examples):
         raise ValueError("Noncanonical public TaskSpec")
     # The chooser gets exactly TaskSpec, never case/family/audit/seed.
-    decisions = {arm: choose(case.task, assets.snapshots[arm])
-                 for arm in ARMS[1:]}
+    decisions = {}
+    choice_cost_ms = {}
+    for arm in ARMS[1:]:
+        choice_cpu_start, choice_wall_start = process_time(), perf_counter()
+        decisions[arm] = choose(case.task, assets.snapshots[arm])
+        cpu_ms = (process_time() - choice_cpu_start) * 1000
+        wall_ms = (perf_counter() - choice_wall_start) * 1000
+        if not all(math.isfinite(v) and v >= 0 for v in (cpu_ms, wall_ms)):
+            raise ValueError("Invalid policy inference CPU/wall observation")
+        choice_cost_ms[arm] = (cpu_ms, wall_ms)
     canonical = Registry(DEFAULT_PRIMITIVES)
     validate_skill(assets.skill, canonical)
     result = {}
@@ -167,6 +201,8 @@ def evaluate_case(case: TrainCase, assets: FrozenAssets) -> dict[str, object]:
             "audited_correct": correct, "false_solved": false_solved,
             "tested_candidates": candidates,
             "primitive_invocations": calls,
+            "policy_inference_cpu_ms": choice_cost_ms.get(arm, (0.0, 0.0))[0],
+            "policy_inference_wall_ms": choice_cost_ms.get(arm, (0.0, 0.0))[1],
             "search_cpu_ms": search_cpu, "search_wall_ms": search_wall,
             "audit_cpu_ms": audit_cpu, "audit_wall_ms": audit_wall,
             "search": evidence["search"], "meter": evidence["meter"],
@@ -208,6 +244,8 @@ def summarize(rows: list[dict[str, object]],
             "tested_candidates": sum(t["tested_candidates"] for t in trials),
             "primitive_invocations": sum(t["primitive_invocations"] for t in trials),
             "selected_on": sum(t["decision"] == "ON" for t in trials),
+            "policy_inference_cpu_ms": sum(t["policy_inference_cpu_ms"] for t in trials),
+            "policy_inference_wall_ms": sum(t["policy_inference_wall_ms"] for t in trials),
             "search_cpu_ms": sum(t["search_cpu_ms"] for t in trials),
             "audit_cpu_ms": sum(t["audit_cpu_ms"] for t in trials),
             "search_wall_ms": sum(t["search_wall_ms"] for t in trials),
@@ -276,7 +314,10 @@ def run_dev() -> tuple[dict[str, object], dict[str, object]]:
     rows = [evaluate_case(c, assets) for c in cases]
     eval_cpu_ms = (process_time() - start_cpu) * 1000
     eval_wall_ms = (perf_counter() - start_wall) * 1000
+    summary_cpu_start, summary_wall_start = process_time(), perf_counter()
     summary = summarize(rows, cases)
+    summary_cpu_ms = (process_time() - summary_cpu_start) * 1000
+    summary_wall_ms = (perf_counter() - summary_wall_start) * 1000
     source_sha = subprocess.run(
         ["git", "rev-parse", "HEAD"], capture_output=True, check=True,
         text=True, timeout=5,
@@ -294,7 +335,9 @@ def run_dev() -> tuple[dict[str, object], dict[str, object]]:
             "dev_generation_validation_cpu": prep_cpu_ms,
             "dev_generation_validation_wall": prep_wall_ms,
             "dev_four_arm_cpu": eval_cpu_ms, "dev_four_arm_wall": eval_wall_ms,
-            "train_dream_rebuild_cost_ms": assets.training_cost_ms,
+            "dev_summary_cpu": summary_cpu_ms, "dev_summary_wall": summary_wall_ms,
+            "asset_load_cost_ms": assets.asset_load_cost_ms,
+            "train_dream_second_replay_internal_cost_ms": assets.training_cost_ms,
         },
         "final_evaluated": False, "registry_promoted": False,
         "claims": "no confirmatory inference, no skill promotion, no total-CPU benefit claimed",

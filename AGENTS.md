@@ -183,3 +183,13 @@
 - Record independent four-arm search/audit/primitive metering and CPU/wall;
   store raw evidence, failures and independent review. DEV results are engineering
   diagnostics and cannot revise frozen H2/H3 protocol. [Spec](docs/specs/EXP-0003A-DEV-EVALUATOR.md).
+
+### PR5 reviewer corrections — cost completeness
+- The independent evaluator MUST include CPU/wall of the **entire** source-first
+  `verify_frozen` (including its internal TRAIN/DREAM reference regeneration),
+  the second TRAIN/DREAM replay, and snapshot validation in asset-load evidence.
+- Time `choose(TaskSpec, snapshot)` separately per B1/B2/B3 before search;
+  report `policy_inference_cpu/wall` per task/arm and aggregate by arm; B0=0.
+- Do not add component costs to enclosing phase totals a second time. Update
+  docs and train-only tests when timing evidence contracts change. No DEV/FINAL
+  scoring in PR CI.

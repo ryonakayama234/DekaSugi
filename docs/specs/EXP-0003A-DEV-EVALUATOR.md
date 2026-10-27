@@ -69,3 +69,24 @@ Related: [ARCH-001](../architecture/system.md) /
 [ARCH-002](../architecture/contracts.md) /
 [run index](../../experiments/EXP-0003A/runs/README.md) /
 [review gates](../process/workflow.md).
+
+## PR5 review corrections — CPU/wall accounting (2026-10-27)
+Two P2 review findings are addressed without changing the frozen method:
+
+1. **Asset-load replay accounting:** `asset_load_cost_ms` records CPU and
+   wall separately for complete `verify_frozen()` (including its **first**
+   TRAIN/DREAM replay), the **second** `run_train_dream()` replay, snapshot
+   validation, and the full asset-load interval. The nested
+   `train_dream_second_replay_internal_cost_ms` is a subcomponent of the second
+   replay **not an additional cost to sum**. Source-first order remains intact.
+2. **Policy inference accounting:** each B1/B2/B3 choice is timed separately
+   before *any* per-arm search. B0 has zero policy inference. Per-task/arm
+   `policy_inference_cpu_ms` and `policy_inference_wall_ms` are present in
+   the public evidence and summed for each arm in `summary.arm_totals`.
+   `dev_four_arm_cpu/wall` includes chooser, search, auditing and orchestration
+   overhead; its components must not be added to this aggregate again.
+
+DEV evidence uses observed measurements, not the reviewer's sample timings.
+These costs have different inclusion boundaries; they cannot be compared to
+primitive invocations or used as a confirmatory benefit claim without including
+replay costs. See [PR #45 review](https://github.com/ryonakayama234/DekaSugi/pull/45).

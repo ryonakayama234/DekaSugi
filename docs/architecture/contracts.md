@@ -447,3 +447,14 @@ Immutable authority: `freeze-v1.json`, original 14 Git blobs,
 Read [PR5 spec](../specs/EXP-0003A-DEV-EVALUATOR.md). DEV cannot replace
 future independent FINAL128 evidence and cannot use CAL-01 synthetic
 calibration as a claim of measured intelligence growth.
+
+### PR5 additive timing evidence fields (reviewed contract)
+`FrozenAssets.asset_load_cost_ms` contains `freeze_verify_cpu/wall`,
+`second_train_dream_replay_cpu/wall`, `snapshot_validation_cpu/wall`,
+`asset_load_total_cpu/wall`. The freeze verification contains the **first**
+replayed TRAIN/DREAM policy; the later explicit replay is the **second**. Nested
+`train_dream_second_replay_internal_cost_ms` is **not** an additive cost.
+`TrialEvidence` adds `policy_inference_cpu_ms` and
+`policy_inference_wall_ms` per arm; B0=0, B1/B2/B3 are measured before
+search. `summary.arm_totals` sums the fields by arm. Overall four-arm elapsed
+and CPU costs already include these trials and must not be double counted.
