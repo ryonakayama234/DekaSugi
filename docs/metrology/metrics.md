@@ -20,7 +20,7 @@ metric_id, metric_version, construct_id, observation_source, unit, population_an
 | wall_elapsed_ns | nanoseconds | sampled phase monotonic clock | スケジューリング影響。CPUとの差は必ず報告 |
 | policy_abstention | decisions | policy decision record | 定義された条件下のOFF保留を含む。未知領域成功率とは区別 |
 
-機能が出力していない項目はnot_observedにする。可能な限り既存スキーマの原値を転記/参照し、新しい値を推測生成しない。MetricSpecの値域外・混合単位・計算対象数の相違はfail closed。
+機能が出力していない項目はnot_observedにする。可能な限り既存スキーマの原値を転記/参照し、新しい値を推測生成しない。一つの観測内で宣言済みMetricSpecの値域やunitに違反する場合はinvalidとしてfail closed。個々の観測が各MetricSpecに適合していても、arm間でmetric_id・version・unit・対象数・予算が対応せず同じ差分を計算できない場合はnon_comparableとし、効果量を返さない。
 
 ## 条件付き推定指標（初回の新しい測定結果ではない）
 - success_rate = audited_success_count / audited_trials_count。監査欠測を分母に含むか否かは分析前に宣言。欠測件数は別に併記する。
