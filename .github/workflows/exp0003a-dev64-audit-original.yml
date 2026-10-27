@@ -33,7 +33,9 @@ jobs:
       - name: Download only exact original scored artifact from run 40518246537
         uses: actions/download-artifact@v4
         with:
-          artifact-ids: "12739684056"
+          # A named single-artifact download extracts at the requested path.
+          # artifact-ids (without merge-multiple) added an extra nested folder.
+          name: EXP-0003A-DEV64-40518246537
           run-id: "40518246537"
           github-token: ${{ github.token }}
           path: .run/EXP-0003A-DEV64-original
@@ -41,6 +43,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p .run/EXP-0003A-DEV64-audit
+          test -f .run/EXP-0003A-DEV64-original/SHA256SUMS
           (
             cd .run/EXP-0003A-DEV64-original
             sha256sum --check SHA256SUMS
