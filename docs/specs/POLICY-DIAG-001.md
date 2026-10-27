@@ -1,14 +1,14 @@
 # POLICY-DIAG-001 — Policy Identifiability Diagnostic Specification
 
 id: POLICY-DIAG-001-SPEC
-status: proposed; design_only; not_implemented
+status: implementation_under_review; historical_DEV_diagnosis_not_run
 updated: 2026-10-28
 tags: policy, dream, diagnosis, research, metrology
 
 ## Objective and authority
 Read-only analysis of fixed EXP-0003A B2 random-Dream and B3 counterfactual-Dream policy behavior. Source of truth: [Issue #52](https://github.com/ryonakayama234/DekaSugi/issues/52), [EXP-0003A plan](../../experiments/EXP-0003A/plan.md), [freeze](../../experiments/EXP-0003A/freeze-v1.json), [existing DEV64 ledger](../../experiments/EXP-0003A/runs/20261027-dev64.md).
 
-Main module studied: `packages/exp0003a/pr3.py` `ArmSnapshot`/`choose`. Future code location `packages/policy_diagnostics` (not created in this PR). Present metrics and research classifications are proposals, **not measurements**.
+Main module studied: `packages/exp0003a/pr3.py` `ArmSnapshot`/`choose`. Read-only helper `packages/policy_diagnostics` is implemented in PR #54. It is NOT an authenticated provenance gateway; its caller must verify the original source/freeze and archived public evidence hashes before any retrospective DEV analysis. Present DEV analysis classifications are proposals, **not measurements**.
 
 ## Competing explanatory hypotheses
 P-H1 selection redundancy; P-H2 feature representation collisions/loss; P-H3 policy threshold saturation/veto; P-H4 differing policy actions without different observed primitive cost; P-H5 alignment of near-positive selection with expected decision change. These hypotheses can coexist. `unidentifiable` is a valid finding; DEV64 is post hoc exploratory evidence only.
@@ -35,6 +35,9 @@ Proposed record `PolicyDiagnosticRecord/0.1`: `schema_version`, `task_id`, `sour
 
 ## Acceptance and negative controls for later implementation PR (no implementation in this PR)
 Synthetic cases: different neighbors/same action, differing action/same cost, feature collision with conflicting label, exact 5NN ties, veto precedence, boundary equal to each threshold, corrupted source/checksums/duplicate task IDs/missing records, input permutation invariance. Replay must match unmodified `choose()` exactly on eligible tasks. Never change frozen hashes, thresholds, dream selection, or source policy. No new DEV/FINAL scoring. Independent exact-head review and CI, docs/index/architecture/dataflow/experiment report synch, fail closed on P0/P1.
+
+## Implementation state and trust boundary
+The independent helper is available in [PR #54](https://github.com/ryonakayama234/DekaSugi/pull/54) pending CI and review. It accepts trusted snapshots and previously archived public tasks, but cannot fetch, checksum or authenticate GitHub Artifact archives. DEV per-task diagnosis remains `not_run` until a separately reviewed and hash-gated input adapter is available. The module does not generate DEV/FINAL tasks and cannot be treated as a scorer.
 
 ## Exit
 Explain observed mechanism(s) with caveats or explicitly `unidentifiable`; prioritize a *future* separately preregistered new method/fresh holdout if change is justified. Do not assert H3 confirmation, cross-domain transfer, general intelligence or total CPU benefit.
