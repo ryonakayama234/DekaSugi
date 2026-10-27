@@ -75,3 +75,7 @@ TRAIN144問での学習と復元可能なKNN方策がCIで一致。**[Datasetと
 ## EXP-0002B — DEVとFINALの独立ゲート
 
 学習済みKernelの改変を検出する評価器を[監査手順](experiments/EXP-0002B/reviews/20261025-evaluator-gate.md)として追加。コードPR内では訓練fixturesのみをテストし、レビュー済みmainでDEV48 smokeを実施し、その証拠を保存した。FINALは独立レビュー後に専用トリガーから実行済みであり、トリガーは削除済み。
+
+## METRO-0001 と現行研究の関係 (2026-10-27)
+この節を最も新しい工程注記とする。上記2026-10-25のEXP-0003A「未実装」は当時の履歴であり現在状態ではない。WAKE/SLEEPのTRAIN160、DREAM512・選別B2/B3各96、方策snapshotは実装・工学的実行済み。pre-DEV source/split/policy凍結は[PR #37](https://github.com/ryonakayama234/DekaSugi/pull/37)でmain統合済み。**EXP-0003A DEV64/FINAL128の評価結果は未確認であり、技能昇格や総CPU利益を意味しない。**
+[METRO-0001](experiments/METRO-0001/plan.md)は知能測定の設計とCAL-01校正を扱う新研究で、現行の凍結済みplan-v1/freeze-v1を変更しない。初期phaseはdocs-onlyの提案で、校正用計測器・能力実測の新結果は未実装。[ontology](docs/metrology/ontology.md) / [metrics](docs/metrology/metrics.md) / [evidence](docs/metrology/evidence-model.md) / [validity](docs/metrology/validity.md)。

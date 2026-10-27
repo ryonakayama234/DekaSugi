@@ -47,3 +47,8 @@ Related: [ARCH-001](system.md) / [ARCH-002](contracts.md) / [experiment spec](..
 ## EXP-0003A PR4 read-only freeze panel projection (planned UI)
 - `UI-05`のsource provenance投影元として`freeze-v1.json`とPR4 hash-only preflight/check記録を採用。表示可能なのは8family/4splitの件数・opaque public ID群のSHA・Git blob SHA・snapshot/selection SHA・欠測・検証状態のみ。third audit raw rowsやholdout family/seedをKernel/UIから呼び出さない。
 - PR4でも画面/永続DBは未実装、合否/採用の独立決定主体はUIではなく凍結検査・独立Evaluator・レビュー担当。DEV/FINALの起動ボタンは未提供。
+
+## METRO-0001 — UI-06 Metrology & Claims (future, not implemented)
+- **唯一の正本**: METRO Measurement/Comparison/ScientificClaim read-only projection。数字の由来、MetricSpec版、評価課題分布、母数、代替説明、CI/独立レビュー状態とreplay用raw hashを表示する。
+- UI-04 Evidence & Reviewを置換せず、UI-06は能力の成長/測定妥当性という問いを横断検索する将来のビューとする。数値の再採点、Skill昇格、DEV/FINAL起動、学習器へのprivate evidence返却は禁止。
+- 画面実装は今回対象外。リンク元は[ontology](../metrology/ontology.md)、[metrics](../metrology/metrics.md)、[evidence](../metrology/evidence-model.md)、[CAL-01 plan](../../experiments/METRO-0001/plan.md)。

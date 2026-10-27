@@ -309,3 +309,28 @@ flowchart TD
 ## EXP-0003A PR4 — splitハッシュ凍結準備
 - TRAIN160 + DREAM512を既存ソースと独立生成で全件一致確認し、DEV64 + FINAL128は第三例を参照正解として生成してソース・全4 splitのhashを**一切採点せず**固定する。`packages/exp0003a.freeze`が正式なpreflight read-modelで、凍結ファイル本体の検証は専用`freeze_cli --mode check-freeze`のみ。UI/evaluatorがデータを捏造して凍結を越える経路はない。
 - PR4 freezeを先にレビュー・統合し、DEV工学診断は別承認・別工程、FINAL128の1回限り採点は別途人間承認まで封印。PR3のKernel/閾値と旧EXP-0002Bの完成済み学習器には変更を加えない。
+
+## METRO-0001 — 独立した知能測定系 (design-only; not implemented)
+
+```mermaid
+flowchart TD
+    T["Public TaskSpec / approved experience"] --> K["Kernel・Synthesis・Runtime"]
+    L["Skill/Policy snapshot"] --> K
+    K --> V["Independent Verifier"]
+    V --> E["Raw evidence: immutable"]
+    E --> G["Read-only Evidence Gateway (proposed)"]
+    G --> Q["Quality / provenance validator (proposed)"]
+    Q --> M["Versioned metric reducer (proposed)"]
+    M --> A["Comparison & uncertainty (proposed)"]
+    A --> C["Scientific Claim / independent review (proposed)"]
+    C -.-> R["Future preregistered research question"]
+    R -.-> T
+    P["Evaluator-only private audit / fresh holdout"] --> V
+    C -.-> UI["Research Console: read-only proposed"]
+```
+
+- **実装済み**: canonical execution/meter、TaskSpec、WakeEpisode/SkillProposalとEXP-0003A TRAIN/DREAM、凍結済みsource/data/PolicySnapshotの証拠。**提案のみ**: Gateway以降のMETROレイヤとClaim Registry。
+- 本図は新しいデータ流出路を許可しない。PRIVATEからKernel/Learnerへの逆流なし。取得済みFINALの結果による方法変更は新しい未使用holdoutと事前登録が必要。
+- カウントとCPUを別単位にし、測定器追加が探索・政策判断へ影響しないよう統合ポイントはraw evidenceの **後段** のみとする。正式採用/FINAL起動権限をMETROに与えない。
+
+Related: [METRO ontology](../metrology/ontology.md) / [decision](decisions/ADR-0002-metrology-boundary.md) / [contract](contracts.md) / [CAL-01](../../experiments/METRO-0001/plan.md).
