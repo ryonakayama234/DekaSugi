@@ -28,3 +28,7 @@ Immutable policy reproduction; negative synthetic fixtures for ties/thresholds/v
 
 ## Run state
 `not_run`; no real metric outputs, measurements, learner updates, or trials were produced by this docs-only plan.
+
+
+## 2026-10-28 outcome: existing-original public artifact retrospective analysis
+[Run](runs/20261028-archive-public-diagnosis.md) and [machine aggregates](runs/20261028-archive-public-diagnosis.json) apply the above descriptive metrics after pinned source/public-member/snapshot SHA verification. Historic DEV64 is not rescored; no FINAL experiment was opened. Main observed mechanism: 61/64 different 5NN sets, but 63/64 identical vote and saving; the one action difference has equal measured primitive cost. P-H1/P-H3/P-H4 have limited descriptive evidence; P-H2 harmful-feature-bottleneck and P-H5 superior alternative selector remain unverified. Full query-feature replay is `not_observed` because original archived public TaskSpecs are absent, and no new DEV generation will be used to fill it. The study ends with a bounded answer, not confirmatory evidence.
