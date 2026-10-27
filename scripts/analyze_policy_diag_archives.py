@@ -43,6 +43,36 @@ def _read_verified_member(path: Path, name: str, checksum: str) -> dict:
     require_digest(raw, checksum, name)
     return json.loads(raw)
 
+def verify_frozen_source_bytes(freeze: dict, frozen_json: Path) -> int:
+    """Fail closed on all 14 pinned source files, before touching ZIP evidence.
+
+    This is a bytes-only check. No source is imported or executed.
+    """
+    repo_root = frozen_json.resolve().parents[2]
+    if (repo_root / "experiments/EXP-0003A/freeze-v1.json").resolve() != frozen_json.resolve():
+        raise ValueError("Frozen manifest is not at its canonical repository path")
+    sources = freeze.get("sources", {}).get("files")
+    if not isinstance(sources, dict) or len(sources) != 14:
+        raise ValueError("Expected the 14 pinned frozen source files")
+    for relative, expected in sorted(sources.items()):
+        if not isinstance(relative, str) or not isinstance(expected, dict):
+            raise ValueError("Malformed source entry")
+        path = Path(relative)
+        if path.is_absolute() or ".." in path.parts or str(path).startswith("."):
+            raise ValueError("Unsafe source path")
+        full_path = (repo_root / path).resolve()
+        if not full_path.is_relative_to(repo_root):
+            raise ValueError("Frozen source path escapes repo")
+        if not full_path.is_file():
+            raise ValueError("Missing frozen source file: " + relative)
+        raw = full_path.read_bytes()
+        if sha256(raw).hexdigest() != expected.get("raw_sha256"):
+            raise ValueError("Frozen source raw hash mismatch: " + relative)
+        blob = b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw
+        if sha1(blob).hexdigest() != expected.get("git_blob_sha1"):
+            raise ValueError("Frozen source Git blob mismatch: " + relative)
+    return len(sources)
+
 def load_verified(original_dev_zip: Path, train_dream_zip: Path,
                   frozen_json: Path) -> tuple[dict, dict, dict]:
     # Source-first: load pinned declared freeze BEFORE accepting evidence.
@@ -56,6 +86,7 @@ def load_verified(original_dev_zip: Path, train_dream_zip: Path,
             or freeze.get("split_data", {}).get("pr3_source_manifest_sha256") != PR3_SOURCE_SHA
             or freeze.get("split_data", {}).get("split_sha256", {}).get("dev") != DEV_DATA_SHA):
         raise ValueError("Freeze-source/permission mismatch")
+    verify_frozen_source_bytes(freeze, frozen_json)
     for arm in ("B1", "B2", "B3"):
         if freeze["policy"]["snapshot_sha256"][arm] != SNAPSHOT_SHA[arm]:
             raise ValueError("Freeze snapshot mismatch")
