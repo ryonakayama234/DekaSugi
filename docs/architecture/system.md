@@ -361,3 +361,33 @@ flowchart LR
 ```
 - 前節のPR2提案機構のうち **人工fixture-only校正器** は[PR #41](https://github.com/ryonakayama234/DekaSugi/pull/41)としてmain統合済み。より汎用的な実験証拠Gateway、異領域Adapter、Claim Registry、Research Consoleは引き続きproposed-only。
 - [CAL-01採用判断](../../experiments/METRO-0001/reviews/20261027-cal01-adoption.md)のscopeはsyntheticのみ。[ARCH-002](contracts.md)と[run](../../experiments/METRO-0001/runs/20261027-cal01-provenance-verified.md)と整合する。計測器の状態は知能能力の状態ではない。
+
+
+## EXP-0003A PR5 — Independent DEV evaluator (new code; not yet scored)
+Frozen 14 source files and the original `freeze-v1.json` are unchanged.
+Blue conceptual zone is independent `packages/exp0003a_dev`, not a new
+`packages/metrology` production scorer. DEV smoke requires a separate
+reviewed main-only activation; FINAL is disconnected.
+
+```mermaid
+flowchart TD
+    A["Freeze-v1: immutable manifest"] --> B["Source-first verify_frozen"]
+    T["TRAIN/DREAM-only WAKE/SLEEP/B1-B3"] --> B
+    B --> C["Replay frozen training snapshots + candidate"]
+    C --> D["Exact snapshot/body/selection hash checks"]
+    D --> E["DEV64 generator and frozen split hash check"]
+    E --> F["Independent 4-arm DEV evaluator"]
+    P["Public two-example TaskSpec"] --> F
+    F --> G["B0 always OFF"]
+    F --> H["B1/B2/B3 choose(public TaskSpec)"]
+    G --> I["Canonical SEC-004 bounded_synthesize"]
+    H --> I
+    I --> J["Fresh MEASURE-0001 meter per task/arm"]
+    J --> K["Independent evaluator-only third-example audit"]
+    K --> L["Write-once public trial + private manifest"]
+    L --> M["DEV diagnostic report + independent review"]
+    X["FINAL128 sealed"] -.-> Y["Separate future approval required"]
+```
+
+No private audit, family or split metadata may enter the policy. Existing
+`packages/metrology` remains synthetic-calibrated only. [PR5 spec](../specs/EXP-0003A-DEV-EVALUATOR.md).

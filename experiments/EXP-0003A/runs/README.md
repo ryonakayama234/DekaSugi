@@ -32,3 +32,21 @@ Related: [preregistration](../plan.md) / [previous FINAL](../../EXP-0002B/runs/2
 ## Review P1: source-first validation and repinning
 - [PR #37](https://github.com/ryonakayama234/DekaSugi/pull/37)のreviewで発見したP1は、凍結hashの検査より先にTRAIN/DREAM処理が実行されること。`verify_frozen()`をJSON自己hash・schema・Python環境・14 source byte SHAの照合を先に行う順序に修正。未承認ソースでは`preflight_record()`を呼ばないnegative testを追加した。
 - 上の`freeze_payload_sha256`とsource manifest SHAは**P1修正後の再固定値**である。初回commitの旧source hashは正式freezeとしない。新候補証拠[CI #40352073490](https://github.com/ryonakayama234/DekaSugi/actions/runs/40352073490)は旧凍結ファイル不整合でunitが意図通りFAILした時のpreflightのみであり、再固定後に別途all-pass CI/レビューが必要。
+
+
+## PR5 independent DEV engineering evaluator — planned, NOT RUN (2026-10-27)
+- [Issue #44](https://github.com/ryonakayama234/DekaSugi/issues/44) /
+  [new spec](../../../docs/specs/EXP-0003A-DEV-EVALUATOR.md) /
+  [engineering protocol](../dev-evaluation-pr5.md).
+- Evaluator implements source-first freeze, B0/B1/B2/B3 pre-search public
+  chooser, independent audit/meter and write-once reports in a new separate
+  module. PR CI may test synthetic/TRAIN only; **DEV64 not_run; FINAL128 not_run**.
+- Future DEV record requires exact source SHA, full raw artifact bytes SHA,
+  run URL, private manifest hash, independent recomputation and stated
+  failure/invalid/inconclusive counts. No forward revision of old run reports.
+
+### PR5 review gate correction (2026-10-27)
+Addressed two P2 code review findings in evaluator-only timing contract:
+complete frozen asset loading (two TRAIN/DREAM replays) and per-arm B1/B2/B3
+inference CPU/wall. Tests run TRAIN only; DEV64/FINAL128 remain **not_run**.
+Latest evidence is PR CI, not a held-out experimental result.

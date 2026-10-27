@@ -60,3 +60,11 @@ Related: [ARCH-001](system.md) / [ARCH-002](contracts.md) / [experiment spec](..
 ## METRO-0001 integrated CAL-01 evidence status (2026-10-27)
 - [adoption decision](../../experiments/METRO-0001/reviews/20261027-cal01-adoption.md)がUI-06将来用のread-only provenance投影元となる（artifact hash・校正判定・実験の対象範囲）。**UIそのものは未実装**。
 - CAL-01で受理したのは人工fixtureのみ。UIはデータ品質の監査結果を「能力・学習改善」を意味する数値へ変換しない。
+
+
+## EXP-0003A PR5 — UI read-model update
+UI-04 may eventually display independent DEV evaluator `RunEvidence` with
+the explicit label `DEV_ENGINEERING`, including all four arms, negative trials
+and audit failure counts. UI-05 may link public `TrialEvidence` by opaque
+task ID. UI may NOT reconstruct private audits from hashes, retrain, score
+FINAL, or promote a candidate. No UI implementation is added in PR5.

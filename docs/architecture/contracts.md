@@ -404,3 +404,57 @@ Related: [evidence spec](../metrology/evidence-model.md) / [gold fixture](../../
 - `metro-evidence/0.1` **人工 `METRO-0001/CAL-01` roleだけ** のcanonical JSON seal/検査・F01–F08固定summary・元fixture明細hashの保存を[PR #41](https://github.com/ryonakayama234/DekaSugi/pull/41)としてmain統合済み。
 - 元Artifact ZIP/JSON/fixtureを独立取得してSHAを検査し、[校正決定](../../experiments/METRO-0001/reviews/20261027-cal01-adoption.md)に記録。観測のraw bytesのdigestと正規化summary digestを混同しない。
 - invalid recordと合法だがnon_comparableなarmの差を維持。既存TaskSpec/EvaluationEvidence/Private auditの任意入出力を受け取る一般化Adapterは **未実装**。EXP-0003Aの凍結評価やLearnerへのprivateデータ導線は追加しない。
+
+
+## EXP-0003A PR5 — Independent DEV64 evidence flow and data contract
+
+```mermaid
+flowchart LR
+    A["FreezeManifest (read only)"] --> B["Source/Policy validator"]
+    C["Frozen TRAIN/DREAM ArmSnapshot"] --> B
+    B --> D["DEV TaskSpec(public only)"]
+    D --> E["Pre-search policy choice"]
+    E --> F["Four independent TrialEvidence records"]
+    G["DEV private audit (evaluator-only)"] --> H["Independent verifier"]
+    F --> H
+    H --> I["DEV public RunEvidence"]
+    H --> J["DEV private provenance manifest"]
+    I --> K["Diagnostic Summary / Review"]
+    J --> K
+```
+
+Immutable authority: `freeze-v1.json`, original 14 Git blobs, 
+`experiments/EXP-0003A/plan.md`. New evaluator reads, never changes them.
+
+- **FrozenAssets** (in memory): verified frozen manifest, B1/B2/B3
+  `ArmSnapshot` and semantic SHA, one TRAIN-derived `SkillCandidate`,
+  training rebuild cost. FAIL if any hash or status mismatches.
+- **TrialEvidence** (per `task_id` × `arm`): action/reason, neighbors (public
+  opaque IDs only), policy SHA, `SearchResult`, audit SHA reference, independently
+  checked audit correctness and false-solved, tested candidates, canonical
+  primitive meter, search/audit CPU+wall, selected typed AST.
+- **DEV public RunEvidence**: exact source commit, freeze/split/snapshot SHA,
+  per-task arm evidence, paired aggregates, regressions and uncertainty
+  labelled engineering only. Does not include raw audit input/output or
+  evaluator-only family/seed/source IDs.
+- **DEV private provenance manifest**: full generator-only source/audit
+  records, original public trial digest. Separate write-once artifact;
+  must never be passed to Kernel/learner.
+- **Validation order**: inert freeze schema/source bytes -> deterministic
+  TRAIN/DREAM replay/policy -> DEV full manifest -> choice -> search -> audit.
+  Any precondition failure exits without scoring.
+
+Read [PR5 spec](../specs/EXP-0003A-DEV-EVALUATOR.md). DEV cannot replace
+future independent FINAL128 evidence and cannot use CAL-01 synthetic
+calibration as a claim of measured intelligence growth.
+
+### PR5 additive timing evidence fields (reviewed contract)
+`FrozenAssets.asset_load_cost_ms` contains `freeze_verify_cpu/wall`,
+`second_train_dream_replay_cpu/wall`, `snapshot_validation_cpu/wall`,
+`asset_load_total_cpu/wall`. The freeze verification contains the **first**
+replayed TRAIN/DREAM policy; the later explicit replay is the **second**. Nested
+`train_dream_second_replay_internal_cost_ms` is **not** an additive cost.
+`TrialEvidence` adds `policy_inference_cpu_ms` and
+`policy_inference_wall_ms` per arm; B0=0, B1/B2/B3 are measured before
+search. `summary.arm_totals` sums the fields by arm. Overall four-arm elapsed
+and CPU costs already include these trials and must not be double counted.
