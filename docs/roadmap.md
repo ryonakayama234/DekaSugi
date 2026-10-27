@@ -91,3 +91,11 @@ learner/evaluator roles. First gate: fixture/TRAIN-only tests, exact-head
 CI and independent review; no DEV in PR. Second gate: separately reviewed
 main-push engineering DEV64. FINAL128 remains sealed and requires a
 distinct explicit approval. [spec](specs/EXP-0003A-DEV-EVALUATOR.md).
+
+## EXP-0003A DEV64 independent engineering readout (Issue #46; trigger PR)
+- Integrate one reviewed `push/main` first-attempt-only activation gate, not
+  ongoing CI scoring. Source freeze and snapshot method remain immutable.
+- Archive all B0/B1/B2/B3 trial evidence, independent raw-artifact checksum
+  audit and costs. Mark failures/inconclusive rather than rerun to optimize.
+- Research step concludes only after scored main run + original hashes +
+  independent derived metrics are recorded. No inference about FINAL128.

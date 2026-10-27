@@ -193,3 +193,30 @@
 - Do not add component costs to enclosing phase totals a second time. Update
   docs and train-only tests when timing evidence contracts change. No DEV/FINAL
   scoring in PR CI.
+
+## 27. EXP-0003A DEV64 one-shot activation (Issue #46)
+- This is **DEV64 engineering only**. The user delegated execution, not permission
+  to open EXP-0003A FINAL128, revise plan-v1, retune policies or promote skill.
+- Separate `.github/workflows/exp0003a-dev64-once.yml` is `push/main`-only,
+  activated solely by a *reviewed merge commit* starting with
+  `EXP0003A-DEV64-ONE-SHOT-ACTIVATE` and `run_attempt == 1`. PR CI cannot
+  generate/score DEV, and a GitHub Actions retry must not rescore it.
+- Preflight source-first hash lock + 14 immutable source blobs/snapshots, unittest
+  and docs gate precede scoring. Any failed gate stops DEV; no quiet rerun.
+- Save all four arms' original evidence and evaluator-private manifest separately,
+  independent stdlib evidence recount, SHA256SUMS and attempt record, including
+  failures. Report OS/Python/source commit/run ID and artifact retention.
+- DEV conclusions are exploratory/engineering; even a favorable B3−B2 paired
+  reduction is **not** confirmatory H3. FINAL128 remains not_run.
+
+### Independent Codex P2 review hardening (2026-10-27)
+- Each primitive meter's `by_op` canonical positive counters must sum to
+  `primitive_invocations` (not just agree with copied top-level total).
+- Check search status/solved/program/selected AST against audited_correct and
+  false_solved, including consistent unsolved/null-program outcomes.
+- Verify BOTH evidence source_commit values match the externally supplied
+  40-character runner `GITHUB_SHA`; attempt must match main/first run/SHA.
+- A finalization step with `always()` hashes **all extant** original JSON
+  into SHA256SUMS even if scoring, preflight or independent audit fails.
+- New negative and positive synthetic evidence tests run in PR CI. No DEV/FINAL
+  generation/scoring may be performed before reviewed main activation.

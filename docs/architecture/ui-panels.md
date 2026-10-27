@@ -68,3 +68,11 @@ the explicit label `DEV_ENGINEERING`, including all four arms, negative trials
 and audit failure counts. UI-05 may link public `TrialEvidence` by opaque
 task ID. UI may NOT reconstruct private audits from hashes, retrain, score
 FINAL, or promote a candidate. No UI implementation is added in PR5.
+
+## EXP-0003A DEV64 activation status projection (not UI implementation)
+UI-04 Evidence & Review should read `independent-audit.json` for B0–B3
+summary, CPU costs, hash pair and CI review status, with read-only links to
+the original `public.json` and `public.evaluator-private.json` artifact.
+Show `planned / activated / audited / failed` distinctly. UI-06 must show
+`FINAL128=not_run` and `H3=unconfirmed` regardless of DEV effect sign.
+No dashboard model may bypass audit or read private source records into policy.

@@ -391,3 +391,20 @@ flowchart TD
 
 No private audit, family or split metadata may enter the policy. Existing
 `packages/metrology` remains synthetic-calibrated only. [PR5 spec](../specs/EXP-0003A-DEV-EVALUATOR.md).
+
+## EXP-0003A DEV64 one-shot main-only experimental boundary
+```mermaid
+flowchart LR
+  P[Reviewed PR / source freeze] --> M[Tagged squash merge to main]
+  M -->|first push attempt only| G[DEV activation gate]
+  G --> U[Unit + docs + freeze preflight]
+  U --> E[Independent DEV64 four-arm scorer]
+  E --> A[Read-only independent evidence auditor]
+  A --> Z[Original bytes + SHA256SUMS / CI artifact]
+  G -.->|PR event, retry or no marker| S[Skip without scoring]
+  E -.->|No permission| F[FINAL128 stays sealed]
+```
+Activation is restricted to `main` push with review marker and first run
+attempt. Auditor independently recounts 64 task IDs × B0–B3 using only the
+public/private output and frozen manifest, not the scoring code. This does not
+authorize FINAL128.

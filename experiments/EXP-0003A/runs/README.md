@@ -50,3 +50,29 @@ Addressed two P2 code review findings in evaluator-only timing contract:
 complete frozen asset loading (two TRAIN/DREAM replays) and per-arm B1/B2/B3
 inference CPU/wall. Tests run TRAIN only; DEV64/FINAL128 remain **not_run**.
 Latest evidence is PR CI, not a held-out experimental result.
+
+## DEV64 activation attempt (Issue #46; source-gated trigger PR)
+- [Activation contract](../../../docs/specs/EXP-0003A-DEV64-ACTIVATION.md):
+  new one-shot main-only workflow, explicit source-commit marker and first run
+  attempt; **never run DEV in PR CI**.
+- Public original JSON, evaluator-private raw provenance, separate independent
+  audit output, original-byte SHA256SUMS and runner metadata will be uploaded as
+  a 90-day Actions Artifact on the scored main-push job.
+- Record run ID/main SHA, both exact raw JSON SHA-256, verified DEV dataset hash,
+  B0/B1/B2/B3 audited correctness/call/CPU and B2−B3 regressions in an immutable
+  follow-up run record. Artifacts are not permanent archives; preserve long-term
+  evidence with an independent reviewed evidence PR.
+- At trigger PR stage: **DEV64 not_run; FINAL128 not_run**. PR success must
+  never be mislabeled as scored experiment.
+
+### Independent Codex P2 review hardening (2026-10-27)
+- Each primitive meter's `by_op` canonical positive counters must sum to
+  `primitive_invocations` (not just agree with copied top-level total).
+- Check search status/solved/program/selected AST against audited_correct and
+  false_solved, including consistent unsolved/null-program outcomes.
+- Verify BOTH evidence source_commit values match the externally supplied
+  40-character runner `GITHUB_SHA`; attempt must match main/first run/SHA.
+- A finalization step with `always()` hashes **all extant** original JSON
+  into SHA256SUMS even if scoring, preflight or independent audit fails.
+- New negative and positive synthetic evidence tests run in PR CI. No DEV/FINAL
+  generation/scoring may be performed before reviewed main activation.
