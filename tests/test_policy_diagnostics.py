@@ -115,7 +115,7 @@ class PolicyDiagnosticTests(unittest.TestCase):
                 raise AssertionError("Synthetic fixture distance unavailable")
             return tuple(vec)
 
-        def build(nclose=5, votes=5, saving=2, veto=False, distance=.6):
+        def build(nclose=5, votes=5, saving=2, veto=False, distance=.22):
             rows=list(a.observations)
             for i,o in enumerate(rows):
                 if i in inds:
@@ -125,7 +125,7 @@ class PolicyDiagnosticTests(unittest.TestCase):
                               off_calls=10,on_calls=10-saving,
                               off_correct=True,on_audit_invalid=veto and rank==0)
                 else:
-                    rows[i]=r(o,vector=vector_at_distance(0.85))
+                    rows[i]=r(o,vector=vector_at_distance(0.25))
             return r(a,observations=tuple(rows))
 
         cases=[
