@@ -1,0 +1,121 @@
+{
+  "schema_version": "policy-diag-archive-report/0.1",
+  "status": "completed_archived_public_partial_diagnosis",
+  "epistemic_status": "post_DEV_exploratory_not_CONFIRMATORY",
+  "updated": "2026-10-28",
+  "sources": {
+    "dev_public_json_sha256": "2fa48c841e99a69275c8bd3a5bd78eb2e01d4a3fcc226a6358958bf5cc053134",
+    "train_dream_public_json_sha256": "da34216419bab7a95bf93d9b6d5805cebf900a9c662efc91a77b4aa8536e621e",
+    "freeze_payload_sha256": "1e0f6daf1cb80262c187c60a3e0a4d2e76dafea911f0633feed3c40f93db8f44",
+    "original_dev_run_id": 40518246537,
+    "original_artifact_id": 12739684056,
+    "train_dream_artifact_id": 12778980603,
+    "source_commit": "26eaf3b4c4717968d68eb7f383b126b23b2062c8",
+    "B2_snapshot_sha256": "01d5595e1b4c32d200e2734630f38a848e77a64f356741445e011865834f5af7",
+    "B3_snapshot_sha256": "a6d46ab5dd697e8e90789693fdd3bd67bbca445ec07bc8b119401e1c0cf1e210"
+  },
+  "population": {
+    "previously_scored_DEV64_tasks": 64,
+    "dev_rescored": false,
+    "final_opened": false
+  },
+  "dream_selection": {
+    "B2_count": 96,
+    "B3_count": 96,
+    "overlap": 24,
+    "jaccard": 0.14285714285714285,
+    "distinct_dream_feature_vectors": {
+      "B2": 95,
+      "B3": 85
+    },
+    "positive_dream_observations": {
+      "B2": 12,
+      "B3": 12
+    }
+  },
+  "snapshot_profiles": {
+    "B1": {
+      "total_observations": 160,
+      "distinct_8D_features": 150,
+      "collision_groups": 9,
+      "collision_records": 19,
+      "conflicting_groups": 0
+    },
+    "B2": {
+      "total_observations": 256,
+      "distinct_8D_features": 237,
+      "collision_groups": 18,
+      "collision_records": 37,
+      "conflicting_groups": 0
+    },
+    "B3": {
+      "total_observations": 256,
+      "distinct_8D_features": 222,
+      "collision_groups": 32,
+      "collision_records": 66,
+      "conflicting_groups": 0
+    }
+  },
+  "archived_5NN": {
+    "histogram_shared_neighbors_out_of_5": {
+      "1": 2,
+      "2": 20,
+      "3": 28,
+      "4": 11,
+      "5": 3
+    },
+    "mean_common_neighbors": 2.890625,
+    "distinct_neighbor_sets": 61,
+    "identical_neighbor_sets": 3,
+    "ON_votes_differing_tasks": 1,
+    "mean_call_saving_differing_tasks": 1,
+    "veto_differing_tasks": 0,
+    "action_differing_tasks": 1,
+    "reason_differing_tasks": 1,
+    "primitive_call_differing_tasks": 0,
+    "B2_reason_counts": {
+      "insufficient_on_votes": 55,
+      "cost_supported": 9
+    },
+    "B3_reason_counts": {
+      "insufficient_on_votes": 56,
+      "cost_supported": 8
+    },
+    "B2_votes_histogram": {
+      "0": 55,
+      "4": 1,
+      "5": 8
+    },
+    "B3_votes_histogram": {
+      "0": 55,
+      "2": 1,
+      "5": 8
+    }
+  },
+  "single_disagreement": {
+    "B2": {
+      "action": "ON",
+      "reason": "cost_supported",
+      "ON_votes": 4,
+      "mean_call_saving": 3.2,
+      "primitive_invocations": 2
+    },
+    "B3": {
+      "action": "OFF",
+      "reason": "insufficient_on_votes",
+      "ON_votes": 2,
+      "mean_call_saving": 1.6,
+      "primitive_invocations": 2
+    }
+  },
+  "limits": {
+    "query_public_TaskSpecs_available_in_archived_public_json": false,
+    "independent_8D_query_features_reconstruction": false,
+    "neighbor_distance_reconstruction": false,
+    "close_support_exact_reconstruction": false,
+    "causal_attribution": false,
+    "external_generalization": false,
+    "source_confirms_H3": false
+  },
+  "research_interpretation": "Selection differs substantially; selected 5NN sets differ on 61/64 but vote and mean-savings remain equal on 63/64. The one decision difference changes no primitive calls. Mechanism hypotheses are descriptive, not exclusive or confirmed."
+}
