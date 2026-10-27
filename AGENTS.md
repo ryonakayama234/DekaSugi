@@ -250,3 +250,9 @@
 
 ## POLICY-DIAG-001 implementation scope
 - `packages/policy_diagnostics` is a **read-only** diagnostic helper, not a trustworthy new DEV or FINAL scorer. Its tests use synthetic snapshots and TRAIN-only public cases. Any production historical DEV analysis requires independently verified archived public TaskSpecs and digest, plus frozen snapshot provenance. Do not generate DEV/FINAL to fill missing observations; no private audit examples in public repository.
+
+
+## POLICY-DIAG-001 audited-public archive diagnostic (2026-10-28)
+- The retrospective [run](experiments/POLICY-DIAG-001/runs/20261028-archive-public-diagnosis.md) uses only the original DEV64 `public.json` and PR3 TRAIN/DREAM **public** snapshot JSON after independently checking pinned source/freeze, member SHA-256 and frozen B1/B2/B3 policy hashes. No private companion ZIP member, DEV/FINAL task generator, evaluator or learner update is accessed.
+- The verified original public DEV file lacks public query `TaskSpec.examples`. Diagnosing archived 5NN memberships, teacher votes and saving is allowed; claiming exact independently reconstructed DEV 8D query vectors, distances, close-support or `choose()` parity is **not** allowed. Use `not_observed` and `completed_archived_public_partial_diagnosis` status.
+- The read-only archive analyzer is `scripts/analyze_policy_diag_archives.py`; its output MUST remain aggregate-only (never raw rows, task IDs, private third audit examples, or sensitive source payload). Original raw private ZIP retention remains separate Issue #48.

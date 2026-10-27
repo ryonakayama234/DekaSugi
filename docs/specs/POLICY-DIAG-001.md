@@ -41,3 +41,9 @@ The independent helper is available in [PR #54](https://github.com/ryonakayama23
 
 ## Exit
 Explain observed mechanism(s) with caveats or explicitly `unidentifiable`; prioritize a *future* separately preregistered new method/fresh holdout if change is justified. Do not assert H3 confirmation, cross-domain transfer, general intelligence or total CPU benefit.
+
+
+## Actual 2026-10-28 archival analysis outcome (measured)
+The read-only helper is already merged by [PR #54](https://github.com/ryonakayama234/DekaSugi/pull/54). The newer archive gateway `scripts/analyze_policy_diag_archives.py` analyzes only original public DEV64 evidence and frozen PR3 TRAIN/DREAM public observations, with pinned member SHA-256 and source/policy checks. Its sanitized [run report](../../experiments/POLICY-DIAG-001/runs/20261028-archive-public-diagnosis.md) and [machine aggregates](../../experiments/POLICY-DIAG-001/runs/20261028-archive-public-diagnosis.json) are exploratory; 5NN memberships differ 61/64, votes and mean saving differ 1/64, action differs 1/64, observed calls differ 0/64.
+
+**Specified but not observed:** original archived DEV public JSON does not contain query TaskSpec examples. Thus no independent 8D feature, 5NN distance, or exact `close_support` replay was performed on DEV64. The helper's existing synthetic/TRAIN exact `choose()` tests are engineering tests, not an assertion that archived DEV behavior was independently recomputed. The archive-result status is `completed_archived_public_partial_diagnosis`. Do not upgrade it to a confirmatory claim.
