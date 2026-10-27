@@ -143,3 +143,8 @@
 - PR2の技術的追記: SLEEPでは候補2件以上あってもランキング首位1件だけ`candidate`とし他は`withheld`。TRAINエピソードは上書き禁止のJSONLと集計JSONでCI Artifactに保存し、ファイルSHA-256を別途記録する。
 
 - 2026-10-26 合意: PR2は監査器が発行したoriginal `WakeReceipt`でAST/trace/監査判定を拘束し、SLEEPの任意改変入力を拒否する。公開repoのTRAIN監査元データは外部秘匿ではなく学習入力から隔離し、実際に使用したprivate行を別Artifactファイルへ保存して独立照合を可能にする。generator/WAKE/SLEEP CPU/wallは区分計測し、変更後の独立Codexレビューまで統合禁止。
+
+## 23. EXP-0003A PR4 : pre-DEV immutable freeze (Issue #36)
+- PR3 main `55af90d`で学習したsingle top1 skill、B1/B2/B3 snapshot/ordered Dream selectionsを変更しない。CPython3.12のpreflightでTRAIN160/DREAM512/DEV64/FINAL128の参照例を生成して全データをhash化。ただしDEV/FINALの検索・方策選択・独立audit採点は**完全禁止**。
+- PLAN-V1/原始DSL/Registry/生成器/評価器/KNN/新preflightなど全14ソースのGit blob SHA1・raw SHA256、4splitのcanonical SHAとPR3 policy/skill/selection SHAを`freeze-v1.json`へ記録。`check-freeze`は編集済みmanifest・source drift・ID衝突・version driftで即停止し、DEV/FINAL起動口を付けない。
+- PR CIはfreeze-preflightとunit回帰のみ。正式freezeまで全source hashが追跡され、別の独立Codexレビュー済みhashと比較する。PR4でDEV/FINALは未実行、FINALの承認権限は人間の別PRのみ。スコープ外の再学習・標準Registry昇格は禁止。

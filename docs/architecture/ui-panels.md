@@ -43,3 +43,7 @@ flowchart TD
 - 実装がUI未対応でも、モジュール追加ごとに本対応表を更新。新パネル追加の条件は独立責務と参照データの定義があること。
 
 Related: [ARCH-001](system.md) / [ARCH-002](contracts.md) / [experiment spec](../specs/EXP-0003A.md) / [run index](../../experiments/EXP-0003A/runs/README.md).
+
+## EXP-0003A PR4 read-only freeze panel projection (planned UI)
+- `UI-05`のsource provenance投影元として`freeze-v1.json`とPR4 hash-only preflight/check記録を採用。表示可能なのは8family/4splitの件数・opaque public ID群のSHA・Git blob SHA・snapshot/selection SHA・欠測・検証状態のみ。third audit raw rowsやholdout family/seedをKernel/UIから呼び出さない。
+- PR4でも画面/永続DBは未実装、合否/採用の独立決定主体はUIではなく凍結検査・独立Evaluator・レビュー担当。DEV/FINALの起動ボタンは未提供。

@@ -20,6 +20,8 @@ jobs:
           python-version: "3.12"
       - name: Validate repository documents
         run: python scripts/check_docs.py
+      - name: EXP-0003A PR4 generate hash-only candidate BEFORE tests (no holdout evaluation)
+        run: python -m packages.exp0003a.freeze_cli --mode preflight --output .run/EXP-0003A-PR4-preflight.json
       - name: Run full unit test suite
         run: python -m unittest discover -s tests -v
       - name: Run preregistered EXP-0001 suite
@@ -48,6 +50,17 @@ jobs:
           path: |
             .run/EXP-0003A-PR3-TRAIN-DREAM.json
             .run/EXP-0003A-PR3-TRAIN-DREAM.evaluator-private.json
+          if-no-files-found: warn
+      - name: EXP-0003A PR4 strict freeze verification (no DEV/FINAL scoring)
+        run: python -m packages.exp0003a.freeze_cli --mode check-freeze --output .run/EXP-0003A-PR4-freeze-check.json
+      - name: Upload EXP-0003A PR4 hash-only preflight evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: EXP-0003A-PR4-freeze-preflight
+          path: |
+            .run/EXP-0003A-PR4-preflight.json
+            .run/EXP-0003A-PR4-freeze-check.json
           if-no-files-found: warn
       - name: EXP-0002B preregistered split manifest (hash only; no FINAL search)
         run: python -m packages.kernel --mode preflight --output .run/EXP-0002B-preflight.json

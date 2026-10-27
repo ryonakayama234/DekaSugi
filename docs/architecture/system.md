@@ -305,3 +305,7 @@ flowchart TD
 - **Trust boundary**: ID-v1では`TaskSpec.task_id`は公開2例だけをhash化した不透明な識別子で、family/split/seedを含むgenerator/evaluator専用の`source_record_id`/`pool_id`は別管理（[契約](contracts.md)）。Dreamの合成正解やpublic examplesをFINALの代わりにしない。private audit・family・seed・splitはlearner APIへ流さない。未承認技能は隔離されたRegistryのみに載せ、標準Libraryへ自動昇格しない。
 - **PR3 new implementation**: `packages/exp0003a.pr3`で同一候補をOFF/ON比較し、8×64のDream poolからB2 fixed-seed random96/B3 positive近傍96を選択。B1/B2/B3同じ公共8D/5NN閾値で方策snapshotを固定。評価者専用原データ・監査証拠と学習器入力を分けて保存。CIはTRAIN/DREAMのみ。DEV/FINALは別freeze・レビュー・人間承認まで停止。
 - **Research scope**: 1周期、原始演算はtrim/lower/upper固定。未知のprimitive意味論・異領域転移は未実証。詳細は[pre-registration](../../experiments/EXP-0003A/plan.md)、[spec](../specs/EXP-0003A.md)、[ARCH-002](contracts.md)、[UI map](ui-panels.md)。
+
+## EXP-0003A PR4 — splitハッシュ凍結準備
+- TRAIN160 + DREAM512を既存ソースと独立生成で全件一致確認し、DEV64 + FINAL128は第三例を参照正解として生成してソース・全4 splitのhashを**一切採点せず**固定する。`packages/exp0003a.freeze`が正式なpreflight read-modelで、凍結ファイル本体の検証は専用`freeze_cli --mode check-freeze`のみ。UI/evaluatorがデータを捏造して凍結を越える経路はない。
+- PR4 freezeを先にレビュー・統合し、DEV工学診断は別承認・別工程、FINAL128の1回限り採点は別途人間承認まで封印。PR3のKernel/閾値と旧EXP-0002Bの完成済み学習器には変更を加えない。
