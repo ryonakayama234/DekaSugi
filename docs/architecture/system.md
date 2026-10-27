@@ -440,3 +440,18 @@ flowchart TD
 
 ## POLICY-DIAG-001 implementation boundary (no holdout scoring)
 `packages/policy_diagnostics` accepts validated `ArmSnapshot` and already archived *public* TaskSpec records, reproduces 8D/5NN/gates against the frozen `choose()`, and outputs read-only explanation. It never imports a DEV/FINAL generator or invokes a verifier/synthesizer. Missing public task-level records mean diagnostics are `not_observed`, not reconstructed. [Code](../../packages/policy_diagnostics/__init__.py) / [plan](../../experiments/POLICY-DIAG-001/plan.md).
+
+
+## POLICY-DIAG-001 — archive public-only evidence boundary (implemented 2026-10-28)
+```mermaid
+flowchart TD
+  F["Immutable freeze-v1 JSON: pinned Git blob"] --> G["Archive source-first gateway / hashes"]
+  D["Original scored-once DEV64 public.json member"] --> G
+  P["PR3 TRAIN/DREAM public snapshot member"] --> G
+  G --> N["Trusted archived neighbor IDs x immutable observations"]
+  N --> M["5NN membership, vote, mean saving and veto descriptors"]
+  M --> R["Sanitized aggregate JSON + scoped scientific run"]
+  X["Original evaluator-private member / private audit examples"] -. "NO read/publish" .-> G
+  Y["Fresh DEV generator / FINAL128"] -. "NO scoring" .-> G
+```
+The archive gateway is implemented at `scripts/analyze_policy_diag_archives.py` and verifies original member SHA, frozen policy snapshots and immutable data references **before** retrospective analysis. Original DEV `public.json` lacks public query TaskSpecs; the gateway does **not** recreate query features or 5NN ranking. The separate helper `packages/policy_diagnostics` can replay `choose()` only when authenticated permitted public TaskSpec bytes exist. [Run and uncertainty](../../experiments/POLICY-DIAG-001/runs/20261028-archive-public-diagnosis.md).
