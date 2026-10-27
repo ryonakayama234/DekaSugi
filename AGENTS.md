@@ -193,3 +193,18 @@
 - Do not add component costs to enclosing phase totals a second time. Update
   docs and train-only tests when timing evidence contracts change. No DEV/FINAL
   scoring in PR CI.
+
+## 27. EXP-0003A DEV64 one-shot activation (Issue #46)
+- This is **DEV64 engineering only**. The user delegated execution, not permission
+  to open EXP-0003A FINAL128, revise plan-v1, retune policies or promote skill.
+- Separate `.github/workflows/exp0003a-dev64-once.yml` is `push/main`-only,
+  activated solely by a *reviewed merge commit* starting with
+  `EXP0003A-DEV64-ONE-SHOT-ACTIVATE` and `run_attempt == 1`. PR CI cannot
+  generate/score DEV, and a GitHub Actions retry must not rescore it.
+- Preflight source-first hash lock + 14 immutable source blobs/snapshots, unittest
+  and docs gate precede scoring. Any failed gate stops DEV; no quiet rerun.
+- Save all four arms' original evidence and evaluator-private manifest separately,
+  independent stdlib evidence recount, SHA256SUMS and attempt record, including
+  failures. Report OS/Python/source commit/run ID and artifact retention.
+- DEV conclusions are exploratory/engineering; even a favorable B3−B2 paired
+  reduction is **not** confirmatory H3. FINAL128 remains not_run.

@@ -86,3 +86,13 @@ tags: navigation, architecture, research, experiments
 | ID | Theme | Status | Document |
 |---|---|---|---|
 | EXP-0003A-DEV-EVAL-PR5 | frozen source/policy -> independent B0/B1/B2/B3 DEV64 evaluator | implementation PR; DEV/FINAL not run | [spec](specs/EXP-0003A-DEV-EVALUATOR.md) / [code](../packages/exp0003a_dev/__init__.py) / [engineering plan](../experiments/EXP-0003A/dev-evaluation-pr5.md) / [runs](../experiments/EXP-0003A/runs/README.md) / [Issue #44](https://github.com/ryonakayama234/DekaSugi/issues/44) |
+
+## EXP-0003A DEV64 reviewed one-shot gate (Issue #46)
+- [Activation contract](specs/EXP-0003A-DEV64-ACTIVATION.md) — independently
+  reviewed main-only, first-attempt-only scoring after PR integration.
+- [DEV evaluator](specs/EXP-0003A-DEV-EVALUATOR.md) /
+  [execution record](../experiments/EXP-0003A/dev-evaluation-pr5.md) /
+  [run index](../experiments/EXP-0003A/runs/README.md).
+- Independent artifact verifier:
+  `scripts/audit_exp0003a_dev_evidence.py` (read-only, stdlib; no DEV in PR).
+  The activation workflow is an execution boundary, not FINAL authorization.

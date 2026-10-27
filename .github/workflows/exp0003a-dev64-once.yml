@@ -1,0 +1,109 @@
+name: EXP-0003A DEV64 one-shot engineering (reviewed main only)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/exp0003a-dev64-once.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: exp0003a-dev64-one-shot
+  cancel-in-progress: false
+
+jobs:
+  dev64:
+    # Never execute in PR CI, manual dispatch, schedule, or re-run.
+    # Only a separately reviewed main merge with this explicit subject may start it.
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      github.run_attempt == 1 &&
+      startsWith(github.event.head_commit.message, 'EXP0003A-DEV64-ONE-SHOT-ACTIVATE')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONHASHSEED: "0"
+      TZ: UTC
+      LC_ALL: C.UTF-8
+    steps:
+      - name: Checkout exact main SHA
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Record attempt before executing tests or scoring
+        run: |
+          mkdir -p .run/EXP-0003A-DEV64
+          python - <<'PY'
+          import json, os, platform
+          from pathlib import Path
+          attempt = {
+              "phase": "DEV_ENGINEERING", "status": "attempt_started",
+              "run_id": os.environ["GITHUB_RUN_ID"],
+              "run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+              "event": os.environ["GITHUB_EVENT_NAME"],
+              "ref": os.environ["GITHUB_REF"],
+              "source_sha": os.environ["GITHUB_SHA"],
+              "python": platform.python_version(),
+              "platform": platform.platform(),
+              "processor": platform.processor(),
+              "FINAL128": "not_run",
+          }
+          with Path(".run/EXP-0003A-DEV64/attempt.json").open("x") as f:
+              json.dump(attempt, f, sort_keys=True, indent=2)
+              f.write("\n")
+          PY
+      - name: Source-first preflight plus all unit/docs gates (no DEV scoring)
+        run: |
+          python scripts/check_docs.py
+          python -m unittest discover -s tests -v
+          python -m packages.exp0003a.freeze_cli --mode check-freeze --output .run/EXP-0003A-DEV64/precheck-freeze.json
+      - name: Run frozen DEV64 ONCE, always keep FINAL128 sealed
+        id: score
+        env:
+          EXP0003A_DEV_APPROVED: reviewed-main-only
+        run: |
+          test "$GITHUB_RUN_ATTEMPT" = "1"
+          test "$GITHUB_REF" = "refs/heads/main"
+          python -m packages.exp0003a_dev --mode dev --output .run/EXP-0003A-DEV64/public.json
+      - name: Independent 64 task x 4 arm evidence audit (no generation)
+        run: |
+          python scripts/audit_exp0003a_dev_evidence.py \
+            --public .run/EXP-0003A-DEV64/public.json \
+            --private .run/EXP-0003A-DEV64/public.evaluator-private.json \
+            --freeze experiments/EXP-0003A/freeze-v1.json \
+            --output .run/EXP-0003A-DEV64/independent-audit.json
+      - name: Record original byte SHA-256 and summary
+        run: |
+          (cd .run/EXP-0003A-DEV64 && sha256sum *.json > SHA256SUMS)
+          cat .run/EXP-0003A-DEV64/SHA256SUMS
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          a = json.loads(Path(".run/EXP-0003A-DEV64/independent-audit.json").read_text())
+          assert a["status"] == "pass" and a["arm_trial_count"] == 256
+          with Path(os.environ["GITHUB_STEP_SUMMARY"]).open("a") as f:
+              f.write("## EXP-0003A DEV64 engineering (NOT FINAL128)\n\n")
+              f.write("Independent audit PASS for 64 tasks x 4 arms.\n\n")
+              f.write("| Arm | Audited correct | False solved | Primitive calls | Inference CPU ms |\n")
+              f.write("| --- | ---: | ---: | ---: | ---: |\n")
+              for arm, v in a["arm_totals"].items():
+                  f.write(f"| {arm} | {v['audited_correct']} | {v['false_solved']} | {v['primitive_invocations']} | {v['policy_inference_cpu_ms']:.2f} |\n")
+              f.write("\nPaired B2 minus B3 primitive calls: " + str(
+                  a["paired_B2_minus_B3"]["primitive_invocations"]) + "\n")
+              f.write("\nFull original byte hashes stored in SHA256SUMS.\n")
+          PY
+      - name: Archive evidence or partial failed-attempt record
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: EXP-0003A-DEV64-${{ github.run_id }}
+          path: .run/EXP-0003A-DEV64/
+          retention-days: 90
+          if-no-files-found: error

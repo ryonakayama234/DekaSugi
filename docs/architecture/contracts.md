@@ -458,3 +458,25 @@ replayed TRAIN/DREAM policy; the later explicit replay is the **second**. Nested
 `policy_inference_wall_ms` per arm; B0=0, B1/B2/B3 are measured before
 search. `summary.arm_totals` sums the fields by arm. Overall four-arm elapsed
 and CPU costs already include these trials and must not be double counted.
+
+## EXP-0003A DEV64 one-shot evidence and trust contract (Issue #46)
+```mermaid
+flowchart TD
+  X[Verified main SHA + frozen 14 blobs] --> V[verify_frozen then DEV hash check]
+  V --> B[DEV64 task x four independent arms]
+  B --> O[public.json: 256 trial rows, costs, hashes]
+  B --> P[public.evaluator-private.json: audit + source records]
+  O --> I[Independent stdlib audit]
+  P --> I
+  R[freeze-v1.json SHA locks] --> I
+  I --> T[independent-audit.json and SHA256SUMS]
+  T --> C[Append-only Actions artifact, 90-day retention]
+```
+The standalone evidence auditor does **not** import source scorer or generate
+DEV/FINAL; it checks canonical raw split digest, opaque TaskSpec IDs, third-audit
+references, all 256 arm meters/trials, paired B2−B3 calls/candidates/cluster
+bootstrap, OOD activation counts, family and arm totals, and cost inclusion.
+Four raw files have separate original-byte SHA256; failed attempts retain
+`attempt.json` and logs. Artifact expires; permanent SHA/run/metrics record
+requires a subsequent reviewed evidence archival update. Never silently
+double-count phase totals or equate DEV with FINAL confirmation.

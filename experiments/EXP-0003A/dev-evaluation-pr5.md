@@ -46,3 +46,13 @@ policy inference, search and audit; do not sum these overlapping values twice.
 The inner TRAIN/DREAM run cost is diagnostic detail within the second replay.
 A CPython3.12 TRAIN-only test checks both replay buckets and a separate
 synthetic/TRAIN test checks arm-level inference aggregation. Still no DEV/FINAL.
+
+## DEV64 post-PR5 one-shot activation (Issue #46)
+The new activation PR introduces only a main-push first-attempt-only scoring
+workflow and a **separate** read-only stdlib verifier. Trigger requires a tagged
+reviewed merge commit and successful document/unit/source freeze prechecks.
+Same SHA runs B0/B1/B2/B3 against sealed DEV64, and emits original public and
+private JSON, independent recount and original-byte hashes with partial attempt
+evidence on failure. This is engineering only; no FINAL128/H3 confirmation or
+parameter retuning. The activation outcome must be appended **after** the main
+run with actual run ID, SHA and independently checked values.
