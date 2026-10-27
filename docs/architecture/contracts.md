@@ -506,3 +506,16 @@ double-count phase totals or equate DEV with FINAL confirmation.
   research ledger preserves hashes, source, metrics and provenance; **private
   manifest raw records must not enter the public Git repository**. Raw
   Artifact retention is 90 days; retaining its SHA does not preserve its bytes.
+
+
+## POLICY-DIAG-001 — 診断用データ契約（設計案・未実装）
+```mermaid
+flowchart LR
+  A["B2/B3 ArmSnapshot: hash + observations"] --> V["整合性検査"]
+  B["採点済みDEV64公開TaskSpec/Decision"] --> V
+  V --> D["特徴量・距離・5NN・gate traceを再構成"]
+  D --> E["PolicyDiagnosticRecord/0.1"]
+  E --> F["根拠・欠測・不確実性つき研究記録"]
+  X["private audit / FINAL128"] -.->|"学習器・再生器に渡さない"| D
+```
+想定レコード：`schema_version, task_id, source_refs{freeze,snapshot,dev_public_sha}, policy_reconstruction{B2,B3}, comparison{neighbor_overlap, action_disagrees, archived_primitive_difference}, classification{mechanism_labels,status,alternatives,evidence_refs}`。全フィールドに観測/再構成/探索的解釈・欠測区分を与え、privateデータは公開リポジトリに書かない。判定再生は`choose`の近傍距離昇順・公開task_id同点処理・5近傍全体の支持票と費用・順次veto/閾値を厳密に維持する。診断は新規採点を実行しない。[Issue #52](https://github.com/ryonakayama234/DekaSugi/issues/52)。
