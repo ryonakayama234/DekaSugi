@@ -111,16 +111,23 @@ def validate(record: Any) -> None:
             trial.get("record_id") != record["record_id"] or
             record["record_id"] != task_id + ":" + trial["arm"]):
         raise EvidenceError("invalid_trial_identity")
-    if trial.get("limits") != {"max_ast_nodes": 4, "max_candidates": 100}:
+    limits = trial.get("limits")
+    if not isinstance(limits, dict) or set(limits) != {"max_ast_nodes", "max_candidates"}:
+        raise EvidenceError("invalid_budget")
+    nodes, cap = limits["max_ast_nodes"], limits["max_candidates"]
+    if (type(nodes) is not int or type(cap) is not int or
+            not (1 <= nodes <= 32) or not (1 <= cap <= 10000)):
         raise EvidenceError("invalid_budget")
     candidates = trial.get("tested_candidates")
-    if type(candidates) is not int or candidates < 0 or candidates > 100:
+    if type(candidates) is not int or candidates < 0 or candidates > cap:
         raise EvidenceError("invalid_candidates")
     if trial.get("status") not in ("solved", "not_found", "budget_exhausted"):
         raise EvidenceError("invalid_status")
     if type(trial.get("audit_correct")) is not bool:
         raise EvidenceError("missing_audit")
-    if trial["audit_correct"] and trial["status"] != "solved":
+    # CAL-01's synthetic golden oracle fixes solved and independent audit
+    # to agree in BOTH directions; future real audit policies differ.
+    if trial["audit_correct"] != (trial["status"] == "solved"):
         raise EvidenceError("inconsistent_verification")
     if audit.get("status") != "verified" or audit.get("evidence_ref") != "cal-audit-only":
         raise EvidenceError("missing_audit")
@@ -274,3 +281,13 @@ def calibrate() -> dict[str, Any]:
             "golden_summary_sha256": SUMMARY_SHA256, "cases": results,
             "m3_non_interference": "requires_separate_unit_regression",
             "scientific_claim": "no_intelligence_improvement_claim"}
+
+def fixture_manifest() -> dict[str, Any]:
+    """Immutable serializable CAL-01 source cases, distinct from analysis."""
+    cases: list[dict[str, Any]] = []
+    for case_id in ("F01", "F02", "F03", "F04", "F05", "F06", "F07", "F08"):
+        rows = gold_evidence() if case_id == "F01" else _tampered_case(case_id)
+        cases.append({"case_id": case_id, "raw_rows_sha256": digest(rows),
+                      "raw_rows": rows})
+    return {"schema_version": "metro-fixtures/0.1", "experiment_id": "METRO-0001",
+            "source_kind": "synthetic-only", "cases": cases}
