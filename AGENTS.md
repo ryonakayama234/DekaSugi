@@ -240,3 +240,10 @@
   hidden third-audit examples. Preserve original raw ZIP in restricted storage
   outside public Git. A repository hash record alone is not a full private-data
   archive; disclose expiration `2027-01-25` and remaining preservation gate.
+
+
+## POLICY-DIAG-001 実装前の研究境界（Issue #52）
+- 本タスクは`packages/exp0003a/pr3.py`のB2/B3固定方策を説明する**設計段階**。専用`packages/policy_diagnostics`は未実装。診断実行・DEV/FINAL再採点・既存方策変更は認めない。
+- P-H1経験冗長性、P-H2特徴衝突、P-H3閾値飽和、P-H4行動効果不感、P-H5選別目的不整合を競合・併存可能な探索的仮説として扱い、識別不能も結果として記録。
+- 実装に進む場合は別のIssue/PRで、source-first freeze検証、B2/B3 Snapshot一致、`choose`との完全一致、private監査例/FINAL128非使用、合成fixtureでの負例試験、計測契約とMermaid/実験runの同時更新、独立レビューとCIを必須とする。
+- DEV64はすでに観測済みなので、本診断をH3の新しい確証・DEV後変更の妥当化には使わない。<https://github.com/ryonakayama234/DekaSugi/issues/52>
