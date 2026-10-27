@@ -511,9 +511,9 @@ double-count phase totals or equate DEV with FINAL confirmation.
 ## POLICY-DIAG-001 — 診断用データ契約（設計案・未実装）
 ```mermaid
 flowchart LR
-  A["B2/B3 ArmSnapshot: hash + observations"] --> V["整合性検査"]
+  A["B2/B3 ArmSnapshot: hash + observations"] --> V["外部caller: source-first凍結・証拠SHA検査"]
   B["採点済みDEV64公開TaskSpec/Decision"] --> V
-  V --> D["特徴量・距離・5NN・gate traceを再構成"]
+  V --> D["helper: snapshot構造検査と特徴量・5NN・gate trace再構成"]
   D --> E["PolicyDiagnosticRecord/0.1"]
   E --> F["根拠・欠測・不確実性つき研究記録"]
   X["private audit / FINAL128"] -.->|"学習器・再生器に渡さない"| D
