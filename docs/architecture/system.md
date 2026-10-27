@@ -427,9 +427,9 @@ evaluator-private records in public Git.
 ## POLICY-DIAG-001 — 独立した方策診断の設計案（未実装）
 ```mermaid
 flowchart TD
-  S["凍結済み B2/B3 PolicySnapshot"] --> G["source-first freeze/hash guard"]
+  S["凍結済み B2/B3 PolicySnapshot"] --> G["外部caller: source-first freeze/hash guard"]
   P["既存DEV64公開記録（採点済み）"] --> G
-  G --> F["features(TaskSpec) + 5NN read-only replay"]
+  G --> F["独立helper: features(TaskSpec) + 5NN read-only replay"]
   F --> T["5NN支持・veto・閾値のtrace"]
   T --> M["差異と識別可能性の診断"]
   M --> R["研究記録（observed / reconstructed / interpretation）"]
