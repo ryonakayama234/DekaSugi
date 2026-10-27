@@ -7,11 +7,12 @@ Never writes task IDs, audit examples or raw trial rows to report.
 from __future__ import annotations
 import argparse
 from collections import Counter, defaultdict
-from hashlib import sha256
+from hashlib import sha1, sha256
 import json
 from pathlib import Path
 from zipfile import ZipFile
 
+FROZEN_JSON_GIT_BLOB = "9b18d9bd4ab44094fae94d9cdcc3f23b4b8ee603"
 DEV_PUBLIC_SHA = "2fa48c841e99a69275c8bd3a5bd78eb2e01d4a3fcc226a6358958bf5cc053134"
 PR3_PUBLIC_SHA = "da34216419bab7a95bf93d9b6d5805cebf900a9c662efc91a77b4aa8536e621e"
 FREEZE_SHA = "1e0f6daf1cb80262c187c60a3e0a4d2e76dafea911f0633feed3c40f93db8f44"
@@ -45,7 +46,11 @@ def _read_verified_member(path: Path, name: str, checksum: str) -> dict:
 def load_verified(original_dev_zip: Path, train_dream_zip: Path,
                   frozen_json: Path) -> tuple[dict, dict, dict]:
     # Source-first: load pinned declared freeze BEFORE accepting evidence.
-    freeze = json.loads(frozen_json.read_text(encoding="utf-8"))
+    frozen_bytes = frozen_json.read_bytes()
+    blob = b"blob " + str(len(frozen_bytes)).encode("ascii") + b"\\0" + frozen_bytes
+    if sha1(blob).hexdigest() != FROZEN_JSON_GIT_BLOB:
+        raise ValueError("Frozen JSON Git blob differs from pinned immutable source")
+    freeze = json.loads(frozen_bytes)
     if (freeze.get("freeze_payload_sha256") != FREEZE_SHA
             or freeze.get("holdout_scoring_permitted") is not False
             or freeze.get("split_data", {}).get("pr3_source_manifest_sha256") != PR3_SOURCE_SHA
