@@ -519,3 +519,6 @@ flowchart LR
   X["private audit / FINAL128"] -.->|"学習器・再生器に渡さない"| D
 ```
 想定レコード：`schema_version, task_id, source_refs{freeze,snapshot,dev_public_sha}, policy_reconstruction{B2,B3}, comparison{neighbor_overlap, action_disagrees, archived_primitive_difference}, classification{mechanism_labels,status,alternatives,evidence_refs}`。全フィールドに観測/再構成/探索的解釈・欠測区分を与え、privateデータは公開リポジトリに書かない。判定再生は`choose`の近傍距離昇順・公開task_id同点処理・5近傍全体の支持票と費用・順次veto/閾値を厳密に維持する。診断は新規採点を実行しない。[Issue #52](https://github.com/ryonakayama234/DekaSugi/issues/52)。
+
+## POLICY-DIAG-001 implementation contract (not a new Evaluator)
+`packages/policy_diagnostics` implements `snapshot_profile(snapshot)`, `dream_overlap(B2,B3)`, `replay(public_task,snapshot)`, and `compare_public_tasks(archived_public_tasks,B2,B3,optional_archived_rows)`. `replay` asserts exact `choose()` parity, with the ordered five neighbors, exact gate precedence and no synthesis. Data is labeled `not_observed` for absent archived costs. Caller must perform an independent pinned-source/freeze and archived-evidence integrity check before treating its outputs as authenticated research evidence; the module alone is not a complete raw-artifact provenance gateway.
