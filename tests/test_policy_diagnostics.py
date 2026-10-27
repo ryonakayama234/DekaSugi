@@ -88,76 +88,60 @@ class PolicyDiagnosticTests(unittest.TestCase):
                 compare_public_tasks((task,),left,right)
 
     def test_all_sequential_gates_and_exact_boundaries(self):
-        """Synthetic 5-NN fixtures exercise every frozen branch, not DEV/FINAL."""
+        """Force each frozen gate with valid synthetic 8D feature vectors."""
         from packages.kernel import features
+        from dataclasses import replace as r
         task=self.tasks[0].task
         base=features(task)
         a=self.snapshot("B2")
-        from dataclasses import replace as r
-        def check(label,reason, action, near_count=5, votes=5, savings=2, veto=False):
+        inds=sorted(range(len(a.observations)),key=lambda i:a.observations[i].task_id)[:5]
+
+        def vector_at_distance(distance):
+            # Every coordinate remains in its validated range; one unit step
+            # in dimension 3 gives mean-L1 distance 0.125. A small step of
+            # 0.18 in 8D requires changing >=2 features.
+            # Normalize within [0,1] in coordinates 0/1, [-1,1] at 2.
+            vec=list(base)
+            remain=8*distance
+            for i in range(8):
+                lo=-1.0 if i==2 else 0.0
+                hi=1.0
+                room=(hi-vec[i]) if (hi-vec[i]) >= (vec[i]-lo) else (vec[i]-lo)
+                step=min(room, remain)
+                sign=1 if hi-vec[i]>=vec[i]-lo else -1
+                vec[i]+=sign*step
+                remain-=step
+            if remain>1e-9:
+                raise AssertionError("Synthetic fixture distance unavailable")
+            return tuple(vec)
+
+        def build(nclose=5, votes=5, saving=2, veto=False, distance=.6):
             rows=list(a.observations)
-            # strict monotonic distances; nearest five are controlled TRAIN observations
-            for i in range(len(rows)):
-                if i<5:
-                    # same vector exactly at distance 0 to preserve deterministic tie order
-                    vector=base if i<near_count else tuple(x+1 for x in base)
-                    rows[i]=r(rows[i],vector=vector,prefer_on=i<votes,
-                              off_calls=10,on_calls=10-savings,
-                              on_audit_invalid=(veto and i==0))
-                else:
-                    rows[i]=r(rows[i],vector=tuple(x+2 for x in base))
-            # Five-neighbor ordering controlled by opaque task IDs
-            rows.sort(key=lambda o: (sum(abs(x-y) for x,y in zip(base,o.vector))/8,o.task_id))
-            preferred=rows[:5]
-            # Make the five nearest values exact, in sorted rank, and distant others
-            for i,o in enumerate(preferred):
-                if i<near_count:
-                    preferred[i]=r(o,vector=base,prefer_on=i<votes,
-                                   off_calls=10,on_calls=10-savings,
-                                   off_correct=True,on_audit_invalid=veto and i==0)
-                else:
-                    preferred[i]=r(o,vector=tuple(x+1 for x in base),
-                                   prefer_on=i<votes,off_calls=10,on_calls=10-savings,
-                                   off_correct=True,on_audit_invalid=veto and i==0)
-            remaining=rows[5:]
-            # Ensure only our five are nearest even with large distances
-            remaining=[r(o,vector=tuple(x+3 for x in base)) for o in remaining]
-            custom=r(a,observations=tuple(preferred+remaining),
-                wake_episode_ids=tuple("wake:"+o.task_id for o in preferred+remaining[:155]),
-                ordered_selected_task_ids=tuple(o.task_id for o in remaining[155:]),
-                dream_case_ids=tuple("b2:"+x for x in a.ordered_selected_pool_ids))
-            # Preserve TRAIN/DREAM positions; checked below via snapshot.validate.
-            return custom
-        # Fully controlled synthetic construction needs preserve train positions and
-        # deterministic IDs: selecting five by lowest known IDs among all records.
-        def build(nclose=5, n_on=5, saving=2, veto=False, far=1.0):
-            rows=list(a.observations)
-            inds=sorted(range(len(rows)),key=lambda i:rows[i].task_id)[:5]
-            for j,o in enumerate(rows):
-                if j in inds:
-                    rank=inds.index(j)
-                    vec=base if rank<nclose else tuple(x+far for x in base)
-                    rows[j]=r(o,vector=vec,prefer_on=rank<n_on,
+            for i,o in enumerate(rows):
+                if i in inds:
+                    rank=inds.index(i)
+                    vec=base if rank<nclose else vector_at_distance(distance)
+                    rows[i]=r(o,vector=vec,prefer_on=rank<votes,
                               off_calls=10,on_calls=10-saving,
                               off_correct=True,on_audit_invalid=veto and rank==0)
                 else:
-                    rows[j]=r(o,vector=tuple(x+3 for x in base))
+                    rows[i]=r(o,vector=vector_at_distance(0.85))
             return r(a,observations=tuple(rows))
+
         cases=[
-            ("on_exact_saving",build(),"cost_supported","ON"),
-            ("not_enough_near",build(nclose=2),"insufficient_support","OFF"),
+            ("on_exact_saving",build(), "cost_supported","ON"),
+            ("insufficient_near",build(nclose=2), "insufficient_support","OFF"),
             ("veto_priority",build(nclose=2,veto=True),"insufficient_support","OFF"),
-            ("veto_gate",build(veto=True),"audit_safety_veto","OFF"),
-            ("votes",build(n_on=3),"insufficient_on_votes","OFF"),
+            ("veto",build(veto=True),"audit_safety_veto","OFF"),
+            ("votes",build(votes=3),"insufficient_on_votes","OFF"),
             ("saving",build(saving=1),"insufficient_call_saving","OFF"),
-            ("close_equal_boundary",build(nclose=3,far=.18),"cost_supported","ON"),
-            ("close_just_outside",build(nclose=2,far=.18000001),"insufficient_support","OFF"),
+            ("near_boundary",build(nclose=3,distance=.18),"cost_supported","ON"),
+            ("outside_boundary",build(nclose=2,distance=.18001),"insufficient_support","OFF"),
         ]
-        for label, snap, reason, action in cases:
-            with self.subTest(label=label):
-                outcome=replay(task,snap)
-                self.assertEqual(outcome["reason"],reason)
-                self.assertEqual(outcome["action"],action)
+        for name,snap,reason,action in cases:
+            with self.subTest(name=name):
+                result=replay(task,snap)
+                self.assertEqual((result["reason"],result["action"]),(reason,action))
 
 if __name__ == "__main__":
     unittest.main()
