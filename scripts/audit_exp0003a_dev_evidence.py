@@ -161,8 +161,35 @@ def audit(public, private, freeze, expected_sha):
         "bootstrap_seed": 260303, "bootstrap_rounds": 1000,
     }
     summary = public["summary"]
-    require(summary["task_count"] == 64 and
-            summary["arm_totals"] == totals, "Arm totals mismatch")
+    require(summary["task_count"] == 64, "Summary task count mismatch")
+    require(set(summary["arm_totals"]) == set(ARMS),
+            "Missing/extra arm totals")
+    # The scorer used CPython 3.12 sum(generator), with compensated float
+    # summation. The independent auditor used +=, which can differ at the
+    # binary64 last bit even when the *raw* 256 trial timings are identical.
+    # Only CPU/wall observations permit rounding tolerance. All integer
+    # counts, hashes, metadata and boolean outcomes remain exact.
+    cpu_wall_atol_ms = 1e-10
+    cpu_wall_rtol = 1e-12
+    largest_rounding_difference_ms = 0.0
+    for arm in ARMS:
+        observed = summary["arm_totals"][arm]
+        require(set(observed) == set(COUNT_FIELDS),
+                "Arm totals field mismatch")
+        for field in COUNT_FIELDS:
+            claimed, rebuilt = observed[field], totals[arm][field]
+            if field in CLOCKS:
+                require(type(claimed) in (int, float) and
+                        math.isfinite(claimed) and claimed >= 0 and
+                        math.isclose(claimed, rebuilt,
+                                     rel_tol=cpu_wall_rtol,
+                                     abs_tol=cpu_wall_atol_ms),
+                        "Arm CPU/wall total exceeds float tolerance")
+                largest_rounding_difference_ms = max(
+                    largest_rounding_difference_ms, abs(claimed - rebuilt))
+            else:
+                require(type(claimed) is int and claimed == rebuilt,
+                        "Arm integer/verdict totals mismatch")
     require(summary["paired_B2_minus_B3"] == paired, "Paired delta mismatch")
     require(summary["family_summary"] == families, "Family summary mismatch")
     require(summary["ood_false_on_counts"] == ood, "OOD counts mismatch")
@@ -182,6 +209,12 @@ def audit(public, private, freeze, expected_sha):
         "dev_dataset_sha256": sealed, "arm_totals": totals,
         "paired_B2_minus_B3": paired, "family_summary": families,
         "ood_false_on_counts": ood, "failure_examples": sample_failures,
+        "audit_cpu_wall_comparison": {
+            "relative_tolerance": cpu_wall_rtol,
+            "absolute_tolerance_ms": cpu_wall_atol_ms,
+            "largest_observed_abs_difference_ms": largest_rounding_difference_ms,
+            "integer_and_hash_fields_compared_exactly": True,
+        },
         "interpretation": "DEV engineering only; FINAL sealed; no retuning.",
     }
 

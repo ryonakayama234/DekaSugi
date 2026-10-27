@@ -492,3 +492,17 @@ double-count phase totals or equate DEV with FINAL confirmation.
   into SHA256SUMS even if scoring, preflight or independent audit fails.
 - New negative and positive synthetic evidence tests run in PR CI. No DEV/FINAL
   generation/scoring may be performed before reviewed main activation.
+
+## EXP-0003A DEV64 immutable original vs audited derived report (Issue #48)
+- Original source SHA `26eaf3b4c4717968d68eb7f383b126b23b2062c8`;
+  public JSON SHA256 `2fa48c841e99a69275c8bd3a5bd78eb2e01d4a3fcc226a6358958bf5cc053134`;
+  evaluator-private raw SHA256 `490fbb3da156cc70e3525d6c67307b4b4e06bb725703e0b39543546275b87653`.
+- Original scorer's `sum(...)` float accumulator differs from independent
+  `+=` at binary64 roundoff. CPU/wall-only totals compare with
+  `math.isclose(rtol=1e-12, atol=1e-10 ms)`, reject larger drift. Integer,
+  outcome, per-op meter, AST/program, TaskSpec, private audit refs and SHA
+  remain strict equality. Derived audit states max accepted difference.
+- Audit-only CI validates original bytes before inspecting records. The public
+  research ledger preserves hashes, source, metrics and provenance; **private
+  manifest raw records must not enter the public Git repository**. Raw
+  Artifact retention is 90 days; retaining its SHA does not preserve its bytes.

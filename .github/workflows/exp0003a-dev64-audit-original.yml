@@ -1,0 +1,121 @@
+name: EXP-0003A DEV64 audit original bytes ONLY (no scoring)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/exp0003a-dev64-audit-original.yml
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  audit-original:
+    # This workflow has NO DEV/FINAL scoring or generator invocation.
+    # Re-running the original scoring job is forbidden, including on failures.
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      github.run_attempt == 1 &&
+      startsWith(github.event.head_commit.message, 'EXP0003A-DEV64-AUDIT-ORIGINAL-ONLY')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout reviewed audit implementation (NOT the scored code)
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Prepare Python for independent stdlib audit
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download only exact original scored artifact from run 40518246537
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: "12739684056"
+          run-id: "40518246537"
+          github-token: ${{ github.token }}
+          path: .run/EXP-0003A-DEV64-original
+      - name: Fail closed on original byte SHA and source/run identity
+        run: |
+          set -euo pipefail
+          mkdir -p .run/EXP-0003A-DEV64-audit
+          (
+            cd .run/EXP-0003A-DEV64-original
+            sha256sum --check SHA256SUMS
+            echo '2fa48c841e99a69275c8bd3a5bd78eb2e01d4a3fcc226a6358958bf5cc053134  public.json' | sha256sum --check -
+            echo '490fbb3da156cc70e3525d6c67307b4b4e06bb725703e0b39543546275b87653  public.evaluator-private.json' | sha256sum --check -
+            echo 'fc8c05e1fe4333ba8fa1aac59db721a1c70886bc1db1750fa914e33d897841a5  attempt.json' | sha256sum --check -
+          )
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('.run/EXP-0003A-DEV64-original/attempt.json')
+          a = json.loads(p.read_bytes())
+          assert a['run_id'] == '40518246537'
+          assert str(a['run_attempt']) == '1'
+          assert a['source_sha'] == '26eaf3b4c4717968d68eb7f383b126b23b2062c8'
+          assert a['FINAL128'] == 'not_run'
+          assert a['event'] == 'push' and a['ref'] == 'refs/heads/main'
+          print('EXACT_ORIGINAL_5_FILE_BYTE_SHA256_AND_SOURCE_RUN_ID=PASS')
+          PY
+      - name: Synthetic-only auditor regression tests (no DEV/FINAL scoring)
+        run: python -m unittest discover -s tests -p 'test_exp0003a_dev_independent_audit.py' -v
+      - name: Audit original saved 64x4 observations read-only
+        run: |
+          python scripts/audit_exp0003a_dev_evidence.py \
+            --public .run/EXP-0003A-DEV64-original/public.json \
+            --private .run/EXP-0003A-DEV64-original/public.evaluator-private.json \
+            --attempt .run/EXP-0003A-DEV64-original/attempt.json \
+            --freeze experiments/EXP-0003A/freeze-v1.json \
+            --source-sha 26eaf3b4c4717968d68eb7f383b126b23b2062c8 \
+            --output .run/EXP-0003A-DEV64-audit/independent-audit.json
+      - name: Public summary and original provenance, never export hidden source records
+        run: |
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path('.run/EXP-0003A-DEV64-audit')
+          data = (root / 'independent-audit.json').read_bytes()
+          audited = json.loads(data)
+          assert audited['status'] == 'pass' and audited['arm_trial_count'] == 256
+          public = {
+              'status': 'audit_only_pass',
+              'original_scored_run_id': '40518246537',
+              'original_scored_run_conclusion': 'failure_in_independent_audit',
+              'original_evidence_artifact_id': '12739684056',
+              'original_source_sha': '26eaf3b4c4717968d68eb7f383b126b23b2062c8',
+              'original_public_json_sha256': audited['public_json_sha256'],
+              'original_private_json_sha256': audited['private_json_sha256'],
+              'independent_audit_sha256': hashlib.sha256(data).hexdigest(),
+              'audit_source_sha': os.environ['GITHUB_SHA'],
+              'arm_totals': audited['arm_totals'],
+              'paired_B2_minus_B3': audited['paired_B2_minus_B3'],
+              'ood_false_on_counts': audited['ood_false_on_counts'],
+              'family_summary': audited['family_summary'],
+              'audit_cpu_wall_comparison': audited['audit_cpu_wall_comparison'],
+              'FINAL128': 'not_run',
+              'H3': 'unconfirmed; no significant or confirmatory claim',
+              'raw_private_json_committed': False,
+          }
+          with (root / 'summary-public.json').open('x', encoding='utf-8') as f:
+              json.dump(public, f, indent=2, ensure_ascii=False, sort_keys=True)
+              f.write('\n')
+          print('AUDIT_ONLY_PASS; RAW_PRIVATE_NOT_RE-UPLOADED')
+          print('INDEPENDENT_AUDIT_SHA256=' + public['independent_audit_sha256'])
+          PY
+      - name: Hash corrected audit evidence even on failure
+        if: always()
+        run: |
+          mkdir -p .run/EXP-0003A-DEV64-audit
+          (cd .run/EXP-0003A-DEV64-audit && find . -maxdepth 1 -name '*.json' -type f -print0 | sort -z | xargs -0 -r sha256sum > SHA256SUMS)
+          cat .run/EXP-0003A-DEV64-audit/SHA256SUMS
+      - name: Upload audit-only derived evidence (never private raw cases)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: EXP-0003A-DEV64-AUDIT-ORIGINAL-${{ github.run_id }}
+          path: .run/EXP-0003A-DEV64-audit/
+          retention-days: 90
+          if-no-files-found: error

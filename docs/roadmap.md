@@ -99,3 +99,12 @@ distinct explicit approval. [spec](specs/EXP-0003A-DEV-EVALUATOR.md).
   audit and costs. Mark failures/inconclusive rather than rerun to optimize.
 - Research step concludes only after scored main run + original hashes +
   independent derived metrics are recorded. No inference about FINAL128.
+
+## EXP-0003A DEV64 measured outcome and audit-only recovery (Issue #48)
+- DEV64 already scored once on main `26eaf3b4`; original job auditor failed
+  exact binary64 clock comparison after all 256 trials. Do not rescore DEV.
+- Audit-only review/CI, immutable original SHA prechecks and a distinct derived
+  report remain before calling full evidence certified. Preserve public
+  metrics in Git and private raw originals in restricted durable storage.
+- B3−B2 DEV calls/accuracy/candidates are zero; this is not H3 confirmation.
+  FINAL128 remains sealed; no method retuning from DEV.

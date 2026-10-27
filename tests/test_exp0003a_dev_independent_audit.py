@@ -142,3 +142,24 @@ class IndependentAuditTests(TestCase):
         result = audit(pub, prv, freeze, "a" * 40)
         self.assertEqual(result["status"], "pass")
         self.assertEqual(result["arm_trial_count"], 256)
+        self.assertTrue(result["audit_cpu_wall_comparison"]
+                        ["integer_and_hash_fields_compared_exactly"])
+
+        # Last-bit binary64 scorer/auditor differences must be tolerated,
+        # but only for CPU/wall totals, never integer counts or SHA.
+        pub["summary"]["arm_totals"]["B1"]["policy_inference_cpu_ms"] = 5e-11
+        tolerated = audit(pub, prv, freeze, "a" * 40)
+        self.assertAlmostEqual(
+            tolerated["audit_cpu_wall_comparison"]
+            ["largest_observed_abs_difference_ms"], 5e-11)
+
+        # A substantive CPU drift must still fail closed.
+        pub["summary"]["arm_totals"]["B1"]["policy_inference_cpu_ms"] = 0.001
+        with self.assertRaisesRegex(ValueError, "Arm CPU/wall total exceeds"):
+            audit(pub, prv, freeze, "a" * 40)
+
+        # Numeric tolerance is never applied to primitive-call counts.
+        pub["summary"]["arm_totals"]["B1"]["policy_inference_cpu_ms"] = 0.0
+        pub["summary"]["arm_totals"]["B2"]["primitive_invocations"] += 1
+        with self.assertRaisesRegex(ValueError, "Arm integer/verdict totals"):
+            audit(pub, prv, freeze, "a" * 40)
