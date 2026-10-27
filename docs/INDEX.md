@@ -106,3 +106,9 @@ tags: navigation, architecture, research, experiments
 - Separate `.github/workflows/exp0003a-dev64-audit-original.yml` downloads
   immutable original Artifact by fixed run/ID; it cannot score DEV or FINAL.
   Original workflow failure is never overwritten.
+
+
+## POLICY-DIAG-001 — 診断計画（design-only, not_run）
+- [Issue #52](https://github.com/ryonakayama234/DekaSugi/issues/52) — EXP-0003A B2/B3の凍結方策・保存済みDEV64公開証拠の読み取り専用メカニズム診断。
+- 主要実装観測対象：`packages/exp0003a/pr3.py` `ArmSnapshot`/`choose`。提案モジュール：`packages/policy_diagnostics`（**未実装**）。
+- 実装着手前に測定対象・仮説P-H1〜P-H5・データ出典・欠測規則・合否条件を固定する。既存EXP-0003A v1/FINAL128は不変更。
