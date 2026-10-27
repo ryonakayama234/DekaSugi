@@ -14,7 +14,7 @@ tags: metrology, preregistration, calibration, evidence, integrity
 - M4 comparability: same task pairs、source/version、limit、primitive semantics、audit条件、コストscopeを確認。異なる比較はnon_comparableで効果差を主張しない。
 
 ## Dataset / inputs（新しい評価問題を生成しない）
-- 決定的な人工fixture: (F01) valid 3 tasks × 2 arms、(F02) shuffled order、(F03) duplicate id、(F04) missing audit、(F05) changed source/hash、(F06) mismatched budget/unit、(F07) split leak marker、(F08) negative/nonfinite time。各値はfixtureに固定しexpected metricsを記録する。
+- 決定的な人工fixture: (F01) valid 3 tasks × 2 arms、(F02) shuffled order、(F03) duplicate id、(F04) missing audit、(F05) changed source/hash、(F06) individually valid, differently scoped metrics (OFF primitive_invocations in calls vs ON cpu_process_ns in nanoseconds) or mismatched budget, requiring non_comparable before pairing、(F07) split leak marker、(F08) negative/nonfinite time。各値はfixtureに固定しexpected metricsを記録する。
 - 追加工学的診断として、取得が許されるTRAIN-only evidence artifactのみを使用してよい。その場合exact artifact hash/CLI/source shaと監査アクセス範囲をrunに記録し、artifact不達の場合fixture-onlyをinconclusive for external-adapterとする。
 - 使用済みEXP-0002B FINAL112は後方互換性の再集計のみ許可しCAL-01の新しい学習能力の肯定材料にしない。EXP-0003A DEV64/FINAL128は生成・採点・閲覧を禁止。
 
