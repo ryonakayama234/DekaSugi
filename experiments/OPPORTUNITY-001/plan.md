@@ -104,3 +104,6 @@ The pure fixture reducer accepts only `opportunity-fixture-v1` / SYNTHETIC / fx 
 
 ## PR5 independent pretrial evidence identification
 A second **stdlib-only** implementation of PILOT-V1 derives the same 64 public TaskSpec hashes without importing `evaluation.opportunity_pilot`, and calculates digest-only commitments for independent third examples. Prior expected public digest `bc950ef3187fc34851eef5cff6df194ce27186b3a03b5399f2209e9905f04a85` is hard-coded and mismatch stops. This is not a scored pilot or future real-evidence adapter; raw third audits are still evaluator-only and need independent custody arrangements before scoring.
+
+## PR6 source hash/identity freeze; not execution authorization
+Following exact-head PR63 review and CI identity evidence, `pilot-generator-lock-v1.json` pins 9 source Git blobs, a fixed main origin, Python patch version, public TRAIN64 manifest SHA `bc950ef3187fc34851eef5cff6df194ce27186b3a03b5399f2209e9905f04a85`, independent third-audit commitment `fd4a1afd1eae84026a526d82a75cec13107dfd394f86d166c7efca4763a52eaa`, and original EXP-0003A top skill/B1/B2/B3 snapshot SHA. A read-only verifier checks them before importing any TaskSpec generator. This source freeze explicitly refuses scored trial authorization. All new measured outcomes: **0**. Future real adapter/chronology/retention/activation remain distinct gates.

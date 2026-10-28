@@ -100,3 +100,10 @@ Pure reducer; no generator, scorer or archive dependency. Exact synthetic schema
 | `evaluation.opportunity_pilot` | `seed_for`, `generate_train_pilot`, `public_manifest`, `canonical_public_digest`, `public_preflight` | implemented **TRAIN64 public-hash-only**, no scoring, policy, or real evidence adapter |
 
 The in-memory evaluator-only TrainCase includes a separate third audit. Public manifest/CLI excludes private audit/family/seeds/source ID. New science is `not_run`; source/manifest lock and activation are separate. [Frozen method](../experiments/OPPORTUNITY-001/pilot-v1.md) / [tests](../tests/test_opportunity_pilot.py).
+
+## OPPORTUNITY-001 PR6 — source lock verifier (never scorer)
+| Module | Contract | State |
+|---|---|---|
+| `scripts.verify_opportunity_generator_lock` | verify frozen original Git blobs + historic B1/B2/B3/skill and recomputed public/audit commitments | source-only `not_scoring_authorized` |
+
+This verifier is a standalone read-only process and does not authorize a new TRAIN64 trial. Original data retention and real evidence ingestion remain future independently reviewed components. [Lock](../experiments/OPPORTUNITY-001/pilot-generator-lock-v1.json) / [tests](../tests/test_opportunity_generator_lock.py).
