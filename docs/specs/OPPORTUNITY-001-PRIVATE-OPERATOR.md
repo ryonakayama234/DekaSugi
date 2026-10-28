@@ -1,5 +1,11 @@
 # OPPORTUNITY-001 — WSL2 private original capture and encrypted Drive backup (NO SCORING)
 
+id: OPPORTUNITY-001-PRIVATE-OPERATOR-V1
+status: DRAFT_NOT_ACTIVATED_NO_PRIVATE_CAPTURE
+updated: 2026-10-29
+tags: opportunity, private-custody, operator-guide, wsl2, encrypted-backup, no-scoring
+
+
 Status: DRAFT. **Do not execute until PR #75 has independent exact-head review, green CI and is merged into main.** No genuine new TRAIN64 private originals have been captured yet. Never upload an old DEV64 ZIP in their place. This runbook does NOT grant scoring authority.
 
 ## Prerequisites
