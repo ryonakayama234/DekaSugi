@@ -169,14 +169,15 @@ class PrivateOriginCaptureSyntheticTests(unittest.TestCase):
 
     def test_direct_script_execution_can_find_scripts_without_running_generator(self):
         # No source generation: execute only module definitions in a clean
-        # subprocess and test import resolution, never main() or any scorer.
+        # isolated subprocess (-I excludes cwd from sys.path), checking import
+        # resolution without running main() or a real source generator.
         probe = (
             "import runpy,importlib.util;"
             "runpy.run_path('scripts/capture_opportunity_private_original.py',"
             "run_name='synthetic_import_probe');"
             "assert importlib.util.find_spec('scripts.verify_opportunity_legacy_sources')"
         )
-        result=subprocess.run([sys.executable,"-c",probe],cwd=m.ROOT,
+        result=subprocess.run([sys.executable,"-I","-c",probe],cwd=m.ROOT,
                               capture_output=True,text=True,timeout=10)
         self.assertEqual(result.returncode,0)
         self.assertEqual(result.stdout,"")
