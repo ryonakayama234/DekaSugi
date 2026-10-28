@@ -554,3 +554,18 @@ flowchart LR
   A -.->|"requires new separately reviewed gate"| F["Future real evidence and one-shot activation"]
 ```
 Original source bytes are compared before importing project generator. The freeze is not original experimental outcome evidence and has NO scored-activation permission. [Lock](../../experiments/OPPORTUNITY-001/pilot-generator-lock-v1.json).
+
+
+## OPPORTUNITY-001 PR8 — audited tuple normalization vs unimplemented authority gates
+```mermaid
+flowchart TD
+  T["Fresh public TaskSpec + frozen 4/100 budget"] --> F["Separate source/choice chronology gate (future)"]
+  C["PR7 frozen B1/B2/B3 choices"] --> F
+  F -.-> S["Independent OFF/ON trial and private audit (future, NOT activated)"]
+  P["Restricted original private audit custody (NOT verified)"] -.-> S
+  S -.-> N["PR8 pure audited tuple normalizer (synthetic tests only)"]
+  N --> R["Redacted classifications + correct-first regret"]
+  R -.-> I["Separate immutable evidence/recount and exploratory report"]
+  P -.->| "never expose" | L["Kernel or public raw artifact"]
+```
+The PR8 module validates *internal data shape*, not actual source authenticity, decision timestamp, independent audit correctness or original private evidence custody. It does not import/execute a solver. New experiment outcome count is zero. [Real adapter spec](../specs/OPPORTUNITY-001-REAL-ADAPTER.md).
