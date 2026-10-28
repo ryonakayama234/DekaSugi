@@ -166,6 +166,15 @@ Expected source hash `bc950ef3187fc34851eef5cff6df194ce27186b3a03b5399f2209e9905
 
 実研究アダプタ・policy before-trial timestamp・結果原本保全は別途。旧DEV/FINAL未使用。
 
+## OPPORTUNITY-001 PR7 — 採点前のB1/B2/B3方策判断
+| ID | テーマ | 状態 | 文書 |
+|---|---|---|---|
+| OPPORTUNITY-001-PRETRIAL-V1 | 新規TRAIN64 × 固定B1/B2/B3の事前選択を公開TaskSpecのみから計算し、GitHub CIに独立成果物を保存 | engineering pretrial only; paired `not_run` | [module](../scripts/prepare_opportunity_decisions.py) / [tests](../tests/test_opportunity_pretrial.py) / [workflow](../.github/workflows/opportunity-pretrial.yml) / [lock](../experiments/OPPORTUNITY-001/pilot-generator-lock-v1.json) |
+
+実測の前に別の不変commitで公開decision payload SHAを封印する。第三監査・探索結果は本成果物に入れない。
+
+### PR7 no-old-holdout-generation P1 remedial source
+The initial PR7 pretrial code unintentionally invoked historical `verify_frozen` which regenerates old DEV/FINAL (not scoring). Its initial SHA is **diagnostic only**. The corrected [stdlib 14-source verifier](../scripts/verify_opportunity_legacy_sources.py) runs before project import, then direct old TRAIN/DREAM-only policy restoration; [regression tests](../tests/test_opportunity_pretrial.py) mock old withheld generators to fail if called.
 
 ## OPPORTUNITY-001 PR8 — non-activated canonical tuple normalizer
 - [Adapter contract](specs/OPPORTUNITY-001-REAL-ADAPTER.md) / [pure module](../packages/evaluation/opportunity_actual.py) / [synthetic adversarial tests](../tests/test_opportunity_actual.py) / [run ledger](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).

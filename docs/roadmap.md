@@ -153,6 +153,11 @@ Independent stdlib method regeneration and public/audit SHA-only commitment prec
 ## OPPORTUNITY-001 PR6 — source/policy freeze achieved; real scoring still blocked
 Before first paired TRAIN64 trial, source-main commit/9 Git blobs/independent public and third-audit commitments/Python and frozen B1/B2/B3 snapshot+skill hashes are preserved in [pilot-generator-lock-v1.json](../experiments/OPPORTUNITY-001/pilot-generator-lock-v1.json). [Verifier](../scripts/verify_opportunity_generator_lock.py) validates originals before importing a generator. Both old and fresh evaluation permission flags remain **false**. Next work: actual-evidence adapter + external/private evidence preservation decision + reviewed before-trial seal + independent once-only activation. No new scored experiment yet.
 
+## OPPORTUNITY-001 PR7 — pretrial decision evidence before scorer
+Compute and capture 64×3 B1/B2/B3 choices using only new public TaskSpec and pre-frozen old TRAIN/DREAM snapshots. Public artifact from [pretrial CI](../.github/workflows/opportunity-pretrial.yml) is separately hashed; no private third audit or solver. Then separately review and pin public decision digest before constructing activation. [Script](../scripts/prepare_opportunity_decisions.py) / [runs](../experiments/OPPORTUNITY-001/runs/README.md).
+
+### PR7 P1 method-boundary correction
+After discovering the old `load_frozen_assets` traversed `freeze.verify_frozen` and regenerated DEV/FINAL references, add a 14-blob stdlib-only pre-import validation gate and a new TRAIN/DREAM-only snapshot restore path. Reject the initial public choice digest as authoritative until a new source-corrected CI/pretrial review. No old holdout scoring or new paired trial ran.
 
 ## OPPORTUNITY-001 PR8: canonical two-arm tuple normalizer (draft, no scoring)
 - Implemented only the pure synthetic-test normalizer `evaluation.opportunity_actual` with hard fail on private field injection, unsafe trace, inconsistent search/AST/meter, mismatched public task and 4/100 budgets; documentation and run index synchronize.

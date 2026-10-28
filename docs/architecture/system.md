@@ -555,6 +555,30 @@ flowchart LR
 ```
 Original source bytes are compared before importing project generator. The freeze is not original experimental outcome evidence and has NO scored-activation permission. [Lock](../../experiments/OPPORTUNITY-001/pilot-generator-lock-v1.json).
 
+## OPPORTUNITY-001 PR7 implemented policy-before-search stage
+```mermaid
+flowchart LR
+  L["Verified generator/source lock"] --> P["Fresh TRAIN64 public TaskSpec"]
+  F["Historic frozen B1/B2/B3 snapshots"] --> C["pretrial choose: public TaskSpec only"]
+  P --> C
+  C --> S["PUBLIC 64×3 chosen actions/reasons"]
+  S --> H["Deterministic payload SHA + read-only CI artifact"]
+  H -.->|"separate reviewed SHA pin required"| G["Future trial gate (not implemented)"]
+  E["Audit third examples / source family"] -.->|"NEVER provided"| C
+```
+No solver or scorer in the pretrial CLI. CPU/wall timings are separate, not part of SHA. [script](../../scripts/prepare_opportunity_decisions.py).
+
+## PR7 corrected no-old-DEV/FINAL-generation dependency graph
+```mermaid
+flowchart LR
+  F["stdlib-only old freeze/14-source byte gate"] --> G["new 9-source generator/manifest lock gate"]
+  G --> R["Old TRAIN/DREAM ONLY replay, no legacy freeze.verify_frozen"]
+  R --> H["Compare top skill and B1/B2/B3 snapshots/selections with immutable freeze"]
+  H --> D["Choose public fresh TRAIN64 ×3"]
+  D --> A["Public-only decision artifact; no scored paired trial"]
+  X["Old dev/final generator, legacy verify_frozen"] -.->|"forbidden"| R
+```
+The first PR7 implementation wrongly used legacy `load_frozen_assets`, triggering old withheld generation before paired scoring. New design avoids it and records the initial CI SHA as non-authoritative pending review. [Issue #60](https://github.com/ryonakayama234/DekaSugi/issues/60).
 
 ## OPPORTUNITY-001 PR8 — audited tuple normalization vs unimplemented authority gates
 ```mermaid

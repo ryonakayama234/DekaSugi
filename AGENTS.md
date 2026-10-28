@@ -294,6 +294,17 @@
 - This is **source-only**: no actual paired scoring permission, independent result audit, external private raw preservation, or chrono sealing of B1/B2/B3 decisions. Future real adapter and one-shot activation require separate review.
 - Keep pinned source files unchanged; source/method changes require new version/seed and new pretrial lock. Do not change historic EXP-0003A freeze. [Issue #60](https://github.com/ryonakayama234/DekaSugi/issues/60).
 
+## 36. OPPORTUNITY-001 PR7 pretrial public decision sealing (Issue #60)
+- `scripts/prepare_opportunity_decisions.py` must call [source lock verifier](scripts/verify_opportunity_generator_lock.py) FIRST, reconstruct only frozen historical TRAIN/DREAM assets, then pass solely fresh public `TaskSpec` to existing B1/B2/B3 `choose`. It MUST produce exactly 64 × 3 public policy choices, BEFORE any OFF/ON paired trial.
+- Pretrial decisions with task IDs, action and decision reason are **public-only**. The CLI writes `opportunity-pretrial-public-decisions-v1` as create-exclusive; no family, seed, third audit, trial outcomes, or candidate solver result. Policy CPU/wall is measured separately and excluded from stable payload SHA.
+- The dedicated GitHub Action must be read-only, exact Python 3.12.15, and upload only the PUBLIC pretrial choice artifact. A later, independently reviewed immutable commitment must pin its digest **before actual trials**. PR CI must never score the new pilot or original DEV/FINAL.
+- The frozen source lock continues to forbid scoring. Do not interpret a CI pretrial choice hash as empirical opportunity; [Issue #60](https://github.com/ryonakayama234/DekaSugi/issues/60).
+
+### PR7 P1 hardening — old withheld generation prohibited by construction
+- `scripts/verify_opportunity_legacy_sources.py` is stdlib-only. It compares the original immutable EXP-0003A freeze raw blob, canonical payload digest, exactly 14 historical files' blob+raw SHA and the source-manifest digest **before any project import**.
+- The PR7 pretrial chooser MUST NOT call `packages.exp0003a_dev.load_frozen_assets`, `freeze.verify_frozen`, `preflight_record`, `dataset_hashes` or `generate_partition('dev'|'final')`. The historical freeze's full verify path regenerates withheld reference datasets; even without scoring this is forbidden for this new actionability pretrial workflow.
+- Instead call only reviewed `packages.exp0003a.pr3.run_train_dream` AFTER the 14-source byte gate and the 9-source public generator gate, rehydrate validated top skill/B1/B2/B3 snapshots and compare against original frozen policy+selection hashes. Negative tests block legacy DEV/FINAL generators and injected unreviewed legacy dependency bytes.
+- An initial CI run on PR7 head `7d1e74f` had this boundary violation; its decision digest is **diagnostic/unaccepted** until the repaired pathway is independently reviewed and rerun. Record the failure rather than erasing it.
 
 ## 31. OPPORTUNITY-001 PR8 — strict non-activated evidence adapter boundary
 - `packages/evaluation/opportunity_actual.py` is a pure tuple normalizer with synthetic-only tests, NOT a scorer, evaluator provenance attestation, skill promotion or data custody mechanism. No actual fresh TRAIN/DEV/FINAL outcomes are authorized by merging it.

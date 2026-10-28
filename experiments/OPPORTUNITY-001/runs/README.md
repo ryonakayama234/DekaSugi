@@ -44,6 +44,13 @@ Related: [plan](../plan.md) / [spec](../../../docs/specs/OPPORTUNITY-001.md) / [
 - [Source/policy/public manifest lock](../pilot-generator-lock-v1.json) and [read-only verifier](../../../scripts/verify_opportunity_generator_lock.py) bind the exact source bytes and legacy frozen skill/policy identity. This step is **source-only** (both scoring permissions false), not a research effect measurement.
 - Evidence origin: [PR #63](https://github.com/ryonakayama234/DekaSugi/pull/63) latest-reviewed head `3f90466babfef29b42b5fdda69ba7b043da5c66f`; [CI run #40622827537](https://github.com/ryonakayama234/DekaSugi/actions/runs/40622827537) source SHA and independent third audit commitment. New TRAIN/DEV/FINAL scored rows: **0**.
 
+## PR7 policy pretrial public choice artifact (not scored)
+- [Pretrial-only chooser](../../../scripts/prepare_opportunity_decisions.py) / [read-only CI workflow](../../../.github/workflows/opportunity-pretrial.yml) materialize exactly 64×3 B1/B2/B3 decisions before pairing, without private audit, source family or outcomes. A separate main commit will pin resulting public decision manifest SHA before any actual trials.
+- Source freeze [pilot-generator-lock-v1.json](../pilot-generator-lock-v1.json) remains intact and declares actual scoring false. Scientific state `not_run`.
+
+## PR7 initial pretrial boundary error (explicitly retained)
+- Initial PR7 code head `7d1e74f`, CI [run #40649096613](https://github.com/ryonakayama234/DekaSugi/actions/runs/40649096613): public pretrial payload SHA `8a8625ed86e66b27bef8d09a023172d2adbc9ad0d42c155ab7f137097e2dccb2`, paired new TRAIN trials 0, no old holdout scoring. **However it regenerated old DEV/FINAL reference tasks via legacy freeze preflight**, contrary to stricter new protocol. Hence SHA is rejected as an authoritative pretrial seal; do not use it to authorize paired work.
+- Remediate and reexecute pretrial under stdlib legacy source-gate + TRAIN/DREAM-only policy reconstruction and independent exact-head review. All actual new TRAIN paired trials are still 0.
 
 ## PR8 audited-tuple normalizer (draft; no experimental run)
 - Pure `packages/evaluation/opportunity_actual.py` + synthetic adversarial tests; no task execution, no actual paired trial/assessment, no old DEV/FINAL access. New TRAIN=0, DEV=0, FINAL=0.
