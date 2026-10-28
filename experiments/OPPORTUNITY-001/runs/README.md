@@ -35,3 +35,7 @@ Related: [plan](../plan.md) / [spec](../../../docs/specs/OPPORTUNITY-001.md) / [
 ## PR4 source generation / hash-only preflight
 - New `packages/evaluation/opportunity_pilot.py` and `tests/test_opportunity_pilot.py` implement fixed PILOT-V1 generation and public-only SHA preflight. No actual paired trial/measurement; source and manifest freeze pending.
 - After exact-head CI and independent review, preserve preflight hash, source SHA and environment in separate immutable provenance record. Research outcomes remain **not_run**.
+
+## PR5 independent source-only preflight
+- `scripts/audit_opportunity_pilot_public.py` recomputes expected public SHA and commits to third audits **by digest only**, without importing generator/scorer. CI tests and hash-only CLI are the engineering scope; no new paired trials and no raw private original artifact archival claimed.
+- Record observed digest, source Git blob SHA and Python version in a later immutable generator lock only after CI/independent review. Scientific status remains `not_run`.

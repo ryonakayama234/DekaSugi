@@ -151,3 +151,10 @@ Method-only PR3: 旧DEV/FINALを使用せず、新しい課題の実測も未実
 | OPPORTUNITY-PILOT-GEN | 事前登録済み新規TRAIN64のsourceを実装し、公開2例とハッシュのみ出力（第三auditは非公開） | generator implemented; **not scored**; source/manifest lock pending | [module](../packages/evaluation/opportunity_pilot.py) / [tests](../tests/test_opportunity_pilot.py) / [method](../experiments/OPPORTUNITY-001/pilot-v1.md) / [runs](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #60](https://github.com/ryonakayama234/DekaSugi/issues/60) |
 
 CLI: `python -m packages.evaluation.opportunity_pilot --mode hash-only` — public manifest SHA only, no paid trials/old DEV/FINAL. Actual adapter and before-trial chronological source lock remain future gates.
+
+## OPPORTUNITY-001 PR5 — independently recomputed TRAIN64 identity
+| ID | テーマ | 状態 | 文書 |
+|---|---|---|---|
+| OPPORTUNITY-PILOT-AUDIT | project generatorをimportしないstdlib独立実装で公開SHA再計算、第三auditはSHAコミットのみ | source-only verification proposed/in review; no trial | [script](../scripts/audit_opportunity_pilot_public.py) / [tests](../tests/test_opportunity_pilot_independent.py) / [method](../experiments/OPPORTUNITY-001/pilot-v1.md) / [runs](../experiments/OPPORTUNITY-001/runs/README.md) |
+
+Expected source hash `bc950ef3187fc34851eef5cff6df194ce27186b3a03b5399f2209e9905f04a85`; original raw evidence preservation is NOT established by this hash-only auditor.

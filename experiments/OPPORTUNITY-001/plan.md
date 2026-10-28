@@ -101,3 +101,6 @@ The pure fixture reducer accepts only `opportunity-fixture-v1` / SYNTHETIC / fx 
 ## PR4 implementation status (pretrial, no outcomes)
 - The dedicated `opportunity_pilot` source implements PILOT-V1 generation, anonymous public TaskSpec IDs and public manifest SHA; tests may generate TRAIN public inputs without invoking search or auditing. New actual paired trials **0**, old DEV/FINAL untouched.
 - This implementation PR is **not source/manifest freeze**. Following latest-head CI/review/merge, commit a separate pinned source/CLI manifest hash record **before any scoring**. Method edits require new method version/seed namespace, not opportunistic fixes after outcomes.
+
+## PR5 independent pretrial evidence identification
+A second **stdlib-only** implementation of PILOT-V1 derives the same 64 public TaskSpec hashes without importing `evaluation.opportunity_pilot`, and calculates digest-only commitments for independent third examples. Prior expected public digest `bc950ef3187fc34851eef5cff6df194ce27186b3a03b5399f2209e9905f04a85` is hard-coded and mismatch stops. This is not a scored pilot or future real-evidence adapter; raw third audits are still evaluator-only and need independent custody arrangements before scoring.

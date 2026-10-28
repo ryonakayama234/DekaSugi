@@ -146,3 +146,6 @@ Pilot method: [pilot-v1](../experiments/OPPORTUNITY-001/pilot-v1.md). Implementa
 
 ## OPPORTUNITY-001 PR4 — actual pilot implementation path
 The new `evaluation.opportunity_pilot` generator and hash-only preflight are implemented without running actual paired outcomes. Next order: independent code review -> source/manifest SHA lock -> independent real-evidence adapter -> one-shot TRAIN-only activation -> evidence decision. Source generation alone is no claim of opportunity or generalization. [Frozen method](../experiments/OPPORTUNITY-001/pilot-v1.md) / [run ledger](../experiments/OPPORTUNITY-001/runs/README.md).
+
+## OPPORTUNITY-001 PR5 — source identity independent double-check
+Independent stdlib method regeneration and public/audit SHA-only commitment precede a separately reviewed generator source lock and actual outcome adapter. Passing hash equality does not permit any scored TRAIN pilot, and never opens old DEV/FINAL. [Independent source verifier](../scripts/audit_opportunity_pilot_public.py) / [method](../experiments/OPPORTUNITY-001/pilot-v1.md).
