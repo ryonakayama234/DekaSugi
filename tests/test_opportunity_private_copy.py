@@ -94,6 +94,22 @@ class PrivateCopyReceiptTests(unittest.TestCase):
         self.assertNotIn("PRIVATE_FILENAME", err.getvalue())
         self.assertNotIn("/synthetic/", err.getvalue())
 
+    def test_parent_symlink_loop_is_redacted_at_cli(self):
+        with TemporaryDirectory() as tmp:
+            private_loop = Path(tmp)/"PRIVATE_LOOP_DIR"
+            private_loop.symlink_to(private_loop, target_is_directory=True)
+            secondary = Path(tmp)/"other"
+            secondary.write_bytes(b"synthetic")
+            with redirect_stdout(StringIO()) as out, redirect_stderr(StringIO()) as err:
+                rc = m.main(["--primary", str(private_loop/"private-audit.zip"),
+                             "--secondary", str(secondary),
+                             "--expected-sha256", sha256(b"synthetic").hexdigest()])
+            self.assertEqual(rc, 2)
+            self.assertEqual(out.getvalue(), "")
+            self.assertNotIn("PRIVATE_LOOP_DIR", err.getvalue())
+            self.assertNotIn(str(private_loop), err.getvalue())
+            self.assertNotIn("Traceback", err.getvalue())
+
     def test_hash_descriptor_must_match_initially_checked_inode(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)/"repo"; root.mkdir()
