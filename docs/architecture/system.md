@@ -627,3 +627,19 @@ flowchart TD
 **Implementation scope**: [source](../../scripts/verify_opportunity_choice_lock.py), [tests](../../tests/test_opportunity_choice_lock.py), [original member](../../experiments/OPPORTUNITY-001/evidence/pilot-choices-public-v1.json), [lock](../../experiments/OPPORTUNITY-001/pilot-choice-lock-v1.json), [run](../../experiments/OPPORTUNITY-001/runs/20261028-pr9-public-choice-custody.md)。現行ソースを再実行して原本を生成したのではなく、元公式Actions Artifactから**原本をコピー**している。元のbyte hash、canonical JSON hash、固定source / policyは異なる検証レイヤ。
 
 一度限りの取得workflowはPR branchで実行成功（[run #40668908541](https://github.com/ryonakayama234/DekaSugi/actions/runs/40668908541)、source `db3f70b`）。安全性のため、write-enabled branch-onlyのworkflowは取得後にmainの最終treeから退役させ、Git履歴・runへ出典を残す。公開原本の保存と未来の原本性/時系列の検証は、学習性能、非公開原本のcustody、実採点の信頼性を証明しない。新TRAIN64実採点0件。ARCH-002とpreregのC01–C09を参照。
+
+
+## OPPORTUNITY-001 fresh TRAIN64 custody-preparation implementation (2026-10-28; NO scoring)
+```mermaid
+flowchart TD
+  A["Official original public TRAIN64 decisions: 64x3, locked"] --> B["Future separate source-first private third-audit capture"]
+  B --> C["Restricted original archive (future; NOT VERIFIED)"]
+  C -.-> D["Second independently retained restricted original (future)"]
+  C --> E["Read-only two-copy raw SHA checker (synthetic-tested)"]
+  D --> E
+  E --> F["Redacted digest/size only; original equality is NOT custody"]
+  X["Independent remote ACL/version/retention/restore verification (future)"] -.-> Y["Real one-shot scorer gate: BLOCKED"]
+  F -.-> Y
+  C -.->|"never publish"| G["Public repository / ordinary public Actions / Kernel"]
+```
+Only the **read-only byte-equality helper** is implemented here. It never makes or accesses a real new TRAIN64 audit original in CI and cannot close the storage authorization gate. Old DEV64 ZIP is a different historical source. [Data contract](contracts.md) / [custody readiness spec](../specs/OPPORTUNITY-001-PRIVATE-CUSTODY.md) / [Issue #72](https://github.com/ryonakayama234/DekaSugi/issues/72).
