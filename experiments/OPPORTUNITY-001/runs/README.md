@@ -63,3 +63,10 @@ Related: [plan](../plan.md) / [spec](../../../docs/specs/OPPORTUNITY-001.md) / [
 - **主対象: `evaluation / provenance`**。2026-10-28 [origin public custody record](20261028-pr9-public-choice-custody.md) に実際に観測した元公式Actions artifactの出典・原本27360-byte SHA `1d08e6…`・canonical SHA `8a8625…`・固定方策比較結果・retention commitを記録した。
 - [public original](../evidence/pilot-choices-public-v1.json)、[source/retention lock](../pilot-choice-lock-v1.json)、[stdlib verifier](../../../scripts/verify_opportunity_choice_lock.py)、[negative tests](../../../tests/test_opportunity_choice_lock.py)。元Main run `40659741488` / artifact `12803053107`の取得作業は[run #40668908541](https://github.com/ryonakayama234/DekaSugi/actions/runs/40668908541)成功。元memberを取り直し/再生成したものではなく、元のbytesを保存。
 - 原本の公開保管と人工fixture calibrationは**工学証拠**。`public origin verified`と将来の`actual scorer approved`は別状態。学習・paired ON/OFFの新実測0件、独立PR最新head review/CIは本PR統合前の別ゲート。private第三audit元bytesのoff-public restricted custodyは未確認（Issue #66）。
+
+## PR8 audited-tuple normalizer (draft; no experimental run)
+- Pure `packages/evaluation/opportunity_actual.py` + synthetic adversarial tests; no task execution, no actual paired trial/assessment, no old DEV/FINAL access. New TRAIN=0, DEV=0, FINAL=0.
+- Gate checks: strict SHA/redaction, search/program/status coherence, canonical positive `by_op` breakdown and sums, fixed 4/100 budgets, equal public task identity, correctness before cost, missing/unknown not imputed.
+- Real-audit source identity, before-trial decisions and restricted original-private-evidence retention remain independently blocked. PR #65 requires final review; a distinct source-first one-shot scorer and independent recount are future work. [Contract](../../../docs/specs/OPPORTUNITY-001-REAL-ADAPTER.md) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
+
+- PR8 Codex P2 AST hardening: synthetic negatives for noncanonical/private solved AST and expanded node-budget overflow; positive canonical primitive and frozen-macro AST fixtures. No research trial was performed for these tests. Review/CI gate applies to exact PR head.

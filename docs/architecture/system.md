@@ -627,3 +627,17 @@ flowchart TD
 **Implementation scope**: [source](../../scripts/verify_opportunity_choice_lock.py), [tests](../../tests/test_opportunity_choice_lock.py), [original member](../../experiments/OPPORTUNITY-001/evidence/pilot-choices-public-v1.json), [lock](../../experiments/OPPORTUNITY-001/pilot-choice-lock-v1.json), [run](../../experiments/OPPORTUNITY-001/runs/20261028-pr9-public-choice-custody.md)。現行ソースを再実行して原本を生成したのではなく、元公式Actions Artifactから**原本をコピー**している。元のbyte hash、canonical JSON hash、固定source / policyは異なる検証レイヤ。
 
 一度限りの取得workflowはPR branchで実行成功（[run #40668908541](https://github.com/ryonakayama234/DekaSugi/actions/runs/40668908541)、source `db3f70b`）。安全性のため、write-enabled branch-onlyのworkflowは取得後にmainの最終treeから退役させ、Git履歴・runへ出典を残す。公開原本の保存と未来の原本性/時系列の検証は、学習性能、非公開原本のcustody、実採点の信頼性を証明しない。新TRAIN64実採点0件。ARCH-002とpreregのC01–C09を参照。
+
+## OPPORTUNITY-001 PR8 — audited tuple normalization vs unimplemented authority gates
+```mermaid
+flowchart TD
+  T["Fresh public TaskSpec + frozen 4/100 budget"] --> F["Separate source/choice chronology gate (future)"]
+  C["PR7 frozen B1/B2/B3 choices"] --> F
+  F -.-> S["Independent OFF/ON trial and private audit (future, NOT activated)"]
+  P["Restricted original private audit custody (NOT verified)"] -.-> S
+  S -.-> N["PR8 pure audited tuple normalizer (synthetic tests only)"]
+  N --> R["Redacted classifications + correct-first regret"]
+  R -.-> I["Separate immutable evidence/recount and exploratory report"]
+  P -.->| "never expose" | L["Kernel or public raw artifact"]
+```
+The PR8 module validates *internal data shape*, not actual source authenticity, decision timestamp, independent audit correctness or original private evidence custody. It does not import/execute a solver. New experiment outcome count is zero. [Real adapter spec](../specs/OPPORTUNITY-001-REAL-ADAPTER.md).

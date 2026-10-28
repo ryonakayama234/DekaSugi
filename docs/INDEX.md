@@ -136,7 +136,7 @@ tags: navigation, architecture, research, experiments
 |---|---|---|---|
 | OPPORTUNITY-001-PR2 | 固定二択の人工fixture分類、欠測/偽解/費用regret校正 | implemented_synthetic_only; scientific not_run | [module](../packages/evaluation/opportunity.py) / [tests](../tests/test_opportunity_fixture.py) / [spec](specs/OPPORTUNITY-001.md) / [run ledger](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #58](https://github.com/ryonakayama234/DekaSugi/issues/58) |
 
-実データadapterは未実装。旧EXP-0003A DEV64/FINAL128には触れず、METRO CAL-01のfixture認証も拡大解釈しない。
+実データを実際に採点・認証するadapterは未実装（PR8の純粋normalizerは未起動）。旧EXP-0003A DEV64/FINAL128には触れず、METRO CAL-01のfixture認証も拡大解釈しない。
 
 ## OPPORTUNITY-001 PR3 — fresh TRAIN pilot method fixed (no execution)
 | ID | テーマ | 状態 | 文書 |
@@ -195,3 +195,8 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 - 主対象`evaluation / provenance`（`scripts/verify_opportunity_choice_lock.py`）。公開原本27360 bytesのSHA `1d08e6…`とcanonical JSON decision digest `8a8625…`を**別に検証済み**。比較元はmain `c6b01c2`・公式Actions run `40659741488` / job `122719482732` / artifact `12803053107`。取得・検証run [#40668908541](https://github.com/ryonakayama234/DekaSugi/actions/runs/40668908541)成功。
 - 同じ原本を元のArtifact以外の公開Gitへ保全したが、GitHub外の改変不能バックアップを保証するものではない。既存PR7の初期禁止経路runは同じdigestでも権威ある原本ではない。
 - 古い「source lock pending」「実adapter未実装」などの行は当時の履歴記述であり、今回のpublic provenance保全を採点器の実装や研究効果へ読み替えない。PR #67の実paired正規化器は別レビュー。新TRAIN64 ON/OFFは0、private raw custody・実scorer・one-shot activationは#66未達。
+
+## OPPORTUNITY-001 PR8 — non-activated canonical tuple normalizer
+- [Adapter contract](specs/OPPORTUNITY-001-REAL-ADAPTER.md) / [pure module](../packages/evaluation/opportunity_actual.py) / [synthetic adversarial tests](../tests/test_opportunity_actual.py) / [run ledger](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
+- PR8 is a **review-gated draft** for *normalizing* canonical nine-field audited tuples, not a trusted live scorer/real-evidence provenance verifier. It strictly checks search status/program, SHA trace, canonical meter, same task/budget and redaction.
+- Scientific status: new TRAIN/DEV/FINAL scores = **0, not_run**. PR7 public pretrial choice seal is now retained by PR #70; verifiable private-original custody, separate activation/independent recount are outstanding. Earlier PR1–PR6 descriptions are historical milestones and do not override this gate.
