@@ -187,3 +187,8 @@ flowchart LR
 ```
 
 公開事前判断の保存は将来のKernel/Active Learning/skill inventionの研究品質を支えるが、学習能力・学習機会自体の測定ではない。private第三audit元bytesのGitHub外での実保全、独立real evaluator、時系列再検証、once-only activationは後続工程。元EXP-0003A FINAL128は封印、新TRAIN64 paired trialは0件。
+
+## 2026-10-28 — historical DEV64 raw ZIP provided and integrity verified
+- Read-only offline validation confirms outer ZIP **65,315 bytes**, two nested original/audit ZIP raw SHA-256 values matching the frozen DEV64 ledger, and 6/6 entries declared in inner SHA256SUMS checks. No scoring, holdout access or policy learning performed.
+- **Historical custody is partial**: provided local raw copy integrity verified; independent encrypted secondary off-public-GitHub copy/restore/access restriction **not verified**. Original uploaded ZIP has no ZIP encryption. Historical retention responsibility remains; do not mislabel as permanent secure custody.
+- Not the fresh OPPORTUNITY-001 TRAIN64 audit archive: [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66) remains blocked for new paired scoring. [Attestation](../experiments/EXP-0003A/runs/20261028-local-zip-integrity.md).
