@@ -176,7 +176,9 @@ def source_first_preflight():
 
 
 def _unactivated_real_pair(task, audit, frozen_skill, actions, audit_sha):
-    """Real evaluator bound to canonical components; NOT callable as a CLI."""
+    """Actual evaluation must be enabled only by separately reviewed activation."""
+    if SCORING_ACTIVATED is not True:
+        raise ValueError("actual one-shot source-first scorer is not activated")
     from packages.exp0003a.pr3 import _audited_trial
     from packages.library import DEFAULT_PRIMITIVES, Registry
     from packages.learning import registry_with_skill, validate_skill
