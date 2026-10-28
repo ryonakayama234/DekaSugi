@@ -580,6 +580,54 @@ flowchart LR
 ```
 The first PR7 implementation wrongly used legacy `load_frozen_assets`, triggering old withheld generation before paired scoring. New design avoids it and records the initial CI SHA as non-authoritative pending review. [Issue #60](https://github.com/ryonakayama234/DekaSugi/issues/60).
 
+## OPPORTUNITY-001 PR9 — pretrial Evidence Capsule（設計案、未実装）
+```mermaid
+flowchart TD
+    O["Official main pretrial run 40659741488"] --> M["Origin verifier: commit/run/job/artifact"]
+    M --> Z["Original public-only ZIP member bytes"]
+    Z --> B["Raw byte SHA256 + strict JSON parser"]
+    B --> C["Canonical decision payload SHA256"]
+    S["9-source + 14-source byte-first lock"] --> R["TRAIN/DREAM-only B1/B2/B3 choice replay (auxiliary)"]
+    C --> K{"Identity + origin + 64x3 + reason parity?"}
+    R --> K
+    K -->|"fail / not_observed"| X["STOP: scoring remains forbidden"]
+    K -->|pass| G["Public original bytes stored on Git in later PR"]
+    G --> I["Choice lock + CI + independent review"]
+    I --> F["sealed_pretrial_only (not scoring authorization)"]
+    P["Evaluator-only third audit RAW"] --> Q["Separate restricted off-public archive: Issue 66"]
+    F -.->|"not sufficient alone"| A["Future independently approved ON/OFF actual scorer"]
+    Q -.->|"separate mandatory gate"| A
+    H["Historic DEV/FINAL generator"] -.->|"never called"| R
+```
+
+主対象は`evaluation / provenance`。今回のPRは**この図を含む設計文書のみ**。source-first読み取り側と実際の学習・採点側を分離する。元Actionsのpublic member raw SHA256と正規化されたpayload digestは**別の測定値**であり、一方だけでは原本性を証明しない。replayは同じchooserの結果一致を検査するだけで、独立発明された方策の独立監査とは主張しない。
+
+`sealed_pretrial_only`が意味するのは**事前判断の監査可能な保持**であって、AIの能力が改善した、実データ正規化器が完成した、private audit元bytesのoff-repo保全が完了した、あるいはscoringを許可したことではない。
+
+詳細：[設計契約](../specs/OPPORTUNITY-001-CHOICE-LOCK-DESIGN.md) / [品質試験計画](../../experiments/OPPORTUNITY-001/choice-custody-preregistration.md) / [ARCH-002](contracts.md)。元のEXP-0003A・PILOT-V1方法・source lockは変更禁止。
+
+## OPPORTUNITY-001 PR9 — 実装済み公開事前判断の保全（paired scoringなし）
+```mermaid
+flowchart TD
+  O["Official merged-main pretrial Actions artifact ID 12803053107"] --> D["download-artifact: public-only member"]
+  M["Official run/job/artifact API metadata"] --> V["stdlib-only verify_opportunity_choice_lock"]
+  D --> V
+  F["Legacy14/new9 frozen source byte-first gates"] --> R["TRAIN/DREAM only fixed chooser replay"]
+  R --> C["Compare 64 tasks x B1/B2/B3 action+reason"]
+  V --> C
+  C -->|pass| P["Public original member committed in Git"]
+  P --> L["pilot-choice-lock-v1 raw SHA + logical SHA + provenance"]
+  L --> G["Independent review/CI gate"]
+  G -.->|"No score authorization"| Q["Future actual evaluator / Issue 66"]
+  X["Private third audit original"] -.->|"never public / no ingestion"| V
+  X --> Y["Separate restricted off-public custody not yet verified"]
+  Y -.-> Q
+```
+
+**Implementation scope**: [source](../../scripts/verify_opportunity_choice_lock.py), [tests](../../tests/test_opportunity_choice_lock.py), [original member](../../experiments/OPPORTUNITY-001/evidence/pilot-choices-public-v1.json), [lock](../../experiments/OPPORTUNITY-001/pilot-choice-lock-v1.json), [run](../../experiments/OPPORTUNITY-001/runs/20261028-pr9-public-choice-custody.md)。現行ソースを再実行して原本を生成したのではなく、元公式Actions Artifactから**原本をコピー**している。元のbyte hash、canonical JSON hash、固定source / policyは異なる検証レイヤ。
+
+一度限りの取得workflowはPR branchで実行成功（[run #40668908541](https://github.com/ryonakayama234/DekaSugi/actions/runs/40668908541)、source `db3f70b`）。安全性のため、write-enabled branch-onlyのworkflowは取得後にmainの最終treeから退役させ、Git履歴・runへ出典を残す。公開原本の保存と未来の原本性/時系列の検証は、学習性能、非公開原本のcustody、実採点の信頼性を証明しない。新TRAIN64実採点0件。ARCH-002とpreregのC01–C09を参照。
+
 ## OPPORTUNITY-001 PR8 — audited tuple normalization vs unimplemented authority gates
 ```mermaid
 flowchart TD

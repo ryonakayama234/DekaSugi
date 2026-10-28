@@ -176,7 +176,27 @@ Expected source hash `bc950ef3187fc34851eef5cff6df194ce27186b3a03b5399f2209e9905
 ### PR7 no-old-holdout-generation P1 remedial source
 The initial PR7 pretrial code unintentionally invoked historical `verify_frozen` which regenerates old DEV/FINAL (not scoring). Its initial SHA is **diagnostic only**. The corrected [stdlib 14-source verifier](../scripts/verify_opportunity_legacy_sources.py) runs before project import, then direct old TRAIN/DREAM-only policy restoration; [regression tests](../tests/test_opportunity_pretrial.py) mock old withheld generators to fail if called.
 
+## OPPORTUNITY-001 PR9 — 採点前事前判断の長期保全・品質試験設計（2026-10-28）
+| ID | テーマ | 状態 | 文書 |
+|---|---|---|---|
+| OPPORTUNITY-001-CHOICE-CUSTODY-DESIGN-V1 | 原本bytes/論理payload/生成経路/保持と時系列を分けるEvidence Capsule設計 | proposed_design_only; no_scoring | [設計契約](specs/OPPORTUNITY-001-CHOICE-LOCK-DESIGN.md) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) / [Issue #68](https://github.com/ryonakayama234/DekaSugi/issues/68) |
+| OPPORTUNITY-001-CHOICE-CUSTODY-PREREG-V1 | C01–C09品質観測、N01–N12人工改変検査、失敗停止規則 | planned; not_run | [品質試験計画](../experiments/OPPORTUNITY-001/choice-custody-preregistration.md) / [run ledger](../experiments/OPPORTUNITY-001/runs/README.md) |
+
+- **主対象モジュール**: `evaluation / provenance`。実装は後続のPR9、今回追加したものは設計文書のみ。保存予定の公開decision JSONとchoice-lock JSONは**現時点では作成・検証していない**。
+- 正式事前判断元はPR #65統合済みmain `c6b01c2`、Actions run `40659741488`、artifact `12803053107`。公式sourceの採点前判断原本はGitHub Actionsに存在しても90日保管であり、元member raw SHAも未採取。計画された保存copyとprivate原本保全を既存のものとして記載しない。
+- PR #67は別の実証データ正規化器でレビュー中。古いINDEX記述（実アダプタ未実装など）は各工程の記録として扱い、現在の設計検討はこの行から辿る。新TRAIN64 paired scoring 0件、旧FINAL128は封印を維持。
+
+## OPPORTUNITY-001 PR9 — public Evidence Capsuleの取得・照合・Git保全
+| ID | テーマ | 状態 | 文書 |
+|---|---|---|---|
+| OPPORTUNITY-001-CHOICE-LOCK-V1 | 公式Actions事前判断**公開原本**のbyte SHA、source/policy、64×3選択、保存済みGitコピー | original_public_bytes_verified_engineering; independent merge review pending; no paired scores | [original copy](../experiments/OPPORTUNITY-001/evidence/pilot-choices-public-v1.json) / [provenance lock](../experiments/OPPORTUNITY-001/pilot-choice-lock-v1.json) / [stdlib verifier](../scripts/verify_opportunity_choice_lock.py) / [negative tests](../tests/test_opportunity_choice_lock.py) |
+| OPPORTUNITY-001-PR9-CUSTODY-RUN | 2026-10-28公式run 40659741488原本からの安全な保管runと限界 | engineering observed / research outcome not_run | [observed run](../experiments/OPPORTUNITY-001/runs/20261028-pr9-public-choice-custody.md) / [run index](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #68](https://github.com/ryonakayama234/DekaSugi/issues/68) |
+
+- 主対象`evaluation / provenance`（`scripts/verify_opportunity_choice_lock.py`）。公開原本27360 bytesのSHA `1d08e6…`とcanonical JSON decision digest `8a8625…`を**別に検証済み**。比較元はmain `c6b01c2`・公式Actions run `40659741488` / job `122719482732` / artifact `12803053107`。取得・検証run [#40668908541](https://github.com/ryonakayama234/DekaSugi/actions/runs/40668908541)成功。
+- 同じ原本を元のArtifact以外の公開Gitへ保全したが、GitHub外の改変不能バックアップを保証するものではない。既存PR7の初期禁止経路runは同じdigestでも権威ある原本ではない。
+- 古い「source lock pending」「実adapter未実装」などの行は当時の履歴記述であり、今回のpublic provenance保全を採点器の実装や研究効果へ読み替えない。PR #67の実paired正規化器は別レビュー。新TRAIN64 ON/OFFは0、private raw custody・実scorer・one-shot activationは#66未達。
+
 ## OPPORTUNITY-001 PR8 — non-activated canonical tuple normalizer
 - [Adapter contract](specs/OPPORTUNITY-001-REAL-ADAPTER.md) / [pure module](../packages/evaluation/opportunity_actual.py) / [synthetic adversarial tests](../tests/test_opportunity_actual.py) / [run ledger](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
 - PR8 is a **review-gated draft** for *normalizing* canonical nine-field audited tuples, not a trusted live scorer/real-evidence provenance verifier. It strictly checks search status/program, SHA trace, canonical meter, same task/budget and redaction.
-- Scientific status: new TRAIN/DEV/FINAL scores = **0, not_run**. PR7 pretrial decision seal, verifiable private-original custody, separate activation/independent recount are outstanding. Earlier PR1–PR6 descriptions are historical milestones and do not override this gate.
+- Scientific status: new TRAIN/DEV/FINAL scores = **0, not_run**. PR7 public pretrial choice seal is now retained by PR #70; verifiable private-original custody, separate activation/independent recount are outstanding. Earlier PR1–PR6 descriptions are historical milestones and do not override this gate.

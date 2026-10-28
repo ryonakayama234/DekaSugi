@@ -52,6 +52,18 @@ Related: [plan](../plan.md) / [spec](../../../docs/specs/OPPORTUNITY-001.md) / [
 - Initial PR7 code head `7d1e74f`, CI [run #40649096613](https://github.com/ryonakayama234/DekaSugi/actions/runs/40649096613): public pretrial payload SHA `8a8625ed86e66b27bef8d09a023172d2adbc9ad0d42c155ab7f137097e2dccb2`, paired new TRAIN trials 0, no old holdout scoring. **However it regenerated old DEV/FINAL reference tasks via legacy freeze preflight**, contrary to stricter new protocol. Hence SHA is rejected as an authoritative pretrial seal; do not use it to authorize paired work.
 - Remediate and reexecute pretrial under stdlib legacy source-gate + TRAIN/DREAM-only policy reconstruction and independent exact-head review. All actual new TRAIN paired trials are still 0.
 
+## PR9 / Issue #68 — Evidence Capsule 品質検査の設計記録（2026-10-28）
+- **状態: `proposed_design_only; not_run; scored_trials=0`**。本項目は独立して設計される事前判断原本の品質検証計画であり、元Actions artifact memberのraw SHA測定、公開Gitへの原本コピー、独立verification、実験実行を完了した記録ではない。
+- [測定対象とアーキテクチャ](../../../docs/specs/OPPORTUNITY-001-CHOICE-LOCK-DESIGN.md)：正式PR7 main `c6b01c2`、公式run `40659741488`、job `122719482732`、artifact `12803053107`を唯一の採用候補とする。初期不適切runが同じlogical hashを返していてもoriginの同一性は認めない。
+- [engineering preregistration](../choice-custody-preregistration.md)：C01–C09個別pass/fail/not_observedとN01–N12人工fixture負例、停止規則、保持原本とcanonical hash区別を実装**前**に固定する設計。保管予定の`evidence/pilot-choices-public-v1.json`や`pilot-choice-lock-v1.json`は**未作成**。
+- 採点・学習能力向上・未知問題正答率・policy regretの新たな結果は`not_observed`。private第三audit元bytesの非公開長期保管、独立実scorer、one-shot activationはIssue #66の別ゲート。旧EXP-0003A FINAL128を開かない。
+- 本docs-only PRのCI/独立レビューも実際に通過するまでは`pending`のまま。将来のverification runでは元member raw SHA、コピーSHA、logical payload SHA、出典・保持の記録と失敗ケースを固定し、結果が無ければゼロに置換しない。
+
+## PR9 (Issue #68) — official public original pretrial byte custody observed
+- **主対象: `evaluation / provenance`**。2026-10-28 [origin public custody record](20261028-pr9-public-choice-custody.md) に実際に観測した元公式Actions artifactの出典・原本27360-byte SHA `1d08e6…`・canonical SHA `8a8625…`・固定方策比較結果・retention commitを記録した。
+- [public original](../evidence/pilot-choices-public-v1.json)、[source/retention lock](../pilot-choice-lock-v1.json)、[stdlib verifier](../../../scripts/verify_opportunity_choice_lock.py)、[negative tests](../../../tests/test_opportunity_choice_lock.py)。元Main run `40659741488` / artifact `12803053107`の取得作業は[run #40668908541](https://github.com/ryonakayama234/DekaSugi/actions/runs/40668908541)成功。元memberを取り直し/再生成したものではなく、元のbytesを保存。
+- 原本の公開保管と人工fixture calibrationは**工学証拠**。`public origin verified`と将来の`actual scorer approved`は別状態。学習・paired ON/OFFの新実測0件、独立PR最新head review/CIは本PR統合前の別ゲート。private第三audit元bytesのoff-public restricted custodyは未確認（Issue #66）。
+
 ## PR8 audited-tuple normalizer (draft; no experimental run)
 - Pure `packages/evaluation/opportunity_actual.py` + synthetic adversarial tests; no task execution, no actual paired trial/assessment, no old DEV/FINAL access. New TRAIN=0, DEV=0, FINAL=0.
 - Gate checks: strict SHA/redaction, search/program/status coherence, canonical positive `by_op` breakdown and sums, fixed 4/100 budgets, equal public task identity, correctness before cost, missing/unknown not imputed.

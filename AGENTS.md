@@ -306,6 +306,21 @@
 - Instead call only reviewed `packages.exp0003a.pr3.run_train_dream` AFTER the 14-source byte gate and the 9-source public generator gate, rehydrate validated top skill/B1/B2/B3 snapshots and compare against original frozen policy+selection hashes. Negative tests block legacy DEV/FINAL generators and injected unreviewed legacy dependency bytes.
 - An initial CI run on PR7 head `7d1e74f` had this boundary violation; its decision digest is **diagnostic/unaccepted** until the repaired pathway is independently reviewed and rerun. Record the failure rather than erasing it.
 
+## 37. OPPORTUNITY-001 PR9 pretrial Evidence Capsule設計（Issue #68）
+- 主対象は`evaluation / provenance`。対象は新TRAIN64×3方策の**採点前公開action/reason 192件の保全可能性**であり、学習成果・正答率・policy regretの実測ではない。新しいscored trialsは0。詳細は[設計契約](docs/specs/OPPORTUNITY-001-CHOICE-LOCK-DESIGN.md)と[品質試験計画](experiments/OPPORTUNITY-001/choice-custody-preregistration.md)。
+- **Evidence = 原public member bytes + logical digest + official origin + independent retention**。単独のpayload SHAだけでは原本保持/出典/時系列を証明できない。初期PR7の禁止された旧DEV/FINAL参照生成経路は、後の同一digestで遡及的に承認しない。
+- 採点前の正式出典はmerged PR #65のmain `c6b01c2`、公式run `40659741488`・job `122719482732`・artifact `12803053107`。元memberのraw SHA256は**取得して測るまで未観測**、原本を生成し直して代用禁止。public raw memberのみ別Git commitで保持し、private第三監査原本を絶対に同梱しない。
+- 後続の原本検証はZIP/member単位のraw hashとcanonical JSON digestを区別、schema/64×3/ポリシーSHA/理由/順序/原本保持/時系列をfail closed。byte-first source gate前に`packages.*`をimportせず、old `load_frozen_assets`/`verify_frozen`・DEV/FINAL生成/採点禁止。同じchooser replayは補助検査であり独立実装の証明ではない。
+- Gateは`pass / fail / not_observed`を個別保存し、failまたは必要な未観測を成功に置換しない。`sealed_pretrial_only`でも`new_train_pilot_scoring_permitted=false`。#66のprivate原本保全、独立actual scorer、once-only activation、#67の別レビューは独立ゲート。
+- このPRは**docs-only**。AGENTS/INDEX/ARCH-001/ARCH-002/spec/prereg/run台帳を同時に更新。コード実装・検証実行の成功・PRレビュー通過を装わない。最新commitのCI・独立レビュー完了前にmergeしない。
+
+## 38. OPPORTUNITY-001 PR9 — 公開事前判断の原本固定（Issue #68）
+- 主対象`evaluation / provenance`。正式main PR7事前選択の**public-only原本bytes**を公式Actions run `40659741488` / job `122719482732` / artifact `12803053107`から取得・検証し、[public copy](experiments/OPPORTUNITY-001/evidence/pilot-choices-public-v1.json)と[provenance lock](experiments/OPPORTUNITY-001/pilot-choice-lock-v1.json)へ記録する。原本は64課題×3方策=192 action/reasonであり、実採点0件。
+- [stdlib-only verifier](scripts/verify_opportunity_choice_lock.py)はoriginal byte SHA `1d08e6c1518d6730e75bfaf3033a00884f7517a7d91c98a5dfff75192aabc433`とcanonical payload SHA `8a8625ed86e66b27bef8d09a023172d2adbc9ad0d42c155ab7f137097e2dccb2`の**別々の契約**、厳格key/64×3/同一方策理由/禁止scoring flagsを検証する。GitHub公式run/job/artifactのメタデータ照合を行う一度限りのcaptureは[run ledger](experiments/OPPORTUNITY-001/runs/20261028-pr9-public-choice-custody.md)を参照。
+- 改変fixtureは[tests](tests/test_opportunity_choice_lock.py)。先に旧14-sourceと新9-sourceのbytesを検証してからTRAIN/DREAM専用の固定方策replayと原本内容を比較。replay一致は**同一chooser**の再現可能性であって原本そのものの代用・独立chooser実装の証明ではない。
+- PR9実装後も`new_train_pilot_scoring_permitted=false`、旧DEV/FINAL・新TRAIN64 paired scoring禁止。公開原本保持はprivate第三監査**raw original**の外部アクセス制限付き保全（#66）を代替しない。将来の独立actual scorer・once-only activationは別PRと別監査で行う。
+- 必ずARCH-001/ARCH-002、INDEX、roadmap、spec/plan、run ledger、AGENTSを同PRで同期し、full CIとlatest exact-head独立レビュー/P0/P1修正前は統合禁止。個々の観測`pass / fail / not_observed`と研究的非主張を明示。
+
 ## 31. OPPORTUNITY-001 PR8 — strict non-activated evidence adapter boundary
 - `packages/evaluation/opportunity_actual.py` is a pure tuple normalizer with synthetic-only tests, NOT a scorer, evaluator provenance attestation, skill promotion or data custody mechanism. No actual fresh TRAIN/DEV/FINAL outcomes are authorized by merging it.
 - Fail closed on noncanonical search status/solved/program/selected AST, unsafe `trace_sha256`, 4/100 budget drift, cross-task pairing, canonical `by_op` mismatch, false_solved, nonfinite timing, private field injection. Never transmit third audit raw bytes, source_record_id/family/seed or unseen outcome to Kernel.
