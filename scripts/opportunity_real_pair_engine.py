@@ -124,7 +124,7 @@ def assemble_audited_pair(task, private_audit, skill, policy_actions: dict,
                           registry_factory: Callable, register_skill: Callable,
                           validate_skill: Callable, audited_trial: Callable) -> dict:
     """The actual two-arm wiring. CI injects fake functions, never real search."""
-    from packages.evaluation.opportunity_actual import public_redacted_pair
+    from packages.evaluation.opportunity_actual import public_redacted_pair, normalize_audited_trial
     if (type(policy_actions) is not dict or set(policy_actions) != {"B1", "B2", "B3"}
             or any(type(v) is not str or v not in ("ON", "OFF")
                    for v in policy_actions.values())
@@ -138,11 +138,19 @@ def assemble_audited_pair(task, private_audit, skill, policy_actions: dict,
         raise ValueError("noncanonical public TaskSpec")
     if task.limits.max_ast_nodes != 4 or task.limits.max_candidates != 100:
         raise ValueError("public search budgets altered")
+    if (not hasattr(private_audit, "input") or not hasattr(private_audit, "output")
+            or type(private_audit.input) is not str or type(private_audit.output) is not str
+            or sha256(_canonical({"input": private_audit.input,
+                                  "output": private_audit.output})).hexdigest()
+               != third_audit_sha256):
+        raise ValueError("third-audit original mismatch")
     validate_skill(skill, registry_factory())
     # Fresh canonical trusted registry per arm: never reuse a caller-supplied
     # mutable registry or its primitive callable closures.
     off_registry = registry_factory()
     off_result = audited_trial(task, private_audit, off_registry, {})
+    # Stop immediately on OFF false_solved, before any ON attempt.
+    normalize_audited_trial(off_result, arm="OFF")
     on_base = registry_factory()
     on_registry = register_skill(skill, on_base)
     on_result = audited_trial(task, private_audit, on_registry, {skill.skill_id: skill})
