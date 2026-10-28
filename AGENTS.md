@@ -320,3 +320,9 @@
 - 改変fixtureは[tests](tests/test_opportunity_choice_lock.py)。先に旧14-sourceと新9-sourceのbytesを検証してからTRAIN/DREAM専用の固定方策replayと原本内容を比較。replay一致は**同一chooser**の再現可能性であって原本そのものの代用・独立chooser実装の証明ではない。
 - PR9実装後も`new_train_pilot_scoring_permitted=false`、旧DEV/FINAL・新TRAIN64 paired scoring禁止。公開原本保持はprivate第三監査**raw original**の外部アクセス制限付き保全（#66）を代替しない。将来の独立actual scorer・once-only activationは別PRと別監査で行う。
 - 必ずARCH-001/ARCH-002、INDEX、roadmap、spec/plan、run ledger、AGENTSを同PRで同期し、full CIとlatest exact-head独立レビュー/P0/P1修正前は統合禁止。個々の観測`pass / fail / not_observed`と研究的非主張を明示。
+
+
+## 2026-10-28 OPPORTUNITY-001 private-original custody staging and non-authoritative local checker
+- [Custody readiness contract](docs/specs/OPPORTUNITY-001-PRIVATE-CUSTODY.md) defines the future fresh TRAIN64 evaluator-only third-audit capture **before** any OFF/ON search; it is **not** the old EXP-0003A DEV64 ZIP. New actual paired scored rows remain 0.
+- `scripts/verify_opportunity_private_copy.py` and synthetic-only tests compare **two existing off-repository raw files** to a separately pinned original raw SHA256; they do not generate audit examples, run scoring, encrypt/upload originals, verify remote ACL/version/retention or prove independent restricted custody. Even when bytes match, result explicitly declares `independent_private_raw_custody_verified=false` and `scoring_authorized=false`.
+- The real activation gate requires separately reviewed source-first 64-original private capture, verified external restricted storage/access/version/retention and independent readback, a reviewed scorer and a separate one-shot authorization. Never put raw private bytes or filenames/local private paths in public GitHub, PR/CI logs or Kernel inputs. Do not open/generate historical DEV/FINAL.
