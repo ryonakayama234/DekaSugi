@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import ast
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import inspect
@@ -96,9 +97,19 @@ class PretrialGateTests(TestCase):
         self.assertEqual(info["verified_source_count"], 14)
         self.assertFalse(info["dev_or_final_generated"])
         src = inspect.getsource(legacy_gate)
-        for prohibited in ("from packages", "import packages", "generate_partition(",
-                           "verify_frozen(", "dataset_hashes(", "preflight_record("):
-            self.assertNotIn(prohibited, src)
+        tree = ast.parse(src)
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                self.assertTrue(all(not alias.name.startswith("packages")
+                                    for alias in node.names))
+            if isinstance(node, ast.ImportFrom):
+                self.assertFalse((node.module or "").startswith("packages"))
+            if isinstance(node, ast.Call):
+                name = (node.func.id if isinstance(node.func, ast.Name)
+                        else node.func.attr if isinstance(node.func, ast.Attribute)
+                        else "")
+                self.assertNotIn(name, {"generate_partition", "verify_frozen",
+                                        "dataset_hashes", "preflight_record"})
 
     def test_historic_source_gate_rejects_tampering_before_import(self):
         with TemporaryDirectory() as dirname:
