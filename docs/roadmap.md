@@ -188,6 +188,15 @@ flowchart LR
 
 公開事前判断の保存は将来のKernel/Active Learning/skill inventionの研究品質を支えるが、学習能力・学習機会自体の測定ではない。private第三audit元bytesのGitHub外での実保全、独立real evaluator、時系列再検証、once-only activationは後続工程。元EXP-0003A FINAL128は封印、新TRAIN64 paired trialは0件。
 
+## OPPORTUNITY-001 PR8: canonical two-arm tuple normalizer (draft, no scoring)
+- Implemented only the pure synthetic-test normalizer `evaluation.opportunity_actual` with hard fail on private field injection, unsafe trace, inconsistent search/AST/meter, mismatched public task and 4/100 budgets; documentation and run index synchronize.
+- Blocking chain: independently reviewed PR #65 pretrial decisions; independently verified off-public original private-audit custody (Issue #66); later separate reviewed source-first scorer, sealed time order and one-shot main-only TRAIN64 activation. No fresh scored rows, no old DEV/FINAL evaluation. Scientific conclusion remains not_run.
+
+## 2026-10-28 — historical DEV64 raw ZIP provided and integrity verified
+- Read-only offline validation confirms outer ZIP **65,315 bytes**, two nested original/audit ZIP raw SHA-256 values matching the frozen DEV64 ledger, and 6/6 entries declared in inner SHA256SUMS checks. No scoring, holdout access or policy learning performed.
+- **Historical custody is partial**: provided local raw copy integrity verified; independent encrypted secondary off-public-GitHub copy/restore/access restriction **not verified**. Original uploaded ZIP has no ZIP encryption. Historical retention responsibility remains; do not mislabel as permanent secure custody.
+- Not the fresh OPPORTUNITY-001 TRAIN64 audit archive: [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66) remains blocked for new paired scoring. [Attestation](../experiments/EXP-0003A/runs/20261028-local-zip-integrity.md).
+
 
 ## 2026-10-28 — OPPORTUNITY-001 Issue #72 private custody readiness
 - Scope: **synthetic-only** read-only two-copy original SHA256 integrity checker and explicit future fresh TRAIN64 private third-audit capture/custody design. No actual private TRAIN64 originals were captured or scored by this change.

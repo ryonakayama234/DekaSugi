@@ -628,6 +628,34 @@ flowchart TD
 
 一度限りの取得workflowはPR branchで実行成功（[run #40668908541](https://github.com/ryonakayama234/DekaSugi/actions/runs/40668908541)、source `db3f70b`）。安全性のため、write-enabled branch-onlyのworkflowは取得後にmainの最終treeから退役させ、Git履歴・runへ出典を残す。公開原本の保存と未来の原本性/時系列の検証は、学習性能、非公開原本のcustody、実採点の信頼性を証明しない。新TRAIN64実採点0件。ARCH-002とpreregのC01–C09を参照。
 
+## OPPORTUNITY-001 PR8 — audited tuple normalization vs unimplemented authority gates
+```mermaid
+flowchart TD
+  T["Fresh public TaskSpec + frozen 4/100 budget"] --> F["Separate source/choice chronology gate (future)"]
+  C["PR7 frozen B1/B2/B3 choices"] --> F
+  F -.-> S["Independent OFF/ON trial and private audit (future, NOT activated)"]
+  P["Restricted original private audit custody (NOT verified)"] -.-> S
+  S -.-> N["PR8 pure audited tuple normalizer (synthetic tests only)"]
+  N --> R["Redacted classifications + correct-first regret"]
+  R -.-> I["Separate immutable evidence/recount and exploratory report"]
+  P -.->| "never expose" | L["Kernel or public raw artifact"]
+```
+The PR8 module validates *internal data shape*, not actual source authenticity, decision timestamp, independent audit correctness or original private evidence custody. It does not import/execute a solver. New experiment outcome count is zero. [Real adapter spec](../specs/OPPORTUNITY-001-REAL-ADAPTER.md).
+
+## EXP-0003A DEV64 historical local-backup validation (2026-10-28; no scorer)
+```mermaid
+flowchart TD
+    L["User-provided local DEV64 backup ZIP (PRIVATE)"] --> I["Offline read-only ZIP/CRC/SHA verifier"]
+    H["Historic public DEV64 evidence ledger: expected SHA256"] --> I
+    I -->|all digests match| P["Public hashes-only provenance attestation"]
+    I -.->|raw third audits must not pass| G["Public repository / learner"]
+    L -.->|distinct encrypted storage + restore check still NOT VERIFIED| B["Second restricted long-term copy"]
+    P --> R["Research status unchanged: DEV64 engineering, FINAL sealed"]
+    B -.-> C["Historical long-term custody gate (only when independently verified)"]
+    C -.->|not transferable| O["OPPORTUNITY-001 fresh TRAIN64 private custody gate"]
+```
+No historical DEV64/FINAL scoring, source changes, or old task generation. Upload integrity is verified; a separate durable private backup is **not yet attested**. The future OPPORTUNITY-001 TRAIN64 requires **different** private audit originals and authority. See [sanitized run record](../../experiments/EXP-0003A/runs/20261028-local-zip-integrity.md).
+
 
 ## OPPORTUNITY-001 fresh TRAIN64 custody-preparation implementation (2026-10-28; NO scoring)
 ```mermaid
