@@ -160,3 +160,8 @@ Related: [Issue #56](https://github.com/ryonakayama234/DekaSugi/issues/56) / [pl
 - `both_correct` permits excess calls; `on_only`/`off_only` record missed/lost success with null cost regret; `neither_correct` records null regret; `not_observed` for missing audit, `non_comparable` for differing arm budgets. Invalid counts, false-solved, private fields, and duplicates stop aggregation.
 - Aggregate-only fixture summary includes classified counts, accurate denominators, miss/lost success and both-correct excess calls; no individual TaskSpec or raw private answer. Uncertainty not estimated for synthetic fixtures.
 - Tests: [fixture tests](../../tests/test_opportunity_fixture.py), [run ledger](../../experiments/OPPORTUNITY-001/runs/README.md), [Issue #58](https://github.com/ryonakayama234/DekaSugi/issues/58). No scientific claim.
+
+## Pilot-v1 implementation contract — frozen method, not yet a run
+- [OPPORTUNITY-001-PILOT-V1](../../experiments/OPPORTUNITY-001/pilot-v1.md) preregisters fresh TRAIN64 case generation, distinct seed namespace/characters, 2 public + 1 evaluator-only audit, unchanged 4/100 budget, EXP-0003A frozen skill and independent pretrial B1/B2/B3 selectors.
+- A different real-evidence adapter, source/manifest lock, independent review and main-only one-shot activation are required before measuring paired effects. The synthetic-only `opportunity-fixture-v1` reducer cannot accept real records. Pilot descriptive allocation heuristics must never be promoted to scientific p-values or inference over unrelated domains.
+

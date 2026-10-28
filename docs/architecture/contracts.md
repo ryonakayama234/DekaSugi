@@ -590,3 +590,10 @@ flowchart TD
 - Caller-pinned lock equality **does not independently verify the original bytes**; pretrial flag is not independent proof of chronology. Real `opportunity-record/0.1` remains unimplemented.
 - Summary is aggregate-only: class counts, denominators, policy errors, one-correct missed/lost success, both-correct excess calls, input content hash, no raw evidence/TaskSpec or scientific uncertainty. Synthetic calibration never authorizes holdouts.
 - [Implementation](../../packages/evaluation/opportunity.py) / [tests](../../tests/test_opportunity_fixture.py) / [spec](../specs/OPPORTUNITY-001.md).
+
+## OPPORTUNITY-001-PILOT-V1 prospective trust contract
+- A future generator must yield exactly 64 new TRAIN TaskSpecs (8 fixed families x 8), two public examples and a distinct third evaluator-only audit. Seed formula/alphabet/rejection/transforms/task ID and budget are fully enumerated in [pilot-v1](../../experiments/OPPORTUNITY-001/pilot-v1.md).
+- A reviewer must source-first pin implementation blobs and full public-dataset canonical hash, all 3 legacy B1/B2/B3 snapshot hashes and the exact frozen candidate skill before **any** search. Source + split metadata remain evaluator-only except anonymous public task IDs.
+- Separate sealed pretrial decisions for B1/B2/B3 must exist BEFORE paired ON/OFF trial; no access from Kernel to source family, private audit, seed or measured outcomes. Independently verify decision and audit chronology, not merely Boolean flags.
+- Real evidence MUST use a distinct future adapter/schema; `opportunity-fixture-v1` rejects it. Missing original bytes, false-solved, source mismatch or privacy leak is a stop/failure record, not a newly valid zero-cost observation.
+- Method is **frozen proposal for exploratory TRAIN only**; source/manifest lock and run activation pending. No DEV/FINAL, no regression claim. [Issue #60](https://github.com/ryonakayama234/DekaSugi/issues/60).

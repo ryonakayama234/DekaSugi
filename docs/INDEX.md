@@ -137,3 +137,10 @@ tags: navigation, architecture, research, experiments
 | OPPORTUNITY-001-PR2 | 固定二択の人工fixture分類、欠測/偽解/費用regret校正 | implemented_synthetic_only; scientific not_run | [module](../packages/evaluation/opportunity.py) / [tests](../tests/test_opportunity_fixture.py) / [spec](specs/OPPORTUNITY-001.md) / [run ledger](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #58](https://github.com/ryonakayama234/DekaSugi/issues/58) |
 
 実データadapterは未実装。旧EXP-0003A DEV64/FINAL128には触れず、METRO CAL-01のfixture認証も拡大解釈しない。
+
+## OPPORTUNITY-001 PR3 — fresh TRAIN pilot method fixed (no execution)
+| ID | テーマ | 状態 | 文書 |
+|---|---|---|---|
+| OPPORTUNITY-001-PILOT-V1 | 新規TRAIN64、seed/変換規則/公開2例+非公開audit/固定技能/3つの既存Kernelの評価前方法固定 | method_spec_frozen; source/manifest freeze pending; not_run | [pilot method](../experiments/OPPORTUNITY-001/pilot-v1.md) / [run ledger](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #60](https://github.com/ryonakayama234/DekaSugi/issues/60) |
+
+Method-only PR3: 旧DEV/FINALを使用せず、新しい課題の実測も未実行。今後のsource-firstハッシュ凍結と実データadapterは別PR。

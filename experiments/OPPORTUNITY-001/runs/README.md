@@ -27,3 +27,7 @@ Related: [plan](../plan.md) / [spec](../../../docs/specs/OPPORTUNITY-001.md) / [
 - CIと独立レビュー結果は完成後に追記記録。将来のmethod freeze、actual-evidence adapter、fresh holdoutは未着手。
 
 - [2026-10-28 PR2 synthetic fixture CI/review calibration](20261028-pr2-fixture-calibration.md): completed_engineering_calibration_only; not_scientific_result. No new study TRAIN/DEV/FINAL trial.
+
+## OPPORTUNITY-001-PILOT-V1 (new TRAIN-only; pre-measurement)
+- [Frozen pilot METHOD](../pilot-v1.md): exact new generator specification, 64 TRAIN tasks, fixed skill/policy/budget, pretrial evidence and stop conditions.
+- Actual source/manifest freeze, implementation and scoring status: **not_run**. Pilot has not produced any task-level outcome or learning gain; old DEV/FINAL unchanged.

@@ -494,3 +494,22 @@ flowchart LR
   X["Real TRAIN/DEV/FINAL, private fields"] -.->|"reject"| G
 ```
 Calibration-only: neither generates tasks nor executes search. The future actual-evidence adapter requires separately reviewed source-first independent audit. [Module](../../packages/evaluation/opportunity.py).
+
+## OPPORTUNITY-001-PILOT-V1 (method frozen; no code/measurement)
+```mermaid
+flowchart LR
+  M["PR3 deterministic TRAIN64 method"] --> F["Future reviewed source/manifest freeze"]
+  F --> G["Future fresh TRAIN generator"]
+  G --> K["Frozen B1/B2/B3 choices before scoring"]
+  G --> P["Independent OFF/ON paired search + audit"]
+  H["Frozen top skill / canonical registry / 4 nodes 100 candidates"] --> K
+  H --> P
+  A["Third evaluator-only example"] --> P
+  K --> E["Immutable pretrial decision seal"]
+  P --> R["Audited evidence"]
+  E --> V["Future real-only validated adapter"]
+  R --> V
+  V --> O["Opportunity analysis (after independently reviewed activation)"]
+  A -.->|"not learner-visible"| X["Kernel and Learner"]
+```
+This is a **future architecture** only; no new real adapter, fresh generator or trial has run. [Method](../../experiments/OPPORTUNITY-001/pilot-v1.md) / [run ledger](../../experiments/OPPORTUNITY-001/runs/README.md).
