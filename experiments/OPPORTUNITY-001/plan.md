@@ -92,3 +92,9 @@ Related: [spec](../../docs/specs/OPPORTUNITY-001.md) / [Issue #56](https://githu
 
 ## PR2 instrument calibration (not method freeze)
 The pure fixture reducer accepts only `opportunity-fixture-v1` / SYNTHETIC / fx task IDs. Artificial positive/negative cases calibrate outcome precedence, missingness, strict provenance field shape and rejection of malformed input. This does **not** instantiate the fresh TRAIN/DEV/FINAL population or independently verify source bytes/audits/pretrial decision chronology. Scientific primary estimand and branch thresholds remain `not_frozen`; research trial count stays zero.
+
+## TRAIN-only exploratory pilot method frozen before any outcome (2026-10-28)
+- [Pilot-v1](pilot-v1.md) is the immutable method authority for future TRAIN64 exploratory measurements: 8 families x 8, master seed namespace 910000000, new alphabet, independent third example, canonical budget 4/100, source-locked EXP-0003A top skill and B1/B2/B3 decisions before OFF/ON.
+- **Status**: method fixed, **source/manifest/provenance lock pending**, code and actual evidence adapter not implemented, no activation, TRAIN/DEV/FINAL new paired trials **0**.
+- The plan-v0.1 larger prospective study remains an unfrozen proposal. Pilot heuristics do not freeze or authorize a confirmatory FINAL. Any result-driven change requires a different pilot method/seeds.
+

@@ -129,3 +129,17 @@ flowchart TD
 ```
 
 将来の各ゲートでMERMAID構成図/ARCH-002契約/新規run記録を同じPRに同期し、結果は確証・探索・工学校正を分ける。学習器を拡張するかどうかは研究結果が出てから判断。数値分岐閾値・fresh split/seed・primary estimandは結果を開く前の独立レビューで固定する。PR1自体は新しい測定値や科学的採用を主張しない。
+
+## OPPORTUNITY-001-PILOT-V1 — approved research-method sequence (TRAIN only)
+```mermaid
+flowchart TD
+  A["METHOD fixed before outcomes: fresh TRAIN64"] --> B["New generator/real adapter PR"]
+  B --> C["Independent exact-head code review + tests"]
+  C --> D["Source/manifest/policy hash freeze"]
+  D --> E["Separate reviewed main-only one-shot activation"]
+  E --> F{"Evidence provenance / audit valid?"}
+  F -->|"NO"| G["Immutable stop reason + independent next-stage decision"]
+  F -->|"YES"| H["TRAIN64 exploration; no confirmation"]
+  H --> I["New prospective confirmatory method if identifiable"]
+```
+Pilot method: [pilot-v1](../experiments/OPPORTUNITY-001/pilot-v1.md). Implementation/data source lock/results are **pending**, no actual measurements yet. A research result from historical EXP-0003A DEV64 or FINAL128 must not be substituted.
