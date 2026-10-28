@@ -35,6 +35,14 @@ def seed_for(family_index: int, task_index: int, example_index: int) -> int:
     return MASTER + family_index * 100_000 + task_index * 10 + example_index
 
 
+def source_id_for(family_index: int, task_index: int) -> str:
+    """Deterministic evaluator-only ID; explicit function for collision tests."""
+    if (type(family_index) is not int or not 0 <= family_index < len(FAMILIES)
+            or type(task_index) is not int or not 0 <= task_index < COUNT_PER_FAMILY):
+        raise ValueError("Invalid PILOT-V1 source index")
+    return f"op-pilot-f{family_index:02d}-i{task_index:03d}"
+
+
 def _token(seed: int, family: str) -> str:
     rng = random.Random(seed)
     for _ in range(4096):
@@ -91,7 +99,7 @@ def generate_train_pilot() -> tuple[TrainCase, ...]:
                 raise ValueError("Non-distinct public/audit example; stop without resampling")
             public = (examples[0], examples[1])
             task_id = opaque_id(public)
-            source_id = f"op-pilot-f{family_index:02d}-i{index:03d}"
+            source_id = source_id_for(family_index, index)
             if task_id in seen_ids or source_id in seen_source:
                 raise ValueError("Duplicate pilot task/source ID")
             seen_ids.add(task_id)
