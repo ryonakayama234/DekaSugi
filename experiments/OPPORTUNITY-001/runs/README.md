@@ -79,6 +79,12 @@ Related: [plan](../plan.md) / [spec](../../../docs/specs/OPPORTUNITY-001.md) / [
 - 2026-10-29 PR #77 hard-off security follow-up: shared `assemble_audited_pair()` now also refuses direct injection while `SCORING_ACTIVATED=False`, not only `_unactivated_real_pair()`. Tests use test-local synthetic opt-in mocks only; genuine new TRAIN64 observed pairs remain **0**.
 
 
+## 2026-10-28 Issue #72: fresh TRAIN64 private copy helper — NOT scored
+- [Local byte-equality script](../../../scripts/verify_opportunity_private_copy.py) and [synthetic-only adversarial tests](../../../tests/test_opportunity_private_copy.py) check **two previously existing** private artifact copies against a separately pinned original SHA-256. No real third-audit originals were produced, read or uploaded in CI, and no paired trials were scored.
+- [Custody readiness plan](../../../docs/specs/OPPORTUNITY-001-PRIVATE-CUSTODY.md) explicitly distinguishes historic DEV64 private backup from the **future new TRAIN64** original. `private_archive_captured=false`, `private_archive_restricted_custody_verified=false`, `real_scorer_reviewed=false`, `one_shot_scored_trials=0`. No scientific result.
+- The tool never attests ACL/encryption, independent storage, object version/retention or restore and never grants activation. Separate independently reviewed original capture and secure storage precede scorer approval and one-shot execution (Issue #66).
+
+
 ## 2026-10-28 Issue #74 — private TRAIN64 audit-original capture implementation, not executed
 - `scripts/capture_opportunity_private_original.py` verifies old 14-source and new 9-source locks, official pretrial B1/B2/B3 public choices in exact byte form, public 64 TaskSpec digest and independent third-audit commitment *before* private writes. No old DEV/FINAL generator or scorer is permitted. PR CI runs only `tests/test_opportunity_private_original_capture.py` synthetic fixtures.
 - Captured genuine TRAIN64 third-audit raw originals: **0/not_run**; new paired OFF/ON scored cases: **0/not_run**. No real raw audit was uploaded to public GitHub. Exclusive write to two distinct mounted off-Git private paths and SHA readbacks are **implemented but NOT operated or storage-authority verified**. See [scope/limitations](../../../docs/specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md) / [Issue #74](https://github.com/ryonakayama234/DekaSugi/issues/74).

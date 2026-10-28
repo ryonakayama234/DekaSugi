@@ -342,6 +342,12 @@
 - 2026-10-29 PR #77 fail-closed hardening: the shared `assemble_audited_pair()` itself must reject direct callers before importing actual search/audit components if `SCORING_ACTIVATED is not True`. A synthetic-test-only scoped mock of this switch is never runtime authorization. Do not remove this guard without separate reviewed custody/one-shot activation.
 
 
+## 2026-10-28 OPPORTUNITY-001 private-original custody staging and non-authoritative local checker
+- [Custody readiness contract](docs/specs/OPPORTUNITY-001-PRIVATE-CUSTODY.md) defines the future fresh TRAIN64 evaluator-only third-audit capture **before** any OFF/ON search; it is **not** the old EXP-0003A DEV64 ZIP. New actual paired scored rows remain 0.
+- `scripts/verify_opportunity_private_copy.py` and synthetic-only tests compare **two existing off-repository raw files** to a separately pinned original raw SHA256; they do not generate audit examples, run scoring, encrypt/upload originals, verify remote ACL/version/retention or prove independent restricted custody. Even when bytes match, result explicitly declares `independent_private_raw_custody_verified=false` and `scoring_authorized=false`.
+- The real activation gate requires separately reviewed source-first 64-original private capture, verified external restricted storage/access/version/retention and independent readback, a reviewed scorer and a separate one-shot authorization. Never put raw private bytes or filenames/local private paths in public GitHub, PR/CI logs or Kernel inputs. Do not open/generate historical DEV/FINAL.
+
+
 ## 2026-10-28 OPPORTUNITY-001 source-first private-original capture (Issue #74; no scoring)
 - [Source-first private capture spec](docs/specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md) / [CLI](scripts/capture_opportunity_private_original.py) / [synthetic negative tests](tests/test_opportunity_private_original_capture.py) implement **only** fresh TRAIN64 evaluator-only original capture to two distinct off-public owner-private files; no ON/OFF scoring or new skill/Kernel action.
 - Verify original historic 14 source blobs and fresh 9 source blobs **before project imports**, then the exact officially preserved public 64x3 choice original and frozen third-audit commitment before creating any output. Never generate historic DEV/FINAL for source verification, and never print raw originals, family, seeds or source IDs.

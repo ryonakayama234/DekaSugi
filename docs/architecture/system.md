@@ -671,6 +671,22 @@ flowchart TD
 The OFF/ON function is coded but **never invoked on real new TRAIN64 by CI or main**. [Engine](../../scripts/opportunity_real_pair_engine.py) / [review/spec](../specs/OPPORTUNITY-001-REAL-PAIR-ENGINE.md) / [Issue #76](https://github.com/ryonakayama234/DekaSugi/issues/76).
 
 
+## OPPORTUNITY-001 fresh TRAIN64 custody-preparation implementation (2026-10-28; NO scoring)
+```mermaid
+flowchart TD
+  A["Official original public TRAIN64 decisions: 64x3, locked"] --> B["Future separate source-first private third-audit capture"]
+  B --> C["Restricted original archive (future; NOT VERIFIED)"]
+  C -.-> D["Second independently retained restricted original (future)"]
+  C --> E["Read-only two-copy raw SHA checker (synthetic-tested)"]
+  D --> E
+  E --> F["Redacted digest/size only; original equality is NOT custody"]
+  X["Independent remote ACL/version/retention/restore verification (future)"] -.-> Y["Real one-shot scorer gate: BLOCKED"]
+  F -.-> Y
+  C -.->|"never publish"| G["Public repository / ordinary public Actions / Kernel"]
+```
+Only the **read-only byte-equality helper** is implemented here. It never makes or accesses a real new TRAIN64 audit original in CI and cannot close the storage authorization gate. Old DEV64 ZIP is a different historical source. [Data contract](contracts.md) / [custody readiness spec](../specs/OPPORTUNITY-001-PRIVATE-CUSTODY.md) / [Issue #72](https://github.com/ryonakayama234/DekaSugi/issues/72).
+
+
 ## OPPORTUNITY-001 Issue #74 — source-first private original capture system (synthetic-tested, NOT run)
 ```mermaid
 flowchart TD

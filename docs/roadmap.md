@@ -204,6 +204,12 @@ flowchart LR
 - [Read-only engine spec](specs/OPPORTUNITY-001-REAL-PAIR-ENGINE.md) / [Issue #76](https://github.com/ryonakayama234/DekaSugi/issues/76) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
 
 
+## 2026-10-28 — OPPORTUNITY-001 Issue #72 private custody readiness
+- Scope: **synthetic-only** read-only two-copy original SHA256 integrity checker and explicit future fresh TRAIN64 private third-audit capture/custody design. No actual private TRAIN64 originals were captured or scored by this change.
+- Public 64-task/192-choice source and method seals from PR #65/#70 are frozen; historical DEV64 ZIP is **not** new TRAIN64 custody. The helper returns `custody_verified=false` and `scoring_authorized=false` even on two matching copies. Independent access-controlled/versioned durable off-public storage, independent restore, real source-first scorer and reviewed main-only one-shot activation are all future gates.
+- [Details](specs/OPPORTUNITY-001-PRIVATE-CUSTODY.md) / [Run ledger](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #72](https://github.com/ryonakayama234/DekaSugi/issues/72) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
+
+
 ## 2026-10-28 — OPPORTUNITY-001 Issue #74: exact fresh TRAIN64 original capture before scoring
 - Source-first **manual** private capture CLI (not an actual scoring CLI), entirely independent from prior DEV64 ZIP. It verifies historic 14 immutable source files, new nine-source generator lock and preserved exact 27,360-byte public 192-choice original before generating any new TRAIN64 evaluator-only audit examples.
 - PR synthetic-only negative tests; no genuine private archive produced or copied and no OFF/ON scored outcomes. The CLI would write two exclusive owner-only files on separate mounted volumes and verify exact raw SHA readback, but this by itself **cannot certify** independent access restrictions, durable version/retention or external restore; actual one-shot scoring remains CLOSED.

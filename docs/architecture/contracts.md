@@ -722,6 +722,23 @@ flowchart LR
 - Real-scorer call entry remains `SCORING_ACTIVATED=False`, no live one-shot invocation. [Spec](../specs/OPPORTUNITY-001-REAL-PAIR-ENGINE.md) / [Issue #76](https://github.com/ryonakayama234/DekaSugi/issues/76).
 
 
+## OPPORTUNITY-001 fresh TRAIN64 private original vs public SHA receipt (2026-10-28)
+```mermaid
+flowchart LR
+  A["PRIVATE original raw audit archive (future)"] --> H["Local SHA-256 equality helper"]
+  B["PRIVATE separate raw byte-copy (future)"] --> H
+  C["Separately pinned original raw digest"] --> H
+  H --> P["PUBLIC receipt: digest / size / copies / non-authority flags"]
+  A -.->|"forbidden"| K["Public Git / Kernel / PR CI"]
+  B -.->|"forbidden"| K
+  P -.->|"cannot satisfy alone"| S["New TRAIN64 one-shot scoring gate BLOCKED"]
+  R["Private ACL + immutable version + retention + independent restore, separately verified (future)"] -.-> S
+```
+- Implemented read-only `opportunity-private-copy-byte-check-v1` emits exactly `schema_version,status,raw_sha256,raw_size_bytes,copy_count,different_filesystems_observed,independent_private_raw_custody_verified,acl_encryption_retention_restore_verified,scoring_authorized,private_bytes_disclosed`. Public receipt has **no original bytes, audit examples, secrets, local file paths or evaluator-only labels**. Always false: custody verified, storage controls/restore verified, scoring authorized, private bytes disclosed.
+- Caller-supplied original digest **must be separately independently grounded**: two matching copies and a caller-provided digest by themselves do **not** attest original provenance. The script rejects unsafe public-repo destinations, symlinked or same-inode files, missing/empty/oversized raw artifacts, hash/length drift.
+- **Unimplemented separate authority contract:** source-first genuine fresh TRAIN64 64-original capture before search; independently reviewed immutable private store with object version, ACL, encryption/retention and readback; independent true audit; one-shot real paired scorer. [Spec](../specs/OPPORTUNITY-001-PRIVATE-CUSTODY.md) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
+
+
 ## OPPORTUNITY-001 fresh TRAIN64 private-original capture data contract — 2026-10-28
 ```mermaid
 flowchart LR
