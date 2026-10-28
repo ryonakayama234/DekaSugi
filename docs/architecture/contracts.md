@@ -614,3 +614,17 @@ flowchart TD
 - `validate_source_blobs()` checks exact keys/fields and byte-for-byte `sha1(b"blob "+len+NUL+bytes)` locally BEFORE source generator import. `verify_generator_lock()` then validates historic freeze fields, both independent manifest derivations, same private third-audit commitment, counts and `paired_trials_executed=0`.
 - **No scoring authority**: `new_train_pilot_scoring_permitted=false`, `old_dev_or_final_scoring_permitted=false`. No false boolean can be coerced. Actual-evidence adapter must use a distinct schema, independently seal each B1/B2/B3 choice BEFORE any candidate/search result and preserve restricted original evidence. Source lock alone is not external custody.
 - [Lock](../../experiments/OPPORTUNITY-001/pilot-generator-lock-v1.json) / [source verifier](../../scripts/verify_opportunity_generator_lock.py) / [tamper tests](../../tests/test_opportunity_generator_lock.py).
+
+
+## OPPORTUNITY-001 PR8: real tuple-shape contract (not proof of source authenticity)
+```mermaid
+flowchart LR
+  A["Canonical two _audited_trial nine-tuples"] --> V["Strict status/solved/program/trace/meter/task/budget gate"]
+  C["Already-sealed B1/B2/B3 choices"] --> R["Correctness-first fixed two-arm classification"]
+  V --> R
+  R --> P["Public opportunity-paired-evidence-v1 redacted record"]
+  H["Private original third audit"] -.->| "never serialized" | P
+```
+- `normalize_audited_trial`: canonical `SearchResult.to_dict()` without elapsed_ms; exact search keys; fixed 4 AST nodes / 100 candidates, public `t-` plus 64 lowercase hex task ID, 64 lowercase SHA256 trace; search `solved/status/program` must equal `selected_ast` and audit outcome.
+- `meter.by_op`: only canonical `trim/lower/upper`, positive integer counters summing exactly to `primitive_invocations` (zero = empty map), no bool-as-int. CPU/wall finite and nonnegative, no unknown or private fields.
+- `classify_pair`: identical public task ID/budget; regret counts only when both correct; one-arm success counts separately; neither-correct unknown, not regret zero. Redacted output has no private example data. This does not verify scorer provenance, audit authenticity, decision chronology or off-public original retention. [PR8 contract](../specs/OPPORTUNITY-001-REAL-ADAPTER.md).
