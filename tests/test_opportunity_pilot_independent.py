@@ -2,10 +2,12 @@
 from __future__ import annotations
 
 import inspect
+import json
+from hashlib import sha256
 import unittest
 
 from scripts import audit_opportunity_pilot_public as independent
-from packages.evaluation.opportunity_pilot import public_preflight
+from packages.evaluation.opportunity_pilot import public_preflight, generate_train_pilot
 
 
 class IndependentPilotManifestTests(unittest.TestCase):
@@ -22,6 +24,28 @@ class IndependentPilotManifestTests(unittest.TestCase):
         self.assertEqual(recalculated["paired_trials_executed"], 0)
         self.assertFalse(recalculated["dev_or_final_evaluated"])
         self.assertTrue(recalculated["independent_from_project_generator_imports"])
+
+    def test_independent_third_audit_commitment_matches_project_bytes(self):
+        # Check private third records in memory only; publish digest, never bytes.
+        commitments = []
+        for case in generate_train_pilot():
+            third = {"input": case.private_audit.input,
+                     "output": case.private_audit.output}
+            third_sha = sha256(json.dumps(
+                third, sort_keys=True, separators=(",", ":"),
+                ensure_ascii=False, allow_nan=False).encode("utf-8")).hexdigest()
+            commitments.append({
+                "task_id": case.task.task_id,
+                "third_audit_sha256": third_sha,
+            })
+        def digest(rows):
+            return sha256(json.dumps(
+                rows, sort_keys=True, separators=(",", ":"),
+                ensure_ascii=False, allow_nan=False).encode("utf-8")).hexdigest()
+        expected = independent.verify_public()["third_audit_commitments_sha256"]
+        self.assertEqual(digest(commitments), expected)
+        commitments[0]["third_audit_sha256"] = "0" * 64
+        self.assertNotEqual(digest(commitments), expected)
 
     def test_different_alphabet_mismatches_public_source(self):
         alternate = independent.derive_hashes(alphabet="uvwxYQ04")
