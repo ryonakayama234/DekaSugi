@@ -125,6 +125,47 @@ class OpportunityActualAdapterTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "private fields"):
             normalize_audited_trial(tamper(("search", "private_third"), "SECRET"), arm="OFF")
 
+    def test_ast_schema_private_field_and_expanded_budget(self):
+        from packages.evaluation.opportunity_actual import FROZEN_SKILL_ID
+
+        def call(op, child):
+            return {"node_kind": "call", "type": "String", "op_id": op,
+                    "children": [child]}
+
+        def with_ast(ast):
+            raw = list(fake(True, 5))
+            raw[0] = deepcopy(raw[0])
+            raw[0]["search"]["program"] = deepcopy(ast)
+            raw[0]["selected_ast"] = deepcopy(ast)
+            return tuple(raw)
+
+        root = {"node_kind": "input", "type": "String"}
+        bad_asts = [
+            {},
+            {"node_kind": "input", "type": "String",
+             "private_audit": {"input": "SECRET"}},
+            {"node_kind": "input", "type": "Number"},
+            {"node_kind": "call", "type": "String", "op_id": "trim",
+             "children": [], "private": "SECRET"},
+            call("unlisted_primitive", root),
+            call("trim", {"node_kind": "input", "type": "Number"}),
+            call("trim", call("trim", call("trim", call("trim", root)))),
+            call(FROZEN_SKILL_ID, call("trim", call("trim", root))),
+        ]
+        for ast in bad_asts:
+            with self.subTest(ast=ast), self.assertRaises(ValueError):
+                normalize_audited_trial(with_ast(ast), arm="ON")
+        with self.assertRaisesRegex(ValueError, "forbidden in OFF"):
+            normalize_audited_trial(with_ast(call(FROZEN_SKILL_ID, root)), arm="OFF")
+
+        # Exactly 4 physically expanded nodes in either arm: 3 primitive calls
+        # or one frozen macro (2 primitive calls) + one primitive call.
+        primitive = call("upper", call("lower", call("trim", root)))
+        macro = call("upper", call(FROZEN_SKILL_ID, root))
+        self.assertEqual(normalize_audited_trial(with_ast(primitive), arm="OFF")["audited_correct"], True)
+        self.assertEqual(normalize_audited_trial(with_ast(macro), arm="ON")["audited_correct"], True)
+        self.assertEqual(normalize_audited_trial(with_ast(root), arm="ON")["audited_correct"], True)
+
     def test_budget_and_task_identity(self):
         raw1 = fake(True, 5)
         raw2 = fake(True, 4, task_id="t-" + "b"*64)
