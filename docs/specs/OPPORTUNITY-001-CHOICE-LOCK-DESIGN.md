@@ -33,7 +33,7 @@ H1–H5は真偽を点検するengineering gateであり統計的有意差検定
 ## 3. 凍結済みの識別子（新たな採用・測定ではない）
 
 - 元の正式事前判断生成コミット：`c6b01c2a856a989e9b642fbe211cfd195f0e57e3`（PR #65統合）。
-- 官方main Actions run: `40659741488`、job: `122719482732`、public-only artifact: `12803053107`。この出典**全体**を識別し、単独のpayload hashでは代用しない。
+- 公式main Actions run: `40659741488`、job: `122719482732`、public-only artifact: `12803053107`。この出典**全体**を識別し、単独のpayload hashでは代用しない。
 - 固定 `decision_payload_sha256`: `8a8625ed86e66b27bef8d09a023172d2adbc9ad0d42c155ab7f137097e2dccb2`。
 - 公開64件TaskSpec manifest SHA256: `bc950ef3187fc34851eef5cff6df194ce27186b3a03b5399f2209e9905f04a85`。
 - B1 snapshot SHA256: `3b4fc00f8ad0fe2f1cc0978886d7bc7a6285ed002c842ceeb0106fd51ee5afd4`。
