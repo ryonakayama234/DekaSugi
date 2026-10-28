@@ -206,6 +206,11 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 - Original confidential ZIP stays **off public GitHub**; only hashes and nonprivate statuses are indexed. [Architecture](architecture/system.md) / [data flow](architecture/contracts.md) / [DEV ledger](../experiments/EXP-0003A/runs/20261027-dev64.md) / [Issue #48](https://github.com/ryonakayama234/DekaSugi/issues/48).
 
 
+## OPPORTUNITY-001 — actual canonical OFF/ON pair engine, still blocked
+- [Real pair engine contract](specs/OPPORTUNITY-001-REAL-PAIR-ENGINE.md) / [unactivated engine](../scripts/opportunity_real_pair_engine.py) / [synthetic-only tests](../tests/test_opportunity_real_pair_engine.py) / [Issue #76](https://github.com/ryonakayama234/DekaSugi/issues/76).
+- The OFF/ON *execution wiring* is newly implemented for later separate activation; `SCORING_ACTIVATED=false` and **fresh TRAIN64 actual scored pairs=0**. Private original capture and external secure versioned archive/restore remain unverified; the owner-only off-Git Google Drive folder is an empty destination, not proof of custody.
+
+
 ## OPPORTUNITY-001 — new TRAIN64 source-first audit-original capture engineering (no score)
 - [Private capture and boundary contract](specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md) / [manual off-repository CLI](../scripts/capture_opportunity_private_original.py) / [synthetic negative tests](../tests/test_opportunity_private_original_capture.py) / [Issue #74](https://github.com/ryonakayama234/DekaSugi/issues/74).
 - Implementation under PR review; genuine third-audit original capture **0**; OFF/ON scored pairs **0**. Source-first old14+new9 frozen bytes, official 27,360-byte 192-choice raw original, and frozen third audit SHA gate are mandatory. Two owner-private local raw files with SHA readback are not by themselves independently durable restricted custody. [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66) remains blocked.

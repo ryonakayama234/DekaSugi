@@ -198,6 +198,12 @@ flowchart LR
 - Not the fresh OPPORTUNITY-001 TRAIN64 audit archive: [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66) remains blocked for new paired scoring. [Attestation](../experiments/EXP-0003A/runs/20261028-local-zip-integrity.md).
 
 
+## 2026-10-29 — Issue #76 actual paired evaluation code, not activated
+- Added separately reviewable OFF/ON search-and-independent-third-audit wiring to the source-first PILOT-V1 engineering chain. Unlike prior pure normalizer, this calls the canonical trusted search for each arm *only when separately authorized*; current source hard-codes scoring disabled. Synthetic mocks and negative controls only in CI.
+- Real new TRAIN64 scored outcomes: 0; private original 64-row archive captured: 0; off-Git Google Drive owner-only folder provisioned but still empty and no independent version/retention/restore attestation. Separate reviewed one-shot + secure custody remain hard-blocking conditions.
+- [Read-only engine spec](specs/OPPORTUNITY-001-REAL-PAIR-ENGINE.md) / [Issue #76](https://github.com/ryonakayama234/DekaSugi/issues/76) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
+
+
 ## 2026-10-28 — OPPORTUNITY-001 Issue #74: exact fresh TRAIN64 original capture before scoring
 - Source-first **manual** private capture CLI (not an actual scoring CLI), entirely independent from prior DEV64 ZIP. It verifies historic 14 immutable source files, new nine-source generator lock and preserved exact 27,360-byte public 192-choice original before generating any new TRAIN64 evaluator-only audit examples.
 - PR synthetic-only negative tests; no genuine private archive produced or copied and no OFF/ON scored outcomes. The CLI would write two exclusive owner-only files on separate mounted volumes and verify exact raw SHA readback, but this by itself **cannot certify** independent access restrictions, durable version/retention or external restore; actual one-shot scoring remains CLOSED.

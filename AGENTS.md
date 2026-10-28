@@ -334,6 +334,14 @@
 - This historical DEV64 bundle is not the fresh OPPORTUNITY-001 TRAIN64 original audit custody required by Issue #66; never use it to bypass the fresh-scorer or one-shot main-only gate. No old DEV/FINAL regeneration or rescoring.
 
 
+## 2026-10-29 OPPORTUNITY-001 real OFF/ON pair engine (not activated)
+- [Actual pair engine](scripts/opportunity_real_pair_engine.py) / [synthetic tests](tests/test_opportunity_real_pair_engine.py) / [contracts](docs/specs/OPPORTUNITY-001-REAL-PAIR-ENGINE.md) / Issue #76. Unlike PR #67 pure normalization, this new engine *wires the real trusted canonical OFF and ON search* and independent third-audit, but the live entry has `SCORING_ACTIVATED=False`; no actual new TRAIN64/DEV/FINAL scored trial in this PR/CI.
+- Before any real activation: old14+new9 source-first verification, exact origin 64x3 public policy bytes, genuine original private third-audit raw digest/64 commitments, independent off-GitHub archive identity/version/ACL/retention/restore and a separately approved one-shot runtime. Reject false_solved before entering subsequent arm; do not leak third audits/family/seed or pass them to Kernel.
+- A dedicated owner-only non-shared Google Drive folder now exists **privately** (no folder ID or link on public Git); it is empty and is not yet an attested immutable private archive. Engineering success != permission to score.
+
+- 2026-10-29 PR #77 fail-closed hardening: the shared `assemble_audited_pair()` itself must reject direct callers before importing actual search/audit components if `SCORING_ACTIVATED is not True`. A synthetic-test-only scoped mock of this switch is never runtime authorization. Do not remove this guard without separate reviewed custody/one-shot activation.
+
+
 ## 2026-10-28 OPPORTUNITY-001 source-first private-original capture (Issue #74; no scoring)
 - [Source-first private capture spec](docs/specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md) / [CLI](scripts/capture_opportunity_private_original.py) / [synthetic negative tests](tests/test_opportunity_private_original_capture.py) implement **only** fresh TRAIN64 evaluator-only original capture to two distinct off-public owner-private files; no ON/OFF scoring or new skill/Kernel action.
 - Verify original historic 14 source blobs and fresh 9 source blobs **before project imports**, then the exact officially preserved public 64x3 choice original and frozen third-audit commitment before creating any output. Never generate historic DEV/FINAL for source verification, and never print raw originals, family, seeds or source IDs.
