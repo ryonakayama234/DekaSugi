@@ -702,3 +702,21 @@ flowchart LR
     A -.->|user-controlled separate copy not observed| P["PRIVATE: secondary long-term encrypted custody"]
 ```
 **Public attestation contract**: historical study ID; original scoring run/artifact IDs; audit-only run/artifact IDs; outer ZIP byte size and raw digest; nested ZIP SHA256; original JSON digests; exact SHA256SUMS pass counts; limitation flags `provided_copy_integrity_verified`, `second_private_copy_not_verified`, `fresh_train64_custody_not_satisfied`, `scoring_not_run`. It contains **zero private example bytes, source seeds, third examples, or extracted private JSON**. Public Git is not the store for the original. No key/password is stored in Git. See [attestation](../../experiments/EXP-0003A/runs/20261028-local-zip-integrity.md).
+
+
+## OPPORTUNITY-001 actual real-pair engine input/output, activation denied (2026-10-29)
+```mermaid
+flowchart LR
+  P["PUBLIC fixed TaskSpec, B1/B2/B3 decisions"] --> E["Actual OFF/ON engine: present, disabled"]
+  S["PRIVATE original third audit, independently committed"] --> E
+  E --> O["Canonical OFF trusted Registry, meter, independent audit"]
+  E --> N["Canonical ON trusted Registry + frozen skill, meter, independent audit"]
+  O --> X["PR67 strict pair normalizer"]
+  N --> X
+  X --> R["PUBLIC only: task ID, SHA and audited-cost classification"]
+  S -.->|"never sent"| K["Kernel / public Git / ordinary Actions logs"]
+  V["Externally verified versioned custody + reviewed one-shot activation"] -.-> E
+```
+- Implemented `assemble_audited_pair`: refuses mutable skill mismatch, untrusted audit hash, wrong 3 policy actions and changed budgets; **rebuilds a distinct canonical Registry for each arm**. OFF false_solved triggers stop **before any ON scoring**.
+- Implemented `validate_private_archive`: exact immutable raw SHA, 64 matching task IDs and aggregate independent audit commitments; only structural/original-byte provenance, **not external custody**. `source_first_preflight` demands old14/new9 frozen source and official original 192 choices first.
+- Real-scorer call entry remains `SCORING_ACTIVATED=False`, no live one-shot invocation. [Spec](../specs/OPPORTUNITY-001-REAL-PAIR-ENGINE.md) / [Issue #76](https://github.com/ryonakayama234/DekaSugi/issues/76).
