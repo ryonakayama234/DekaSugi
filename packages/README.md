@@ -107,3 +107,6 @@ The in-memory evaluator-only TrainCase includes a separate third audit. Public m
 | `scripts.verify_opportunity_generator_lock` | verify frozen original Git blobs + historic B1/B2/B3/skill and recomputed public/audit commitments | source-only `not_scoring_authorized` |
 
 This verifier is a standalone read-only process and does not authorize a new TRAIN64 trial. Original data retention and real evidence ingestion remain future independently reviewed components. [Lock](../experiments/OPPORTUNITY-001/pilot-generator-lock-v1.json) / [tests](../tests/test_opportunity_generator_lock.py).
+
+## OPPORTUNITY-001 PR7 — pretrial decision-only external entrypoint
+`scripts.prepare_opportunity_decisions` recomputes deterministic B1/B2/B3 choices for fresh TRAIN64 from verified source and frozen old TRAIN/DREAM snapshots, with public-only payload and digest; independent policy CPU/wall accounting is not part of sealed digest. No calls to paired scorer and no old DEV/FINAL. Further evaluation requires distinct original-evidence adapter and one-shot activation. [Contract](../docs/architecture/contracts.md).

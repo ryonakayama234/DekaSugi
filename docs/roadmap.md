@@ -152,3 +152,6 @@ Independent stdlib method regeneration and public/audit SHA-only commitment prec
 
 ## OPPORTUNITY-001 PR6 — source/policy freeze achieved; real scoring still blocked
 Before first paired TRAIN64 trial, source-main commit/9 Git blobs/independent public and third-audit commitments/Python and frozen B1/B2/B3 snapshot+skill hashes are preserved in [pilot-generator-lock-v1.json](../experiments/OPPORTUNITY-001/pilot-generator-lock-v1.json). [Verifier](../scripts/verify_opportunity_generator_lock.py) validates originals before importing a generator. Both old and fresh evaluation permission flags remain **false**. Next work: actual-evidence adapter + external/private evidence preservation decision + reviewed before-trial seal + independent once-only activation. No new scored experiment yet.
+
+## OPPORTUNITY-001 PR7 — pretrial decision evidence before scorer
+Compute and capture 64×3 B1/B2/B3 choices using only new public TaskSpec and pre-frozen old TRAIN/DREAM snapshots. Public artifact from [pretrial CI](../.github/workflows/opportunity-pretrial.yml) is separately hashed; no private third audit or solver. Then separately review and pin public decision digest before constructing activation. [Script](../scripts/prepare_opportunity_decisions.py) / [runs](../experiments/OPPORTUNITY-001/runs/README.md).

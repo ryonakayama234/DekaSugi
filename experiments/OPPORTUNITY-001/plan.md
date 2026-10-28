@@ -107,3 +107,6 @@ A second **stdlib-only** implementation of PILOT-V1 derives the same 64 public T
 
 ## PR6 source hash/identity freeze; not execution authorization
 Following exact-head PR63 review and CI identity evidence, `pilot-generator-lock-v1.json` pins 9 source Git blobs, a fixed main origin, Python patch version, public TRAIN64 manifest SHA `bc950ef3187fc34851eef5cff6df194ce27186b3a03b5399f2209e9905f04a85`, independent third-audit commitment `fd4a1afd1eae84026a526d82a75cec13107dfd394f86d166c7efca4763a52eaa`, and original EXP-0003A top skill/B1/B2/B3 snapshot SHA. A read-only verifier checks them before importing any TaskSpec generator. This source freeze explicitly refuses scored trial authorization. All new measured outcomes: **0**. Future real adapter/chronology/retention/activation remain distinct gates.
+
+## PR7 policy-before-trial public seal
+Following source-first freeze PR64, independent pretrial code computes B1/B2/B3 actions for all 64 new TRAIN public TaskSpecs and writes an immutable-output-once JSON artifact. CI handles public task ID, action, reason, snapshot hashes and digest ONLY; no audit/task family/seed or result. Timings are measured but excluded from deterministic SHA. **A future separate reviewed SHA pin must precede any OFF/ON trial**; policy calculation in CI is not a scored experiment. Actual paired trials 0.

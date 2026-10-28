@@ -1,0 +1,39 @@
+name: OPPORTUNITY-001 TRAIN64 pretrial choices only (NO SCORING)
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/prepare_opportunity_decisions.py'
+      - 'tests/test_opportunity_pretrial.py'
+      - '.github/workflows/opportunity-pretrial.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/prepare_opportunity_decisions.py'
+      - '.github/workflows/opportunity-pretrial.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  seal-pretrial-only:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source-locked commit
+        uses: actions/checkout@v4
+      - name: Python 3.12.15 (exact source freeze)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.15"
+      - name: Verify old/new frozen source and derive pretrial-only B1/B2/B3 choices
+        run: |
+          mkdir -p .run
+          python -m scripts.verify_opportunity_generator_lock
+          python -m scripts.prepare_opportunity_decisions --mode decisions-hash-only --output .run/OPPORTUNITY-001-pretrial-public.json
+      - name: Upload public-only pretrial seal evidence (NO AUDITS, NO OUTCOMES)
+        uses: actions/upload-artifact@v4
+        with:
+          name: OPPORTUNITY-001-PILOT-V1-public-choices-only
+          path: .run/OPPORTUNITY-001-pretrial-public.json
+          if-no-files-found: error
+          retention-days: 90

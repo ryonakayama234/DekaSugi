@@ -554,3 +554,16 @@ flowchart LR
   A -.->|"requires new separately reviewed gate"| F["Future real evidence and one-shot activation"]
 ```
 Original source bytes are compared before importing project generator. The freeze is not original experimental outcome evidence and has NO scored-activation permission. [Lock](../../experiments/OPPORTUNITY-001/pilot-generator-lock-v1.json).
+
+## OPPORTUNITY-001 PR7 implemented policy-before-search stage
+```mermaid
+flowchart LR
+  L["Verified generator/source lock"] --> P["Fresh TRAIN64 public TaskSpec"]
+  F["Historic frozen B1/B2/B3 snapshots"] --> C["pretrial choose: public TaskSpec only"]
+  P --> C
+  C --> S["PUBLIC 64×3 chosen actions/reasons"]
+  S --> H["Deterministic payload SHA + read-only CI artifact"]
+  H -.->|"separate reviewed SHA pin required"| G["Future trial gate (not implemented)"]
+  E["Audit third examples / source family"] -.->|"NEVER provided"| C
+```
+No solver or scorer in the pretrial CLI. CPU/wall timings are separate, not part of SHA. [script](../../scripts/prepare_opportunity_decisions.py).

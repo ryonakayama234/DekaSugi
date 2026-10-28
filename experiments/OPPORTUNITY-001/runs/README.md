@@ -43,3 +43,7 @@ Related: [plan](../plan.md) / [spec](../../../docs/specs/OPPORTUNITY-001.md) / [
 ## PR6 generator source freeze, no new scored run
 - [Source/policy/public manifest lock](../pilot-generator-lock-v1.json) and [read-only verifier](../../../scripts/verify_opportunity_generator_lock.py) bind the exact source bytes and legacy frozen skill/policy identity. This step is **source-only** (both scoring permissions false), not a research effect measurement.
 - Evidence origin: [PR #63](https://github.com/ryonakayama234/DekaSugi/pull/63) latest-reviewed head `3f90466babfef29b42b5fdda69ba7b043da5c66f`; [CI run #40622827537](https://github.com/ryonakayama234/DekaSugi/actions/runs/40622827537) source SHA and independent third audit commitment. New TRAIN/DEV/FINAL scored rows: **0**.
+
+## PR7 policy pretrial public choice artifact (not scored)
+- [Pretrial-only chooser](../../../scripts/prepare_opportunity_decisions.py) / [read-only CI workflow](../../../.github/workflows/opportunity-pretrial.yml) materialize exactly 64×3 B1/B2/B3 decisions before pairing, without private audit, source family or outcomes. A separate main commit will pin resulting public decision manifest SHA before any actual trials.
+- Source freeze [pilot-generator-lock-v1.json](../pilot-generator-lock-v1.json) remains intact and declares actual scoring false. Scientific state `not_run`.
