@@ -39,3 +39,7 @@ Related: [plan](../plan.md) / [spec](../../../docs/specs/OPPORTUNITY-001.md) / [
 ## PR5 independent source-only preflight
 - `scripts/audit_opportunity_pilot_public.py` recomputes expected public SHA and commits to third audits **by digest only**, without importing generator/scorer. CI tests and hash-only CLI are the engineering scope; no new paired trials and no raw private original artifact archival claimed.
 - Record observed digest, source Git blob SHA and Python version in a later immutable generator lock only after CI/independent review. Scientific status remains `not_run`.
+
+## PR6 generator source freeze, no new scored run
+- [Source/policy/public manifest lock](../pilot-generator-lock-v1.json) and [read-only verifier](../../../scripts/verify_opportunity_generator_lock.py) bind the exact source bytes and legacy frozen skill/policy identity. This step is **source-only** (both scoring permissions false), not a research effect measurement.
+- Evidence origin: [PR #63](https://github.com/ryonakayama234/DekaSugi/pull/63) latest-reviewed head `3f90466babfef29b42b5fdda69ba7b043da5c66f`; [CI run #40622827537](https://github.com/ryonakayama234/DekaSugi/actions/runs/40622827537) source SHA and independent third audit commitment. New TRAIN/DEV/FINAL scored rows: **0**.

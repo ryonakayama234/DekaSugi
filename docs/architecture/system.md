@@ -540,3 +540,17 @@ flowchart LR
   C -->|"YES"| F["Future source/manifest lock, NOT trial activation"]
 ```
 The independent script outputs **hashes only**, no raw third examples, policy inference or paired trial. Source-only equality cannot establish an outcome audit or secure storage. [Script](../../scripts/audit_opportunity_pilot_public.py).
+
+## OPPORTUNITY-001 PR6 — implemented source-first lock, still pre-execution
+```mermaid
+flowchart LR
+  S["Frozen METHOD and source SHA x9"] --> B["Read-only byte verifier"]
+  B -->|"all sources match"| P["Frozen skill/B1/B2/B3 snapshot identity"]
+  P --> D["Two independent TRAIN64 source hash derivations"]
+  D -->|"public/audit commitments match"| A["source_identity_verified_not_scoring_authorized"]
+  B -->|"any drift"| X["Hard stop / no trials"]
+  P -->|"any drift"| X
+  D -->|"any drift"| X
+  A -.->|"requires new separately reviewed gate"| F["Future real evidence and one-shot activation"]
+```
+Original source bytes are compared before importing project generator. The freeze is not original experimental outcome evidence and has NO scored-activation permission. [Lock](../../experiments/OPPORTUNITY-001/pilot-generator-lock-v1.json).

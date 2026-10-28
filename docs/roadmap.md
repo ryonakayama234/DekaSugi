@@ -149,3 +149,6 @@ The new `evaluation.opportunity_pilot` generator and hash-only preflight are imp
 
 ## OPPORTUNITY-001 PR5 — source identity independent double-check
 Independent stdlib method regeneration and public/audit SHA-only commitment precede a separately reviewed generator source lock and actual outcome adapter. Passing hash equality does not permit any scored TRAIN pilot, and never opens old DEV/FINAL. [Independent source verifier](../scripts/audit_opportunity_pilot_public.py) / [method](../experiments/OPPORTUNITY-001/pilot-v1.md).
+
+## OPPORTUNITY-001 PR6 — source/policy freeze achieved; real scoring still blocked
+Before first paired TRAIN64 trial, source-main commit/9 Git blobs/independent public and third-audit commitments/Python and frozen B1/B2/B3 snapshot+skill hashes are preserved in [pilot-generator-lock-v1.json](../experiments/OPPORTUNITY-001/pilot-generator-lock-v1.json). [Verifier](../scripts/verify_opportunity_generator_lock.py) validates originals before importing a generator. Both old and fresh evaluation permission flags remain **false**. Next work: actual-evidence adapter + external/private evidence preservation decision + reviewed before-trial seal + independent once-only activation. No new scored experiment yet.

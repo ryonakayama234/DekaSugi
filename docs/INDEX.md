@@ -158,3 +158,10 @@ CLI: `python -m packages.evaluation.opportunity_pilot --mode hash-only` — publ
 | OPPORTUNITY-PILOT-AUDIT | project generatorをimportしないstdlib独立実装で公開SHA再計算、第三auditはSHAコミットのみ | source-only verification proposed/in review; no trial | [script](../scripts/audit_opportunity_pilot_public.py) / [tests](../tests/test_opportunity_pilot_independent.py) / [method](../experiments/OPPORTUNITY-001/pilot-v1.md) / [runs](../experiments/OPPORTUNITY-001/runs/README.md) |
 
 Expected source hash `bc950ef3187fc34851eef5cff6df194ce27186b3a03b5399f2209e9905f04a85`; original raw evidence preservation is NOT established by this hash-only auditor.
+
+## OPPORTUNITY-001 PR6 — 実装前ソース・課題・固定方策凍結
+| ID | テーマ | 状態 | 文書 |
+|---|---|---|---|
+| OPPORTUNITY-001-PILOT-SOURCELOCK-V1 | source Blob SHA ×9、公開64件と第三監査SHA、既存技能/B1/B2/B3 snapshot SHA、Python版の照合 | source-only frozen; scoring **not authorized**; not_run | [lock](../experiments/OPPORTUNITY-001/pilot-generator-lock-v1.json) / [verifier](../scripts/verify_opportunity_generator_lock.py) / [tests](../tests/test_opportunity_generator_lock.py) / [method](../experiments/OPPORTUNITY-001/pilot-v1.md) / [runs](../experiments/OPPORTUNITY-001/runs/README.md) |
+
+実研究アダプタ・policy before-trial timestamp・結果原本保全は別途。旧DEV/FINAL未使用。

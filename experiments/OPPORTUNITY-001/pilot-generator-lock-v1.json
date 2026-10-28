@@ -1,0 +1,34 @@
+{
+  "schema_version": "OPPORTUNITY-PILOT-GENERATOR-LOCK-V1",
+  "method_id": "OPPORTUNITY-001-PILOT-V1",
+  "source_main_commit": "50bad2c7b31d21492e895a19ea107b82734e49fd",
+  "python_version": "3.12.15",
+  "source_git_blobs": {
+    "scripts/verify_opportunity_generator_lock.py": "8b2ad88ce9024f0609aeba4b210a611e6ba71ca9",
+    "packages/evaluation/opportunity_pilot.py": "bf57adc6bef9bc9c76ed620246d50b2be9a296d3",
+    "scripts/audit_opportunity_pilot_public.py": "924d3060e07603882a22fdd5ccd7a73e931241ac",
+    "packages/exp0003a/__init__.py": "4871ad26677779f01e0e08c03ac6f98f7cbf081e",
+    "packages/protocol/__init__.py": "4083e8b49a863007a86ba26deaf0147802b558d9",
+    "packages/evaluation/__init__.py": "c966d28bf42287d4f653eb56a59741e1e6d5cc4f",
+    ".github/workflows/docs-check.yml": "1a3ce868010a320216642abf56093dc3a89d8e91",
+    "experiments/EXP-0003A/freeze-v1.json": "9b18d9bd4ab44094fae94d9cdcc3f23b4b8ee603",
+    "experiments/OPPORTUNITY-001/pilot-v1.md": "442b26a13a9c2f2a9970ecf806a8c88c7ad84194"
+  },
+  "public_manifest_sha256": "bc950ef3187fc34851eef5cff6df194ce27186b3a03b5399f2209e9905f04a85",
+  "third_audit_commitments_sha256": "fd4a1afd1eae84026a526d82a75cec13107dfd394f86d166c7efca4763a52eaa",
+  "historic_exp0003a_freeze_payload_sha256": "1e0f6daf1cb80262c187c60a3e0a4d2e76dafea911f0633feed3c40f93db8f44",
+  "historic_top_skill_id": "skill_8fe1361cb5014f85",
+  "historic_top_skill_body_sha256": "8fe1361cb5014f8503e4a57392e45f4fc7607e788fdd598f66668fbc11338eff",
+  "historic_policy_snapshot_sha256": {
+    "B1": "3b4fc00f8ad0fe2f1cc0978886d7bc7a6285ed002c842ceeb0106fd51ee5afd4",
+    "B2": "01d5595e1b4c32d200e2734630f38a848e77a64f356741445e011865834f5af7",
+    "B3": "a6d46ab5dd697e8e90789693fdd3bd67bbca445ec07bc8b119401e1c0cf1e210"
+  },
+  "evidence_origin": {
+    "run_id": 40622827537,
+    "job_id": 122600660636,
+    "reviewed_pr": 63
+  },
+  "new_train_pilot_scoring_permitted": false,
+  "old_dev_or_final_scoring_permitted": false
+}
