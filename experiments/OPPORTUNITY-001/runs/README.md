@@ -51,3 +51,10 @@ Related: [plan](../plan.md) / [spec](../../../docs/specs/OPPORTUNITY-001.md) / [
 ## PR7 initial pretrial boundary error (explicitly retained)
 - Initial PR7 code head `7d1e74f`, CI [run #40649096613](https://github.com/ryonakayama234/DekaSugi/actions/runs/40649096613): public pretrial payload SHA `8a8625ed86e66b27bef8d09a023172d2adbc9ad0d42c155ab7f137097e2dccb2`, paired new TRAIN trials 0, no old holdout scoring. **However it regenerated old DEV/FINAL reference tasks via legacy freeze preflight**, contrary to stricter new protocol. Hence SHA is rejected as an authoritative pretrial seal; do not use it to authorize paired work.
 - Remediate and reexecute pretrial under stdlib legacy source-gate + TRAIN/DREAM-only policy reconstruction and independent exact-head review. All actual new TRAIN paired trials are still 0.
+
+## PR9 / Issue #68 — Evidence Capsule 品質検査の設計記録（2026-10-28）
+- **状態: `proposed_design_only; not_run; scored_trials=0`**。本項目は独立して設計される事前判断原本の品質検証計画であり、元Actions artifact memberのraw SHA測定、公開Gitへの原本コピー、独立verification、実験実行を完了した記録ではない。
+- [測定対象とアーキテクチャ](../../../docs/specs/OPPORTUNITY-001-CHOICE-LOCK-DESIGN.md)：正式PR7 main `c6b01c2`、公式run `40659741488`、job `122719482732`、artifact `12803053107`を唯一の採用候補とする。初期不適切runが同じlogical hashを返していてもoriginの同一性は認めない。
+- [engineering preregistration](../choice-custody-preregistration.md)：C01–C09個別pass/fail/not_observedとN01–N12人工fixture負例、停止規則、保持原本とcanonical hash区別を実装**前**に固定する設計。保管予定の`evidence/pilot-choices-public-v1.json`や`pilot-choice-lock-v1.json`は**未作成**。
+- 採点・学習能力向上・未知問題正答率・policy regretの新たな結果は`not_observed`。private第三audit元bytesの非公開長期保管、独立実scorer、one-shot activationはIssue #66の別ゲート。旧EXP-0003A FINAL128を開かない。
+- 本docs-only PRのCI/独立レビューも実際に通過するまでは`pending`のまま。将来のverification runでは元member raw SHA、コピーSHA、logical payload SHA、出典・保持の記録と失敗ケースを固定し、結果が無ければゼロに置換しない。
