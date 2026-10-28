@@ -53,7 +53,7 @@ def validate_source_blobs(lock: dict, root: Path) -> None:
         raise ValueError("Unexpected pilot method")
     if lock["source_main_commit"] != "50bad2c7b31d21492e895a19ea107b82734e49fd":
         raise ValueError("Unexpected immutable main source commit")
-    if type(lock["python_version"]) is not str or not re.fullmatch(r"3\.12\.\d+", lock["python_version"]):
+    if lock["python_version"] != "3.12.15":
         raise ValueError("Unsupported source Python version")
     for key in ("public_manifest_sha256", "third_audit_commitments_sha256",
                 "historic_exp0003a_freeze_payload_sha256",
@@ -110,6 +110,10 @@ def verify_generator_lock(root: Path = ROOT) -> dict[str, object]:
     if policy["snapshot_sha256"] != lock["historic_policy_snapshot_sha256"]:
         raise ValueError("Frozen B1/B2/B3 snapshots mismatch")
 
+    # Direct execution (python scripts/...) starts with scripts/ in sys.path.
+    # Add only this verified repo root AFTER all pinned source checks.
+    if str(root) not in sys.path:
+        sys.path.insert(0, str(root))
     # Only AFTER all source SHA and frozen-identity checks may public generation run.
     from packages.evaluation.opportunity_pilot import public_preflight
     from scripts.audit_opportunity_pilot_public import verify_public

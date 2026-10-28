@@ -4,7 +4,7 @@
   "source_main_commit": "50bad2c7b31d21492e895a19ea107b82734e49fd",
   "python_version": "3.12.15",
   "source_git_blobs": {
-    "scripts/verify_opportunity_generator_lock.py": "8b2ad88ce9024f0609aeba4b210a611e6ba71ca9",
+    "scripts/verify_opportunity_generator_lock.py": "f38b51fa6188a4488322690b5db93b7fa8e0911d",
     "packages/evaluation/opportunity_pilot.py": "bf57adc6bef9bc9c76ed620246d50b2be9a296d3",
     "scripts/audit_opportunity_pilot_public.py": "924d3060e07603882a22fdd5ccd7a73e931241ac",
     "packages/exp0003a/__init__.py": "4871ad26677779f01e0e08c03ac6f98f7cbf081e",

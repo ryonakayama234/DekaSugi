@@ -3,6 +3,9 @@ from __future__ import annotations
 
 from copy import deepcopy
 import json
+import os
+import subprocess
+import sys
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
@@ -59,6 +62,23 @@ class OpportunityGeneratorLockTests(unittest.TestCase):
                 tampered[key] = bad
                 with self.assertRaises(ValueError):
                     validate_source_blobs(tampered, ROOT)
+
+    def test_python_patch_drift_even_valid_312_rejected(self):
+        bad = deepcopy(self.lock)
+        bad["python_version"] = "3.12.3"
+        with self.assertRaisesRegex(ValueError, "Unsupported source Python version"):
+            validate_source_blobs(bad, ROOT)
+
+    def test_direct_script_launch_without_pythonpath(self):
+        env = dict(os.environ)
+        env.pop("PYTHONPATH", None)
+        cmd = [sys.executable, "scripts/verify_opportunity_generator_lock.py"]
+        proc = subprocess.run(cmd, cwd=ROOT, env=env,
+                              text=True, capture_output=True, timeout=120)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr[-1200:])
+        output = json.loads(proc.stdout)
+        self.assertEqual(output["status"], "source_identity_verified_not_scoring_authorized")
+        self.assertEqual(output["paired_trials_executed"], 0)
 
     def test_hidden_field_and_policy_hash_tamper_fail(self):
         tampered = deepcopy(self.lock)
