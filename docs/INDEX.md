@@ -136,7 +136,7 @@ tags: navigation, architecture, research, experiments
 |---|---|---|---|
 | OPPORTUNITY-001-PR2 | 固定二択の人工fixture分類、欠測/偽解/費用regret校正 | implemented_synthetic_only; scientific not_run | [module](../packages/evaluation/opportunity.py) / [tests](../tests/test_opportunity_fixture.py) / [spec](specs/OPPORTUNITY-001.md) / [run ledger](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #58](https://github.com/ryonakayama234/DekaSugi/issues/58) |
 
-実データadapterは未実装。旧EXP-0003A DEV64/FINAL128には触れず、METRO CAL-01のfixture認証も拡大解釈しない。
+実データを実際に採点・認証するadapterは未実装（PR8の純粋normalizerは未起動）。旧EXP-0003A DEV64/FINAL128には触れず、METRO CAL-01のfixture認証も拡大解釈しない。
 
 ## OPPORTUNITY-001 PR3 — fresh TRAIN pilot method fixed (no execution)
 | ID | テーマ | 状態 | 文書 |
@@ -165,3 +165,9 @@ Expected source hash `bc950ef3187fc34851eef5cff6df194ce27186b3a03b5399f2209e9905
 | OPPORTUNITY-001-PILOT-SOURCELOCK-V1 | source Blob SHA ×9、公開64件と第三監査SHA、既存技能/B1/B2/B3 snapshot SHA、Python版の照合 | source-only frozen; scoring **not authorized**; not_run | [lock](../experiments/OPPORTUNITY-001/pilot-generator-lock-v1.json) / [verifier](../scripts/verify_opportunity_generator_lock.py) / [tests](../tests/test_opportunity_generator_lock.py) / [method](../experiments/OPPORTUNITY-001/pilot-v1.md) / [runs](../experiments/OPPORTUNITY-001/runs/README.md) |
 
 実研究アダプタ・policy before-trial timestamp・結果原本保全は別途。旧DEV/FINAL未使用。
+
+
+## OPPORTUNITY-001 PR8 — non-activated canonical tuple normalizer
+- [Adapter contract](specs/OPPORTUNITY-001-REAL-ADAPTER.md) / [pure module](../packages/evaluation/opportunity_actual.py) / [synthetic adversarial tests](../tests/test_opportunity_actual.py) / [run ledger](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
+- PR8 is a **review-gated draft** for *normalizing* canonical nine-field audited tuples, not a trusted live scorer/real-evidence provenance verifier. It strictly checks search status/program, SHA trace, canonical meter, same task/budget and redaction.
+- Scientific status: new TRAIN/DEV/FINAL scores = **0, not_run**. PR7 pretrial decision seal, verifiable private-original custody, separate activation/independent recount are outstanding. Earlier PR1–PR6 descriptions are historical milestones and do not override this gate.
