@@ -32,7 +32,9 @@ def _local_file(path: Path, *, root: Path) -> os.stat_result:
         if resolved.is_relative_to(root.resolve(strict=True)):
             raise ValueError("private archive must stay outside public repository")
         info = path.stat(follow_symlinks=False)
-    except OSError:
+    except (OSError, RuntimeError):
+        # pathlib.resolve(strict=True) raises RuntimeError on symlink loops.
+        # A traceback may include private input paths, so redact it here.
         raise ValueError("private archive unavailable or inaccessible") from None
     if not stat.S_ISREG(info.st_mode) or info.st_size <= 0 or info.st_size > MAX_BYTES:
         raise ValueError("private archive nonregular, empty or oversized")
