@@ -9,6 +9,7 @@ and retention must still be externally certified before one-shot scoring.
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from hashlib import sha256
 import json
@@ -19,6 +20,10 @@ import stat
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+# Direct script execution must also load the verified scripts package.
+# No project packages are imported until the old/new source-byte gates.
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 MAX_RAW_BYTES = 256_000
 METHOD = "OPPORTUNITY-001-PILOT-V1"
 SCHEMA = "opportunity-private-audit-original-v1"
@@ -161,22 +166,54 @@ def _private_destination(path: Path) -> os.stat_result:
         _fail()
 
 
-def _write_exclusive(path: Path, raw: bytes) -> None:
-    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
+@contextmanager
+def _opened_parent(path: Path, expected: os.stat_result):
+    """Pin the verified private directory inode, never follow later path swaps.
+
+    O_NOFOLLOW protects the terminal directory element; comparing the opened
+    descriptor to the earlier preflight protects intermediate ancestor swaps.
+    All writes/readbacks MUST be relative to this retained descriptor.
+    """
+    fd = None
     try:
-        fd = os.open(path, flags, 0o600)
+        flags = (os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0)
+                 | getattr(os, "O_CLOEXEC", 0))
+        fd = os.open(path.parent, flags)
+        actual = os.fstat(fd)
+        if ((actual.st_dev, actual.st_ino) !=
+                (expected.st_dev, expected.st_ino)
+                or not stat.S_ISDIR(actual.st_mode)
+                or stat.S_IMODE(actual.st_mode) & 0o077
+                or hasattr(os, "geteuid") and actual.st_uid != os.geteuid()):
+            _fail()
+        yield fd
+    except OSError:
+        _fail()
+    finally:
+        if fd is not None:
+            os.close(fd)
+
+
+def _write_exclusive(filename: str, raw: bytes, parent_fd: int) -> None:
+    flags = (os.O_WRONLY | os.O_CREAT | os.O_EXCL |
+             getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_CLOEXEC", 0))
+    try:
+        fd = os.open(filename, flags, 0o600, dir_fd=parent_fd)
         with os.fdopen(fd, "wb") as destination:
             destination.write(raw)
             destination.flush()
             os.fsync(destination.fileno())
+        # Commit the directory entry, not merely file contents.
+        os.fsync(parent_fd)
     except OSError:
         _fail()
 
 
-def _readback(path: Path, raw_hash: str, length: int) -> None:
-    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+def _readback(filename: str, raw_hash: str, length: int, parent_fd: int) -> None:
+    flags = (os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) |
+             getattr(os, "O_CLOEXEC", 0))
     try:
-        with os.fdopen(os.open(path, flags), "rb") as source:
+        with os.fdopen(os.open(filename, flags, dir_fd=parent_fd), "rb") as source:
             info = os.fstat(source.fileno())
             if (not stat.S_ISREG(info.st_mode) or
                     stat.S_IMODE(info.st_mode) & 0o077 or info.st_size != length):
@@ -187,7 +224,6 @@ def _readback(path: Path, raw_hash: str, length: int) -> None:
     except OSError:
         _fail()
 
-
 def save_private_original(raw: bytes, primary: Path, secondary: Path) -> dict:
     """One-shot local save+readback; not externally attested durable custody."""
     if type(raw) is not bytes or not 0 < len(raw) <= MAX_RAW_BYTES:
@@ -197,12 +233,13 @@ def save_private_original(raw: bytes, primary: Path, secondary: Path) -> dict:
             or a.st_dev == b.st_dev):
         _fail()  # require distinct mounted filesystems; still not proof of offsite
     digest_bytes = sha256(raw).hexdigest()
-    _write_exclusive(primary, raw)
-    _readback(primary, digest_bytes, len(raw))
-    # If the second copy fails, the first private original is deliberately
-    # preserved for investigation. Do not regenerate/rerun silently.
-    _write_exclusive(secondary, raw)
-    _readback(secondary, digest_bytes, len(raw))
+    with _opened_parent(primary, a) as primary_fd, _opened_parent(secondary, b) as secondary_fd:
+        _write_exclusive(primary.name, raw, primary_fd)
+        _readback(primary.name, digest_bytes, len(raw), primary_fd)
+        # If the second copy fails, the first private original is deliberately
+        # preserved for investigation. Do not regenerate/rerun silently.
+        _write_exclusive(secondary.name, raw, secondary_fd)
+        _readback(secondary.name, digest_bytes, len(raw), secondary_fd)
     return {
         "schema_version": "opportunity-private-capture-receipt-v1",
         "status": "two_distinct_mount_copies_raw_readback_pass_only",
