@@ -39,12 +39,19 @@ def _local_file(path: Path, *, root: Path) -> os.stat_result:
     return info
 
 
-def _hash_limited(path: Path) -> tuple[int, str]:
-    """Never deserialize, print, or persist raw evaluator-only bytes."""
+def _hash_limited(path: Path, expected: os.stat_result) -> tuple[int, str]:
+    """Hash one NOFOLLOW-opened inode; bind descriptor to checked file stats."""
     digest = sha256()
     size = 0
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_CLOEXEC", 0)
     try:
-        with path.open("rb") as source:
+        with os.fdopen(os.open(path, flags), "rb") as source:
+            opened = os.fstat(source.fileno())
+            if (not stat.S_ISREG(opened.st_mode) or
+                    (opened.st_dev, opened.st_ino) != (expected.st_dev, expected.st_ino) or
+                    opened.st_size != expected.st_size or
+                    opened.st_mtime_ns != expected.st_mtime_ns):
+                raise ValueError("private archive changed before opened descriptor")
             while True:
                 block = source.read(1024 * 1024)
                 if not block:
@@ -53,6 +60,12 @@ def _hash_limited(path: Path) -> tuple[int, str]:
                 if size > MAX_BYTES:
                     raise ValueError("private archive size limit exceeded")
                 digest.update(block)
+            closed_snapshot = os.fstat(source.fileno())
+            if (closed_snapshot.st_size != opened.st_size or
+                    closed_snapshot.st_mtime_ns != opened.st_mtime_ns or
+                    closed_snapshot.st_dev != opened.st_dev or
+                    closed_snapshot.st_ino != opened.st_ino):
+                raise ValueError("private archive changed during read")
     except OSError:
         raise ValueError("private archive read failure") from None
     return size, digest.hexdigest()
@@ -69,8 +82,8 @@ def verify_private_copies(primary: Path, secondary: Path, expected_sha256: str,
         raise ValueError("private archive paths refer to the same file")
     if first.st_size != second.st_size:
         raise ValueError("private copies have different byte lengths")
-    first_size, first_hash = _hash_limited(primary)
-    second_size, second_hash = _hash_limited(secondary)
+    first_size, first_hash = _hash_limited(primary, first)
+    second_size, second_hash = _hash_limited(secondary, second)
     if (first_size != first.st_size or second_size != second.st_size or
             first_size != second_size or first_hash != expected_sha256 or
             second_hash != expected_sha256):
@@ -97,13 +110,19 @@ def verify_private_copies(primary: Path, secondary: Path, expected_sha256: str,
     }
 
 
+class _RedactedParser(argparse.ArgumentParser):
+    def error(self, message: str) -> None:
+        # argparse normally echoes private paths from unknown CLI arguments.
+        raise ValueError("invalid private-copy command arguments")
+
+
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Redacted local raw-copy SHA256 check (NOT a custody gate)")
+    parser = _RedactedParser(description="Redacted local raw-copy SHA256 check (NOT a custody gate)")
     parser.add_argument("--primary", type=Path, required=True)
     parser.add_argument("--secondary", type=Path, required=True)
     parser.add_argument("--expected-sha256", required=True)
-    args = parser.parse_args(argv)
     try:
+        args = parser.parse_args(argv)
         report = verify_private_copies(args.primary, args.secondary, args.expected_sha256)
     except (ValueError, OSError):
         print("ERROR: private-copy integrity check failed; no research authorization", file=sys.stderr)
