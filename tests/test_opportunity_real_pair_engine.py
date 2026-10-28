@@ -62,7 +62,8 @@ class ActualPairSyntheticOnlyTests(unittest.TestCase):
         def fake_score(t,a,r,learned):
             seen.append(("trial",r,dict(learned),a.input))
             return fake_trial(t.task_id,5 if not learned else 3)
-        result=m.assemble_audited_pair(task(),audit(),skill(),CHOICES,ahash(),
+        frozen=skill()
+        result=m.assemble_audited_pair(task(),audit(),frozen,CHOICES,ahash(),
                                       registry_factory=fresh,
                                       register_skill=register,
                                       validate_skill=lambda s,r: seen.append(("validate",r)),
@@ -73,7 +74,8 @@ class ActualPairSyntheticOnlyTests(unittest.TestCase):
         self.assertEqual(result["policies"]["B1"]["excess_calls"],2)
         self.assertEqual([x[0] for x in seen],["validate","trial","register","trial"])
         self.assertEqual(seen[1][2],{})
-        self.assertEqual(seen[3][2],{SKILL_ID:skill().__dict__} if False else {SKILL_ID:seen[3][2][SKILL_ID]})
+        self.assertEqual(set(seen[3][2]),{SKILL_ID})
+        self.assertIs(seen[3][2][SKILL_ID], frozen)
         self.assertNotIn("SYNTHETIC-IN",json.dumps(result))
         self.assertNotIn("SYNTHETIC-OUT",json.dumps(result))
 
