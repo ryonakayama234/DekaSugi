@@ -2,7 +2,7 @@
 
 id: DOC-INDEX
 status: active
-updated: 2026-10-26
+updated: 2026-10-28
 tags: navigation, architecture, research, experiments
 
 **探す → 該当する小さな文書を読む → 必要な依存文書だけを辿る。**
@@ -121,3 +121,12 @@ tags: navigation, architecture, research, experiments
 ## POLICY-DIAG-001 original-public evidence analysis (complete within archived-public scope)
 - [Descriptive diagnosis run](../experiments/POLICY-DIAG-001/runs/20261028-archive-public-diagnosis.md) / [aggregate JSON](../experiments/POLICY-DIAG-001/runs/20261028-archive-public-diagnosis.json) / [hash-gated script](../scripts/analyze_policy_diag_archives.py) / [archive validation tests](../tests/test_policy_diag_archives.py).
 - Results: Dream overlap 24/96; 5NN overlap mean 2.890625/5; different neighbors 61/64 yet different vote/saving only 1/64; different action 1/64 but observed primitive costs identical 64/64. This is an exploratory **partial** explanation, not fresh holdout inference or H3 confirmation. DEV public TaskSpecs absent: distances/close_support not_observed; FINAL128 sealed.
+
+## OPPORTUNITY-001 — 能力上限・学習機会の実装前設計（2026-10-28）
+| ID | テーマ | 現在状態 | 研究正本 |
+|---|---|---|---|
+| OPPORTUNITY-001 | 固定技能ON/OFFの正答・費用機会、Kernelの取り逃がし、表現/探索制約の識別 | proposed_design_only; not_run; numerical preregistration not frozen | [spec](specs/OPPORTUNITY-001.md) / [plan proposal](../experiments/OPPORTUNITY-001/plan.md) / [run ledger](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #56](https://github.com/ryonakayama234/DekaSugi/issues/56) |
+
+- 主対象モジュールは`evaluation`、将来の専用モジュール `packages/evaluation/opportunity.py` は**未実装**。参照元は `kernel`/`learning`、メトリクスと欠測契約は既存METRO-0001を踏襲する。
+- [ARCH-001](architecture/system.md)に全体処理図、[ARCH-002](architecture/contracts.md)に二択paired evidenceとlearner/evaluator信頼境界。旧POLICY-DIAG-001のDEV事後診断は新しい確証データではない。
+- 本計画はreview待ちの設計案。split・seed・検定・進路選択の数値閾値の固定は後続の独立レビュー済みcommitで行う。未実行のため実測結果なし。

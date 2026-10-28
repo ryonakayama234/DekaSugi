@@ -2,7 +2,7 @@
 
 id: PKG-INDEX
 status: proposed
-updated: 2026-10-24
+updated: 2026-10-28
 tags: packages, modularity, api
 
 現在の実装と将来の予定を区別する。EXP-0001は型付き文字列DSLの探索・実行・検証・CLIを実装。正式な採否は実験runに依存する。
@@ -80,3 +80,9 @@ Generatorは3分割の内容hashを計算するが、Kernelの判断と監査付
 This module is deliberately **outside** the 14 pinned source blobs and does
 not alter `packages/exp0003a`, `packages/evaluation` or the CAL-01-only
 `packages/metrology`. [Spec](../docs/specs/EXP-0003A-DEV-EVALUATOR.md).
+
+## OPPORTUNITY-001 — Proposed evaluation responsibility (no code)
+- **Owner: `evaluation`**; future candidate `packages/evaluation/opportunity.py`, NOT created in the design PR. The component consumes source/hash-validated frozen public task, pretrial policy choice and evaluator-only paired ON/OFF outcomes through a read-only gateway. It does not score hidden holdouts by itself.
+- `kernel`/`learning` retain their existing source/decision roles; old EXP-0003A frozen files are unchanged. METRO-0001 currently remains CAL-01 artificial-fixture-only; real paired observations require independently validated adapter.
+- `both_correct` cost regret differs from one-correct missed success and from neither-correct unknown. It cannot prove grammar unexpressibility from a failed search.
+- [Spec](../docs/specs/OPPORTUNITY-001.md) / [Plan proposal](../experiments/OPPORTUNITY-001/plan.md) / [Architecture](../docs/architecture/system.md) / [Contracts](../docs/architecture/contracts.md).

@@ -2,7 +2,7 @@
 
 id: ARCH-002
 status: proposed
-updated: 2026-10-26
+updated: 2026-10-28
 tags: contracts, schema, task, ast, evaluation
 
 EXP-0001は**型付きの小さなDSL**を実装し、自由なPythonコードを生成・実行しない。以下のTaskSpec/ASTのJSON例は実装スキーマ `0.1` に対応する。
@@ -536,3 +536,35 @@ flowchart LR
     T["Archived public TaskSpec.examples: absent"] -. "not_observed" .-> R
 ```
 Only original `public.json` and PR3 public snapshot member are read; ZIP evaluator-private members are not parsed. `archive-policy-diag/0.1` input is a pair of byte-checksummed immutable public JSON payloads, plus source-blob-checked `freeze-v1.json`. Output has original-public evidence SHA, frozen snapshot SHA, denominators and descriptive aggregates, without task IDs, private examples, source rows, evaluation execution or query features. Since archived TaskSpecs are absent, exact 8D query features, neighbor distances and `close_support` are `not_observed`; replay of the 5NN *membership* from precomputed archived IDs is not an independent KNN search. [Report](../../experiments/POLICY-DIAG-001/runs/20261028-archive-public-diagnosis.md).
+
+## OPPORTUNITY-001 — prospective paired-trial contract (design-only, no production adapter)
+
+```mermaid
+flowchart TD
+  T["Fresh public TaskSpec / public task_id"] --> K["Kernel choice before trials"]
+  T --> V["Independent paired OFF/ON"]
+  C["Frozen canonical primitives / one skill / budget"] --> K
+  C --> V
+  H["Private audit example / generator-only family, seed"] --> V
+  V --> R["Evaluator-only raw TrialEvidence"]
+  K --> R
+  R --> G["Source/hash/metric/split comparability gateway"]
+  G --> M["OpportunityRecord/0.1 (sanitized)"]
+  M --> A["MetricSpec + uncertainty + claim review"]
+  A --> Z["New future research plan, never old holdout retune"]
+  H -.->|"forbidden"| L["Kernel / Learning"]
+  R -.->|"no DEV/FINAL labels"| L
+  X["METRO-0001 CAL-01 fixture reducer"] -.->|"not a validated real adapter"| G
+```
+
+**Proposed schema** (`opportunity-record/0.1`, see [spec](../specs/OPPORTUNITY-001.md)):
+- Identity: `schema_version`, `phase`, `task_id`, `run_id`, `source_refs{dataset_sha256,primitive_blob_sha,skill_hash,policy_sha,verifier_version,meter_version,budget_id}`. All identity/metric-version fields must be present before comparison.
+- `policy{chosen_before_trials,decision_hash}`, `paired{OFF,ON}` with separate independent audit correctness, false-solved, candidate count, canonical primitive calls, trace and CPU/wall phase scope.
+- `classification` is one of `both_correct_on_cheaper`, `both_correct_off_cheaper`, `both_correct_tie`, `on_only_correct`, `off_only_correct`, `neither_correct`, `not_observed`, `invalid`, `non_comparable`. Classification requires verified comparison keys, and missingness is not a numeric zero.
+- `policy_excess_calls` may be non-null only if **both arms audited correct**. `missed_success`/`lost_success` are separate accuracy events. `best_of_two` is a retrospective restricted choice, never a learner-facing oracle.
+- `expressibility_evidence`: `formal_invariant_proof` with reviewed proof reference and domain assumptions, `exhaustive_within_budget` with exact enumerator/budget and visible+audit example scope, `found_verified_program`, or `unknown_or_censored`. Failed search alone does not establish unrepresentability.
+- `quality{comparison_status,missing_reason,provenance_ref}` plus MetricSpec name/version/unit/denominator and declared task/family analysis level.
+
+**Trust / lifecycle**: TRAIN-only allowable paired teachers may be presented to learner only by explicit training interface; DEV/FINAL raw private outcomes remain evaluator-only. A public sanitized aggregate must not contain private third examples, family/seed/source IDs, or reuse old holdout labels to tune. Original raw records are write-once with SHA; read-only Gateway rejects mismatched SHA/schema/duplicate/split/primitive/metric/budget before analysis. `packages/metrology` currently accepts CAL-01 fixture only; new adapter requires separate calibration and design approval.
+
+**No unapproved execution**: PR1 is purely documents. New sample generation, training, experiments and especially EXP-0003A FINAL128 are not authorized. Linked [spec](../specs/OPPORTUNITY-001.md), [plan proposal](../../experiments/OPPORTUNITY-001/plan.md), [run ledger](../../experiments/OPPORTUNITY-001/runs/README.md).

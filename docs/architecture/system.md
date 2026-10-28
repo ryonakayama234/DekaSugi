@@ -2,7 +2,7 @@
 
 id: ARCH-001
 status: proposed
-updated: 2026-10-26
+updated: 2026-10-28
 tags: diagram, architecture, components, wake-sleep
 
 > 目標全体図は**提案**。EXP-0001に限定した型付き探索・実行・検証は実装済み（採否は実験runを参照）。各モジュールは [packages目録](../../packages/README.md) で管理。
@@ -455,3 +455,31 @@ flowchart TD
   Y["Fresh DEV generator / FINAL128"] -. "NO scoring" .-> G
 ```
 The archive gateway is implemented at `scripts/analyze_policy_diag_archives.py` and verifies original member SHA, frozen policy snapshots and immutable data references **before** retrospective analysis. Original DEV `public.json` lacks public query TaskSpecs; the gateway does **not** recreate query features or 5NN ranking. The separate helper `packages/policy_diagnostics` can replay `choose()` only when authenticated permitted public TaskSpec bytes exist. [Run and uncertainty](../../experiments/POLICY-DIAG-001/runs/20261028-archive-public-diagnosis.md).
+
+## OPPORTUNITY-001 — 学習機会・能力上限の診断（設計のみ、未実装）
+
+```mermaid
+flowchart TD
+  N["New preregistered TaskSpec"] --> F["Source-first freeze gate"]
+  F --> P["Kernel chooses BEFORE paired outcomes"]
+  F --> B["Independent OFF/ON trial evaluator"]
+  R["Fixed primitive, candidate skill, budget"] --> P
+  R --> B
+  H["Private third audit, evaluator only"] --> B
+  P --> E["Immutable outcome and decision refs"]
+  B --> E
+  E --> G["Read-only evidence validation / adapter"]
+  G --> O["Opportunity Analyzer (PROPOSED)"]
+  O --> C["Task-level opportunity / regret / missingness"]
+  C --> D{"Research decision, separately reviewed"}
+  D -->|"valid missed opportunity"| A["Future Active Learning or policy study"]
+  D -->|"no useful difference / capacity limit"| S["Future skill invention / DSL study"]
+  D -->|"underidentified"| U["New identification study"]
+  H -.->|"never learner input"| X["Learner trust boundary"]
+  C -.->|"no retroactive tuning"| P
+```
+
+- **Primary module**: `evaluation`; proposed submodule `packages/evaluation/opportunity.py` is NOT present. Existing `packages/evaluation` owns bounded synthesis, `packages/exp0003a_dev` owns historic DEV. They are not modified by this PR.
+- `kernel`: choose on public task before outcomes; `learning`: future TRAIN-only skill candidate; `metrology`: evidence ontology and comparability contracts, CAL-01 synthetic reducer does **not** accept research data yet. Proposed adapter must be separately calibrated/reviewed.
+- Different arm outcomes constitute only a **fixed two-arm opportunity**; new primitive meaning or cross-domain transfer is a separate intervention. An attempted search failure is not a formal proof of missing expressive power.
+- Details: [spec](../specs/OPPORTUNITY-001.md), [proposed plan](../../experiments/OPPORTUNITY-001/plan.md), [ARCH-002](contracts.md), [runs](../../experiments/OPPORTUNITY-001/runs/README.md).

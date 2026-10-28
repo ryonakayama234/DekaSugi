@@ -2,7 +2,7 @@
 
 id: ARCH-UI-001
 status: interface_contract_only; PR3 TRAIN/DREAM source models implemented, UI unimplemented
-updated: 2026-10-26
+updated: 2026-10-28
 tags: ui, research-console, architecture, contracts, provenance
 
 > **将来のUI設計モックの責務契約。UIコードは未実装。** Chatを意思疎通の入口とし、実験・技能・監査を永続的な観測パネルとして示す。CLI/Web/desktopなどの表示技術は固定しない。正本は実験記録であり、UI独自の採点DBは持たない。
@@ -76,3 +76,8 @@ the original `public.json` and `public.evaluator-private.json` artifact.
 Show `planned / activated / audited / failed` distinctly. UI-06 must show
 `FINAL128=not_run` and `H3=unconfirmed` regardless of DEV effect sign.
 No dashboard model may bypass audit or read private source records into policy.
+
+## OPPORTUNITY-001 — future evidence projection (no UI implementation)
+- UI-04 (Evidence & Review) may in future display `both_correct` call differences, single-correct missed successes and `neither_correct` unknowns as **distinct** metrics. UI-06 (Metrology & Claims) can show the fixed two-arm `best_of_two` as retrospective diagnostic envelope only, never as deployed Oracle or broad intelligence score.
+- Data source: reviewed source/hash-gated read-only `OpportunityRecord` and MetricSpec. UI is not allowed to compute new trial outcomes, consume private third audit, retrain on DEV/FINAL, trigger holdouts or promote skills. Current state is `proposed_design_only`.
+- [Specification](../specs/OPPORTUNITY-001.md) / [plan](../../experiments/OPPORTUNITY-001/plan.md) / [run index](../../experiments/OPPORTUNITY-001/runs/README.md).
