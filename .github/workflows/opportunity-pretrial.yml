@@ -28,6 +28,8 @@ jobs:
       - name: Verify old/new frozen source and derive pretrial-only B1/B2/B3 choices
         run: |
           mkdir -p .run
+          # Verify legacy 14 source bytes BEFORE the new gate imports project packages.
+          python -m scripts.verify_opportunity_legacy_sources
           python -m scripts.verify_opportunity_generator_lock
           python -m scripts.prepare_opportunity_decisions --mode decisions-hash-only --output .run/OPPORTUNITY-001-pretrial-public.json
       - name: Upload public-only pretrial seal evidence (NO AUDITS, NO OUTCOMES)
