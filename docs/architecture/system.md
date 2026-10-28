@@ -642,6 +642,20 @@ flowchart TD
 ```
 The PR8 module validates *internal data shape*, not actual source authenticity, decision timestamp, independent audit correctness or original private evidence custody. It does not import/execute a solver. New experiment outcome count is zero. [Real adapter spec](../specs/OPPORTUNITY-001-REAL-ADAPTER.md).
 
+## EXP-0003A DEV64 historical local-backup validation (2026-10-28; no scorer)
+```mermaid
+flowchart TD
+    L["User-provided local DEV64 backup ZIP (PRIVATE)"] --> I["Offline read-only ZIP/CRC/SHA verifier"]
+    H["Historic public DEV64 evidence ledger: expected SHA256"] --> I
+    I -->|all digests match| P["Public hashes-only provenance attestation"]
+    I -.->|raw third audits must not pass| G["Public repository / learner"]
+    L -.->|distinct encrypted storage + restore check still NOT VERIFIED| B["Second restricted long-term copy"]
+    P --> R["Research status unchanged: DEV64 engineering, FINAL sealed"]
+    B -.-> C["Historical long-term custody gate (only when independently verified)"]
+    C -.->|not transferable| O["OPPORTUNITY-001 fresh TRAIN64 private custody gate"]
+```
+No historical DEV64/FINAL scoring, source changes, or old task generation. Upload integrity is verified; a separate durable private backup is **not yet attested**. The future OPPORTUNITY-001 TRAIN64 requires **different** private audit originals and authority. See [sanitized run record](../../experiments/EXP-0003A/runs/20261028-local-zip-integrity.md).
+
 
 ## OPPORTUNITY-001 Issue #74 — source-first private original capture system (synthetic-tested, NOT run)
 ```mermaid

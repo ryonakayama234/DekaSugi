@@ -328,6 +328,11 @@
 
 - PR8 post-review requirement: validate selected solved AST's exact canonical unary String JSON shape and expanded primitive-node budget **before hashing**. Only pinned skill `skill_8fe1361cb5014f85` may appear in ON and its `lower(trim(Input))` body adds two physical nodes; OFF forbids all derived operators. Equality of `selected_ast` and `search.program` is insufficient if either is malformed. Independent source-first skill verification is still required before real trials.
 
+## EXP-0003A DEV64 restricted original ZIP provenance (2026-10-28)
+- A user-provided local historical DEV64 ZIP was checked **read-only** against original+audit artifact byte hashes and all embedded SHA256SUMS; see [sanitized public attestation](experiments/EXP-0003A/runs/20261028-local-zip-integrity.md). Do not commit or expose this archive, private third-audit bytes, or decrypted raw material in Git, CI, logs, UI, or public artifacts.
+- Separate **byte integrity**, **independent audited source equivalence**, **multiple-location restricted durability**, and **experiment activation**. One uploaded, verified, unencrypted ZIP is not proof of a second access-controlled persistent backup. Explicitly label missing evidence `not_verified`.
+- This historical DEV64 bundle is not the fresh OPPORTUNITY-001 TRAIN64 original audit custody required by Issue #66; never use it to bypass the fresh-scorer or one-shot main-only gate. No old DEV/FINAL regeneration or rescoring.
+
 
 ## 2026-10-28 OPPORTUNITY-001 source-first private-original capture (Issue #74; no scoring)
 - [Source-first private capture spec](docs/specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md) / [CLI](scripts/capture_opportunity_private_original.py) / [synthetic negative tests](tests/test_opportunity_private_original_capture.py) implement **only** fresh TRAIN64 evaluator-only original capture to two distinct off-public owner-private files; no ON/OFF scoring or new skill/Kernel action.

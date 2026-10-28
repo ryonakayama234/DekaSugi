@@ -692,6 +692,17 @@ flowchart LR
 
 - PR8 final AST shape gate: exactly `Input(String)` or unary `Call(String, op_id, child)` in canonical JSON; OFF primitive only, ON primitive or source-locked single skill `skill_8fe1361cb5014f85`. The frozen skill expands to two primitive calls `lower(trim(Input))`, and the total expanded AST including Input must be at most **4**. Unknown operator, private field, malformed AST, or over-budget expansion fails before publication of AST hash. The static shape check is **not** evidence provenance authentication.
 
+## EXP-0003A DEV64 local ZIP custody data boundary — 2026-10-28
+```mermaid
+flowchart LR
+    A["Local private outer ZIP"] --> H["SHA256 outer + nested ZIP/entries + SHA256SUMS verifier"]
+    E["Archived public digest registry"] --> H
+    H --> R["PUBLIC: evidence attestation: IDs, hashes, check status, scope, unverified retention"]
+    A -.->|private raw bytes never published| X["PUBLIC Git / Kernel"]
+    A -.->|user-controlled separate copy not observed| P["PRIVATE: secondary long-term encrypted custody"]
+```
+**Public attestation contract**: historical study ID; original scoring run/artifact IDs; audit-only run/artifact IDs; outer ZIP byte size and raw digest; nested ZIP SHA256; original JSON digests; exact SHA256SUMS pass counts; limitation flags `provided_copy_integrity_verified`, `second_private_copy_not_verified`, `fresh_train64_custody_not_satisfied`, `scoring_not_run`. It contains **zero private example bytes, source seeds, third examples, or extracted private JSON**. Public Git is not the store for the original. No key/password is stored in Git. See [attestation](../../experiments/EXP-0003A/runs/20261028-local-zip-integrity.md).
+
 
 ## OPPORTUNITY-001 fresh TRAIN64 private-original capture data contract — 2026-10-28
 ```mermaid
