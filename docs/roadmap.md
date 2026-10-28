@@ -2,7 +2,7 @@
 
 id: ROADMAP
 status: proposed
-updated: 2026-10-26
+updated: 2026-10-28
 tags: milestones, roadmap, planning
 
 | Phase | 課題 | 成立条件 | 状態 |
@@ -108,3 +108,24 @@ distinct explicit approval. [spec](specs/EXP-0003A-DEV-EVALUATOR.md).
   metrics in Git and private raw originals in restricted durable storage.
 - B3−B2 DEV calls/accuracy/candidates are zero; this is not H3 confirmation.
   FINAL128 remains sealed; no method retuning from DEV.
+
+## 2026-10-28 — OPPORTUNITY-001: 次の研究方向を決める能力機会診断（design-only）
+
+[Issue #56](https://github.com/ryonakayama234/DekaSugi/issues/56) / [仕様](specs/OPPORTUNITY-001.md) / [事前登録案](../experiments/OPPORTUNITY-001/plan.md) / [未実行run台帳](../experiments/OPPORTUNITY-001/runs/README.md)。
+
+既存POLICY-DIAG-001はB2/B3の情報差と行動・費用の収束を**事後的**に示したが、学習余地自体が不足しているのか、Kernelが利用できないのかは未識別。OPPORTUNITY-001は固定SkillCandidateの独立paired OFF/ONと凍結方策を比較する、新規データに基づく次段研究**設計**。既存の旧DEVとFINAL128には触れない。
+
+```mermaid
+flowchart TD
+  A["PR1 設計 / 未実行"] --> B["別commitで数値事前登録を固定"]
+  B --> C["TRAIN-only計測・校正を独立レビュー"]
+  C --> D["新DEV工学評価 / 証拠監査"]
+  D --> E{"測定と識別力は十分?"}
+  E -->|"NO"| F["inconclusive: 新識別実験"]
+  E -->|"YES"| G["別承認の新FINAL一度限り"]
+  G --> H{"固定二択の未利用機会は?"}
+  H -->|"YES"| I["新しいActive Learning/Kernel研究"]
+  H -->|"NO / ceiling"| J["技能発明/DSL/探索研究"]
+```
+
+将来の各ゲートでMERMAID構成図/ARCH-002契約/新規run記録を同じPRに同期し、結果は確証・探索・工学校正を分ける。学習器を拡張するかどうかは研究結果が出てから判断。数値分岐閾値・fresh split/seed・primary estimandは結果を開く前の独立レビューで固定する。PR1自体は新しい測定値や科学的採用を主張しない。

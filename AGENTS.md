@@ -256,3 +256,11 @@
 - The retrospective [run](experiments/POLICY-DIAG-001/runs/20261028-archive-public-diagnosis.md) uses only the original DEV64 `public.json` and PR3 TRAIN/DREAM **public** snapshot JSON after independently checking pinned source/freeze, member SHA-256 and frozen B1/B2/B3 policy hashes. No private companion ZIP member, DEV/FINAL task generator, evaluator or learner update is accessed.
 - The verified original public DEV file lacks public query `TaskSpec.examples`. Diagnosing archived 5NN memberships, teacher votes and saving is allowed; claiming exact independently reconstructed DEV 8D query vectors, distances, close-support or `choose()` parity is **not** allowed. Use `not_observed` and `completed_archived_public_partial_diagnosis` status.
 - The read-only archive analyzer is `scripts/analyze_policy_diag_archives.py`; its output MUST remain aggregate-only (never raw rows, task IDs, private third audit examples, or sensitive source payload). Original raw private ZIP retention remains separate Issue #48.
+
+## 30. OPPORTUNITY-001: 学習機会診断の設計境界（Issue #56、2026-10-28）
+- **PR1は設計文書のみ**。`docs/specs/OPPORTUNITY-001.md` と `experiments/OPPORTUNITY-001/plan.md` はレビュー待ちの事前登録**案**。生成・計測・学習・DEV/FINAL起動は行わない。計画の数値・seed・母集団・採否閾値を結果観測より前に、別commitと独立レビューで凍結する。
+- 主対象は `evaluation`（将来の読み取り専用 `packages/evaluation/opportunity.py` 候補）。既存学習器・評価器・凍結EXP-0003Aソースを編集しない。`packages/metrology` はCAL-01人工fixture限定であり、実データへの未校正adapterを既存校正結果として扱わない。
+- 独立paired OFF/ON試行において、**正解を費用に優先**する。callsのregretは両armが監査正解かつ比較可能な場合のみ。片側だけ正解する場合はmissed/lost successとして別計量。両側未解決・片arm欠測をregret=0として黙って補完しない。
+- **表現不能は非発見と異なる。** 全入力に対する原始演算の不変条件に基づく形式的な証明、特定budget/例に対する網羅探索、予算切れ/不明を区別する。best-of-twoは事後の二択上包絡であって、学習した実行時Oracleや汎用知能の上限ではない。
+- public TaskSpec/選択前Decisionとevaluator-only第三audit/paired outcomes/生成元family・seed・source_record_idをデータ契約で隔離。DEV/FINALの事後ラベルを学習器へ戻さない。旧EXP-0003A DEV64を再採点せず、封印FINAL128を開かない。
+- 図・データ契約・spec・plan・run目録・INDEX/roadmapを**同じPR**で同期し、未実行は`not_run`。CI・独立exact-headレビューでP0/P1解消前に統合しない。[研究Issue](https://github.com/ryonakayama234/DekaSugi/issues/56)。

@@ -97,3 +97,7 @@ proposal: DEV64/FINAL128 are not scored, no new performance result exists.**
 No frozen learner code or manifest may be changed; DEV requires a separately
 reviewed main-only gate, and FINAL128 needs a separate explicit approval.
 [Specification](docs/specs/EXP-0003A-DEV-EVALUATOR.md).
+
+## 次期研究候補 — OPPORTUNITY-001（2026-10-28、設計のみ）
+
+[POLICY-DIAG-001の事後分析](experiments/POLICY-DIAG-001/runs/20261028-archive-public-diagnosis.md)を受けて、技能ON/OFFに実際の改善機会が存在するか、Kernelがそれを取り逃がすか、表現力/探索予算の制約に起因するかを区別する[OPPORTUNITY-001の研究設計案](docs/specs/OPPORTUNITY-001.md)を追加。現時点で新実験や新知能能力の測定は**未実行**。 [事前登録案](experiments/OPPORTUNITY-001/plan.md)は独立レビュー・数値閾値凍結前であり、実装・DEV/FINAL評価の許可ではない。既存EXP-0003A FINAL128は封印のまま。
