@@ -37,6 +37,8 @@ jobs:
         run: python -m packages.exp0003a.freeze_cli --mode preflight --output .run/EXP-0003A-PR4-preflight.json
       - name: OPPORTUNITY-001 PILOT-V1 public TRAIN64 manifest SHA only (no trial scoring)
         run: python -m packages.evaluation.opportunity_pilot --mode hash-only
+      - name: OPPORTUNITY-001 independent TRAIN64 public/audit commitments hash-only
+        run: python scripts/audit_opportunity_pilot_public.py
       - name: Run full unit test suite
         run: python -m unittest discover -s tests -v
       - name: Run preregistered EXP-0001 suite
