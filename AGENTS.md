@@ -293,3 +293,9 @@
 - `scripts/verify_opportunity_generator_lock.py` verifies exact local Git blob bytes **before importing the project generator**; only after source/freeze checks does it compare project and independently regenerated hashes. Strictly `new_train_pilot_scoring_permitted=false`, `old_dev_or_final_scoring_permitted=false`. Tests inject source edits, metadata drift and false permission.
 - This is **source-only**: no actual paired scoring permission, independent result audit, external private raw preservation, or chrono sealing of B1/B2/B3 decisions. Future real adapter and one-shot activation require separate review.
 - Keep pinned source files unchanged; source/method changes require new version/seed and new pretrial lock. Do not change historic EXP-0003A freeze. [Issue #60](https://github.com/ryonakayama234/DekaSugi/issues/60).
+
+
+## 31. OPPORTUNITY-001 PR8 — strict non-activated evidence adapter boundary
+- `packages/evaluation/opportunity_actual.py` is a pure tuple normalizer with synthetic-only tests, NOT a scorer, evaluator provenance attestation, skill promotion or data custody mechanism. No actual fresh TRAIN/DEV/FINAL outcomes are authorized by merging it.
+- Fail closed on noncanonical search status/solved/program/selected AST, unsafe `trace_sha256`, 4/100 budget drift, cross-task pairing, canonical `by_op` mismatch, false_solved, nonfinite timing, private field injection. Never transmit third audit raw bytes, source_record_id/family/seed or unseen outcome to Kernel.
+- Before any new TRAIN64 scoring: the reviewed source-first and before-trial decision seal (PR #65), independently verifiable access-controlled original-private-audit custody outside public Git, and a separately reviewed one-shot scorer/independent recount are mandatory. Unresolved P0/P1 blocks merge or activation. [Adapter contract](docs/specs/OPPORTUNITY-001-REAL-ADAPTER.md) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
