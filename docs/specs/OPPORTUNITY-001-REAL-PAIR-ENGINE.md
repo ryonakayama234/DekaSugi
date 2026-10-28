@@ -49,3 +49,6 @@ The two-copy local helper (PR #73), source-first capture helper (PR #75), and th
 4. Only then run the 64 TRAIN pilot once. If the archive cannot be independently verified, **STOP** and record `NOT_RUN`, not zero opportunity or a negative scientific result.
 
 Related: [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66), [Issue #74](https://github.com/ryonakayama234/DekaSugi/issues/74), [Issue #76](https://github.com/ryonakayama234/DekaSugi/issues/76), [PILOT method](../../experiments/OPPORTUNITY-001/pilot-v1.md), [run index](../../experiments/OPPORTUNITY-001/runs/README.md).
+
+## 2026-10-29 direct-call safety hardening
+The shared `assemble_audited_pair()` entrypoint now also **rejects before any package import or arm execution** unless `SCORING_ACTIVATED is True`. This closes accidental bypass via injecting an actual trial callback directly into the library helper; earlier only `_unactivated_real_pair()` had the hard-off switch. In synthetic unit tests a test-local mock enables the call for invented data only and restores `False` automatically; no genuine original is generated, scored, or written.
