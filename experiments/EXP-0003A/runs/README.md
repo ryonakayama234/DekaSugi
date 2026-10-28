@@ -93,3 +93,8 @@ Latest evidence is PR CI, not a held-out experimental result.
 - The *original scoring* job [#40518246537](https://github.com/ryonakayama234/DekaSugi/actions/runs/40518246537) remains FAILED only at its original float-exact auditor. Do **not** change that history.
 - Separate **audit-only** [run #40522186710](https://github.com/ryonakayama234/DekaSugi/actions/runs/40522186710) PASSED exact original SHA256 and independent recount of all 64×4 trials. Derived [Artifact #12742377403](https://github.com/ryonakayama234/DekaSugi/actions/runs/40522186710/artifacts/12742377403): `independent-audit.json` SHA256 `815249008c4121954053ee8fee5e2ff37efe7a81f6dab149ac6b9b1a0719bc19`, public summary SHA256 `4c68e510745a6b45a17daeb1fece94199f20dd18467eaafb8951dd4b93a72aa3`. The initial audit-only run #40521440278 failed before SHA due to Artifact layout; preserved in [run ledger](20261027-dev64.md).
 - B3−B2 DEV64 paired calls/accuracy/candidate differences remain **0**; no H3 support from DEV, no FINAL scored. Public hashes/metrics retained in Git; restricted backup of private raw ZIP remains a user-controlled retention gate before 2027-01-25.
+
+
+## 2026-10-28 uploaded DEV64 historical raw ZIP: verified single copy only
+- [Read-only SHA-256/CRC verification](20261028-local-zip-integrity.md): outer ZIP 65,315 bytes and 4 entries; original one-shot ZIP SHA and audit-only ZIP SHA match the preexisting public run ledger; original 4/4 + audit-only 2/2 SHA256SUMS pass. Private raw bytes never enter Git.
+- This verifies **the supplied copy's integrity**. It does **not** establish a separate encrypted/restricted long-term backup, a restore test, or the fresh OPPORTUNITY-001 TRAIN64 raw private custody. No rescoring, new experiment or FINAL access.
