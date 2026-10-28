@@ -152,3 +152,8 @@ Independent stdlib method regeneration and public/audit SHA-only commitment prec
 
 ## OPPORTUNITY-001 PR6 — source/policy freeze achieved; real scoring still blocked
 Before first paired TRAIN64 trial, source-main commit/9 Git blobs/independent public and third-audit commitments/Python and frozen B1/B2/B3 snapshot+skill hashes are preserved in [pilot-generator-lock-v1.json](../experiments/OPPORTUNITY-001/pilot-generator-lock-v1.json). [Verifier](../scripts/verify_opportunity_generator_lock.py) validates originals before importing a generator. Both old and fresh evaluation permission flags remain **false**. Next work: actual-evidence adapter + external/private evidence preservation decision + reviewed before-trial seal + independent once-only activation. No new scored experiment yet.
+
+
+## OPPORTUNITY-001 PR8: canonical two-arm tuple normalizer (draft, no scoring)
+- Implemented only the pure synthetic-test normalizer `evaluation.opportunity_actual` with hard fail on private field injection, unsafe trace, inconsistent search/AST/meter, mismatched public task and 4/100 budgets; documentation and run index synchronize.
+- Blocking chain: independently reviewed PR #65 pretrial decisions; independently verified off-public original private-audit custody (Issue #66); later separate reviewed source-first scorer, sealed time order and one-shot main-only TRAIN64 activation. No fresh scored rows, no old DEV/FINAL evaluation. Scientific conclusion remains not_run.
