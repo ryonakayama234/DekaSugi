@@ -204,3 +204,8 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 ## EXP-0003A DEV64 — uploaded local ZIP verified without private publication (2026-10-28)
 - [Local exact-byte verification and custody limitation](../experiments/EXP-0003A/runs/20261028-local-zip-integrity.md): the user-supplied outer ZIP (65,315 bytes) and both nested original/audit artifact ZIPs match historical SHA-256 records; inner SHA256SUMS 4/4 + 2/2 PASS. This is a **read-only original-byte integrity attestation**, not new scoring, an independently durable second backup, or a valid OPPORTUNITY-001 TRAIN64 privacy archive.
 - Original confidential ZIP stays **off public GitHub**; only hashes and nonprivate statuses are indexed. [Architecture](architecture/system.md) / [data flow](architecture/contracts.md) / [DEV ledger](../experiments/EXP-0003A/runs/20261027-dev64.md) / [Issue #48](https://github.com/ryonakayama234/DekaSugi/issues/48).
+
+
+## OPPORTUNITY-001 — actual canonical OFF/ON pair engine, still blocked
+- [Real pair engine contract](specs/OPPORTUNITY-001-REAL-PAIR-ENGINE.md) / [unactivated engine](../scripts/opportunity_real_pair_engine.py) / [synthetic-only tests](../tests/test_opportunity_real_pair_engine.py) / [Issue #76](https://github.com/ryonakayama234/DekaSugi/issues/76).
+- The OFF/ON *execution wiring* is newly implemented for later separate activation; `SCORING_ACTIVATED=false` and **fresh TRAIN64 actual scored pairs=0**. Private original capture and external secure versioned archive/restore remain unverified; the owner-only off-Git Google Drive folder is an empty destination, not proof of custody.
