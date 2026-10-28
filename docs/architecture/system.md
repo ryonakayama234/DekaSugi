@@ -641,3 +641,22 @@ flowchart TD
   P -.->| "never expose" | L["Kernel or public raw artifact"]
 ```
 The PR8 module validates *internal data shape*, not actual source authenticity, decision timestamp, independent audit correctness or original private evidence custody. It does not import/execute a solver. New experiment outcome count is zero. [Real adapter spec](../specs/OPPORTUNITY-001-REAL-ADAPTER.md).
+
+
+## OPPORTUNITY-001 Issue #74 — source-first private original capture system (synthetic-tested, NOT run)
+```mermaid
+flowchart TD
+  O["Historic 14-source byte lock"] --> N["New 9-source PILOT lock"]
+  N --> P["Original official 192 pretrial decisions: raw and logical SHA"]
+  P --> G["Fresh TRAIN64 generator only; old DEV/FINAL forbidden"]
+  G --> A["64 distinct evaluator-only third audits + commitment check"]
+  A --> B["Off-public owner-private file A: exclusive create/fsync"]
+  B --> C["SHA readback A"]
+  C --> D["Off-public separate-volume file B: exclusive create/fsync"]
+  D --> E["SHA readback B"]
+  E --> R["PUBLIC redacted hashes-only receipt: NOT custody authority"]
+  R -.->|"does not authorize"| S["Actual one-shot ON/OFF scoring: BLOCKED"]
+  V["External ACL, object-version/retention, independent restore proof"] -.-> S
+  T["Independent actual scorer and reviewed one-shot execution"] -.-> S
+```
+**Implemented:** only [manual source-first capture CLI](../../scripts/capture_opportunity_private_original.py) and invented-fixture tests; no live capture invoked in PR CI or public Github Actions and no genuine new TRAIN64 original yet observed. **Not implemented/verified:** independently trusted durable private store, actual score runner, one-shot chronology/authorization. [Contract](contracts.md) / [scope](../specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md).
