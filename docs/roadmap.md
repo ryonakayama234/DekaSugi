@@ -191,3 +191,9 @@ flowchart LR
 ## OPPORTUNITY-001 PR8: canonical two-arm tuple normalizer (draft, no scoring)
 - Implemented only the pure synthetic-test normalizer `evaluation.opportunity_actual` with hard fail on private field injection, unsafe trace, inconsistent search/AST/meter, mismatched public task and 4/100 budgets; documentation and run index synchronize.
 - Blocking chain: independently reviewed PR #65 pretrial decisions; independently verified off-public original private-audit custody (Issue #66); later separate reviewed source-first scorer, sealed time order and one-shot main-only TRAIN64 activation. No fresh scored rows, no old DEV/FINAL evaluation. Scientific conclusion remains not_run.
+
+
+## 2026-10-28 — OPPORTUNITY-001 Issue #74: exact fresh TRAIN64 original capture before scoring
+- Source-first **manual** private capture CLI (not an actual scoring CLI), entirely independent from prior DEV64 ZIP. It verifies historic 14 immutable source files, new nine-source generator lock and preserved exact 27,360-byte public 192-choice original before generating any new TRAIN64 evaluator-only audit examples.
+- PR synthetic-only negative tests; no genuine private archive produced or copied and no OFF/ON scored outcomes. The CLI would write two exclusive owner-only files on separate mounted volumes and verify exact raw SHA readback, but this by itself **cannot certify** independent access restrictions, durable version/retention or external restore; actual one-shot scoring remains CLOSED.
+- [Private capture contract](specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md) / [Issue #74](https://github.com/ryonakayama234/DekaSugi/issues/74) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66). Independent exact-head review and CI required before merge; external real custody and scorer are subsequent gates.
