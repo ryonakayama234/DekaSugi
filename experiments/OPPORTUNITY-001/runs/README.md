@@ -31,3 +31,7 @@ Related: [plan](../plan.md) / [spec](../../../docs/specs/OPPORTUNITY-001.md) / [
 ## OPPORTUNITY-001-PILOT-V1 (new TRAIN-only; pre-measurement)
 - [Frozen pilot METHOD](../pilot-v1.md): exact new generator specification, 64 TRAIN tasks, fixed skill/policy/budget, pretrial evidence and stop conditions.
 - Actual source/manifest freeze, implementation and scoring status: **not_run**. Pilot has not produced any task-level outcome or learning gain; old DEV/FINAL unchanged.
+
+## PR4 source generation / hash-only preflight
+- New `packages/evaluation/opportunity_pilot.py` and `tests/test_opportunity_pilot.py` implement fixed PILOT-V1 generation and public-only SHA preflight. No actual paired trial/measurement; source and manifest freeze pending.
+- After exact-head CI and independent review, preserve preflight hash, source SHA and environment in separate immutable provenance record. Research outcomes remain **not_run**.

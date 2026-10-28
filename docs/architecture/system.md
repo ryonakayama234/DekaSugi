@@ -513,3 +513,16 @@ flowchart LR
   A -.->|"not learner-visible"| X["Kernel and Learner"]
 ```
 This is a **future architecture** only; no new real adapter, fresh generator or trial has run. [Method](../../experiments/OPPORTUNITY-001/pilot-v1.md) / [run ledger](../../experiments/OPPORTUNITY-001/runs/README.md).
+
+## OPPORTUNITY-001 PILOT-V1 hash-only generator implemented
+```mermaid
+flowchart LR
+  M["Immutable PILOT-V1 method"] --> G["evaluation.opportunity_pilot generate_train_pilot"]
+  G --> P["public_manifest: TaskSpec x 64 only"]
+  P --> H["canonical_public_digest + CLI hash-only"]
+  G --> S["Evaluator-only third-audit cases (in memory)"]
+  H --> R["Future reviewed source/manifest freeze"]
+  R --> F["Future independent real adapter / one-shot trial"]
+  S -.->|"never public / learner input"| L["Kernel / learning"]
+```
+The implementation in [opportunity_pilot.py](../../packages/evaluation/opportunity_pilot.py) has **no search, chooser or scorer**. It is a generator/preflight for a future separately authorized/reviewed pilot, not measured improvement.
