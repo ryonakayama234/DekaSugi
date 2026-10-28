@@ -175,3 +175,13 @@ Expected source hash `bc950ef3187fc34851eef5cff6df194ce27186b3a03b5399f2209e9905
 
 ### PR7 no-old-holdout-generation P1 remedial source
 The initial PR7 pretrial code unintentionally invoked historical `verify_frozen` which regenerates old DEV/FINAL (not scoring). Its initial SHA is **diagnostic only**. The corrected [stdlib 14-source verifier](../scripts/verify_opportunity_legacy_sources.py) runs before project import, then direct old TRAIN/DREAM-only policy restoration; [regression tests](../tests/test_opportunity_pretrial.py) mock old withheld generators to fail if called.
+
+## OPPORTUNITY-001 PR9 — 採点前事前判断の長期保全・品質試験設計（2026-10-28）
+| ID | テーマ | 状態 | 文書 |
+|---|---|---|---|
+| OPPORTUNITY-001-CHOICE-CUSTODY-DESIGN-V1 | 原本bytes/論理payload/生成経路/保持と時系列を分けるEvidence Capsule設計 | proposed_design_only; no_scoring | [設計契約](specs/OPPORTUNITY-001-CHOICE-LOCK-DESIGN.md) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) / [Issue #68](https://github.com/ryonakayama234/DekaSugi/issues/68) |
+| OPPORTUNITY-001-CHOICE-CUSTODY-PREREG-V1 | C01–C09品質観測、N01–N12人工改変検査、失敗停止規則 | planned; not_run | [品質試験計画](../experiments/OPPORTUNITY-001/choice-custody-preregistration.md) / [run ledger](../experiments/OPPORTUNITY-001/runs/README.md) |
+
+- **主対象モジュール**: `evaluation / provenance`。実装は後続のPR9、今回追加したものは設計文書のみ。保存予定の公開decision JSONとchoice-lock JSONは**現時点では作成・検証していない**。
+- 正式事前判断元はPR #65統合済みmain `c6b01c2`、Actions run `40659741488`、artifact `12803053107`。公式sourceの採点前判断原本はGitHub Actionsに存在しても90日保管であり、元member raw SHAも未採取。計画された保存copyとprivate原本保全を既存のものとして記載しない。
+- PR #67は別の実証データ正規化器でレビュー中。古いINDEX記述（実アダプタ未実装など）は各工程の記録として扱い、現在の設計検討はこの行から辿る。新TRAIN64 paired scoring 0件、旧FINAL128は封印を維持。
