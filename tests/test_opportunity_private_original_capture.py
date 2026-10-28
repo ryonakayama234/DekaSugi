@@ -152,6 +152,21 @@ class PrivateOriginCaptureSyntheticTests(unittest.TestCase):
             self.assertFalse((public_parent/"owner"/original.name).exists())
             self.assertFalse((root/"private-moved"/"owner"/original.name).exists())
 
+    def test_group_or_world_writable_ancestor_is_rejected_before_write(self):
+        with TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            unsafe=root/"UNTRUSTED_ANCESTOR"
+            unsafe.mkdir(mode=0o700)
+            private=unsafe/"owner-only"
+            private.mkdir(mode=0o700)
+            target=private/"synthetic.bin"
+            expected=m._private_destination(target)
+            unsafe.chmod(0o777)
+            with self.assertRaises(ValueError):
+                with m._opened_parent(target,expected) as pinned:
+                    m._write_exclusive(target.name,b"synthetic",pinned)
+            self.assertFalse(target.exists())
+
     def test_direct_script_execution_can_find_scripts_without_running_generator(self):
         # No source generation: execute only module definitions in a clean
         # subprocess and test import resolution, never main() or any scorer.
