@@ -676,3 +676,14 @@ flowchart LR
 - Lockはsource main SHA、run/job/artifact ID、GitHub観測timestamps、raw digestとlogical digest、TaskSpec/snapshot/skill identities、copy pathname、全scoring flags falseを正確に持つ。**ユーザー入力のprovenance claimだけを根拠にしない**：公式APIから取ったrun/job/artifactを元のcapture run中に検証。後からのロック検査では固定ID・構造・digest・bytesを検査し、元APIが不変であると仮定しない。
 - 本moduleはstdlibだけで構成。old 14-source・new 9-sourceをproject import前に検証した後、元凍結TRAIN/DREAMのみを用いる固定chooserの再演算と**元原本を比較**。これは独立実装による選択アルゴリズム監査ではない。
 - [run ledger](../../experiments/OPPORTUNITY-001/runs/20261028-pr9-public-choice-custody.md)には独立の観測と非主張を記録。現時点の公開pretrial origin engineering gateは成立しても、private raw audit off-repo archival・独立actual scorer・once-only activationが未成立なのでscoring許可なし。古いDEV/FINALへの干渉なし。
+
+## EXP-0003A DEV64 local ZIP custody data boundary — 2026-10-28
+```mermaid
+flowchart LR
+    A["Local private outer ZIP"] --> H["SHA256 outer + nested ZIP/entries + SHA256SUMS verifier"]
+    E["Archived public digest registry"] --> H
+    H --> R["PUBLIC: evidence attestation: IDs, hashes, check status, scope, unverified retention"]
+    A -.->|private raw bytes never published| X["PUBLIC Git / Kernel"]
+    A -.->|user-controlled separate copy not observed| P["PRIVATE: secondary long-term encrypted custody"]
+```
+**Public attestation contract**: historical study ID; original scoring run/artifact IDs; audit-only run/artifact IDs; outer ZIP byte size and raw digest; nested ZIP SHA256; original JSON digests; exact SHA256SUMS pass counts; limitation flags `provided_copy_integrity_verified`, `second_private_copy_not_verified`, `fresh_train64_custody_not_satisfied`, `scoring_not_run`. It contains **zero private example bytes, source seeds, third examples, or extracted private JSON**. Public Git is not the store for the original. No key/password is stored in Git. See [attestation](../../experiments/EXP-0003A/runs/20261028-local-zip-integrity.md).
