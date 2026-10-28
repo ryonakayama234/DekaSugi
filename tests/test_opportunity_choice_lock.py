@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import io
+import stat
+import zipfile
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -170,6 +173,38 @@ class ChoiceCustodyTests(unittest.TestCase):
             lock["new_train_pilot_scoring_permitted"] = True
             with self.assertRaises(ValueError):
                 m.verify_custody(raw, m.canonical(lock))
+
+    def test_original_zip_member_is_unique_regular_and_bounded(self):
+        obj = fake_payload()
+        raw = m.canonical(obj)
+        def archive(entries):
+            buffer = io.BytesIO()
+            with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED) as z:
+                for name, payload, mode in entries:
+                    info = zipfile.ZipInfo(name)
+                    info.compress_type = zipfile.ZIP_DEFLATED
+                    info.external_attr = mode << 16
+                    z.writestr(info, payload)
+            return buffer.getvalue()
+        regular = stat.S_IFREG | 0o644
+        with patch.object(m, "ORIGINAL_MEMBER_SHA256", m.sha(raw)), patch.object(
+            m, "DECISION_SHA256", m.sha(raw)
+        ):
+            good = archive([(m.ORIGIN_MEMBER, raw, regular)])
+            receipt = m.inspect_original_zip(good)
+            self.assertEqual(receipt["member_raw_sha256"], m.sha(raw))
+            invalid = [
+                archive([(m.ORIGIN_MEMBER, raw, regular), ("secret-audit.json", b"hidden", regular)]),
+                archive([(m.ORIGIN_MEMBER, raw, regular), (m.ORIGIN_MEMBER, raw, regular)]),
+                archive([("../" + m.ORIGIN_MEMBER, raw, regular)]),
+                archive([(m.ORIGIN_MEMBER, raw, stat.S_IFLNK | 0o777)]),
+                archive([(m.ORIGIN_MEMBER, raw + b"x" * m.MAX_PUBLIC_BYTES, regular)]),
+                b"not a zip",
+            ]
+            for altered in invalid:
+                with self.subTest(archive_size=len(altered)), self.assertRaises(ValueError):
+                    m.inspect_original_zip(altered)
+
 
     def test_real_saved_public_original_if_available(self):
         if not m.PUBLIC_PATH.exists() or not m.LOCK_PATH.exists():
