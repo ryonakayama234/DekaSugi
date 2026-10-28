@@ -168,17 +168,30 @@ def _private_destination(path: Path) -> os.stat_result:
 
 @contextmanager
 def _opened_parent(path: Path, expected: os.stat_result):
-    """Pin the verified private directory inode, never follow later path swaps.
+    """Open every ancestor with nofollow, then pin verified private inode.
 
-    O_NOFOLLOW protects the terminal directory element; comparing the opened
-    descriptor to the earlier preflight protects intermediate ancestor swaps.
-    All writes/readbacks MUST be relative to this retained descriptor.
+    Do not trust an absolute pathname again after preflight: hostile ancestor
+    replacement must never redirect a private write to the public repo.
+    Writable ancestors are rejected unless a root-owned sticky directory
+    such as /tmp or /dev/shm protects owner-owned descendants.
     """
     fd = None
     try:
         flags = (os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0)
                  | getattr(os, "O_CLOEXEC", 0))
-        fd = os.open(path.parent, flags)
+        fd = os.open("/", flags)
+        # Never follow a symlink in any intermediate ancestor.
+        for part in path.parent.parts[1:]:
+            next_fd = os.open(part, flags, dir_fd=fd)
+            os.close(fd)
+            fd = next_fd
+            ancestor = os.fstat(fd)
+            mode = ancestor.st_mode
+            if not stat.S_ISDIR(mode):
+                _fail()
+            if (stat.S_IMODE(mode) & 0o022 and not
+                    (mode & stat.S_ISVTX and ancestor.st_uid == 0)):
+                _fail()
         actual = os.fstat(fd)
         if ((actual.st_dev, actual.st_ino) !=
                 (expected.st_dev, expected.st_ino)
@@ -192,7 +205,6 @@ def _opened_parent(path: Path, expected: os.stat_result):
     finally:
         if fd is not None:
             os.close(fd)
-
 
 def _write_exclusive(filename: str, raw: bytes, parent_fd: int) -> None:
     flags = (os.O_WRONLY | os.O_CREAT | os.O_EXCL |
