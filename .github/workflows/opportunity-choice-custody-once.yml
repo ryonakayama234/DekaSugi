@@ -1,0 +1,83 @@
+name: OPPORTUNITY-001 PR9 capture original public pretrial decisions (NO SCORING)
+
+on:
+  push:
+    branches:
+      - feat/issue68-public-choice-custody-v1
+    paths:
+      - '.github/workflows/opportunity-choice-custody-once.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: opportunity-choice-custody-once
+  cancel-in-progress: false
+
+jobs:
+  capture-public-only:
+    if: github.repository == 'ryonakayama234/DekaSugi' && github.ref == 'refs/heads/feat/issue68-public-choice-custody-v1' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout reviewed pretrial source and custody verifier
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Python 3.12.15 (fixed pilot environment)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.15'
+      - name: Run source-first historic and new pilot identity gate, no holdouts
+        run: |
+          python -m scripts.verify_opportunity_legacy_sources
+          python -m scripts.verify_opportunity_generator_lock
+      - name: Read official main run / job / artifact metadata from GitHub API
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p .run/official
+          gh api repos/ryonakayama234/DekaSugi/actions/runs/40659741488 > .run/official/run.json
+          gh api repos/ryonakayama234/DekaSugi/actions/jobs/122719482732 > .run/official/job.json
+          gh api repos/ryonakayama234/DekaSugi/actions/artifacts/12803053107 > .run/official/artifact.json
+      - name: Download EXACT official public pretrial Actions artifact ID (never rerun chooser for original)
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 40659741488
+          artifact-ids: 12803053107
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .run/official/public
+          merge-multiple: true
+      - name: Capture original public member byte-for-byte and pin observed provenance
+        run: |
+          python -m scripts.verify_opportunity_choice_lock --mode capture \
+            --member .run/official/public/OPPORTUNITY-001-pretrial-public.json \
+            --run-json .run/official/run.json \
+            --job-json .run/official/job.json \
+            --artifact-json .run/official/artifact.json
+      - name: Replay same fixed chooser, TRAIN/DREAM only; compare independently retained ORIGINAL
+        run: |
+          python -m scripts.prepare_opportunity_decisions --mode decisions-hash-only \
+            --output .run/official/replay.json
+          python -m scripts.verify_opportunity_choice_lock --mode compare-replay \
+            --replay .run/official/replay.json
+      - name: Adversarial unit tests (synthetic) and final public copy verification
+        run: |
+          python -m unittest tests.test_opportunity_choice_lock -v
+          python -m scripts.verify_opportunity_choice_lock --mode verify
+      - name: Commit ONLY public original member and source/retention lock to PR branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- experiments/OPPORTUNITY-001/evidence/pilot-choices-public-v1.json \
+                     experiments/OPPORTUNITY-001/pilot-choice-lock-v1.json
+          if git diff --cached --quiet; then
+            echo "Original public bytes already retained, no changes"
+          else
+            git diff --cached --name-only
+            git commit -m "evidence(opportunity): retain official pretrial public original and provenance (#68)"
+            git push origin HEAD:feat/issue68-public-choice-custody-v1
+          fi
