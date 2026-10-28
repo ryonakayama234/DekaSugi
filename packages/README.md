@@ -86,3 +86,10 @@ not alter `packages/exp0003a`, `packages/evaluation` or the CAL-01-only
 - `kernel`/`learning` retain their existing source/decision roles; old EXP-0003A frozen files are unchanged. METRO-0001 currently remains CAL-01 artificial-fixture-only; real paired observations require independently validated adapter.
 - `both_correct` cost regret differs from one-correct missed success and from neither-correct unknown. It cannot prove grammar unexpressibility from a failed search.
 - [Spec](../docs/specs/OPPORTUNITY-001.md) / [Plan proposal](../experiments/OPPORTUNITY-001/plan.md) / [Architecture](../docs/architecture/system.md) / [Contracts](../docs/architecture/contracts.md).
+
+## OPPORTUNITY-001 PR2 — calibrated logic, no real evidence
+| Package | API | State |
+|---|---|---|
+| `evaluation.opportunity` | `classify_fixture`, `summarize_fixtures` | implemented **synthetic-only**; real-evidence adapter missing |
+
+Pure reducer; no generator, scorer or archive dependency. Exact synthetic schema, hardened checks and aggregate-only output. Failed search is not proof of DSL impossibility. [Spec](../docs/specs/OPPORTUNITY-001.md) / [tests](../tests/test_opportunity_fixture.py) / [Issue #58](https://github.com/ryonakayama234/DekaSugi/issues/58).

@@ -89,3 +89,6 @@ tags: preregistration-proposal, learning-opportunity, paired-evaluation, governa
 - If fresh-source/review gates fail or PRIVATE records leak to learner/repo, stop before evaluation and preserve failure evidence.
 
 Related: [spec](../../docs/specs/OPPORTUNITY-001.md) / [Issue #56](https://github.com/ryonakayama234/DekaSugi/issues/56) / [METRO-0001](../METRO-0001/reviews/20261027-cal01-adoption.md) / [POLICY-DIAG-001](../POLICY-DIAG-001/runs/20261028-archive-public-diagnosis.md) / [runs](runs/README.md)。
+
+## PR2 instrument calibration (not method freeze)
+The pure fixture reducer accepts only `opportunity-fixture-v1` / SYNTHETIC / fx task IDs. Artificial positive/negative cases calibrate outcome precedence, missingness, strict provenance field shape and rejection of malformed input. This does **not** instantiate the fresh TRAIN/DEV/FINAL population or independently verify source bytes/audits/pretrial decision chronology. Scientific primary estimand and branch thresholds remain `not_frozen`; research trial count stays zero.

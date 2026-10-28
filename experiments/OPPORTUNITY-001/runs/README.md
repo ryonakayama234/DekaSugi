@@ -20,3 +20,8 @@ tags: experiment, opportunity, provenance, planned, not-run
 - 失敗や欠測も不変の独立run記録として保存する。
 
 Related: [plan](../plan.md) / [spec](../../../docs/specs/OPPORTUNITY-001.md) / [Issue #56](https://github.com/ryonakayama234/DekaSugi/issues/56)。
+
+## PR2 synthetic-fixture calibration scope
+- 工学校正専用 `packages/evaluation/opportunity.py` および `tests/test_opportunity_fixture.py`。意図的に作成した分類用fixtureであり新規研究の生成課題ではない。
+- 新しい研究用TRAIN/DEV/FINALの試行・採点は **0件 / not_run**。独立原証拠監査や一般化性能の証明ではない。
+- CIと独立レビュー結果は完成後に追記記録。将来のmethod freeze、actual-evidence adapter、fresh holdoutは未着手。

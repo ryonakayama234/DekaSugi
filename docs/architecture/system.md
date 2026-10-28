@@ -483,3 +483,14 @@ flowchart TD
 - `kernel`: choose on public task before outcomes; `learning`: future TRAIN-only skill candidate; `metrology`: evidence ontology and comparability contracts, CAL-01 synthetic reducer does **not** accept research data yet. Proposed adapter must be separately calibrated/reviewed.
 - Different arm outcomes constitute only a **fixed two-arm opportunity**; new primitive meaning or cross-domain transfer is a separate intervention. An attempted search failure is not a formal proof of missing expressive power.
 - Details: [spec](../specs/OPPORTUNITY-001.md), [proposed plan](../../experiments/OPPORTUNITY-001/plan.md), [ARCH-002](contracts.md), [runs](../../experiments/OPPORTUNITY-001/runs/README.md).
+
+## OPPORTUNITY-001 PR2 synthetic fixture-only module (implemented)
+```mermaid
+flowchart LR
+  F["SYNTHETIC fixture only"] --> G["Strict schema / caller-pinned source lock"]
+  G --> C["evaluation.opportunity classify_fixture"]
+  C --> A["Aggregate-only summarize_fixtures"]
+  A --> R["Engineering calibration, not science"]
+  X["Real TRAIN/DEV/FINAL, private fields"] -.->|"reject"| G
+```
+Calibration-only: neither generates tasks nor executes search. The future actual-evidence adapter requires separately reviewed source-first independent audit. [Module](../../packages/evaluation/opportunity.py).

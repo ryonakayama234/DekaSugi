@@ -264,3 +264,9 @@
 - **表現不能は非発見と異なる。** 全入力に対する原始演算の不変条件に基づく形式的な証明、特定budget/例に対する網羅探索、予算切れ/不明を区別する。best-of-twoは事後の二択上包絡であって、学習した実行時Oracleや汎用知能の上限ではない。
 - public TaskSpec/選択前Decisionとevaluator-only第三audit/paired outcomes/生成元family・seed・source_record_idをデータ契約で隔離。DEV/FINALの事後ラベルを学習器へ戻さない。旧EXP-0003A DEV64を再採点せず、封印FINAL128を開かない。
 - 図・データ契約・spec・plan・run目録・INDEX/roadmapを**同じPR**で同期し、未実行は`not_run`。CI・独立exact-headレビューでP0/P1解消前に統合しない。[研究Issue](https://github.com/ryonakayama234/DekaSugi/issues/56)。
+
+## 31. OPPORTUNITY-001 PR2 synthetic-only calibration (Issue #58)
+- `packages/evaluation/opportunity.py` accepts only `opportunity-fixture-v1` + `phase=SYNTHETIC` + `fx-` task IDs. No real TRAIN/DEV/FINAL ingestion, scorer, generator, learner or old holdout.
+- Correctness precedes calls; only both-correct cases define excess calls; one-correct cases define success missed/lost; neither-correct and missing do not silently become zero regret. Invalid/false-solved/duplicate/private field cause fail-closed.
+- External proof of original bytes, audit independence, timestamp of pretrial decision and policy provenance is NOT supplied by the fixture reducer; lock/flag are schema calibration only. Future actual-evidence adapter requires a separate freeze, audited source-first gate and PR.
+- Maintain ARCH-001/002 diagrams, experiment run index, tests, independent latest-head review and CI. [Issue](https://github.com/ryonakayama234/DekaSugi/issues/58).
