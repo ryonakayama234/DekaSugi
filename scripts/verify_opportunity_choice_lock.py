@@ -6,6 +6,9 @@ Network/API provenance is supplied by GitHub Actions, not trusted caller flags.
 from __future__ import annotations
 
 import argparse
+import io
+import zipfile
+import stat
 import hashlib
 import json
 import re
@@ -114,6 +117,32 @@ def validate_payload(raw: bytes, *, require_original: bool = True) -> dict:
     if sha(canonical(obj)) != DECISION_SHA256:
         raise ValueError("canonical decision payload digest mismatch")
     return obj
+
+
+
+def inspect_original_zip(raw_zip: bytes) -> dict:
+    """Forensic second-source ZIP inspection; never extracts unknown members."""
+    if type(raw_zip) is not bytes or not 0 < len(raw_zip) <= 1_000_000:
+        raise ValueError("missing or oversized public artifact ZIP")
+    try:
+        with zipfile.ZipFile(io.BytesIO(raw_zip), "r") as archive:
+            members = archive.infolist()
+            if len(members) != 1 or members[0].filename != ORIGIN_MEMBER:
+                raise ValueError("unexpected/duplicate/path-traversing ZIP member")
+            info = members[0]
+            mode = info.external_attr >> 16
+            if (info.flag_bits & 1 or info.is_dir() or
+                    (mode and stat.S_IFMT(mode) != stat.S_IFREG) or
+                    info.file_size > MAX_PUBLIC_BYTES):
+                raise ValueError("encrypted/symlink/directory/oversized ZIP member")
+            with archive.open(info, "r") as f:
+                raw_member = f.read(MAX_PUBLIC_BYTES + 1)
+            validate_payload(raw_member)
+    except (zipfile.BadZipFile, RuntimeError, EOFError) as exc:
+        raise ValueError("malformed public artifact ZIP") from exc
+    return {"zip_sha256": sha(raw_zip), "member_raw_sha256": sha(raw_member),
+            "member_size": len(raw_member), "member_name": ORIGIN_MEMBER}
+
 
 
 def validate_origin(run: dict, job: dict, artifact: dict) -> dict:
@@ -235,13 +264,19 @@ def capture(member: Path, run: Path, job: Path, artifact: Path) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Source-only pretrial public custody; NEVER score")
-    ap.add_argument("--mode", choices=("capture", "verify", "compare-replay"), required=True)
+    ap.add_argument("--mode", choices=("capture", "verify", "compare-replay", "inspect-zip"), required=True)
+    ap.add_argument("--zip", type=Path)
     ap.add_argument("--member", type=Path)
     ap.add_argument("--run-json", type=Path)
     ap.add_argument("--job-json", type=Path)
     ap.add_argument("--artifact-json", type=Path)
     ap.add_argument("--replay", type=Path)
     ns = ap.parse_args()
+    if ns.mode == "inspect-zip":
+        if ns.zip is None:
+            ap.error("inspect-zip requires --zip")
+        print(json.dumps(inspect_original_zip(ns.zip.read_bytes()), sort_keys=True))
+        return 0
     if ns.mode == "capture":
         if not all((ns.member, ns.run_json, ns.job_json, ns.artifact_json)):
             ap.error("capture requires official origin files")
