@@ -685,3 +685,22 @@ flowchart TD
   C -.->|"never publish"| G["Public repository / ordinary public Actions / Kernel"]
 ```
 Only the **read-only byte-equality helper** is implemented here. It never makes or accesses a real new TRAIN64 audit original in CI and cannot close the storage authorization gate. Old DEV64 ZIP is a different historical source. [Data contract](contracts.md) / [custody readiness spec](../specs/OPPORTUNITY-001-PRIVATE-CUSTODY.md) / [Issue #72](https://github.com/ryonakayama234/DekaSugi/issues/72).
+
+
+## OPPORTUNITY-001 Issue #74 — source-first private original capture system (synthetic-tested, NOT run)
+```mermaid
+flowchart TD
+  O["Historic 14-source byte lock"] --> N["New 9-source PILOT lock"]
+  N --> P["Original official 192 pretrial decisions: raw and logical SHA"]
+  P --> G["Fresh TRAIN64 generator only; old DEV/FINAL forbidden"]
+  G --> A["64 distinct evaluator-only third audits + commitment check"]
+  A --> B["Off-public owner-private file A: exclusive create/fsync"]
+  B --> C["SHA readback A"]
+  C --> D["Off-public separate-volume file B: exclusive create/fsync"]
+  D --> E["SHA readback B"]
+  E --> R["PUBLIC redacted hashes-only receipt: NOT custody authority"]
+  R -.->|"does not authorize"| S["Actual one-shot ON/OFF scoring: BLOCKED"]
+  V["External ACL, object-version/retention, independent restore proof"] -.-> S
+  T["Independent actual scorer and reviewed one-shot execution"] -.-> S
+```
+**Implemented:** only [manual source-first capture CLI](../../scripts/capture_opportunity_private_original.py) and invented-fixture tests; no live capture invoked in PR CI or public Github Actions and no genuine new TRAIN64 original yet observed. **Not implemented/verified:** independently trusted durable private store, actual score runner, one-shot chronology/authorization. [Contract](contracts.md) / [scope](../specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md).

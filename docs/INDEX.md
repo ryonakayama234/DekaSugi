@@ -214,3 +214,10 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 ## OPPORTUNITY-001 — private TRAIN64 archive preparation, NOT scored
 - [Private-origin custody readiness specification](specs/OPPORTUNITY-001-PRIVATE-CUSTODY.md) / [read-only local two-copy SHA checker](../scripts/verify_opportunity_private_copy.py) / [synthetic adversarial tests](../tests/test_opportunity_private_copy.py) / [Issue #72](https://github.com/ryonakayama234/DekaSugi/issues/72).
 - 64 public TaskSpecs and 192 original public policy decisions are retained, but fresh ON/OFF scored rows = **0**; the historical DEV64 local ZIP is unrelated. The checker can verify byte equality only, **not** private access controls, archival version/retention, actual scorer provenance or scientific results. [run status](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
+
+
+## OPPORTUNITY-001 — new TRAIN64 source-first audit-original capture engineering (no score)
+- [Private capture and boundary contract](specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md) / [manual off-repository CLI](../scripts/capture_opportunity_private_original.py) / [synthetic negative tests](../tests/test_opportunity_private_original_capture.py) / [Issue #74](https://github.com/ryonakayama234/DekaSugi/issues/74).
+- Implementation under PR review; genuine third-audit original capture **0**; OFF/ON scored pairs **0**. Source-first old14+new9 frozen bytes, official 27,360-byte 192-choice raw original, and frozen third audit SHA gate are mandatory. Two owner-private local raw files with SHA readback are not by themselves independently durable restricted custody. [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66) remains blocked.
+
+- [WSL2 operator runbook: one-time private capture, local GPG encryption and encrypted Google Drive upload/restore](specs/OPPORTUNITY-001-PRIVATE-OPERATOR.md) (draft; do not execute before PR #75 review and merge; no scoring). 
