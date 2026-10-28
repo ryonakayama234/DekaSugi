@@ -195,3 +195,8 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 - 主対象`evaluation / provenance`（`scripts/verify_opportunity_choice_lock.py`）。公開原本27360 bytesのSHA `1d08e6…`とcanonical JSON decision digest `8a8625…`を**別に検証済み**。比較元はmain `c6b01c2`・公式Actions run `40659741488` / job `122719482732` / artifact `12803053107`。取得・検証run [#40668908541](https://github.com/ryonakayama234/DekaSugi/actions/runs/40668908541)成功。
 - 同じ原本を元のArtifact以外の公開Gitへ保全したが、GitHub外の改変不能バックアップを保証するものではない。既存PR7の初期禁止経路runは同じdigestでも権威ある原本ではない。
 - 古い「source lock pending」「実adapter未実装」などの行は当時の履歴記述であり、今回のpublic provenance保全を採点器の実装や研究効果へ読み替えない。PR #67の実paired正規化器は別レビュー。新TRAIN64 ON/OFFは0、private raw custody・実scorer・one-shot activationは#66未達。
+
+
+## OPPORTUNITY-001 — private TRAIN64 archive preparation, NOT scored
+- [Private-origin custody readiness specification](specs/OPPORTUNITY-001-PRIVATE-CUSTODY.md) / [read-only local two-copy SHA checker](../scripts/verify_opportunity_private_copy.py) / [synthetic adversarial tests](../tests/test_opportunity_private_copy.py) / [Issue #72](https://github.com/ryonakayama234/DekaSugi/issues/72).
+- 64 public TaskSpecs and 192 original public policy decisions are retained, but fresh ON/OFF scored rows = **0**; the historical DEV64 local ZIP is unrelated. The checker can verify byte equality only, **not** private access controls, archival version/retention, actual scorer provenance or scientific results. [run status](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
