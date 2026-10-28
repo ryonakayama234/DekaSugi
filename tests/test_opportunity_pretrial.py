@@ -2,12 +2,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from pathlib import Path
+from tempfile import TemporaryDirectory
 import inspect
 import json
 from unittest import TestCase, mock
 
 from packages.evaluation.opportunity_pilot import generate_train_pilot
 from scripts import prepare_opportunity_decisions as pretrial
+from scripts import verify_opportunity_legacy_sources as legacy_gate
 
 
 @dataclass(frozen=True)
@@ -87,6 +90,41 @@ class PretrialGateTests(TestCase):
                      "evaluate_case(", "generate_dev(", "generate_final(",
                      "run_dev(", "run_final("):
             self.assertNotIn(word, text)
+
+    def test_historic_source_verifier_is_stdlib_only_and_complete(self):
+        info = legacy_gate.verify_legacy_source_bytes()
+        self.assertEqual(info["verified_source_count"], 14)
+        self.assertFalse(info["dev_or_final_generated"])
+        src = inspect.getsource(legacy_gate)
+        for prohibited in ("from packages", "import packages", "generate_partition(",
+                           "verify_frozen(", "dataset_hashes(", "preflight_record("):
+            self.assertNotIn(prohibited, src)
+
+    def test_historic_source_gate_rejects_tampering_before_import(self):
+        with TemporaryDirectory() as dirname:
+            root = Path(dirname)
+            files = set(legacy_gate.SOURCE_FILES) | {legacy_gate.FROZEN_FILE}
+            for path in sorted(files):
+                dest = root / path
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                dest.write_bytes((legacy_gate.ROOT / path).read_bytes())
+            legacy_gate.verify_legacy_source_bytes(root)
+            with (root/"packages/learning/__init__.py").open("ab") as stream:
+                stream.write(b"\\n# unreviewed import-time change\\n")
+            with self.assertRaisesRegex(ValueError, "source byte drift"):
+                legacy_gate.verify_legacy_source_bytes(root)
+
+    def test_legacy_partition_generators_cannot_be_reentered(self):
+        # Existing legacy verify_frozen generates DEV/FINAL for hash preflight;
+        # this new chooser MUST NOT invoke that path.
+        from packages.exp0003a import freeze
+        with mock.patch.object(freeze, "generate_partition",
+                               side_effect=AssertionError("FORBIDDEN: old holdout generation")):
+            with mock.patch.object(freeze, "verify_frozen",
+                                   side_effect=AssertionError("FORBIDDEN: legacy freeze preflight")):
+                record = pretrial.build_pretrial_decisions()
+        self.assertEqual(record["payload"]["paired_trials_executed"], 0)
+        self.assertEqual(len(record["payload"]["decisions"]), 64)
 
     def test_real_readonly_pretrial_choices_can_be_reconstructed(self):
         result = pretrial.build_pretrial_decisions()

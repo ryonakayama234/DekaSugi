@@ -155,3 +155,6 @@ Before first paired TRAIN64 trial, source-main commit/9 Git blobs/independent pu
 
 ## OPPORTUNITY-001 PR7 — pretrial decision evidence before scorer
 Compute and capture 64×3 B1/B2/B3 choices using only new public TaskSpec and pre-frozen old TRAIN/DREAM snapshots. Public artifact from [pretrial CI](../.github/workflows/opportunity-pretrial.yml) is separately hashed; no private third audit or solver. Then separately review and pin public decision digest before constructing activation. [Script](../scripts/prepare_opportunity_decisions.py) / [runs](../experiments/OPPORTUNITY-001/runs/README.md).
+
+### PR7 P1 method-boundary correction
+After discovering the old `load_frozen_assets` traversed `freeze.verify_frozen` and regenerated DEV/FINAL references, add a 14-blob stdlib-only pre-import validation gate and a new TRAIN/DREAM-only snapshot restore path. Reject the initial public choice digest as authoritative until a new source-corrected CI/pretrial review. No old holdout scoring or new paired trial ran.

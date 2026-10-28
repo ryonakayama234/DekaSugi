@@ -11,6 +11,7 @@ from pathlib import Path
 from time import process_time, perf_counter
 
 from scripts.verify_opportunity_generator_lock import verify_generator_lock
+from scripts.verify_opportunity_legacy_sources import verify_legacy_source_bytes
 
 ARMS = ("B1", "B2", "B3")
 METHOD = "OPPORTUNITY-001-PILOT-V1"
@@ -72,27 +73,77 @@ def _build_decision_manifest(cases, snapshots, hashes, skill_body_hash,
             }}
 
 
+def _rebuild_historic_train_dream_only(frozen: dict[str, object]):
+    """Recreate B1/B2/B3 from pinned TRAIN/DREAM only; DO NOT call verify_frozen."""
+    from packages.exp0003a.pr3 import run_train_dream, ArmSnapshot
+    from packages.learning import SkillCandidate, validate_skill
+    from packages.protocol import parse_program
+    from packages.library import Registry, DEFAULT_PRIMITIVES
+
+    report, _private_train_dream_only = run_train_dream()
+    if (report.get("dev_or_final_evaluated") is not False
+            or report.get("registry_promotion") != "not_authorized"):
+        raise ValueError("Unexpected old TRAIN/DREAM replay scope")
+    if report["source_manifest_sha256"] != frozen["split_data"]["pr3_source_manifest_sha256"]:
+        raise ValueError("Historic TRAIN/DREAM source manifest drift")
+    raw = report["top_skill"]
+    skill = SkillCandidate(
+        skill_id=raw["skill_id"], body_ast=parse_program(raw["body_ast"]),
+        body_hash=raw["body_hash"], dependencies=tuple(raw["dependencies"]),
+        provenance=tuple(raw["provenance"]), occurrences=raw["occurrences"],
+        status=raw["status"], schema_version=raw["schema_version"],
+    )
+    validate_skill(skill, Registry(DEFAULT_PRIMITIVES))
+    if (skill.skill_id != frozen["policy"]["top_skill_id"]
+            or skill.body_hash != frozen["policy"]["top_skill_body_sha256"]):
+        raise ValueError("Historic candidate skill mismatch")
+    expected_hashes = frozen["policy"]["snapshot_sha256"]
+    if set(expected_hashes) != set(ARMS):
+        raise ValueError("Wrong legacy snapshot set")
+    snapshots = {}
+    for arm in ARMS:
+        raw_snapshot = report["snapshots"][arm]
+        snapshot = ArmSnapshot.from_dict(raw_snapshot)
+        expected = expected_hashes[arm]
+        if (snapshot.arm != arm or raw_snapshot["policy_snapshot_sha256"] != expected
+                or report["snapshot_hashes"][arm] != expected
+                or snapshot.skill_id != skill.skill_id
+                or snapshot.skill_body_sha256 != skill.body_hash):
+            raise ValueError("Historic frozen KNN snapshot mismatch")
+        if arm in ("B2", "B3"):
+            if (list(snapshot.ordered_selected_pool_ids)
+                    != frozen["policy"][arm.lower()+"_ordered_selected_pool_ids"]
+                    or list(snapshot.ordered_selected_task_ids)
+                    != frozen["policy"][arm.lower()+"_ordered_selected_task_ids"]):
+                raise ValueError("Historic DREAM selection identity mismatch")
+        snapshots[arm] = snapshot
+    return skill, snapshots, expected_hashes
+
+
 def build_pretrial_decisions() -> dict[str, object]:
-    """Read-only source first. Rebuilding old TRAIN/DREAM is not evaluating old DEV."""
-    source = verify_generator_lock()  # authenticates source before generator import
+    """Byte-verifies both source sets BEFORE ANY project import; no holdouts."""
+    legacy_source = verify_legacy_source_bytes()  # stdlib-only, all 14 old sources
+    if legacy_source["verified_source_count"] != 14:
+        raise ValueError("Missing historic source verification")
+    source = verify_generator_lock()  # local 9 sources, project imports only after gate
     if source["status"] != "source_identity_verified_not_scoring_authorized":
-        raise ValueError("Unverified source lock")
+        raise ValueError("Unverified new source lock")
     from packages.evaluation.opportunity_pilot import generate_train_pilot, canonical_public_digest
-    from packages.exp0003a_dev import load_frozen_assets
     from packages.exp0003a.pr3 import choose
 
     cases = generate_train_pilot()
     if canonical_public_digest(cases) != source["public_manifest_sha256"]:
         raise ValueError("Public source identity drift")
-    assets = load_frozen_assets()  # immutable old TRAIN/DREAM assets only, no DEV/FINAL generation
-    lock = json.loads(Path(__file__).resolve().parents[1].joinpath(
-        "experiments/OPPORTUNITY-001/pilot-generator-lock-v1.json").read_text(encoding="utf-8"))
-    if (assets.skill.body_hash != lock["historic_top_skill_body_sha256"]
-            or assets.skill.skill_id != lock["historic_top_skill_id"]
-            or assets.snapshot_hashes != lock["historic_policy_snapshot_sha256"]):
-        raise ValueError("Policy/skill frozen identity mismatch")
-    result = _build_decision_manifest(cases, assets.snapshots,
-                                      assets.snapshot_hashes, assets.skill.body_hash, choose)
+    root = Path(__file__).resolve().parents[1]
+    frozen = json.loads((root/"experiments/EXP-0003A/freeze-v1.json").read_text(encoding="utf-8"))
+    skill, snapshots, snapshot_hashes = _rebuild_historic_train_dream_only(frozen)
+    lock = json.loads((root/"experiments/OPPORTUNITY-001/pilot-generator-lock-v1.json").read_text(encoding="utf-8"))
+    if (skill.body_hash != lock["historic_top_skill_body_sha256"]
+            or skill.skill_id != lock["historic_top_skill_id"]
+            or snapshot_hashes != lock["historic_policy_snapshot_sha256"]):
+        raise ValueError("Policy/skill original lock mismatch")
+    result = _build_decision_manifest(cases, snapshots,
+                                      snapshot_hashes, skill.body_hash, choose)
     if result["payload"]["source_manifest_sha256"] != source["public_manifest_sha256"]:
         raise ValueError("Pretrial public identity mismatch")
     return result

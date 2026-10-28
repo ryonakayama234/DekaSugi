@@ -110,3 +110,6 @@ Following exact-head PR63 review and CI identity evidence, `pilot-generator-lock
 
 ## PR7 policy-before-trial public seal
 Following source-first freeze PR64, independent pretrial code computes B1/B2/B3 actions for all 64 new TRAIN public TaskSpecs and writes an immutable-output-once JSON artifact. CI handles public task ID, action, reason, snapshot hashes and digest ONLY; no audit/task family/seed or result. Timings are measured but excluded from deterministic SHA. **A future separate reviewed SHA pin must precede any OFF/ON trial**; policy calculation in CI is not a scored experiment. Actual paired trials 0.
+
+## PR7 P1 detected before adoption
+Initial reviewed PR7 head `7d1e74f` invoked legacy `load_frozen_assets`, which regenerated original EXP-0003A DEV/FINAL reference examples through `freeze.verify_frozen`, **without scoring**. This breached the newly imposed stricter no-old-holdout-generation boundary; initial pretrial SHA `8a8625ed86e66b27bef8d09a023172d2adbc9ad0d42c155ab7f137097e2dccb2` is **diagnostic only**, not an accepted pretrial seal. Correction: verify historic 14 pinned source blobs with stdlib before any project imports, bypass legacy `freeze.verify_frozen`, rebuild *TRAIN/DREAM only*, independently compare policy/source identities. Must rerun corrected pretrial and review exact head before any separate pin.
