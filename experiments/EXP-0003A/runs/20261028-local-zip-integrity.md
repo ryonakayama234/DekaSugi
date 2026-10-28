@@ -4,6 +4,7 @@ id: EXP-0003A-DEV64-LOCAL-ZIP-CUSTODY-20261028
 status: local_uploaded_copy_integrity_verified; second_independent_long_term_custody_not_verified
 classification: PUBLIC HASHES ONLY; NEVER PUBLISH PRIVATE ZIP
 updated: 2026-10-28
+tags: dev64, provenance, private-custody, zip-integrity, read-only, historical
 
 ## Scope and provenance
 
