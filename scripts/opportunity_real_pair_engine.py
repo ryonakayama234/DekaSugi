@@ -123,7 +123,12 @@ def assemble_audited_pair(task, private_audit, skill, policy_actions: dict,
                           third_audit_sha256: str, *,
                           registry_factory: Callable, register_skill: Callable,
                           validate_skill: Callable, audited_trial: Callable) -> dict:
-    """The actual two-arm wiring. CI injects fake functions, never real search."""
+    """Actual two-arm wiring. A reviewed future activation alone may enable it."""
+    # Gate the shared callable too: callers must not bypass _unactivated_real_pair
+    # by injecting a real audited_trial directly. Synthetic CI opts in only
+    # inside a test-local mock; no production activation or real data in CI.
+    if SCORING_ACTIVATED is not True:
+        raise ValueError("actual one-shot scorer is not activated")
     from packages.evaluation.opportunity_actual import public_redacted_pair, normalize_audited_trial
     if (type(policy_actions) is not dict or set(policy_actions) != {"B1", "B2", "B3"}
             or any(type(v) is not str or v not in ("ON", "OFF")
