@@ -568,3 +568,25 @@ flowchart TD
 **Trust / lifecycle**: TRAIN-only allowable paired teachers may be presented to learner only by explicit training interface; DEV/FINAL raw private outcomes remain evaluator-only. A public sanitized aggregate must not contain private third examples, family/seed/source IDs, or reuse old holdout labels to tune. Original raw records are write-once with SHA; read-only Gateway rejects mismatched SHA/schema/duplicate/split/primitive/metric/budget before analysis. `packages/metrology` currently accepts CAL-01 fixture only; new adapter requires separate calibration and design approval.
 
 **No unapproved execution**: PR1 is purely documents. New sample generation, training, experiments and especially EXP-0003A FINAL128 are not authorized. Linked [spec](../specs/OPPORTUNITY-001.md), [plan proposal](../../experiments/OPPORTUNITY-001/plan.md), [run ledger](../../experiments/OPPORTUNITY-001/runs/README.md).
+
+## OPPORTUNITY-001 PR2 implemented fixture contract
+```mermaid
+flowchart TD
+  F["SYNTHETIC fx-task fixture"] --> V{"Schema, source lock, strict type"}
+  V -->|"bad identity / false-solved / private field"| E["raise ValueError; no aggregate"]
+  V -->|"missing audit"| M["not_observed"]
+  V -->|"legal but budget differs"| N["non_comparable"]
+  V -->|"verified compatible"| Q{"Which arm audited-correct?"}
+  Q -->|"both"| C["calls cost gap / excess"]
+  Q -->|"one"| S["missed/lost success; calls regret null"]
+  Q -->|"neither"| U["unknown opportunity; calls regret null"]
+  C --> A["aggregate-only counts and denominators"]
+  S --> A
+  U --> A
+  M --> A
+  N --> A
+```
+- Version `opportunity-fixture-v1`, phase `SYNTHETIC`, task `fx-...`. Exact row keys: `schema_version,phase,task_id,source_lock,policy_choice,policy_decision_before_trials,trials`. Lock: dataset/skill/policy/primitive SHA256, source_commit SHA-40, meter_version, budget_id. Each OFF/ON: audit_status, audited_correct, search_status, primitive_calls, tested_candidates, false_solved, budget_id.
+- Caller-pinned lock equality **does not independently verify the original bytes**; pretrial flag is not independent proof of chronology. Real `opportunity-record/0.1` remains unimplemented.
+- Summary is aggregate-only: class counts, denominators, policy errors, one-correct missed/lost success, both-correct excess calls, input content hash, no raw evidence/TaskSpec or scientific uncertainty. Synthetic calibration never authorizes holdouts.
+- [Implementation](../../packages/evaluation/opportunity.py) / [tests](../../tests/test_opportunity_fixture.py) / [spec](../specs/OPPORTUNITY-001.md).

@@ -152,3 +152,11 @@ quality:
 synthetic: 同じcallsでON/OFF判断だけ違う、異なるcallsで両正解、片側正解、両方未解決、同点OFF、false-solved、truncated enumeration、budget/primitive drift、duplicate task、源hash不一致、監査欠測、非公開field混入、順序シャッフル、meter ON/OFF非干渉、CPU負値/NaN、private manifest accidental publish。すべて新規TRAINまたは人工fixtureで検査。旧DEV/FINALを再生成しない。
 
 Related: [Issue #56](https://github.com/ryonakayama234/DekaSugi/issues/56) / [plan](../../experiments/OPPORTUNITY-001/plan.md) / [ARCH-001](../architecture/system.md) / [ARCH-002](../architecture/contracts.md) / [METRO validity](../metrology/validity.md)。
+
+## PR2 engineering fixture reducer (implemented, synthetic-only; not real evidence)
+- `packages/evaluation/opportunity.py`: `classify_fixture` and `summarize_fixtures`. Input **only** `schema_version=opportunity-fixture-v1`, `phase=SYNTHETIC`, `task_id=fx-...`. Real `opportunity-record/0.1` adapter still **unimplemented**.
+- Exact row fields: `schema_version, phase, task_id, source_lock, policy_choice, policy_decision_before_trials, trials`. Lock fields: `dataset_sha256,skill_sha256,policy_sha256,primitive_sha256,source_commit,meter_version,budget_id`. Each OFF/ON trial: `audit_status,audited_correct,search_status,primitive_calls,tested_candidates,false_solved,budget_id`; unknown/private fields rejected.
+- Source-lock equality checks caller-pinned synthetic identity, **not source-file SHA verification**. Pretrial flag is an assertion, **not an independent chronology attestation**. A future separately reviewed adapter must verify real evidence.
+- `both_correct` permits excess calls; `on_only`/`off_only` record missed/lost success with null cost regret; `neither_correct` records null regret; `not_observed` for missing audit, `non_comparable` for differing arm budgets. Invalid counts, false-solved, private fields, and duplicates stop aggregation.
+- Aggregate-only fixture summary includes classified counts, accurate denominators, miss/lost success and both-correct excess calls; no individual TaskSpec or raw private answer. Uncertainty not estimated for synthetic fixtures.
+- Tests: [fixture tests](../../tests/test_opportunity_fixture.py), [run ledger](../../experiments/OPPORTUNITY-001/runs/README.md), [Issue #58](https://github.com/ryonakayama234/DekaSugi/issues/58). No scientific claim.

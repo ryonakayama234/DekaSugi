@@ -130,3 +130,10 @@ tags: navigation, architecture, research, experiments
 - 主対象モジュールは`evaluation`、将来の専用モジュール `packages/evaluation/opportunity.py` は**未実装**。参照元は `kernel`/`learning`、メトリクスと欠測契約は既存METRO-0001を踏襲する。
 - [ARCH-001](architecture/system.md)に全体処理図、[ARCH-002](architecture/contracts.md)に二択paired evidenceとlearner/evaluator信頼境界。旧POLICY-DIAG-001のDEV事後診断は新しい確証データではない。
 - 本計画はreview待ちの設計案。split・seed・検定・進路選択の数値閾値の固定は後続の独立レビュー済みcommitで行う。未実行のため実測結果なし。
+
+## OPPORTUNITY-001 PR2 — synthetic-only test instrument
+| ID | テーマ | 状態 | 文書 |
+|---|---|---|---|
+| OPPORTUNITY-001-PR2 | 固定二択の人工fixture分類、欠測/偽解/費用regret校正 | implemented_synthetic_only; scientific not_run | [module](../packages/evaluation/opportunity.py) / [tests](../tests/test_opportunity_fixture.py) / [spec](specs/OPPORTUNITY-001.md) / [run ledger](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #58](https://github.com/ryonakayama234/DekaSugi/issues/58) |
+
+実データadapterは未実装。旧EXP-0003A DEV64/FINAL128には触れず、METRO CAL-01のfixture認証も拡大解釈しない。
