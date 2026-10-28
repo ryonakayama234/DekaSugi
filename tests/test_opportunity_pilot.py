@@ -5,6 +5,7 @@ from dataclasses import replace
 import inspect
 import json
 import unittest
+from unittest import mock
 
 from packages.exp0003a import generate_train, opaque_id, public_shape
 from packages.evaluation.opportunity_pilot import (
@@ -142,6 +143,52 @@ class OpportunityPilotGeneratorTests(unittest.TestCase):
                        "bounded_synthesize(", "run_train_dream(",
                        "def evaluate_case(", "from packages.exp0003a_dev"):
             self.assertNotIn(unsafe, text)
+
+
+    def test_injected_duplicate_source_id_aborts(self):
+        from packages.evaluation import opportunity_pilot as module
+        with unittest.mock.patch.object(module, "source_id_for",
+                                        return_value="op-pilot-f00-i000"):
+            with self.assertRaisesRegex(ValueError, "Duplicate pilot task/source ID"):
+                module.generate_train_pilot()
+
+    def test_injected_duplicate_seed_aborts(self):
+        from packages.evaluation import opportunity_pilot as module
+        original_seed_for = module.seed_for
+        def repeated_seed(f, i, j):
+            return original_seed_for(f, 0, j)
+        with unittest.mock.patch.object(module, "seed_for", side_effect=repeated_seed):
+            with self.assertRaisesRegex(ValueError, "Duplicate PILOT-V1 seed"):
+                module.generate_train_pilot()
+
+    def test_injected_duplicate_public_task_id_aborts(self):
+        from packages.evaluation import opportunity_pilot as module
+        with unittest.mock.patch.object(module, "opaque_id", return_value="t-" + "a" * 64):
+            with self.assertRaisesRegex(ValueError, "Duplicate pilot task/source ID"):
+                module.generate_train_pilot()
+
+    def test_injected_duplicate_audit_and_public_example_abort(self):
+        from packages.evaluation import opportunity_pilot as module
+        original_example = module._example
+        for repeated_index in (1, 2):
+            def repeated_example(family, i, j, seed):
+                if j == repeated_index:
+                    idx = module.FAMILIES.index(family)
+                    return original_example(family, i, 0, module.seed_for(idx, i, 0))
+                return original_example(family, i, j, seed)
+            with self.subTest(repeated_index=repeated_index):
+                with unittest.mock.patch.object(module, "_example",
+                                                side_effect=repeated_example):
+                    with self.assertRaisesRegex(ValueError, "Non-distinct public/audit"):
+                        module.generate_train_pilot()
+
+    def test_source_id_indices_reject_boolean_and_out_of_range(self):
+        from packages.evaluation import opportunity_pilot as module
+        self.assertEqual(module.source_id_for(0, 0), "op-pilot-f00-i000")
+        for bad in [(False, 0), (-1, 0), (8, 0), (0, 8)]:
+            with self.subTest(bad=bad):
+                with self.assertRaises(ValueError):
+                    module.source_id_for(*bad)
 
 
 if __name__ == "__main__":
