@@ -85,5 +85,33 @@ class PrivateCopyReceiptTests(unittest.TestCase):
             self.assertNotIn(str(a),err.getvalue())
 
 
+    def test_argparse_extra_private_argument_never_echoes_path(self):
+        with redirect_stdout(StringIO()) as out, redirect_stderr(StringIO()) as err:
+            rc = m.main(["--primary", "/synthetic/a", "--secondary", "/synthetic/b",
+                         "--expected-sha256", "a"*64, "/synthetic/PRIVATE_FILENAME"])
+        self.assertEqual(rc, 2)
+        self.assertEqual(out.getvalue(), "")
+        self.assertNotIn("PRIVATE_FILENAME", err.getvalue())
+        self.assertNotIn("/synthetic/", err.getvalue())
+
+    def test_hash_descriptor_must_match_initially_checked_inode(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)/"repo"; root.mkdir()
+            a, b = Path(tmp)/"a", Path(tmp)/"b"
+            a.write_bytes(b"fixture-A")
+            b.write_bytes(b"fixture-B")
+            wanted = sha256(b"fixture-A").hexdigest()
+            actual_open = os.open
+
+            def redirect_secondary(path, flags, *args, **kwargs):
+                if path == b:
+                    return actual_open(a, flags, *args, **kwargs)
+                return actual_open(path, flags, *args, **kwargs)
+
+            with patch.object(m.os, "open", side_effect=redirect_secondary):
+                with self.assertRaisesRegex(ValueError, "descriptor"):
+                    m.verify_private_copies(a, b, wanted, root=root)
+
+
 if __name__ == "__main__":
     unittest.main()
