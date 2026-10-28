@@ -3,6 +3,7 @@
 id: OPPORTUNITY-001-REAL-ADAPTER-V1
 status: draft_implementation; synthetic_unit_calibration_only; no_scored_trials
 updated: 2026-10-28
+tags: opportunity, evaluation, real-adapter, evidence, audit, no-holdout
 
 ## Scope and trust boundary
 
