@@ -25,3 +25,5 @@ Related: [plan](../plan.md) / [spec](../../../docs/specs/OPPORTUNITY-001.md) / [
 - 工学校正専用 `packages/evaluation/opportunity.py` および `tests/test_opportunity_fixture.py`。意図的に作成した分類用fixtureであり新規研究の生成課題ではない。
 - 新しい研究用TRAIN/DEV/FINALの試行・採点は **0件 / not_run**。独立原証拠監査や一般化性能の証明ではない。
 - CIと独立レビュー結果は完成後に追記記録。将来のmethod freeze、actual-evidence adapter、fresh holdoutは未着手。
+
+- [2026-10-28 PR2 synthetic fixture CI/review calibration](20261028-pr2-fixture-calibration.md): completed_engineering_calibration_only; not_scientific_result. No new study TRAIN/DEV/FINAL trial.
