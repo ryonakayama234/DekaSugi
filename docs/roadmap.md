@@ -196,3 +196,9 @@ flowchart LR
 - Read-only offline validation confirms outer ZIP **65,315 bytes**, two nested original/audit ZIP raw SHA-256 values matching the frozen DEV64 ledger, and 6/6 entries declared in inner SHA256SUMS checks. No scoring, holdout access or policy learning performed.
 - **Historical custody is partial**: provided local raw copy integrity verified; independent encrypted secondary off-public-GitHub copy/restore/access restriction **not verified**. Original uploaded ZIP has no ZIP encryption. Historical retention responsibility remains; do not mislabel as permanent secure custody.
 - Not the fresh OPPORTUNITY-001 TRAIN64 audit archive: [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66) remains blocked for new paired scoring. [Attestation](../experiments/EXP-0003A/runs/20261028-local-zip-integrity.md).
+
+
+## 2026-10-29 — Issue #76 actual paired evaluation code, not activated
+- Added separately reviewable OFF/ON search-and-independent-third-audit wiring to the source-first PILOT-V1 engineering chain. Unlike prior pure normalizer, this calls the canonical trusted search for each arm *only when separately authorized*; current source hard-codes scoring disabled. Synthetic mocks and negative controls only in CI.
+- Real new TRAIN64 scored outcomes: 0; private original 64-row archive captured: 0; off-Git Google Drive owner-only folder provisioned but still empty and no independent version/retention/restore attestation. Separate reviewed one-shot + secure custody remain hard-blocking conditions.
+- [Read-only engine spec](specs/OPPORTUNITY-001-REAL-PAIR-ENGINE.md) / [Issue #76](https://github.com/ryonakayama234/DekaSugi/issues/76) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
