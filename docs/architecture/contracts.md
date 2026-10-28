@@ -654,3 +654,25 @@ flowchart LR
 **Trust & latency**: source lock/legacy source bytesをプロジェクトimport以前に照合。元原本のZIP archiveは期間限定なので元memberを**取得・検証してから**保管する。後続scorerとのchronologyはActions/commitの観測とimmutableなGit参照の前後関係で別検証（時計表示だけでは不十分）。private第三audit元bytesのoff-repoアクセス制限付き保管はIssue #66、実験結果と旧DEV/FINALはここでは取得・採点しない。
 
 **Status**: schema/保存先/検証器は計画であって実装済みではない。原本member raw digest、保存copy digest、actual paired outcomesは`not_observed`。negative casesとC01–C09は[engineering preregistration](../../experiments/OPPORTUNITY-001/choice-custody-preregistration.md)参照。
+
+## OPPORTUNITY-001 PR9 — implemented public original-custody contract
+**Owner**: `evaluation / provenance`の独立stdlib source `scripts/verify_opportunity_choice_lock.py`、synthetic negative `tests/test_opportunity_choice_lock.py`。公表するデータ正本は[original JSON](../../experiments/OPPORTUNITY-001/evidence/pilot-choices-public-v1.json)と[lock](../../experiments/OPPORTUNITY-001/pilot-choice-lock-v1.json)の2ファイル。元原本を再演算で置き換えず、元memberのUTF-8 JSON**27360 bytesをそのまま保全**。
+
+```mermaid
+flowchart LR
+    A["Official public artifact member bytes"] --> B["raw-member SHA256 1d08..."]
+    A --> C["Strict JSON parse / 64x3 / keys"]
+    C --> D["logical canonical SHA256 8a8625..."]
+    E["Verified source/skill/policy identities"] --> F["read-only same-chooser parity"]
+    B --> L["origin+member+copy public-lock"]
+    D --> L
+    F --> L
+    L --> G["Git content-addressed original copy"]
+    P["private third original / labels / score"] -.->|"forbidden"| G
+```
+
+- exact payload：`opportunity-pretrial-public-decisions-v1`、`64` rows / `192` decisions、`{task_id,choices:{B1:{action,reason},B2:{action,reason},B3:{action,reason}}}`。action ∈ `{ON,OFF}`、reasonは固定5択で`cost_supported⇔ON`。余分・重複・非公開字段は禁止。`paired_trials_executed=0` (boolを拒否)、`dev_or_final_evaluated=false`。
+- raw SHA256：`1d08e6c1518d6730e75bfaf3033a00884f7517a7d91c98a5dfff75192aabc433`。canonical JSON digest：`8a8625ed86e66b27bef8d09a023172d2adbc9ad0d42c155ab7f137097e2dccb2`。この区別が同一内容の再formatによるoriginal byte差替えを検出する。
+- Lockはsource main SHA、run/job/artifact ID、GitHub観測timestamps、raw digestとlogical digest、TaskSpec/snapshot/skill identities、copy pathname、全scoring flags falseを正確に持つ。**ユーザー入力のprovenance claimだけを根拠にしない**：公式APIから取ったrun/job/artifactを元のcapture run中に検証。後からのロック検査では固定ID・構造・digest・bytesを検査し、元APIが不変であると仮定しない。
+- 本moduleはstdlibだけで構成。old 14-source・new 9-sourceをproject import前に検証した後、元凍結TRAIN/DREAMのみを用いる固定chooserの再演算と**元原本を比較**。これは独立実装による選択アルゴリズム監査ではない。
+- [run ledger](../../experiments/OPPORTUNITY-001/runs/20261028-pr9-public-choice-custody.md)には独立の観測と非主張を記録。現時点の公開pretrial origin engineering gateは成立しても、private raw audit off-repo archival・独立actual scorer・once-only activationが未成立なのでscoring許可なし。古いDEV/FINALへの干渉なし。
