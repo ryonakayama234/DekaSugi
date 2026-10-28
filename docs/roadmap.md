@@ -202,3 +202,9 @@ flowchart LR
 - Added separately reviewable OFF/ON search-and-independent-third-audit wiring to the source-first PILOT-V1 engineering chain. Unlike prior pure normalizer, this calls the canonical trusted search for each arm *only when separately authorized*; current source hard-codes scoring disabled. Synthetic mocks and negative controls only in CI.
 - Real new TRAIN64 scored outcomes: 0; private original 64-row archive captured: 0; off-Git Google Drive owner-only folder provisioned but still empty and no independent version/retention/restore attestation. Separate reviewed one-shot + secure custody remain hard-blocking conditions.
 - [Read-only engine spec](specs/OPPORTUNITY-001-REAL-PAIR-ENGINE.md) / [Issue #76](https://github.com/ryonakayama234/DekaSugi/issues/76) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
+
+
+## 2026-10-28 — OPPORTUNITY-001 Issue #72 private custody readiness
+- Scope: **synthetic-only** read-only two-copy original SHA256 integrity checker and explicit future fresh TRAIN64 private third-audit capture/custody design. No actual private TRAIN64 originals were captured or scored by this change.
+- Public 64-task/192-choice source and method seals from PR #65/#70 are frozen; historical DEV64 ZIP is **not** new TRAIN64 custody. The helper returns `custody_verified=false` and `scoring_authorized=false` even on two matching copies. Independent access-controlled/versioned durable off-public storage, independent restore, real source-first scorer and reviewed main-only one-shot activation are all future gates.
+- [Details](specs/OPPORTUNITY-001-PRIVATE-CUSTODY.md) / [Run ledger](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #72](https://github.com/ryonakayama234/DekaSugi/issues/72) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).

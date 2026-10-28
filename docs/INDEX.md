@@ -209,3 +209,8 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 ## OPPORTUNITY-001 — actual canonical OFF/ON pair engine, still blocked
 - [Real pair engine contract](specs/OPPORTUNITY-001-REAL-PAIR-ENGINE.md) / [unactivated engine](../scripts/opportunity_real_pair_engine.py) / [synthetic-only tests](../tests/test_opportunity_real_pair_engine.py) / [Issue #76](https://github.com/ryonakayama234/DekaSugi/issues/76).
 - The OFF/ON *execution wiring* is newly implemented for later separate activation; `SCORING_ACTIVATED=false` and **fresh TRAIN64 actual scored pairs=0**. Private original capture and external secure versioned archive/restore remain unverified; the owner-only off-Git Google Drive folder is an empty destination, not proof of custody.
+
+
+## OPPORTUNITY-001 — private TRAIN64 archive preparation, NOT scored
+- [Private-origin custody readiness specification](specs/OPPORTUNITY-001-PRIVATE-CUSTODY.md) / [read-only local two-copy SHA checker](../scripts/verify_opportunity_private_copy.py) / [synthetic adversarial tests](../tests/test_opportunity_private_copy.py) / [Issue #72](https://github.com/ryonakayama234/DekaSugi/issues/72).
+- 64 public TaskSpecs and 192 original public policy decisions are retained, but fresh ON/OFF scored rows = **0**; the historical DEV64 local ZIP is unrelated. The checker can verify byte equality only, **not** private access controls, archival version/retention, actual scorer provenance or scientific results. [run status](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).

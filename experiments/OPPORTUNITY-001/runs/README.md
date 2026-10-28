@@ -77,3 +77,9 @@ Related: [plan](../plan.md) / [spec](../../../docs/specs/OPPORTUNITY-001.md) / [
 - New real TRAIN64 scored rows=**0 / not_run**; private original captures=**0 / not_run**. Independent restricted long-term off-Git archival object/version/retention and restore not verified; a new owner-only unshared Google Drive folder is only a currently empty destination and does not establish private raw custody.
 
 - 2026-10-29 PR #77 hard-off security follow-up: shared `assemble_audited_pair()` now also refuses direct injection while `SCORING_ACTIVATED=False`, not only `_unactivated_real_pair()`. Tests use test-local synthetic opt-in mocks only; genuine new TRAIN64 observed pairs remain **0**.
+
+
+## 2026-10-28 Issue #72: fresh TRAIN64 private copy helper — NOT scored
+- [Local byte-equality script](../../../scripts/verify_opportunity_private_copy.py) and [synthetic-only adversarial tests](../../../tests/test_opportunity_private_copy.py) check **two previously existing** private artifact copies against a separately pinned original SHA-256. No real third-audit originals were produced, read or uploaded in CI, and no paired trials were scored.
+- [Custody readiness plan](../../../docs/specs/OPPORTUNITY-001-PRIVATE-CUSTODY.md) explicitly distinguishes historic DEV64 private backup from the **future new TRAIN64** original. `private_archive_captured=false`, `private_archive_restricted_custody_verified=false`, `real_scorer_reviewed=false`, `one_shot_scored_trials=0`. No scientific result.
+- The tool never attests ACL/encryption, independent storage, object version/retention or restore and never grants activation. Separate independently reviewed original capture and secure storage precede scorer approval and one-shot execution (Issue #66).
