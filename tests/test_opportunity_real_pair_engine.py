@@ -45,9 +45,19 @@ def skill():
     return SimpleNamespace(skill_id=SKILL_ID,body_hash=m.LOCKED_SKILL)
 
 
+def synthetic_armed_pair(*args, **kwargs):
+    """Only in artificial test scope: all real production call paths stay off."""
+    with patch.object(m, "SCORING_ACTIVATED", True):
+        return m.assemble_audited_pair(*args, **kwargs)
+
+
 class ActualPairSyntheticOnlyTests(unittest.TestCase):
     def test_hard_off_rejects_unactivated_actual_engine(self):
         self.assertIs(m.SCORING_ACTIVATED,False)
+        with self.assertRaisesRegex(ValueError,"not activated"):
+            m.assemble_audited_pair(None,None,None,None,None,
+                                    registry_factory=object,register_skill=lambda *_: None,
+                                    validate_skill=lambda *_: None,audited_trial=lambda *_: None)
         with self.assertRaisesRegex(ValueError,"not activated"):
             m._unactivated_real_pair(None,None,None,None,None)
         self.assertIs(m.SCORING_ACTIVATED,False)
@@ -63,7 +73,7 @@ class ActualPairSyntheticOnlyTests(unittest.TestCase):
             seen.append(("trial",r,dict(learned),a.input))
             return fake_trial(t.task_id,5 if not learned else 3)
         frozen=skill()
-        result=m.assemble_audited_pair(task(),audit(),frozen,CHOICES,ahash(),
+        result=synthetic_armed_pair(task(),audit(),frozen,CHOICES,ahash(),
                                       registry_factory=fresh,
                                       register_skill=register,
                                       validate_skill=lambda s,r: seen.append(("validate",r)),
@@ -85,7 +95,7 @@ class ActualPairSyntheticOnlyTests(unittest.TestCase):
             invoked.append("ON" if learned else "OFF")
             return fake_trial(invalid=True)
         with self.assertRaisesRegex(ValueError,"false_solved"):
-            m.assemble_audited_pair(task(),audit(),skill(),CHOICES,ahash(),
+            synthetic_armed_pair(task(),audit(),skill(),CHOICES,ahash(),
                                    registry_factory=object,
                                    register_skill=lambda s,r:r,
                                    validate_skill=lambda s,r:None,
@@ -96,7 +106,7 @@ class ActualPairSyntheticOnlyTests(unittest.TestCase):
         for sha,sk in [("0"*64,skill()),(ahash(),SimpleNamespace(skill_id="BAD",body_hash=m.LOCKED_SKILL))]:
             got=[]
             with self.assertRaises(ValueError):
-                m.assemble_audited_pair(task(),audit(),sk,CHOICES,sha,
+                synthetic_armed_pair(task(),audit(),sk,CHOICES,sha,
                                        registry_factory=object,
                                        register_skill=lambda s,r:r,
                                        validate_skill=lambda s,r:None,
