@@ -45,7 +45,7 @@ The private JSON contains 64 evaluator-only `{task_id, third_audit: {input, outp
 Manual invocation on an appropriate private operator machine **after** code review (never in public GitHub Actions):
 
 ```bash
-python3.12 scripts/capture_opportunity_private_original.py \
+python3.12 -m scripts.capture_opportunity_private_original \
   --capture-before-scoring \
   --primary "/absolute/private-volume-a/original.bin" \
   --secondary "/absolute/private-volume-b/original.bin"
@@ -61,3 +61,8 @@ Method: [immutable PILOT-V1](../../experiments/OPPORTUNITY-001/pilot-v1.md); exi
 
 ## Private owner operator runbook
 [WSL2 local raw first-capture and encrypted Google Drive restore procedure](OPPORTUNITY-001-PRIVATE-OPERATOR.md) gives concrete commands and distinguishes ephemeral second-volume integrity check from durable independent offsite custody. It must not be followed until exact-head independent review and merge; no real capture or score has been run by this PR.
+
+## 2026-10-29 independent Codex security remediation (before real capture)
+- P1: the original absolute private pathname is **never used for final write/readback**. The revised CLI opens every ancestor with O_DIRECTORY|O_NOFOLLOW from the root, rejects writable non-root-sticky ancestors, compares the final descriptor's device/inode/mode/owner to the preflight, and pins it with dir_fd for exclusive creation, fsync and SHA readback. A synthetic ancestor symlink swap fails without writing to a fake public tree. A root-owned sticky /dev/shm for ephemeral second checks is permitted, but does not constitute durable external custody.
+- P2: the documented invocation uses Python module syntax (-m), and direct script execution now resolves the repository scripts package without importing project packages before old14/new9 source checks. Synthetic subprocess tests assert this without generating any real TRAIN64 original.
+- These fixes are code hardening only. Independent exact-head review/CI must pass before merging; actual third-audit capture and scoring both remain NOT_RUN.
