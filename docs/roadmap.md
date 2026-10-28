@@ -158,3 +158,18 @@ Compute and capture 64×3 B1/B2/B3 choices using only new public TaskSpec and pr
 
 ### PR7 P1 method-boundary correction
 After discovering the old `load_frozen_assets` traversed `freeze.verify_frozen` and regenerated DEV/FINAL references, add a 14-blob stdlib-only pre-import validation gate and a new TRAIN/DREAM-only snapshot restore path. Reject the initial public choice digest as authoritative until a new source-corrected CI/pretrial review. No old holdout scoring or new paired trial ran.
+
+## OPPORTUNITY-001 PR9 — 事前判断Evidence Capsuleの設計（Issue #68、2026-10-28）
+
+主対象：`evaluation / provenance`。**新規TRAIN64のON/OFF実測を起動しない**。source-first review済みPR7/main `c6b01c2`の公開B1/B2/B3事前選択（64×3=192件）を、原Actions artifactの元JSON member byte SHA、論理payload SHA、実行出典、別途保持コピー、時間順序という別々の観測に分解する。[設計契約](specs/OPPORTUNITY-001-CHOICE-LOCK-DESIGN.md) / [工学事前登録](../experiments/OPPORTUNITY-001/choice-custody-preregistration.md) / [run ledger](../experiments/OPPORTUNITY-001/runs/README.md)。
+
+```mermaid
+flowchart LR
+  A["Gate 0: 今回は設計・独立レビューのみ"] --> B["Gate 1: official public原本bytes保全"]
+  B --> C["Gate 2: C01-C09厳格検証と人工負例校正"]
+  C --> D["sealed_pretrial_only; scoring=false"]
+  D -.-> E["Gate 3: Issue 66 restricted private original / scorer / one-shot authorization"]
+  A -.-> X["No new TRAIN trials / no old DEV/FINAL generation"]
+```
+
+事前判断のlogical SHAだけでは**原本保全も時系列も**確定しない。初期PR7の旧DEV/FINAL参照再生成（非採点）という失敗例を、後続の同じdigestで遡及的に正当化しない。PR #67の正規化器は別レビュー工程。私的第三監査originalは公開Gitに置かず、外部保管の条件確認までは実測不可。将来のActive Learning・Kernel改良や知能測定の分岐を判断する証拠は、その後の別個のpaired研究で得る。

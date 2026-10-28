@@ -622,3 +622,35 @@ flowchart TD
 
 ## OPPORTUNITY-001 PR7 P1 trust-boundary remediation
 Before `verify_generator_lock` or ANY `packages.*` import, `verify_opportunity_legacy_sources.verify_legacy_source_bytes` checks the exact reviewed historic EXP-0003A manifest and all 14 blob+raw source checksums with stdlib only. `load_frozen_assets()` was found to regenerate old DEV/FINAL references via legacy `freeze.verify_frozen`; this API is now forbidden in the opportunity pretrial. A new TRAIN/DREAM-only reconstruction uses `run_train_dream`, validates original snapshot/candidate identity and selection lists without calling legacy freeze preflight. Review finding: [PR #65](https://github.com/ryonakayama234/DekaSugi/pull/65). Historical PR7 head results are retained as diagnostic, not method-valid until rerun.
+
+## OPPORTUNITY-001 PR9 — public pretrial origin/identity/retention data contract (design-only)
+**Boundary**: `evaluation / provenance`は「公開64 TaskSpecに対し、B1/B2/B3が採点前に選んだ192 action+reasonを保持・検証する」責務を負う。これはscorerや学習器ではなく、既存の`opportunity-pretrial-public-decisions-v1` payloadを新規のartifact custody envelopeで包む**提案**である。設計正本：[choice lock spec](../specs/OPPORTUNITY-001-CHOICE-LOCK-DESIGN.md)。
+
+```mermaid
+flowchart LR
+  A["Official Actions artifact: original public JSON bytes"] --> B["member_raw_sha256"]
+  A --> C["Strict JSON exact keys / duplicate keys reject"]
+  C --> D["canonical_decision_payload_sha256"]
+  E["Source-locked TRAIN64 public manifest"] --> F["64 unique task_id and order"]
+  G["Frozen B1/B2/B3 snapshots + top skill"] --> H["action/reason parity (same chooser replay; auxiliary)"]
+  B --> I["pilot-choice-lock-v1: origin+digest+retention"]
+  D --> I
+  F --> I
+  H --> I
+  I --> J["Copied original public member in versioned Git commit (future)"]
+  K["Private raw third audit"] -.->|"NO public crossing"| I
+```
+
+**Input exact payload** (already produced by PR7, not a proposed redesign): `{schema_version,method,phase,source_manifest_sha256,skill_body_sha256,policy_snapshot_sha256,decisions[64],paired_trials_executed,dev_or_final_evaluated}`。各`decision` = `{task_id,choices:{B1:{action,reason},B2:{action,reason},B3:{action,reason}}}`、`phase=FRESH_TRAIN_ONLY`、`paired_trials_executed`はboolでない整数0、`dev_or_final_evaluated=false`。Task IDは`t-`+64 lowercase hex、3方策のchoicesは`OFF/ON`のみ。欠落/追加key、重複、private audit/family/seed/source ID/outcome混入はhard stop。決定行の順序も論理digestの一部。
+
+**Hashes must not alias each other**:
+- ZIP raw SHA256は補助的出典証拠。単一の指定JSON memberのraw SHA256と、後日Gitにコピーされたmemberのraw SHA256はbyte-for-byte一致すること。
+- Canonical payload SHA256は`json.dumps(obj,sort_keys=True,separators=(',', ':'),ensure_ascii=False,allow_nan=False)`のUTF-8で計算する。raw JSON formatting変更はpayload digestを保持しても、元byte custodyを保持したことにならない。
+- public TaskSpec manifest hashは新TRAIN課題分布の同一性、policy snapshot hashesは方策同一性、skill body hashは候補技能同一性。decision hashと混同しない。
+- Lockにはofficial main commit、Actions run/job/artifact ID、取得時期と取得経路、original/copied member digest、認証結果と保持先、レビューheadを置く（詳細schemaは実装前にversion freeze）。Payload digestへlock自身を含めない。
+
+**State / tri-state quality**: `planned → origin_retrieved → byte_verified → semantic_verified → retained_public → sealed_pretrial_only`、いずれもfailや必要な`not_observed`では`blocked`。`sealed_pretrial_only`は`scoring_permitted=false`を保持。元pretrialの初期禁止経路runは同じdigestでもoriginが違うため不可。replayは同じchooser実装による補助結果であって、原本の代替・独立したプログラム実装の検証ではない。
+
+**Trust & latency**: source lock/legacy source bytesをプロジェクトimport以前に照合。元原本のZIP archiveは期間限定なので元memberを**取得・検証してから**保管する。後続scorerとのchronologyはActions/commitの観測とimmutableなGit参照の前後関係で別検証（時計表示だけでは不十分）。private第三audit元bytesのoff-repoアクセス制限付き保管はIssue #66、実験結果と旧DEV/FINALはここでは取得・採点しない。
+
+**Status**: schema/保存先/検証器は計画であって実装済みではない。原本member raw digest、保存copy digest、actual paired outcomesは`not_observed`。negative casesとC01–C09は[engineering preregistration](../../experiments/OPPORTUNITY-001/choice-custody-preregistration.md)参照。

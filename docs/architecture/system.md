@@ -579,3 +579,29 @@ flowchart LR
   X["Old dev/final generator, legacy verify_frozen"] -.->|"forbidden"| R
 ```
 The first PR7 implementation wrongly used legacy `load_frozen_assets`, triggering old withheld generation before paired scoring. New design avoids it and records the initial CI SHA as non-authoritative pending review. [Issue #60](https://github.com/ryonakayama234/DekaSugi/issues/60).
+
+## OPPORTUNITY-001 PR9 — pretrial Evidence Capsule（設計案、未実装）
+```mermaid
+flowchart TD
+    O["Official main pretrial run 40659741488"] --> M["Origin verifier: commit/run/job/artifact"]
+    M --> Z["Original public-only ZIP member bytes"]
+    Z --> B["Raw byte SHA256 + strict JSON parser"]
+    B --> C["Canonical decision payload SHA256"]
+    S["9-source + 14-source byte-first lock"] --> R["TRAIN/DREAM-only B1/B2/B3 choice replay (auxiliary)"]
+    C --> K{"Identity + origin + 64x3 + reason parity?"}
+    R --> K
+    K -->|"fail / not_observed"| X["STOP: scoring remains forbidden"]
+    K -->|pass| G["Public original bytes stored on Git in later PR"]
+    G --> I["Choice lock + CI + independent review"]
+    I --> F["sealed_pretrial_only (not scoring authorization)"]
+    P["Evaluator-only third audit RAW"] --> Q["Separate restricted off-public archive: Issue 66"]
+    F -.->|"not sufficient alone"| A["Future independently approved ON/OFF actual scorer"]
+    Q -.->|"separate mandatory gate"| A
+    H["Historic DEV/FINAL generator"] -.->|"never called"| R
+```
+
+主対象は`evaluation / provenance`。今回のPRは**この図を含む設計文書のみ**。source-first読み取り側と実際の学習・採点側を分離する。元Actionsのpublic member raw SHA256と正規化されたpayload digestは**別の測定値**であり、一方だけでは原本性を証明しない。replayは同じchooserの結果一致を検査するだけで、独立発明された方策の独立監査とは主張しない。
+
+`sealed_pretrial_only`が意味するのは**事前判断の監査可能な保持**であって、AIの能力が改善した、実データ正規化器が完成した、private audit元bytesのoff-repo保全が完了した、あるいはscoringを許可したことではない。
+
+詳細：[設計契約](../specs/OPPORTUNITY-001-CHOICE-LOCK-DESIGN.md) / [品質試験計画](../../experiments/OPPORTUNITY-001/choice-custody-preregistration.md) / [ARCH-002](contracts.md)。元のEXP-0003A・PILOT-V1方法・source lockは変更禁止。

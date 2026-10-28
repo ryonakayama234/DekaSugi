@@ -305,3 +305,11 @@
 - The PR7 pretrial chooser MUST NOT call `packages.exp0003a_dev.load_frozen_assets`, `freeze.verify_frozen`, `preflight_record`, `dataset_hashes` or `generate_partition('dev'|'final')`. The historical freeze's full verify path regenerates withheld reference datasets; even without scoring this is forbidden for this new actionability pretrial workflow.
 - Instead call only reviewed `packages.exp0003a.pr3.run_train_dream` AFTER the 14-source byte gate and the 9-source public generator gate, rehydrate validated top skill/B1/B2/B3 snapshots and compare against original frozen policy+selection hashes. Negative tests block legacy DEV/FINAL generators and injected unreviewed legacy dependency bytes.
 - An initial CI run on PR7 head `7d1e74f` had this boundary violation; its decision digest is **diagnostic/unaccepted** until the repaired pathway is independently reviewed and rerun. Record the failure rather than erasing it.
+
+## 37. OPPORTUNITY-001 PR9 pretrial Evidence Capsule設計（Issue #68）
+- 主対象は`evaluation / provenance`。対象は新TRAIN64×3方策の**採点前公開action/reason 192件の保全可能性**であり、学習成果・正答率・policy regretの実測ではない。新しいscored trialsは0。詳細は[設計契約](docs/specs/OPPORTUNITY-001-CHOICE-LOCK-DESIGN.md)と[品質試験計画](experiments/OPPORTUNITY-001/choice-custody-preregistration.md)。
+- **Evidence = 原public member bytes + logical digest + official origin + independent retention**。単独のpayload SHAだけでは原本保持/出典/時系列を証明できない。初期PR7の禁止された旧DEV/FINAL参照生成経路は、後の同一digestで遡及的に承認しない。
+- 採点前の正式出典はmerged PR #65のmain `c6b01c2`、公式run `40659741488`・job `122719482732`・artifact `12803053107`。元memberのraw SHA256は**取得して測るまで未観測**、原本を生成し直して代用禁止。public raw memberのみ別Git commitで保持し、private第三監査原本を絶対に同梱しない。
+- 後続の原本検証はZIP/member単位のraw hashとcanonical JSON digestを区別、schema/64×3/ポリシーSHA/理由/順序/原本保持/時系列をfail closed。byte-first source gate前に`packages.*`をimportせず、old `load_frozen_assets`/`verify_frozen`・DEV/FINAL生成/採点禁止。同じchooser replayは補助検査であり独立実装の証明ではない。
+- Gateは`pass / fail / not_observed`を個別保存し、failまたは必要な未観測を成功に置換しない。`sealed_pretrial_only`でも`new_train_pilot_scoring_permitted=false`。#66のprivate原本保全、独立actual scorer、once-only activation、#67の別レビューは独立ゲート。
+- このPRは**docs-only**。AGENTS/INDEX/ARCH-001/ARCH-002/spec/prereg/run台帳を同時に更新。コード実装・検証実行の成功・PRレビュー通過を装わない。最新commitのCI・独立レビュー完了前にmergeしない。
