@@ -72,6 +72,13 @@ Related: [plan](../plan.md) / [spec](../../../docs/specs/OPPORTUNITY-001.md) / [
 - PR8 Codex P2 AST hardening: synthetic negatives for noncanonical/private solved AST and expanded node-budget overflow; positive canonical primitive and frozen-macro AST fixtures. No research trial was performed for these tests. Review/CI gate applies to exact PR head.
 
 
+## 2026-10-29 Issue #76: actual OFF/ON pair engine staged (NO live trials)
+- [Source-first actual pair engine](../../../scripts/opportunity_real_pair_engine.py) with [synthetic-only tests](../../../tests/test_opportunity_real_pair_engine.py) and [contract](../../../docs/specs/OPPORTUNITY-001-REAL-PAIR-ENGINE.md). OFF and ON canonical search/audit are wired, **but `SCORING_ACTIVATED=false`**, no experimental one-shot, no real audit data generated in CI, no old DEV/FINAL accesses.
+- New real TRAIN64 scored rows=**0 / not_run**; private original captures=**0 / not_run**. Independent restricted long-term off-Git archival object/version/retention and restore not verified; a new owner-only unshared Google Drive folder is only a currently empty destination and does not establish private raw custody.
+
+- 2026-10-29 PR #77 hard-off security follow-up: shared `assemble_audited_pair()` now also refuses direct injection while `SCORING_ACTIVATED=False`, not only `_unactivated_real_pair()`. Tests use test-local synthetic opt-in mocks only; genuine new TRAIN64 observed pairs remain **0**.
+
+
 ## 2026-10-28 Issue #72: fresh TRAIN64 private copy helper — NOT scored
 - [Local byte-equality script](../../../scripts/verify_opportunity_private_copy.py) and [synthetic-only adversarial tests](../../../tests/test_opportunity_private_copy.py) check **two previously existing** private artifact copies against a separately pinned original SHA-256. No real third-audit originals were produced, read or uploaded in CI, and no paired trials were scored.
 - [Custody readiness plan](../../../docs/specs/OPPORTUNITY-001-PRIVATE-CUSTODY.md) explicitly distinguishes historic DEV64 private backup from the **future new TRAIN64** original. `private_archive_captured=false`, `private_archive_restricted_custody_verified=false`, `real_scorer_reviewed=false`, `one_shot_scored_trials=0`. No scientific result.

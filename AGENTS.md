@@ -334,6 +334,14 @@
 - This historical DEV64 bundle is not the fresh OPPORTUNITY-001 TRAIN64 original audit custody required by Issue #66; never use it to bypass the fresh-scorer or one-shot main-only gate. No old DEV/FINAL regeneration or rescoring.
 
 
+## 2026-10-29 OPPORTUNITY-001 real OFF/ON pair engine (not activated)
+- [Actual pair engine](scripts/opportunity_real_pair_engine.py) / [synthetic tests](tests/test_opportunity_real_pair_engine.py) / [contracts](docs/specs/OPPORTUNITY-001-REAL-PAIR-ENGINE.md) / Issue #76. Unlike PR #67 pure normalization, this new engine *wires the real trusted canonical OFF and ON search* and independent third-audit, but the live entry has `SCORING_ACTIVATED=False`; no actual new TRAIN64/DEV/FINAL scored trial in this PR/CI.
+- Before any real activation: old14+new9 source-first verification, exact origin 64x3 public policy bytes, genuine original private third-audit raw digest/64 commitments, independent off-GitHub archive identity/version/ACL/retention/restore and a separately approved one-shot runtime. Reject false_solved before entering subsequent arm; do not leak third audits/family/seed or pass them to Kernel.
+- A dedicated owner-only non-shared Google Drive folder now exists **privately** (no folder ID or link on public Git); it is empty and is not yet an attested immutable private archive. Engineering success != permission to score.
+
+- 2026-10-29 PR #77 fail-closed hardening: the shared `assemble_audited_pair()` itself must reject direct callers before importing actual search/audit components if `SCORING_ACTIVATED is not True`. A synthetic-test-only scoped mock of this switch is never runtime authorization. Do not remove this guard without separate reviewed custody/one-shot activation.
+
+
 ## 2026-10-28 OPPORTUNITY-001 private-original custody staging and non-authoritative local checker
 - [Custody readiness contract](docs/specs/OPPORTUNITY-001-PRIVATE-CUSTODY.md) defines the future fresh TRAIN64 evaluator-only third-audit capture **before** any OFF/ON search; it is **not** the old EXP-0003A DEV64 ZIP. New actual paired scored rows remain 0.
 - `scripts/verify_opportunity_private_copy.py` and synthetic-only tests compare **two existing off-repository raw files** to a separately pinned original raw SHA256; they do not generate audit examples, run scoring, encrypt/upload originals, verify remote ACL/version/retention or prove independent restricted custody. Even when bytes match, result explicitly declares `independent_private_raw_custody_verified=false` and `scoring_authorized=false`.

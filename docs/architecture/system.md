@@ -657,6 +657,20 @@ flowchart TD
 No historical DEV64/FINAL scoring, source changes, or old task generation. Upload integrity is verified; a separate durable private backup is **not yet attested**. The future OPPORTUNITY-001 TRAIN64 requires **different** private audit originals and authority. See [sanitized run record](../../experiments/EXP-0003A/runs/20261028-local-zip-integrity.md).
 
 
+## OPPORTUNITY-001 Issue #76 — actual real pair engine, non-activated
+```mermaid
+flowchart TD
+  P["Old14/new9 locks + official 64x3 original decisions"] --> A["Private raw original capture + external durable custody: UNVERIFIED"]
+  A -.->|"gate closed"| R["One-shot actual scorer authorization: FALSE"]
+  R -.-> S["OFF: fresh Registry + canonical bounded search"]
+  S -.-> V["Independent third audit; false_solved STOP"]
+  V -.-> T["ON: fresh Registry + exact frozen skill"]
+  T -.-> W["Independent third audit; false_solved STOP"]
+  W -.-> O["Pure PR67 normalizer: redacted pair outcomes"]
+```
+The OFF/ON function is coded but **never invoked on real new TRAIN64 by CI or main**. [Engine](../../scripts/opportunity_real_pair_engine.py) / [review/spec](../specs/OPPORTUNITY-001-REAL-PAIR-ENGINE.md) / [Issue #76](https://github.com/ryonakayama234/DekaSugi/issues/76).
+
+
 ## OPPORTUNITY-001 fresh TRAIN64 custody-preparation implementation (2026-10-28; NO scoring)
 ```mermaid
 flowchart TD
