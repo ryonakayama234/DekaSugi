@@ -10,9 +10,11 @@ from io import StringIO
 from pathlib import Path
 from types import SimpleNamespace
 from tempfile import TemporaryDirectory
-from contextlib import redirect_stdout, redirect_stderr
+from contextlib import contextmanager, redirect_stdout, redirect_stderr
 import json
 import os
+import subprocess
+import sys
 import unittest
 from unittest.mock import patch
 
@@ -79,7 +81,17 @@ class PrivateOriginCaptureSyntheticTests(unittest.TestCase):
             raw=b"synthetic_example_content"
             first=SimpleNamespace(st_dev=101,st_ino=1)
             second=SimpleNamespace(st_dev=202,st_ino=2)
-            with patch.object(m, "_private_destination", side_effect=[first,second]):
+            @contextmanager
+            def synthetic_parent(path, expected):
+                fd = os.open(path.parent, os.O_RDONLY | os.O_DIRECTORY)
+                try:
+                    yield fd
+                finally:
+                    os.close(fd)
+            # The real source gate demands physically distinct volumes;
+            # this synthetic test simulates that condition without real archives.
+            with patch.object(m, "_private_destination", side_effect=[first,second]), \
+                 patch.object(m, "_opened_parent", side_effect=synthetic_parent):
                 receipt=m.save_private_original(raw,a,b)
             self.assertEqual(a.read_bytes(),raw)
             self.assertEqual(b.read_bytes(),raw)
@@ -119,6 +131,40 @@ class PrivateOriginCaptureSyntheticTests(unittest.TestCase):
             b=priv/"another"
             with self.assertRaises(ValueError):
                 m.save_private_original(b"synthetic",a,b)
+
+    def test_intermediate_parent_symlink_swap_does_not_write_to_fake_public_repo(self):
+        with TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            original_parent=root/"private-ancestor"
+            public_parent=root/"fake-public-repo"
+            original_parent.mkdir(mode=0o700)
+            public_parent.mkdir(mode=0o700)
+            (original_parent/"owner").mkdir(mode=0o700)
+            (public_parent/"owner").mkdir(mode=0o700)
+            original=original_parent/"owner"/"SYNTHETIC_ONLY.bin"
+            expected=m._private_destination(original)
+            # Replace an ancestor after the original private-directory stat.
+            original_parent.rename(root/"private-moved")
+            original_parent.symlink_to(public_parent,target_is_directory=True)
+            with self.assertRaises(ValueError):
+                with m._opened_parent(original,expected) as pinned:
+                    m._write_exclusive(original.name,b"synthetic",pinned)
+            self.assertFalse((public_parent/"owner"/original.name).exists())
+            self.assertFalse((root/"private-moved"/"owner"/original.name).exists())
+
+    def test_direct_script_execution_can_find_scripts_without_running_generator(self):
+        # No source generation: execute only module definitions in a clean
+        # subprocess and test import resolution, never main() or any scorer.
+        probe = (
+            "import runpy,importlib.util;"
+            "runpy.run_path('scripts/capture_opportunity_private_original.py',"
+            "run_name='synthetic_import_probe');"
+            "assert importlib.util.find_spec('scripts.verify_opportunity_legacy_sources')"
+        )
+        result=subprocess.run([sys.executable,"-c",probe],cwd=m.ROOT,
+                              capture_output=True,text=True,timeout=10)
+        self.assertEqual(result.returncode,0)
+        self.assertEqual(result.stdout,"")
 
     def test_cli_error_never_echoes_private_paths_or_captures(self):
         with redirect_stdout(StringIO()) as stdout, redirect_stderr(StringIO()) as stderr:
