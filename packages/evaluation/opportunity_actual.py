@@ -28,6 +28,14 @@ METER_KEYS = frozenset(("primitive_invocations", "by_op"))
 CANONICAL_PRIMITIVES = frozenset(("trim", "lower", "upper"))
 MAX_NODES = 4
 MAX_CANDIDATES = 100
+# Fixed by OPPORTUNITY-PILOT-GENERATOR-LOCK-V1 and historic EXP-0003A freeze.
+# Verified top skill body = lower(trim(Input)) (3 physical nodes), so a
+# skill call adds TWO canonical primitive calls to the expanded child AST.
+# This pure normalizer checks shape/budget; future runner MUST separately
+# authenticate original frozen source and skill before using any real evidence.
+FROZEN_SKILL_ID = "skill_8fe1361cb5014f85"
+FROZEN_SKILL_BODY_SHA256 = "8fe1361cb5014f8503e4a57392e45f4fc7607e788fdd598f66668fbc11338eff"
+FROZEN_SKILL_PHYSICAL_CALLS = 2
 
 
 def _digest(obj: object) -> str:
@@ -47,6 +55,49 @@ def _exact(obj: object, keys: frozenset, context: str) -> dict:
     if type(obj) is not dict or set(obj) != keys:
         raise ValueError(f"{context}: malformed or private fields")
     return obj
+
+
+def _expanded_ast_nodes(node: object, *, arm: str) -> int:
+    """Strict canonical unary String AST; count macro EXPANSION, not surface nodes.
+
+    Only the exact historically source-locked top skill is allowed in ON.
+    The two primitive calls of lower(trim(Input)) are counted at each use.
+    No code, registry, policy, scorer or private inputs are imported/executed.
+    """
+    if type(node) is not dict:
+        raise ValueError("Invalid canonical AST node shape")
+    kind = node.get("node_kind")
+    if kind == "input":
+        _exact(node, frozenset(("node_kind", "type")), "AST input")
+        if node["type"] != "String":
+            raise ValueError("Invalid canonical AST input type")
+        return 1
+    if kind != "call":
+        raise ValueError("Invalid canonical AST node kind")
+    _exact(node, frozenset(("node_kind", "type", "op_id", "children")), "AST call")
+    if node["type"] != "String":
+        raise ValueError("Invalid canonical AST call type")
+    op = node["op_id"]
+    if type(op) is not str:
+        raise ValueError("Invalid canonical AST operator type")
+    if op == FROZEN_SKILL_ID:
+        if arm != "ON":
+            raise ValueError("Frozen skill forbidden in OFF arm")
+        cost = FROZEN_SKILL_PHYSICAL_CALLS
+    elif op in CANONICAL_PRIMITIVES:
+        cost = 1
+    else:
+        raise ValueError("Unapproved canonical AST operator")
+    children = node["children"]
+    if type(children) is not list or len(children) != 1:
+        raise ValueError("Invalid canonical unary AST children")
+    # A physical node count above MAX_NODES is forbidden. Limit recursion as
+    # soon as the child exceeds budget, before any expensive/deep traversal.
+    child_nodes = _expanded_ast_nodes(children[0], arm=arm)
+    total = cost + child_nodes
+    if total > MAX_NODES:
+        raise ValueError("Expanded canonical AST exceeds frozen node budget")
+    return total
 
 
 def normalize_audited_trial(raw: tuple, *, arm: str) -> dict[str, object]:
@@ -116,6 +167,8 @@ def normalize_audited_trial(raw: tuple, *, arm: str) -> dict[str, object]:
             raise ValueError("Unaudited or missing solved AST")
         if program != selected:
             raise ValueError("Canonical selected AST/program contradiction")
+        if _expanded_ast_nodes(selected, arm=arm) > MAX_NODES:
+            raise ValueError("Expanded canonical AST exceeds frozen node budget")
     elif correct or program is not None or selected is not None:
         raise ValueError("Unsolved outcome contradicts audit/program")
 
