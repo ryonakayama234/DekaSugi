@@ -526,3 +526,17 @@ flowchart LR
   S -.->|"never public / learner input"| L["Kernel / learning"]
 ```
 The implementation in [opportunity_pilot.py](../../packages/evaluation/opportunity_pilot.py) has **no search, chooser or scorer**. It is a generator/preflight for a future separately authorized/reviewed pilot, not measured improvement.
+
+## OPPORTUNITY-001 PR5 independent identity verification (source-only)
+```mermaid
+flowchart LR
+  M["Immutable PILOT-V1 method"] --> G["Project generator (64 public IDs)"]
+  M --> I["Standalone stdlib-only regeneration"]
+  G --> S["Public SHA from CI hash-only"]
+  I --> T["Public SHA + third-audit hash commitments"]
+  S --> C{"Identical public SHA?"}
+  T --> C
+  C -->|"NO"| X["Fail closed; no score"]
+  C -->|"YES"| F["Future source/manifest lock, NOT trial activation"]
+```
+The independent script outputs **hashes only**, no raw third examples, policy inference or paired trial. Source-only equality cannot establish an outcome audit or secure storage. [Script](../../scripts/audit_opportunity_pilot_public.py).
