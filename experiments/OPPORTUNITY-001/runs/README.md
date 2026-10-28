@@ -56,3 +56,5 @@ Related: [plan](../plan.md) / [spec](../../../docs/specs/OPPORTUNITY-001.md) / [
 - Pure `packages/evaluation/opportunity_actual.py` + synthetic adversarial tests; no task execution, no actual paired trial/assessment, no old DEV/FINAL access. New TRAIN=0, DEV=0, FINAL=0.
 - Gate checks: strict SHA/redaction, search/program/status coherence, canonical positive `by_op` breakdown and sums, fixed 4/100 budgets, equal public task identity, correctness before cost, missing/unknown not imputed.
 - Real-audit source identity, before-trial decisions and restricted original-private-evidence retention remain independently blocked. PR #65 requires final review; a distinct source-first one-shot scorer and independent recount are future work. [Contract](../../../docs/specs/OPPORTUNITY-001-REAL-ADAPTER.md) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
+
+- PR8 Codex P2 AST hardening: synthetic negatives for noncanonical/private solved AST and expanded node-budget overflow; positive canonical primitive and frozen-macro AST fixtures. No research trial was performed for these tests. Review/CI gate applies to exact PR head.
