@@ -691,3 +691,22 @@ flowchart LR
 - `classify_pair`: identical public task ID/budget; regret counts only when both correct; one-arm success counts separately; neither-correct unknown, not regret zero. Redacted output has no private example data. This does not verify scorer provenance, audit authenticity, decision chronology or off-public original retention. [PR8 contract](../specs/OPPORTUNITY-001-REAL-ADAPTER.md).
 
 - PR8 final AST shape gate: exactly `Input(String)` or unary `Call(String, op_id, child)` in canonical JSON; OFF primitive only, ON primitive or source-locked single skill `skill_8fe1361cb5014f85`. The frozen skill expands to two primitive calls `lower(trim(Input))`, and the total expanded AST including Input must be at most **4**. Unknown operator, private field, malformed AST, or over-budget expansion fails before publication of AST hash. The static shape check is **not** evidence provenance authentication.
+
+
+## OPPORTUNITY-001 fresh TRAIN64 private-original capture data contract — 2026-10-28
+```mermaid
+flowchart LR
+  H["Old14/New9 frozen byte locks"] --> G["Source-first manual capture"]
+  P["Official public 64x3 original B1/B2/B3 decisions"] --> G
+  G --> I["PRIVATE: 64 rows task_id / third_audit / family / source_record_id / seeds"]
+  I --> A["Private 0600 file A on volume A"]
+  A --> V["SHA-256 raw readback"]
+  V --> B["Private 0600 file B on distinct volume B"]
+  B --> V2["SHA-256 raw readback"]
+  V2 --> R["PUBLIC: raw checksum + size + 64 + no-scoring flags ONLY"]
+  I -.->|"FORBIDDEN"| X["Public Git / Kernel / Actions raw artifact"]
+  R -.->|"not sufficient"| C["Actual paired scorer gate closed"]
+```
+- Private schema `opportunity-private-audit-original-v1` is **never public** and binds original public choice raw SHA `1d08e6…`, canonical decisions `8a8625…`, new public task manifest `bc950e…`, independent third audit commitments `fd4a1a…` and 64 full evaluator-only audit records in original order.
+- Public receipt `opportunity-private-capture-receipt-v1` contains `raw_sha256,raw_size_bytes,private_record_count=64,different_filesystems_observed,public_choice_raw_sha256,audit_commitments_sha256,scored_trials=0,independent_private_raw_custody_verified=false,acl_version_retention_independent_restore_verified=false,scoring_authorized=false,private_examples_disclosed=false` plus version/status. **No private examples, path, family or seed may be logged.**
+- Source-first historic 14 blobs + fresh 9 blobs and preserved official original are checked before generating any new TRAIN tasks. No policy-inference or paired scorer call in this module. Two local readbacks do not prove access control, independent provider, object version/retention or global capture chronology; separate later audit must establish these. [Spec](../specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md) / [Issue #74](https://github.com/ryonakayama234/DekaSugi/issues/74) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
