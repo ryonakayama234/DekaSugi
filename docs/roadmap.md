@@ -187,3 +187,9 @@ flowchart LR
 ```
 
 公開事前判断の保存は将来のKernel/Active Learning/skill inventionの研究品質を支えるが、学習能力・学習機会自体の測定ではない。private第三audit元bytesのGitHub外での実保全、独立real evaluator、時系列再検証、once-only activationは後続工程。元EXP-0003A FINAL128は封印、新TRAIN64 paired trialは0件。
+
+
+## 2026-10-28 — OPPORTUNITY-001 Issue #72 private custody readiness
+- Scope: **synthetic-only** read-only two-copy original SHA256 integrity checker and explicit future fresh TRAIN64 private third-audit capture/custody design. No actual private TRAIN64 originals were captured or scored by this change.
+- Public 64-task/192-choice source and method seals from PR #65/#70 are frozen; historical DEV64 ZIP is **not** new TRAIN64 custody. The helper returns `custody_verified=false` and `scoring_authorized=false` even on two matching copies. Independent access-controlled/versioned durable off-public storage, independent restore, real source-first scorer and reviewed main-only one-shot activation are all future gates.
+- [Details](specs/OPPORTUNITY-001-PRIVATE-CUSTODY.md) / [Run ledger](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #72](https://github.com/ryonakayama234/DekaSugi/issues/72) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
