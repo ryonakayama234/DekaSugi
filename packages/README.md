@@ -93,3 +93,10 @@ not alter `packages/exp0003a`, `packages/evaluation` or the CAL-01-only
 | `evaluation.opportunity` | `classify_fixture`, `summarize_fixtures` | implemented **synthetic-only**; real-evidence adapter missing |
 
 Pure reducer; no generator, scorer or archive dependency. Exact synthetic schema, hardened checks and aggregate-only output. Failed search is not proof of DSL impossibility. [Spec](../docs/specs/OPPORTUNITY-001.md) / [tests](../tests/test_opportunity_fixture.py) / [Issue #58](https://github.com/ryonakayama234/DekaSugi/issues/58).
+
+## OPPORTUNITY-001 PR4 — fresh TRAIN64 generator only
+| Package | API | State |
+|---|---|---|
+| `evaluation.opportunity_pilot` | `seed_for`, `generate_train_pilot`, `public_manifest`, `canonical_public_digest`, `public_preflight` | implemented **TRAIN64 public-hash-only**, no scoring, policy, or real evidence adapter |
+
+The in-memory evaluator-only TrainCase includes a separate third audit. Public manifest/CLI excludes private audit/family/seeds/source ID. New science is `not_run`; source/manifest lock and activation are separate. [Frozen method](../experiments/OPPORTUNITY-001/pilot-v1.md) / [tests](../tests/test_opportunity_pilot.py).

@@ -143,3 +143,6 @@ flowchart TD
   H --> I["New prospective confirmatory method if identifiable"]
 ```
 Pilot method: [pilot-v1](../experiments/OPPORTUNITY-001/pilot-v1.md). Implementation/data source lock/results are **pending**, no actual measurements yet. A research result from historical EXP-0003A DEV64 or FINAL128 must not be substituted.
+
+## OPPORTUNITY-001 PR4 — actual pilot implementation path
+The new `evaluation.opportunity_pilot` generator and hash-only preflight are implemented without running actual paired outcomes. Next order: independent code review -> source/manifest SHA lock -> independent real-evidence adapter -> one-shot TRAIN-only activation -> evidence decision. Source generation alone is no claim of opportunity or generalization. [Frozen method](../experiments/OPPORTUNITY-001/pilot-v1.md) / [run ledger](../experiments/OPPORTUNITY-001/runs/README.md).

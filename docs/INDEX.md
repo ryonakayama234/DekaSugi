@@ -144,3 +144,10 @@ tags: navigation, architecture, research, experiments
 | OPPORTUNITY-001-PILOT-V1 | 新規TRAIN64、seed/変換規則/公開2例+非公開audit/固定技能/3つの既存Kernelの評価前方法固定 | method_spec_frozen; source/manifest freeze pending; not_run | [pilot method](../experiments/OPPORTUNITY-001/pilot-v1.md) / [run ledger](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #60](https://github.com/ryonakayama234/DekaSugi/issues/60) |
 
 Method-only PR3: 旧DEV/FINALを使用せず、新しい課題の実測も未実行。今後のsource-firstハッシュ凍結と実データadapterは別PR。
+
+## OPPORTUNITY-001 PR4 — fresh TRAIN64 public manifest generator
+| ID | テーマ | 状態 | 文書 |
+|---|---|---|---|
+| OPPORTUNITY-PILOT-GEN | 事前登録済み新規TRAIN64のsourceを実装し、公開2例とハッシュのみ出力（第三auditは非公開） | generator implemented; **not scored**; source/manifest lock pending | [module](../packages/evaluation/opportunity_pilot.py) / [tests](../tests/test_opportunity_pilot.py) / [method](../experiments/OPPORTUNITY-001/pilot-v1.md) / [runs](../experiments/OPPORTUNITY-001/runs/README.md) / [Issue #60](https://github.com/ryonakayama234/DekaSugi/issues/60) |
+
+CLI: `python -m packages.evaluation.opportunity_pilot --mode hash-only` — public manifest SHA only, no paid trials/old DEV/FINAL. Actual adapter and before-trial chronological source lock remain future gates.

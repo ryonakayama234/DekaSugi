@@ -98,3 +98,6 @@ The pure fixture reducer accepts only `opportunity-fixture-v1` / SYNTHETIC / fx 
 - **Status**: method fixed, **source/manifest/provenance lock pending**, code and actual evidence adapter not implemented, no activation, TRAIN/DEV/FINAL new paired trials **0**.
 - The plan-v0.1 larger prospective study remains an unfrozen proposal. Pilot heuristics do not freeze or authorize a confirmatory FINAL. Any result-driven change requires a different pilot method/seeds.
 
+## PR4 implementation status (pretrial, no outcomes)
+- The dedicated `opportunity_pilot` source implements PILOT-V1 generation, anonymous public TaskSpec IDs and public manifest SHA; tests may generate TRAIN public inputs without invoking search or auditing. New actual paired trials **0**, old DEV/FINAL untouched.
+- This implementation PR is **not source/manifest freeze**. Following latest-head CI/review/merge, commit a separate pinned source/CLI manifest hash record **before any scoring**. Method edits require new method version/seed namespace, not opportunistic fixes after outcomes.
