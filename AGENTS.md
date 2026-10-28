@@ -321,6 +321,13 @@
 - PR9実装後も`new_train_pilot_scoring_permitted=false`、旧DEV/FINAL・新TRAIN64 paired scoring禁止。公開原本保持はprivate第三監査**raw original**の外部アクセス制限付き保全（#66）を代替しない。将来の独立actual scorer・once-only activationは別PRと別監査で行う。
 - 必ずARCH-001/ARCH-002、INDEX、roadmap、spec/plan、run ledger、AGENTSを同PRで同期し、full CIとlatest exact-head独立レビュー/P0/P1修正前は統合禁止。個々の観測`pass / fail / not_observed`と研究的非主張を明示。
 
+## 31. OPPORTUNITY-001 PR8 — strict non-activated evidence adapter boundary
+- `packages/evaluation/opportunity_actual.py` is a pure tuple normalizer with synthetic-only tests, NOT a scorer, evaluator provenance attestation, skill promotion or data custody mechanism. No actual fresh TRAIN/DEV/FINAL outcomes are authorized by merging it.
+- Fail closed on noncanonical search status/solved/program/selected AST, unsafe `trace_sha256`, 4/100 budget drift, cross-task pairing, canonical `by_op` mismatch, false_solved, nonfinite timing, private field injection. Never transmit third audit raw bytes, source_record_id/family/seed or unseen outcome to Kernel.
+- Before any new TRAIN64 scoring: the reviewed source-first and before-trial decision seal (PR #65), independently verifiable access-controlled original-private-audit custody outside public Git, and a separately reviewed one-shot scorer/independent recount are mandatory. Unresolved P0/P1 blocks merge or activation. [Adapter contract](docs/specs/OPPORTUNITY-001-REAL-ADAPTER.md) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
+
+- PR8 post-review requirement: validate selected solved AST's exact canonical unary String JSON shape and expanded primitive-node budget **before hashing**. Only pinned skill `skill_8fe1361cb5014f85` may appear in ON and its `lower(trim(Input))` body adds two physical nodes; OFF forbids all derived operators. Equality of `selected_ast` and `search.program` is insufficient if either is malformed. Independent source-first skill verification is still required before real trials.
+
 ## EXP-0003A DEV64 restricted original ZIP provenance (2026-10-28)
 - A user-provided local historical DEV64 ZIP was checked **read-only** against original+audit artifact byte hashes and all embedded SHA256SUMS; see [sanitized public attestation](experiments/EXP-0003A/runs/20261028-local-zip-integrity.md). Do not commit or expose this archive, private third-audit bytes, or decrypted raw material in Git, CI, logs, UI, or public artifacts.
 - Separate **byte integrity**, **independent audited source equivalence**, **multiple-location restricted durability**, and **experiment activation**. One uploaded, verified, unencrypted ZIP is not proof of a second access-controlled persistent backup. Explicitly label missing evidence `not_verified`.

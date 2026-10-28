@@ -110,3 +110,10 @@ This verifier is a standalone read-only process and does not authorize a new TRA
 
 ## OPPORTUNITY-001 PR7 — pretrial decision-only external entrypoint
 `scripts.prepare_opportunity_decisions` recomputes deterministic B1/B2/B3 choices for fresh TRAIN64 from verified source and frozen old TRAIN/DREAM snapshots, with public-only payload and digest; independent policy CPU/wall accounting is not part of sealed digest. No calls to paired scorer and no old DEV/FINAL. Further evaluation requires distinct original-evidence adapter and one-shot activation. [Contract](../docs/architecture/contracts.md).
+
+## OPPORTUNITY-001 PR8 — proposed real-tuple shape normalizer
+| Module | API | Scope / status |
+|---|---|---|
+| `evaluation.opportunity_actual` | `normalize_audited_trial`, `classify_pair`, `public_redacted_pair` | DRAFT PR8; pure canonical nine-tuple normalizer, synthetic-only adversarial tests, not actual scorer/provenance verifier |
+
+The implementation checks canonical same-task/4-100-budget search status/program/trace, by_op count consistency, audited correctness-first regret, and public SHA-only output. It does **not** authenticate third audits or provide a verified original-private evidence archive. TRAIN/DEV/FINAL scoring remains not_run. [Adapter contract](../docs/specs/OPPORTUNITY-001-REAL-ADAPTER.md) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).

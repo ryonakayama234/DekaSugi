@@ -677,6 +677,21 @@ flowchart LR
 - 本moduleはstdlibだけで構成。old 14-source・new 9-sourceをproject import前に検証した後、元凍結TRAIN/DREAMのみを用いる固定chooserの再演算と**元原本を比較**。これは独立実装による選択アルゴリズム監査ではない。
 - [run ledger](../../experiments/OPPORTUNITY-001/runs/20261028-pr9-public-choice-custody.md)には独立の観測と非主張を記録。現時点の公開pretrial origin engineering gateは成立しても、private raw audit off-repo archival・独立actual scorer・once-only activationが未成立なのでscoring許可なし。古いDEV/FINALへの干渉なし。
 
+## OPPORTUNITY-001 PR8: real tuple-shape contract (not proof of source authenticity)
+```mermaid
+flowchart LR
+  A["Canonical two _audited_trial nine-tuples"] --> V["Strict status/solved/program/trace/meter/task/budget gate"]
+  C["Already-sealed B1/B2/B3 choices"] --> R["Correctness-first fixed two-arm classification"]
+  V --> R
+  R --> P["Public opportunity-paired-evidence-v1 redacted record"]
+  H["Private original third audit"] -.->| "never serialized" | P
+```
+- `normalize_audited_trial`: canonical `SearchResult.to_dict()` without elapsed_ms; exact search keys; fixed 4 AST nodes / 100 candidates, public `t-` plus 64 lowercase hex task ID, 64 lowercase SHA256 trace; search `solved/status/program` must equal `selected_ast` and audit outcome.
+- `meter.by_op`: only canonical `trim/lower/upper`, positive integer counters summing exactly to `primitive_invocations` (zero = empty map), no bool-as-int. CPU/wall finite and nonnegative, no unknown or private fields.
+- `classify_pair`: identical public task ID/budget; regret counts only when both correct; one-arm success counts separately; neither-correct unknown, not regret zero. Redacted output has no private example data. This does not verify scorer provenance, audit authenticity, decision chronology or off-public original retention. [PR8 contract](../specs/OPPORTUNITY-001-REAL-ADAPTER.md).
+
+- PR8 final AST shape gate: exactly `Input(String)` or unary `Call(String, op_id, child)` in canonical JSON; OFF primitive only, ON primitive or source-locked single skill `skill_8fe1361cb5014f85`. The frozen skill expands to two primitive calls `lower(trim(Input))`, and the total expanded AST including Input must be at most **4**. Unknown operator, private field, malformed AST, or over-budget expansion fails before publication of AST hash. The static shape check is **not** evidence provenance authentication.
+
 ## EXP-0003A DEV64 local ZIP custody data boundary — 2026-10-28
 ```mermaid
 flowchart LR
