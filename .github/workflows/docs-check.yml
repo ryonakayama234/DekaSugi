@@ -35,6 +35,8 @@ jobs:
           if-no-files-found: error
       - name: EXP-0003A PR4 generate hash-only candidate BEFORE tests (no holdout evaluation)
         run: python -m packages.exp0003a.freeze_cli --mode preflight --output .run/EXP-0003A-PR4-preflight.json
+      - name: OPPORTUNITY-001 PILOT-V1 public TRAIN64 manifest SHA only (no trial scoring)
+        run: python -m packages.evaluation.opportunity_pilot --mode hash-only
       - name: Run full unit test suite
         run: python -m unittest discover -s tests -v
       - name: Run preregistered EXP-0001 suite
