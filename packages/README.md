@@ -107,3 +107,11 @@ The in-memory evaluator-only TrainCase includes a separate third audit. Public m
 | `scripts.verify_opportunity_generator_lock` | verify frozen original Git blobs + historic B1/B2/B3/skill and recomputed public/audit commitments | source-only `not_scoring_authorized` |
 
 This verifier is a standalone read-only process and does not authorize a new TRAIN64 trial. Original data retention and real evidence ingestion remain future independently reviewed components. [Lock](../experiments/OPPORTUNITY-001/pilot-generator-lock-v1.json) / [tests](../tests/test_opportunity_generator_lock.py).
+
+
+## OPPORTUNITY-001 PR8 — proposed real-tuple shape normalizer
+| Module | API | Scope / status |
+|---|---|---|
+| `evaluation.opportunity_actual` | `normalize_audited_trial`, `classify_pair`, `public_redacted_pair` | DRAFT PR8; pure canonical nine-tuple normalizer, synthetic-only adversarial tests, not actual scorer/provenance verifier |
+
+The implementation checks canonical same-task/4-100-budget search status/program/trace, by_op count consistency, audited correctness-first regret, and public SHA-only output. It does **not** authenticate third audits or provide a verified original-private evidence archive. TRAIN/DEV/FINAL scoring remains not_run. [Adapter contract](../docs/specs/OPPORTUNITY-001-REAL-ADAPTER.md) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
