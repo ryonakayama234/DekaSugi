@@ -1,0 +1,37 @@
+{
+  "actual_scorer_approved": false,
+  "copied_public_member_raw_sha256": "1d08e6c1518d6730e75bfaf3033a00884f7517a7d91c98a5dfff75192aabc433",
+  "decision_count": 192,
+  "decision_payload_sha256": "8a8625ed86e66b27bef8d09a023172d2adbc9ad0d42c155ab7f137097e2dccb2",
+  "dev_or_final_evaluated": false,
+  "independent_private_raw_custody_verified": false,
+  "method_id": "OPPORTUNITY-001-PILOT-V1",
+  "new_train_pilot_scoring_permitted": false,
+  "old_dev_or_final_scoring_permitted": false,
+  "once_only_activation_approved": false,
+  "origin": {
+    "artifact_created_at": "2026-10-28T08:51:03Z",
+    "artifact_expires_at": "2027-01-26T08:50:55Z",
+    "artifact_id": 12803053107,
+    "artifact_name": "OPPORTUNITY-001-PILOT-V1-public-choices-only",
+    "job_id": 122719482732,
+    "main_commit": "c6b01c2a856a989e9b642fbe211cfd195f0e57e3",
+    "member_name": "OPPORTUNITY-001-pretrial-public.json",
+    "run_created_at": "2026-10-28T08:50:54Z",
+    "run_updated_at": "2026-10-28T08:51:06Z",
+    "workflow_run_id": 40659741488
+  },
+  "original_public_member_raw_sha256": "1d08e6c1518d6730e75bfaf3033a00884f7517a7d91c98a5dfff75192aabc433",
+  "paired_trials_executed": 0,
+  "policy_snapshot_sha256": {
+    "B1": "3b4fc00f8ad0fe2f1cc0978886d7bc7a6285ed002c842ceeb0106fd51ee5afd4",
+    "B2": "01d5595e1b4c32d200e2734630f38a848e77a64f356741445e011865834f5af7",
+    "B3": "a6d46ab5dd697e8e90789693fdd3bd67bbca445ec07bc8b119401e1c0cf1e210"
+  },
+  "public_copy_path": "experiments/OPPORTUNITY-001/evidence/pilot-choices-public-v1.json",
+  "public_manifest_sha256": "bc950ef3187fc34851eef5cff6df194ce27186b3a03b5399f2209e9905f04a85",
+  "schema_version": "pilot-choice-lock-v1",
+  "skill_body_sha256": "8fe1361cb5014f8503e4a57392e45f4fc7607e788fdd598f66668fbc11338eff",
+  "status": "verified_public_pretrial_origin_only",
+  "task_count": 64
+}

@@ -605,3 +605,25 @@ flowchart TD
 `sealed_pretrial_only`が意味するのは**事前判断の監査可能な保持**であって、AIの能力が改善した、実データ正規化器が完成した、private audit元bytesのoff-repo保全が完了した、あるいはscoringを許可したことではない。
 
 詳細：[設計契約](../specs/OPPORTUNITY-001-CHOICE-LOCK-DESIGN.md) / [品質試験計画](../../experiments/OPPORTUNITY-001/choice-custody-preregistration.md) / [ARCH-002](contracts.md)。元のEXP-0003A・PILOT-V1方法・source lockは変更禁止。
+
+## OPPORTUNITY-001 PR9 — 実装済み公開事前判断の保全（paired scoringなし）
+```mermaid
+flowchart TD
+  O["Official merged-main pretrial Actions artifact ID 12803053107"] --> D["download-artifact: public-only member"]
+  M["Official run/job/artifact API metadata"] --> V["stdlib-only verify_opportunity_choice_lock"]
+  D --> V
+  F["Legacy14/new9 frozen source byte-first gates"] --> R["TRAIN/DREAM only fixed chooser replay"]
+  R --> C["Compare 64 tasks x B1/B2/B3 action+reason"]
+  V --> C
+  C -->|pass| P["Public original member committed in Git"]
+  P --> L["pilot-choice-lock-v1 raw SHA + logical SHA + provenance"]
+  L --> G["Independent review/CI gate"]
+  G -.->|"No score authorization"| Q["Future actual evaluator / Issue 66"]
+  X["Private third audit original"] -.->|"never public / no ingestion"| V
+  X --> Y["Separate restricted off-public custody not yet verified"]
+  Y -.-> Q
+```
+
+**Implementation scope**: [source](../../scripts/verify_opportunity_choice_lock.py), [tests](../../tests/test_opportunity_choice_lock.py), [original member](../../experiments/OPPORTUNITY-001/evidence/pilot-choices-public-v1.json), [lock](../../experiments/OPPORTUNITY-001/pilot-choice-lock-v1.json), [run](../../experiments/OPPORTUNITY-001/runs/20261028-pr9-public-choice-custody.md)。現行ソースを再実行して原本を生成したのではなく、元公式Actions Artifactから**原本をコピー**している。元のbyte hash、canonical JSON hash、固定source / policyは異なる検証レイヤ。
+
+一度限りの取得workflowはPR branchで実行成功（[run #40668908541](https://github.com/ryonakayama234/DekaSugi/actions/runs/40668908541)、source `db3f70b`）。安全性のため、write-enabled branch-onlyのworkflowは取得後にmainの最終treeから退役させ、Git履歴・runへ出典を残す。公開原本の保存と未来の原本性/時系列の検証は、学習性能、非公開原本のcustody、実採点の信頼性を証明しない。新TRAIN64実採点0件。ARCH-002とpreregのC01–C09を参照。

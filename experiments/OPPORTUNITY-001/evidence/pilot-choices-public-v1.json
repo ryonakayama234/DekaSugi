@@ -1,0 +1,1104 @@
+{
+  "decisions": [
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-039c79b2a07eac47c53f18f72fa650b1776962387e680caeb44e8a48d15a0e78"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-2e48c6ba1018d6a70a76c70e4328570bdb8d14ce335827c2e116953d8306c9f1"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-edf23ad761e16ede4a4733a319197e9c4bbf6df26ceb5714b1e08655902ac6a2"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-a47080554420ccfe608c95018fb2ad79b5c54adf8ceb9fa34ba7b97c9934ed05"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-11e8dac33972399e1f7723dc901618194d62c68bbd471422c99622e36fe57f92"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-569c5ca52c6338b44fe0f6996e60c11c92c30b85401214e52f04a52cbd587d83"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-e78c4c7c95b4b001f0d4c84e0df88adb5a27355a8fb47fafa17b6b0316366684"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-79b3433e052d3cb79d8fd0dfd5a319c33258c816314a4cd4b768e84857439063"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-4fc633f012329495db6fe4d46613e38255b7c206af103081bd023961c8ff72e7"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-a324f442064691667c8531b2327446c6b7c89d86f4dce7afcfd740b9ec80ddbd"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-67eeae8579d41834ee8d0e1d5fd01cdef4a1a5afc2091230458f74d6efb659df"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "ON",
+          "reason": "cost_supported"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-9c4f4d402912a8c06300922768708d9d2e78c9c5858bbc85e79e1d695fd75dbb"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-4b9839eafd12aa3452d67318e2b9d0105ac4e43bf3db1c77b33b16dd830f8997"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-1a5011eafa6d131202d35616fae786c8e48a0ae909efbfc8aac8c6b07a5a8868"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-60190f9af2e569328b65f3985c98ea96d497be42e5f57cd2eafc9abb11ce9154"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-d058983a89dabfdd0caa53c132ef4bb255ebbf305b93e30cf1ffdc0667824f27"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-832fa3a209a66c8248475e5e3974f29bc733061fd51184dabd6ae05981dd6515"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-daf99b7427f65b7b7869a49c0d99922adb4b3f0d4296105713027f6217e968fd"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-c46dd46f09d37b5be85afc2b3965ab0852e04c8d3a9ee3723b0686af8b6b775b"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-9e43b6f242aec52c8a29158c3009b5d155e42d00fc7b71fc1d818cdfa06be0fe"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-286e19f5e68d5d8a5c96044b9ef40c9781e7506dd81eb5d570c9c10385bc805e"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-0f9429a6233836726917500fca2dce63f06c2d35d2d2ca72a855726023434e03"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-7b21859240765c9880e154e79669ca0059a1011dd0674e5d46d75317ec14c8b2"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-273d6b48c00a217dc2394e7c12aaee7dfb52cb8a1cd71628bef72627dd119d7b"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-eb607a3971c45714933724beadaebe3e6a3c542307b3a8358ea1b6328520393d"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-d290a4804f5e8df367e65bb346a20686d493e1092690e521bd723be49ec07c55"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-8ba09491faaf3738446934894939d2e163105792f5721150dfcc2d45d3fcef88"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-6acc4e5cd71fde00e4b1f446756fa1f4f8dadde369db8f3e0d1dd7ae14319e8f"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-cbe98e431fea465ba691c5d7bf97a9ccaba372771e6dfc2c38653ab2b7fe467d"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-28d25ab9bc23df8a61ce4868378e681df3c2e0fd9241b1c58d23bf1476a88b87"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-bd787742c9b24bb2dd2b50da9e0c72e1d281ead18df22db79fae72cc14cfe710"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-cf79e5b1b2f3e76c07849f9d969b791cd370ff6b199faf2ca044592decf8fff0"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "ON",
+          "reason": "cost_supported"
+        },
+        "B2": {
+          "action": "ON",
+          "reason": "cost_supported"
+        },
+        "B3": {
+          "action": "ON",
+          "reason": "cost_supported"
+        }
+      },
+      "task_id": "t-a0ad6041ea3c0d991ad74655de889b51fcac30c40f9803594d8de5284a736b88"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "ON",
+          "reason": "cost_supported"
+        },
+        "B2": {
+          "action": "ON",
+          "reason": "cost_supported"
+        },
+        "B3": {
+          "action": "ON",
+          "reason": "cost_supported"
+        }
+      },
+      "task_id": "t-0ff4687289ba5c0de11b6d2b4d5bbdd7602b9530d59585ef00abd79169c73e13"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "ON",
+          "reason": "cost_supported"
+        },
+        "B2": {
+          "action": "ON",
+          "reason": "cost_supported"
+        },
+        "B3": {
+          "action": "ON",
+          "reason": "cost_supported"
+        }
+      },
+      "task_id": "t-329382c8b4e3f8d691660b6969a6d160ea47bf41510e20e6c0abaaa8fb741ef2"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "ON",
+          "reason": "cost_supported"
+        },
+        "B2": {
+          "action": "ON",
+          "reason": "cost_supported"
+        },
+        "B3": {
+          "action": "ON",
+          "reason": "cost_supported"
+        }
+      },
+      "task_id": "t-cd30cfa443791767a699e3797972f9433da2840bf20c37aa462a1cc1e04b6c48"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "ON",
+          "reason": "cost_supported"
+        },
+        "B2": {
+          "action": "ON",
+          "reason": "cost_supported"
+        },
+        "B3": {
+          "action": "ON",
+          "reason": "cost_supported"
+        }
+      },
+      "task_id": "t-bbb3951cd37770ad3e9c4586e238a34422ebbfb8e1af1796fa39407f2755a311"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "ON",
+          "reason": "cost_supported"
+        },
+        "B2": {
+          "action": "ON",
+          "reason": "cost_supported"
+        },
+        "B3": {
+          "action": "ON",
+          "reason": "cost_supported"
+        }
+      },
+      "task_id": "t-d8c83ffb1f5360c5cd42e676075cf687e5d97cb95812a2ac2fe40ba1cb8b89d4"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "ON",
+          "reason": "cost_supported"
+        },
+        "B2": {
+          "action": "ON",
+          "reason": "cost_supported"
+        },
+        "B3": {
+          "action": "ON",
+          "reason": "cost_supported"
+        }
+      },
+      "task_id": "t-367b49987dcf5b59ead52c1678641be2dd78f4b664691bee84535025b5483a79"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "ON",
+          "reason": "cost_supported"
+        },
+        "B2": {
+          "action": "ON",
+          "reason": "cost_supported"
+        },
+        "B3": {
+          "action": "ON",
+          "reason": "cost_supported"
+        }
+      },
+      "task_id": "t-ceea8acf7338504ab10df0c1d062fa077b8d5d2a1efc1a1445c0de8d1692acea"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-8441659043b9b82e9ff2f1e9bfaa36e78a56028af9d6342efa237dd82aa30ec3"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-fa7038c046a46f9b23fed4603bf9b6da88a37becb9363e097b7a48abaa2bbc82"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-c7f2a241324d125fd2b7fa671d83e16363a591355c8616902f31fa25e909d052"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-ce12cd7094e91de1a28b0c2e965c2ebaa9691535609fda3a1ed192dc7d28fdac"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-bbb1b32e60be63dd933a45d491d267936fa5aa66b944a3e06525c4b5e86f4bc7"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-64c12970774b933336ed742fc812c818f468b9928ceac4d98b4a3305c3e02da0"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-3f661d6738bcfae64f59d744198b08f96fe9602d53348065bfa9cafd44a9ed6a"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-7c1cf6e1e0d5227be288c3d4de397673f91b063a68b370b743f962774a1db83b"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-84e2a6724ece870a064cea343ceb87f97516bce28ee5851bf5960af04714ab5c"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-8bc3ad777a2efb620fb98b36ad9103520ee7f45e9dd0a50a6ef862343f80e1fc"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-003a194f733e8a5393c6db059d1a6682ec85d8bcffa2bc2c9a6becda2fb67935"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-8370824e705688e625b1456d151734ac34501deb6e4dfdec31d151da4a44f918"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-339359068b47ad7d48d7e426a354cee526bc17642ddf090665fbce9ab6568d24"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-b42ae4f6fbbe71a71183e19b99676f9d9fe4570a104812eea4557af724e7fd49"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-78f6aa7f865cfd5711dfd12cfb85018d3b9cf71d9430d36bdbd7a57fe1ddef96"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-61fb6e82056b81308f357f0513ca1464026f51bc7cea82fb234e6b326b04ee86"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-a17dba54605139b74c29c4d36f51840fe177183b30762fe6a65e771dff38660d"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-ef5340a268369021d0b43177cea27d8ece1d09c174dd1b818bf15c543bdc99e5"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-145f99de4afc6592427bb42ddfe3929612a82eff3095a325f6924e73faee29f3"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-3fa290baa0d1d58989f17fd60e54fc0ae6d573726d40730fc2c0b3abf5c2ff10"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-e05ba4913e64ac0095a2641faea9038895cba8fe2189c4f669f8d0dfc7f42b74"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-80550acd36dd66096c6d057e63ef33b37c1ff22867886c0626f3c6b926b549a6"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-8d327c7e7ab5314505208815038d4d18ec479943f591467a1ce6b457c02c1697"
+    },
+    {
+      "choices": {
+        "B1": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B2": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        },
+        "B3": {
+          "action": "OFF",
+          "reason": "insufficient_on_votes"
+        }
+      },
+      "task_id": "t-5470e3e8c9c325ae35b68fa9e1ffd43ffbf12a42bee92d08745bf9b1857395d5"
+    }
+  ],
+  "dev_or_final_evaluated": false,
+  "method": "OPPORTUNITY-001-PILOT-V1",
+  "paired_trials_executed": 0,
+  "phase": "FRESH_TRAIN_ONLY",
+  "policy_snapshot_sha256": {
+    "B1": "3b4fc00f8ad0fe2f1cc0978886d7bc7a6285ed002c842ceeb0106fd51ee5afd4",
+    "B2": "01d5595e1b4c32d200e2734630f38a848e77a64f356741445e011865834f5af7",
+    "B3": "a6d46ab5dd697e8e90789693fdd3bd67bbca445ec07bc8b119401e1c0cf1e210"
+  },
+  "schema_version": "opportunity-pretrial-public-decisions-v1",
+  "skill_body_sha256": "8fe1361cb5014f8503e4a57392e45f4fc7607e788fdd598f66668fbc11338eff",
+  "source_manifest_sha256": "bc950ef3187fc34851eef5cff6df194ce27186b3a03b5399f2209e9905f04a85"
+}

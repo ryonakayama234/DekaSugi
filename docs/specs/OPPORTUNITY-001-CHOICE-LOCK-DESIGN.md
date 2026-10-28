@@ -149,3 +149,10 @@ stateDiagram-v2
 **Gate 3（別工程）**: private第三監査**元bytes**のアクセス制限付きGitHub外保全、source-first actual evaluator、時間順序を保証するone-shot activationをそれぞれ独立にレビュー。いずれか欠けたらscoringは禁止。
 
 実装する新しい検証器は本研究の結果を改善しない。性能差、一般化、Active Learning有効性、DSLの表現限界は本ゲートでは主張できない。関連: [ARCH-001](../architecture/system.md)、[ARCH-002](../architecture/contracts.md)、[engineering preregistration](../../experiments/OPPORTUNITY-001/choice-custody-preregistration.md)、[run ledger](../../experiments/OPPORTUNITY-001/runs/README.md)。
+
+## PR9 implementation outcome (2026-10-28; separate review gate) 
+The design contract above was preregistered in PR #69 and merged separately before public evidence capture. Its follow-on implementation is [PR #70](https://github.com/ryonakayama234/DekaSugi/pull/70): [stdlib source verifier](../../scripts/verify_opportunity_choice_lock.py), [synthetic negative tests](../../tests/test_opportunity_choice_lock.py), [original public member](../../experiments/OPPORTUNITY-001/evidence/pilot-choices-public-v1.json), [lock](../../experiments/OPPORTUNITY-001/pilot-choice-lock-v1.json), [observed run](../../experiments/OPPORTUNITY-001/runs/20261028-pr9-public-choice-custody.md).
+
+Official original member SHA256 is `1d08e6c1518d6730e75bfaf3033a00884f7517a7d91c98a5dfff75192aabc433`, and original canonical payload SHA256 is `8a8625ed86e66b27bef8d09a023172d2adbc9ad0d42c155ab7f137097e2dccb2`. Main official provenance is source `c6b01c2` / run `40659741488` / artifact `12803053107`. Revalidated and stored public original bytes at branch copy commit `0dfe381` (one-shot capture [run #40668908541](https://github.com/ryonakayama234/DekaSugi/actions/runs/40668908541)); the contents-write one-shot workflow is retired from the final tree after capture, but recorded at source `db3f70b` / Actions run.
+
+This result **measures evidence provenance only**, not learning or new paired performance. A verified public pretrial is not a sealed science outcome nor a private audit custody assertion. Until latest-head review/full CI and main integration, the implementation remains review-pending and `new_train_pilot_scoring_permitted=false`.
