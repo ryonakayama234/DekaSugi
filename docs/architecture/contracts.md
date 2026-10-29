@@ -806,3 +806,18 @@ flowchart TD
   R -.->|"NOT an activation"| X["Distinct owner-only one-shot scoring approval"]
 ```
 The schema `opportunity-live-readonly-preflight-v1` exposes only source main commit, original SHA/64-count, 192 choices, frozen skill hash and audit commitment aggregate, plus explicit `irreversible_run_ledger_created=false`, `new_train64_scored_trials=0`, `scoring_authorized=false`, `private_original_disclosed=false`. It refuses any pre-existing ledger and does not modify original.bin. A preflight failure prints a generic STOP without private path, third-audit, seed or family. This contract is independent of PR #80 activation and cannot assert deletion-proof retention. [Spec](../specs/OPPORTUNITY-001-LIVE-READONLY-PREFLIGHT.md).
+
+
+## OPPORTUNITY-001 actual 2026-10-29 postrun evidence contract — owner original 64/64 recount PASS
+This **later observation** supersedes earlier not-run/zero-score state only; it does not alter original PILOT-V1 METHOD or earlier signed source and policy commitments. Owner reported `completed_private_local / paired_count=64 / scoring_authorized_again=false`, then separate approved read-only original nine-element tuple recount `COMPLETE_64_PAIRED_RECOUNT_VERIFIED` of **2 run markers +128 per-arm STARTED +128 private original tuples +64 redacted paired summaries**. No scorer was called by recount and no official per-task mapping/raw audit/example left private custody.
+
+```mermaid
+flowchart TD
+ O["Existing private 64 audit originals and 192 fixed public decisions"] --> S["One true owner WSL2 scoring STARTED; 64 OFF then ON"]
+ S --> L["Saved private 322-file ledger and encrypted Drive backup"]
+ L --> R["Owner readonly independent 128-original-tuple / 64-pair recount"]
+ R --> A["Aggregate 48/64 both correct; 16 neither; 0 unique accuracy gain"]
+ A --> U["B1/B2/B3 each 0/16 eligible error; 0/48 regret; frozen UNDERIDENTIFIED"]
+```
+
+Original ON/OFF physical calls 4256/3616; all 640 ON excess occur in 16 mutually-unsolved OOD. Search/audit timers separately reported; fixed-policy inference cost explicitly **not metered**. No scientific pvalue, WORM guarantees or historic DEV/FINAL verification is inferred. [Public aggregate](../../experiments/OPPORTUNITY-001/runs/20261029-train64-real-paired-recount.md). Main-merge/publication conflict from inherited old DEV workflow and source byte-lock remains open; never unfreeze historical checks to fix it.

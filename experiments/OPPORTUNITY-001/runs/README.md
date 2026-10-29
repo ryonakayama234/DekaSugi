@@ -100,3 +100,16 @@ Related: [plan](../plan.md) / [spec](../../../docs/specs/OPPORTUNITY-001.md) / [
 - 2026-10-29 activation engineering: [owner-only scoped activation entrypoint](../../../scripts/opportunity_approved_activation.py) with [separate review contract](../../../docs/specs/OPPORTUNITY-001-ACTIVATION.md). This is an implementation under review, not a live run, source/method alteration or permission for public CI to score. Genuine scored TRAIN64 OFF/ON pairs **0** until exact reviewed/merged main, restricted custody decision and a single owner WSL2 start. The existing private original must never be regenerated or uploaded to GitHub.
 
 - 2026-10-29 engineering safeguard: [read-only genuine owner-host source/original/frozen-skill preflight](../../../docs/specs/OPPORTUNITY-001-LIVE-READONLY-PREFLIGHT.md), separate from the irreversible one-shot activation. Artificial CI only; checks existing private original without regeneration/STARTED; actual new scored TRAIN64 OFF/ON pairs **0**.
+
+
+## 2026-10-29 — genuine new TRAIN64 ON/OFF 64/64 complete and independently recounted on owner's private WSL2
+
+**This later, outcome-dated checkpoint supersedes the preceding historical "not run / scored pairs 0" status; do not retroactively rewrite those earlier immutable preregistration/progress statements.** The frozen method, official original 192 choices, exact source/skill locks and historic DEV/FINAL are unchanged.
+
+- Owner reported **one true** OFF-before-ON real scored run from exact pinned main `d34f367a36311934975662bb611687fc8cbe0e98`: `completed_private_local`, 64/64 pairs, `scoring_authorized_again=false`. **Never rerun**.
+- Owner then executed the independently reviewed **read-only** private original scorer-tuple recount from PR #83 head `49cd1ac9b9ae2d418c23cb8cf65a7ec7ff982ba3`, **outside** the immutable main tree. Receipt: `COMPLETE_64_PAIRED_RECOUNT_VERIFIED`, 64/64, `scored_again=false`, `retry_authorized=false`. GitHub does not directly possess the private raw evidence.
+- Verified aggregate: OFF=48/64 correct, ON=48/64 correct, ON-only/OFF-only=0, ON-cheaper=8, OFF-cheaper=8, both-correct ties=32, neither-correct=16. Primary B1 and secondary B2/B3 each 0/16 decision errors on unique-better cases, 0/48 eligible both-correct primitive-call regret. ON total physical calls 4256 vs OFF 3616 (+640), all extra in both-unsolved OOD.
+- Frozen exploratory branch **UNDERIDENTIFIED**, not a confirmed learning or capability gain. Independent separately preregistered follow-up study concept [Issue #86](https://github.com/ryonakayama234/DekaSugi/issues/86).
+- Both pretrial original and actual scored 322-file ledger were separately encrypted and independently verified byte-equal to owner-only Drive downloads plus owner-side decrypt/readback. This is not deletion-proof WORM custody.
+- Full public **redacted** result: [2026-10-29 true paired TRAIN64 outcome report](20261029-train64-real-paired-recount.md) (PR #85). No third-audit examples, private per-task family/seed mapping, passwords or original raw tuples published.
+- **Publication control:** PR #85 is intentionally not merged to main until the inherited main-push historical DEV smoke / frozen-source conflict is safely resolved; this is NOT a reason to rerun original score or tamper with source lock.

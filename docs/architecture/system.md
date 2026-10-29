@@ -757,3 +757,19 @@ flowchart LR
   F -.->|"No implicit authorization"| G["Separate approved one-shot main-only activation"]
 ```
 No irreversible marker, new TRAIN64 OFF/ON scorer call or public raw audit occurs in this preflight. Frozen historical TRAIN/DREAM reconstruction is limited to already approved TRAIN/DREAM, **never** old DEV/FINAL. The preflight closes an implementation/readiness verification gap, not an external cloud retention certification. [Details](../specs/OPPORTUNITY-001-LIVE-READONLY-PREFLIGHT.md) / [Issue #79](https://github.com/ryonakayama234/DekaSugi/issues/79).
+
+
+## OPPORTUNITY-001 observed research status — 2026-10-29 true TRAIN64 one-shot COMPLETE, recounted (later checkpoint)
+This **post-outcome** checkpoint supersedes only earlier *engineering historical* "0 true scored" statements; frozen METHOD, generator/skill/policy locks, old historical DEV/FINAL and original raw records are unchanged. Owner WSL2 true run reported 64/64 and forbids rerun, followed by reviewed private readonly original tuple recount reporting `COMPLETE_64_PAIRED_RECOUNT_VERIFIED`. OFF and ON each audited correct 48/64; 8 ON cheaper, 8 OFF cheaper, 32 both-correct ties, 16 both-unsolved. B1/B2/B3 0/16 uniquely-better eligible decision errors; source-locked branch otherwise `UNDERIDENTIFIED`.
+
+```mermaid
+flowchart LR
+ A["Frozen source / 192 original choices and existing original"] --> B["Owner private exactly-once OFF+ON: 64/64"]
+ B --> C["STARTED/128 ARM_STARTED/128 raw scorer tuples/64 pairs/COMPLETED"]
+ C --> D["Private GPG+external ciphertext SHA and tar restore match"]
+ D --> E["Independent READ-ONLY owner recount, no rescoring"]
+ E --> F["Redacted 64-pair aggregate: UNDERIDENTIFIED"]
+ F -.-> G["New separately registered distribution only; never repeat original 64"]
+```
+
+GitHub has *not* read owner-private raw score tuples; report is based on owner CLI receipt verified by independent scorer-normalization code. [Redacted outcome](../../experiments/OPPORTUNITY-001/runs/20261029-train64-real-paired-recount.md), [research audit #82](https://github.com/ryonakayama234/DekaSugi/issues/82), [new study #86](https://github.com/ryonakayama234/DekaSugi/issues/86). Main is intentionally not advanced while inherited historical DEV main-push smoke conflicts with the frozen source lock; do not quietly change that lock to publish results.
