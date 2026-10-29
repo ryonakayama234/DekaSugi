@@ -27,9 +27,11 @@ def _scoped_engine_activation(runner, engine):
     """
     if runner.ONE_SHOT_ACTIVATED is not False or engine.SCORING_ACTIVATED is not False:
         _stop()
-    runner.ONE_SHOT_ACTIVATED = True
-    engine.SCORING_ACTIVATED = True
     try:
+        # Guard entry as well as the body: a KeyboardInterrupt can arrive
+        # after either assignment, before the context manager yields.
+        runner.ONE_SHOT_ACTIVATED = True
+        engine.SCORING_ACTIVATED = True
         yield
     finally:
         engine.SCORING_ACTIVATED = False
