@@ -221,3 +221,5 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 - Implementation under PR review; genuine third-audit original capture **0**; OFF/ON scored pairs **0**. Source-first old14+new9 frozen bytes, official 27,360-byte 192-choice raw original, and frozen third audit SHA gate are mandatory. Two owner-private local raw files with SHA readback are not by themselves independently durable restricted custody. [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66) remains blocked.
 
 - [WSL2 operator runbook: one-time private capture, local GPG encryption and encrypted Google Drive upload/restore](specs/OPPORTUNITY-001-PRIVATE-OPERATOR.md) (draft; do not execute before PR #75 review and merge; no scoring). 
+
+- [OPPORTUNITY-001 one-shot OFF/ON private-host scoring runner (currently hard-off, synthetic tests only)](specs/OPPORTUNITY-001-ONE-SHOT-RUNNER.md): source-first original validation, fixed frozen skill/policies, irreversible local ledger, separate activation gate.
