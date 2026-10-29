@@ -38,8 +38,9 @@ def _json(data: object) -> bytes:
 @contextmanager
 def _private_root(path: Path):
     """Pin an owner-only 0700 directory through O_NOFOLLOW ancestor traversal."""
-    if not isinstance(path, Path) or not path.is_absolute():
-        _stop()
+    if (not isinstance(path, Path) or not path.is_absolute()
+            or ".." in path.parts):
+        _stop()  # reject lexical traversal before walking dir_fd ancestors
     fd = None
     try:
         if path.is_relative_to(ROOT):
