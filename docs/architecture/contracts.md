@@ -822,6 +822,23 @@ flowchart TD
 
 Original ON/OFF physical calls 4256/3616; all 640 ON excess occur in 16 mutually-unsolved OOD. Search/audit timers separately reported; fixed-policy inference cost explicitly **not metered**. No scientific pvalue, WORM guarantees or historic DEV/FINAL verification is inferred. [Public aggregate](../../experiments/OPPORTUNITY-001/runs/20261029-train64-real-paired-recount.md). Main-merge/publication conflict from inherited old DEV workflow and source byte-lock remains open; never unfreeze historical checks to fix it.
 
+## ARCH-002 CI-SAFE-V2 — source-byte, command allowlist and remote control-plane separation
+Three *independent* gates: (1) [source verifier](../../scripts/check_research_ci_v2.py) validates the exact new YAML against a reviewed byte template and **two distinct historical source locks** (9 PILOT-V1 and 14 EXP-0003A); (2) [synthetic test runner](../../scripts/run_research_ci_v2_tests.py) permits only named in-memory tests, not global discovery/historical score or DEV/FINAL generation; (3) the GitHub owner **externally** proves old workflow state `disabled_manually` before any main merge. The first two cannot satisfy the third.
+
+```mermaid
+flowchart LR
+  F["Frozen original 9/14-source manifests"] --> G["Static SHA/Git blob verification"]
+  W["v2 exact-whitelisted YAML"] --> G
+  G --> U["No authority synthetic CI receipt"]
+  A["GitHub Actions owner disablement"] --> Q["External independently checked state"]
+  U --> P{"v2 PR CI + independent review"}
+  Q --> M{"main merge gate"}
+  P --> M
+  M -.->|both pass| O["New safe main CI"]
+  M -.->|missing| S["STOP"]
+```
+The CI JSON receipt always includes `scoring_authorized=false`, `legacy_workflow_disabled_verified=false`, `successor_main_merge_authorized=false`. These are honest provenance and *not* flags to flip in tests. The owner state evidence is a separate, time-stamped reviewed operational record, never a new source hash or altered method. [Specification](../specs/CI-SAFE-V2.md) / [run ledger](../process/ci-safe-v2-ledger.md).
+
 ## ARCH-002 OPPORTUNITY-002 — proposed analysis data contracts and trust flow (2026-10-29)
 **Status:** conceptual v1 design, **not implemented or executable**. See [spec](../specs/OPPORTUNITY-002.md) / [new plan](../../experiments/OPPORTUNITY-002/plan.md) / [runs](../../experiments/OPPORTUNITY-002/runs/README.md).
 
@@ -858,6 +875,12 @@ flowchart TD
   A -.-|NO private data| K
   A -.-|NO private data| X
 ~~~
+
+### C-G2 prospective outcome adapter — NOT the legacy normalizer
+
+OPPORTUNITY-001 `normalize_audited_trial()` interprets `audit_invalid_solved/false_solved` as a strict safety stop and **must remain unchanged**. OPPORTUNITY-002 C-G2 requires a separate *future versioned* evaluator-only outcome type before any live trial: `public_found_audit_correct` / `public_found_audit_incorrect` (both publicly verified with independent third-audit result), `public_not_found` (valid search failure), `integrity_invalid` (contradictory public verification, selected AST, source, raw-label audit or source-first provenance; hard-stop), and `not_observed` (missing/incomplete; excluded). `public_found_audit_incorrect` is **valid generalization failure**, not legacy `false_solved`; `public_not_found` is **not** evidence of a failed public-solution's generalization.
+
+Proposed new evidence fields are `public_solution_status`, `independent_third_audit_correct`, `integrity_state`, `source_lock_version` and evaluator-only raw third-audit commitment; these are deliberately **not** added to old PILOT-V1 immutable schemas. Independent replay-free validation must verify all gates before aggregation, and emit `n_both_public_found`, `n_third_audit_discordant_given_both_public_found`, `n_paired_valid`, `n_integrity_invalid`, `n_not_observed`. No new adapter exists in PR1/PR2. [Research contract](../specs/OPPORTUNITY-002.md) / [future experiment plan](../../experiments/OPPORTUNITY-002/plan.md).
 
 Private original third-example bytes, family/seed/source mapping, cloud credential/storage IDs and task-level outcome leaks cannot enter public Git, learner/Kernel, read-only synthetic diagnostics or Actions artifacts. Store exact raw/canonical hashes separately; hash alone is not origin, privacy, durability, independent auditing or chronological preregistration. Reject false_solved / non_comparable / invalid signatures before paired aggregation. Keep absence and no eligible support `not_estimable`, not imputed zero.
 

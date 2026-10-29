@@ -1,0 +1,27 @@
+name: Research verification v2 (safe successor)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-synthetic-and-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Assert v2 allowlist and exact historic source bytes
+        run: python scripts/check_research_ci_v2.py
+      - name: Validate docs and internal links
+        run: python scripts/check_docs.py
+      - name: Run whitelisted synthetic-only unit tests
+        run: python scripts/run_research_ci_v2_tests.py

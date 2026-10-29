@@ -44,6 +44,24 @@ The Kernel sees a **frozen function of public TaskSpec only** (at minimum existi
 
 Learning plasticity is a separate causal contrast: `S_before` vs `S_after` on fresh independent tasks with explicit experience intervention, matched budgets and stored state. This PR1 does **not** estimate that contrast. Human-inserted new primitives are an expressivity control, not autonomous skill invention.
 
+## Future C-G2 outcome semantics — valid generalization error is NOT integrity failure
+
+**Prospective only; unimplemented, not a change to OPPORTUNITY-001.** The existing OPPORTUNITY-001 `packages/evaluation/opportunity_actual.py::normalize_audited_trial()` deliberately throws when its legacy `audit_invalid_solved/false_solved` flag is true. Its strict original security/stop contract remains byte-for-byte immutable. **Do not reuse that normalizer or reinterpret the old flag** in an OPPORTUNITY-002 C-G2 scorer; doing so would censor the very first-solution generalization failures that C-G2 tries to observe.
+
+For a separately versioned, independently reviewed future OPPORTUNITY-002 evaluator, specify two orthogonal fields **before** choosing new task seeds or scoring:
+
+| New-study evaluator outcome (proposed) | Trust/normalization gate | Scientific treatment |
+|---|---|---|
+| `public_found_audit_correct` | Exact selected program verifies against both public examples, then independently matches private third example | Valid audit-correct outcome |
+| `public_found_audit_incorrect` | Same *valid* public verification, selected public-matching program independently **fails** trusted private third-example audit | **Valid generalization failure**, `audited_correct=false`; NEVER alias to legacy `false_solved` |
+| `public_not_found` | Reviewed search stops at predeclared budget with no public-matching program; provenance/trace still valid | Valid unsolved/search outcome; audit-correct false, mechanism separately counted, **not** an observed first-solution generalization miss |
+| `integrity_invalid` | Any public-verifier inconsistency, program/trace/source/version mismatch, trusted audit label-vs-raw contradiction, evidence tamper or provenance failure | **HARD STOP**; excluded from paired scientific denominator and recorded as invalid, not a regular model error |
+| `not_observed` | Missing audit/arm/trace or incomplete task | Exclude as missing with reason and per-arm / paired accounting; never impute false |
+
+The new adapter must check that public verification and canonical selected AST agree, independent audit value and its label agree, and source/sha/policy/skill/meter/chronology locks match **before** assigning a valid outcome. No evaluator-only field may enter the pretrial Kernel choice. These statuses are **proposed schema labels**, not actual existing runtime capabilities or permission to score.
+
+For C-G2, additionally report `n_both_public_found` and `n_discordant_private_audit_given_both_public_found` alongside `n_paired_valid`, `n_public_not_found`, `n_not_observed` and `n_integrity_invalid`. If no both-public-found pairs exist, first-solution generalization is `not_estimable` rather than 0/N. Count public-not-found separately from generalization failures; do not select a new population using post hoc third-audit outcomes. **C-G2 is synthetic-only until** a distinct prospectively frozen adapter, negative tests for valid audit failure vs safety failure, independent source-first review, private third-audit custody and one-shot permission exist.
+
 ## Technical and trust decisions
 - Use Python 3.12+, stdlib `unittest/itertools/json/hashlib` and existing typed AST/TaskSpec, MetricSpec and EvidenceEnvelope where applicable. No new neural stack, external solver, database or GPU for this finite grammar.
 - New versioned `ContrastSpec` is **analysis metadata**, not an executable command; schema described in [ARCH-002](../architecture/contracts.md). An optional `BoundaryCertificate` holds domain premises/logic/source hashes/proof status and reviewer.

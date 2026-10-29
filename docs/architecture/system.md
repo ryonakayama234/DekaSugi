@@ -774,6 +774,21 @@ flowchart LR
 
 GitHub has *not* read owner-private raw score tuples; report is based on owner CLI receipt verified by independent scorer-normalization code. [Redacted outcome](../../experiments/OPPORTUNITY-001/runs/20261029-train64-real-paired-recount.md), [research audit #82](https://github.com/ryonakayama234/DekaSugi/issues/82), [new study #86](https://github.com/ryonakayama234/DekaSugi/issues/86). Main is intentionally not advanced while inherited historical DEV main-push smoke conflicts with the frozen source lock; do not quietly change that lock to publish results.
 
+## ARCH-001 CI-SAFE-V2 — immutable historic workflow and staged safe successor
+```mermaid
+flowchart TD
+  O["Old Research verification / docs-check.yml (source-locked bytes)"] --> H["Historic PILOT-V1 source integrity; immutable"]
+  O -.->|Main push if enabled| X["UNSAFE: historic EXP-0002B DEV smoke"]
+  V["NEW Research verification v2"] --> S["Static source bytes + exact YAML allowlist"]
+  S --> T["Docs + selected synthetic-only unittests"]
+  S --> L["Old14 and PILOT-V1 9 source-only checks"]
+  C["Owner GitHub Actions control plane"] --> D{"Original workflow disabled_manually verified?"}
+  D -->|No| B["STOP main merge"]
+  D -->|Yes + reviewed successor PR| M["Merge v2; observe main v2 CI only"]
+  M --> N["Then PR #87/#89; no scoring authority"]
+```
+The new [workflow](../../.github/workflows/research-verification-v2.yml) and [source checker](../../scripts/check_research_ci_v2.py) cannot change the immutable old file or attest the remote disable state. The main-push risk is external to pure Git source diff. [Full migration contract](../specs/CI-SAFE-V2.md) / [run ledger](../process/ci-safe-v2-ledger.md).
+
 ## ARCH-001 OPPORTUNITY-002 — proposed bounded capability/identification study (PR1 docs-only)
 **Status:** proposed only; no code, synthetic run or new scored trial. Main owner `packages/evaluation`; preserve learner/kernel/registry freeze. [Spec](../specs/OPPORTUNITY-002.md) / [plan](../../experiments/OPPORTUNITY-002/plan.md).
 
