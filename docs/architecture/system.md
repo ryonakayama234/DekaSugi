@@ -757,3 +757,17 @@ flowchart LR
   F -.->|"No implicit authorization"| G["Separate approved one-shot main-only activation"]
 ```
 No irreversible marker, new TRAIN64 OFF/ON scorer call or public raw audit occurs in this preflight. Frozen historical TRAIN/DREAM reconstruction is limited to already approved TRAIN/DREAM, **never** old DEV/FINAL. The preflight closes an implementation/readiness verification gap, not an external cloud retention certification. [Details](../specs/OPPORTUNITY-001-LIVE-READONLY-PREFLIGHT.md) / [Issue #79](https://github.com/ryonakayama234/DekaSugi/issues/79).
+
+
+## OPPORTUNITY-001 separate post-run evidence recount (future owner execution; no scoring)
+```mermaid
+flowchart TD
+  A["Existing private 64 third-audit original and 192 public frozen decisions"] --> L["Read-only pre-existing ledger STARTED + exact scoring commit"]
+  L --> D{"COMPLETED exactly 64 and no STOPPED?"}
+  D -->|"No"| I["INCOMPLETE_NO_RETRY, no scientific outcome"]
+  D -->|"Yes"| T["128 ARM_STARTED records + original nine-element tuples"]
+  T --> N["Pure normalizer independently reconstructs 64 redacted pairs"]
+  N --> E["Reject any tamper, identity, missing or extra records"]
+  E --> R["Aggregate six classes, 3 policy errors/regret and eight family strata"]
+```
+The recount does not call the scorer, alter the private ledger or re-enter a one-shot run, and may produce only redacted aggregates; no per-task evaluator-only family/source/seed relation. [Specification](../specs/OPPORTUNITY-001-INDEPENDENT-RECOUNT.md) / [Issue #82](https://github.com/ryonakayama234/DekaSugi/issues/82).
