@@ -244,3 +244,6 @@ Following merged [OPPORTUNITY-001 PR #85](https://github.com/ryonakayama234/Deka
 - **PR2**: independent finite enumerator for 40/47 predictions and restricted-domain proof obligations; synthetic-only calibration, new code and tests in separate reviewed PR.
 - **PR3+**: separate pre-frozen independent new TRAIN task population, support overlap, sample power/precision, exact source/policy/skill locks, private third audit and once-only activation. Not authorized by PR1/PR2 merge.
 - Scientific competence gains remain unobserved by this new work. No new OPPORTUNITY-002 scored trials or synthetic measured outcomes exist in PR1. Independent latest-head review and inherited historical main-push DEV smoke/source-lock safety review required before merging.
+
+## 2026-10-29 — OPPORTUNITY-002 PR2: independent synthetic calibration staged
+Pure [standalone script](../scripts/opportunity2_boundary.py), [invented test suite](../tests/test_opportunity2_boundary.py) and [planned proof evidence](../experiments/OPPORTUNITY-002/runs/README.md) are separate from PR1's design and from future scored training. This PR2 is a stacked draft on PR1; inherited main-push DEV smoke and source-lock clash tracked in [Issue #88](https://github.com/ryonakayama234/DekaSugi/issues/88), merge blocked. No new real training score, source authentication or independent review completion implied.
