@@ -838,3 +838,50 @@ flowchart LR
   M -.->|missing| S["STOP"]
 ```
 The CI JSON receipt always includes `scoring_authorized=false`, `legacy_workflow_disabled_verified=false`, `successor_main_merge_authorized=false`. These are honest provenance and *not* flags to flip in tests. The owner state evidence is a separate, time-stamped reviewed operational record, never a new source hash or altered method. [Specification](../specs/CI-SAFE-V2.md) / [run ledger](../process/ci-safe-v2-ledger.md).
+
+## ARCH-002 OPPORTUNITY-002 — proposed analysis data contracts and trust flow (2026-10-29)
+**Status:** conceptual v1 design, **not implemented or executable**. See [spec](../specs/OPPORTUNITY-002.md) / [new plan](../../experiments/OPPORTUNITY-002/plan.md) / [runs](../../experiments/OPPORTUNITY-002/runs/README.md).
+
+### ContrastSpec v1 (proposed, strictly nonauthorizing)
+| Field | Type / invariant |
+|---|---|
+| `schema_version` / `contrast_id` | `"opportunity2-contrast/1"` and unique stable ID |
+| `construct` | one of `representability/search_accessibility/generalization/policy_choice/information_identifiability/plasticity/transfer`; measured scope explicitly stated |
+| `control` / `treatment` | fixed, named intervention arms with versioned source/policy hashes |
+| `frozen_conditions` | registry/skill/generator/verifier/meter/version hashes, expanded node/candidate budgets, Python/semantics versions |
+| `admissible_observation` | precise public-only policy information; separate evaluator-only audit commitment, never private value |
+| `estimand` | metric, paired unit, task population, aggregation, eligibility denominator and difference sign |
+| `uncertainty` | hypothesis-dependent interval/test with cluster/discordance/multiplicity and missingness plan, or `not_specified` in PR1 |
+| `status` | `planned/calibrated/identifiable/structurally_unidentifiable/inconclusive/invalid`; report evidence and reviewer, no implicit approval to score |
+| `evidence_reference` | immutable hash + original byte provenance only once genuine evidence exists; null for PR1 |
+
+Optional `BoundaryCertificate`: `dsl_version`, `primitive_semantics`, `macro_body_sha`, `domain_premises`, `statement`, `proof_method`, `independent_review`, `status`. A finite enumeration proves only a bounded syntactic expression-set claim; an invariant proof of impossibility requires a declared input domain.
+
+Paired analysis still reuses canonical `TaskSpec`, trusted `SkillCandidate`, existing `MetricSpec` and `EvidenceEnvelope` contracts. Never change EXP-0003A frozen schemas or historical source locks. A derived `ContrastSpec` is not a new evaluation authority, not a policy training input, and not an original audit artifact.
+
+### Data flow / strict information boundary
+~~~mermaid
+flowchart TD
+  P["Public TaskSpec + frozen hash/semantics"] --> X["Proposed ContrastSpec & synthetic-only boundary analysis"]
+  P --> K["Frozen public-only Kernel choice"]
+  K --> D["Pretrial choice commitment BEFORE any real outcome"]
+  A["Evaluator-only new independent audit: future, private"] -.-> V["Future independently approved one-shot verifier"]
+  D -.-> V
+  V -.-> E["Verified redacted paired result; immutable original outside Git"]
+  X --> C["Proof/certificate, scope, expected contrast"]
+  C --> M["METRO measurement/validity constraints"]
+  E -.-> M
+  M --> R["Estimate and scientific decision"]
+  A -.-|NO private data| K
+  A -.-|NO private data| X
+~~~
+
+### C-G2 prospective outcome adapter — NOT the legacy normalizer
+
+OPPORTUNITY-001 `normalize_audited_trial()` interprets `audit_invalid_solved/false_solved` as a strict safety stop and **must remain unchanged**. OPPORTUNITY-002 C-G2 requires a separate *future versioned* evaluator-only outcome type before any live trial: `public_found_audit_correct` / `public_found_audit_incorrect` (both publicly verified with independent third-audit result), `public_not_found` (valid search failure), `integrity_invalid` (contradictory public verification, selected AST, source, raw-label audit or source-first provenance; hard-stop), and `not_observed` (missing/incomplete; excluded). `public_found_audit_incorrect` is **valid generalization failure**, not legacy `false_solved`; `public_not_found` is **not** evidence of a failed public-solution's generalization.
+
+Proposed new evidence fields are `public_solution_status`, `independent_third_audit_correct`, `integrity_state`, `source_lock_version` and evaluator-only raw third-audit commitment; these are deliberately **not** added to old PILOT-V1 immutable schemas. Independent replay-free validation must verify all gates before aggregation, and emit `n_both_public_found`, `n_third_audit_discordant_given_both_public_found`, `n_paired_valid`, `n_integrity_invalid`, `n_not_observed`. No new adapter exists in PR1/PR2. [Research contract](../specs/OPPORTUNITY-002.md) / [future experiment plan](../../experiments/OPPORTUNITY-002/plan.md).
+
+Private original third-example bytes, family/seed/source mapping, cloud credential/storage IDs and task-level outcome leaks cannot enter public Git, learner/Kernel, read-only synthetic diagnostics or Actions artifacts. Store exact raw/canonical hashes separately; hash alone is not origin, privacy, durability, independent auditing or chronological preregistration. Reject false_solved / non_comparable / invalid signatures before paired aggregation. Keep absence and no eligible support `not_estimable`, not imputed zero.
+
+The current main-push historical `EXP-0002B DEV smoke` + source-lock conflict blocks merging new PRs until separately reviewed remediation; no new DEV/FINAL activation or old original re-scoring is allowed.
