@@ -818,3 +818,5 @@ flowchart LR
   A -.->|"Incomplete"| I["No retry and no scientific conclusion"]
 ```
 The planned report schema `opportunity-independent-recount-v1` records full 64 paired-valid denominator, six classes, overall+per-family OFF/ON audited accuracy and primitive calls/candidate counts, three policy decision error denominators, missed/lost success and regret sums for both-correct cases only, or an incomplete no-retry status. Individual per-task original tuples, audit examples, private paths, evaluator source IDs, seeds and family mapping stay private. All operations are read-only, with no original-score or DEV/FINAL code path. [Spec](../specs/OPPORTUNITY-001-INDEPENDENT-RECOUNT.md).
+
+- Later postrun recount metrology extension: separate OFF/ON search_cpu_ms, search_wall_ms, audit_cpu_ms, audit_wall_ms sums, original tested candidate/primitive-call sums and `choice_disagreement_tasks / choice_sensitivity_denominator` (paired-valid). Unmeasured original policy inference cost is explicitly `not_metered_by_original_pilot`, not fabricated as 0. [Read-only contract](../specs/OPPORTUNITY-001-INDEPENDENT-RECOUNT.md).
