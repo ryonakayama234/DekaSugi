@@ -779,3 +779,18 @@ flowchart LR
 **Run record schemas:** `opportunity-once-only-start-v1` contains approved source commit, preexisting original SHA, expected 64, irreversible no-retry flag; `opportunity-once-only-arm-start-v1` contains public task ID, index and OFF/ON arm; `opportunity-private-raw-trial-v1` contains task ID, arm and the exact original 9-element canonical `_audited_trial` tuple (private only); each `opportunity-paired-evidence-v1` includes public task ID/third-audit commitment, normalized OFF/ON outcomes, frozen policy choices and cost classifications, **no private third-audit example**. `opportunity-once-only-stop-v1` stores completed count/no-retry, not exception details; `opportunity-once-only-completion-v1` records exactly 64 completed pairs. All records reside outside public repo under owner-only private 0700 directory, exclusive 0600 files; no GitHub Actions scorer.
 
 The paired engine itself executes OFF before ON with a fresh Registry per arm and stops on OFF false_solved. Replaying an already started arm is prohibited even if its evaluation failed. A separate main-only exact-head reviewed activation is still necessary; private Drive `keepForever` alone is not deletion-proof WORM retention. See [one-shot source and contract](../specs/OPPORTUNITY-001-ONE-SHOT-RUNNER.md), [frozen method](../../experiments/OPPORTUNITY-001/pilot-v1.md) and [Issue #79](https://github.com/ryonakayama234/DekaSugi/issues/79). **Real scored new TRAIN64: 0.**
+
+
+## OPPORTUNITY-001 2026-10-29 — scoped owner-activation authorization contract (NO scored results)
+```mermaid
+flowchart TD
+  U["Owner explicit one-shot invocation, private WSL2"] --> A["custody_confirmed=True and never_retry_confirmed=True"]
+  A --> B["clean HEAD == canonical origin/main == reviewed approved commit; Python 3.12.15"]
+  B --> C["Scoped flag pair TRUE only inside active call"]
+  C --> D["Private runner checks source/choices/original SHA and reserves STARTED"]
+  D --> E["Each ARM_STARTED before canonical scoring; private raw tuple then redacted pair"]
+  E --> F["Always restore both default flags FALSE; no restart"]
+  A -.->|"No"| X["STOP: never score"]
+  B -.->|"No"| X
+```
+Public CLI arguments use the pre-captured raw SHA, exact approved main Git SHA and absolute private directory **locally**, not in GitHub CI logs. The owner supplies --execute-fresh-train64-once, --confirm-offsite-custody, --confirm-never-retry, --private-dir, --original-sha256 and --approved-main-commit. Missing/invalid confirmation fails before any real scorer runs. Existing immutable PILOT-V1, 64×3 choices, source locks, original third-audit hash, registry and meter contracts unchanged. This wrapper alone cannot prove WORM deletion protection, independent external custody or scientific result. [Review contract](../specs/OPPORTUNITY-001-ACTIVATION.md) / [Issue #79](https://github.com/ryonakayama234/DekaSugi/issues/79).

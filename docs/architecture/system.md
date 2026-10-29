@@ -729,3 +729,18 @@ flowchart TD
 ```
 
 The exact run-level and arm-level STARTED markers live **outside public Git**, on the owner's private host, and are fsynced before score. Existing local directories cannot prove global no-retry after an administrator deletes them; external chronological custody must retain a durable record. Never export original audit values, raw scorer tuples, secret paths/passwords or seeds to GitHub/Actions. [One-shot contract](../specs/OPPORTUNITY-001-ONE-SHOT-RUNNER.md) / [Private runner](../../scripts/opportunity_one_shot_runner.py) / [activation issue](https://github.com/ryonakayama234/DekaSugi/issues/79).
+
+
+## OPPORTUNITY-001 2026-10-29 — separate owner-private activation wrapper (PR stage, NOT EXECUTED)
+```mermaid
+flowchart LR
+  A["Owner private WSL2 / frozen original archive"] --> B["Explicit --execute-fresh-train64-once + custody/no-retry confirmations"]
+  B --> C["Exact clean approved origin/main and Python 3.12.15"]
+  C --> D["Temporary scoped runner + engine activation; default FALSE"]
+  D --> E["Already-reviewed source-first one-shot runner"]
+  E --> F["Private STARTED then per-arm STARTED before scored actions"]
+  F --> G["Private original canonical tuples + redacted pairs / STOP on failure"]
+  G --> H["Restore both engine and runner flags to FALSE"]
+  C -.->|"Mismatch"| X["STOP before scoring"]
+```
+**This is a separately reviewed activation proposal, not evidence of a live experiment.** No public Actions trigger; no private raw original, encrypted file, third audit, family, seed or passphrase in GitHub. Existing source-first method and PR78 engine remain unchanged. [Activation contract](../specs/OPPORTUNITY-001-ACTIVATION.md) / [Issue #79](https://github.com/ryonakayama234/DekaSugi/issues/79).
