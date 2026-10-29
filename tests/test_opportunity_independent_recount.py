@@ -77,6 +77,13 @@ class IndependentRecountSyntheticTests(unittest.TestCase):
         self.assertEqual(overall["policies"]["B1"]["decision_errors"],64)
         self.assertEqual(overall["policies"]["B1"]["sum_excess_calls"],512)
         self.assertEqual(overall["policies"]["B2"]["decision_errors"],0)
+        self.assertEqual(overall["choice_disagreement_tasks"],64)
+        self.assertEqual(overall["choice_sensitivity_denominator"],64)
+        self.assertAlmostEqual(overall["off_search_cpu_ms_sum"],76.8)
+        self.assertAlmostEqual(overall["on_search_wall_ms_sum"],147.2)
+        self.assertAlmostEqual(overall["off_audit_cpu_ms_sum"],25.6)
+        self.assertEqual(overall["policy_inference_cost"],
+                         "not_metered_by_original_pilot")
         self.assertEqual(len(summary["by_family"]),8)
         self.assertTrue(all(x["paired_valid"]==8 for x in summary["by_family"].values()))
 
