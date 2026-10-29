@@ -744,3 +744,16 @@ flowchart LR
   C -.->|"Mismatch"| X["STOP before scoring"]
 ```
 **This is a separately reviewed activation proposal, not evidence of a live experiment.** No public Actions trigger; no private raw original, encrypted file, third audit, family, seed or passphrase in GitHub. Existing source-first method and PR78 engine remain unchanged. [Activation contract](../specs/OPPORTUNITY-001-ACTIVATION.md) / [Issue #79](https://github.com/ryonakayama234/DekaSugi/issues/79).
+
+
+## OPPORTUNITY-001 final source-first read-only preflight (2026-10-29; NO scoring)
+```mermaid
+flowchart LR
+  A["Exact main + Python 3.12.15, activation flags FALSE"] --> B["Verify old14/new9 source locks + original 192 decisions"]
+  B --> C["Pinned private dir_fd: reject existing STARTED"]
+  C --> D["Read-only original 64 third audits, raw SHA, all source bindings"]
+  D --> E["Rebuild frozen historical TRAIN/DREAM skill and snapshots"]
+  E --> F["Second raw SHA readback, redacted PASS/STOP receipt"]
+  F -.->|"No implicit authorization"| G["Separate approved one-shot main-only activation"]
+```
+No irreversible marker, new TRAIN64 OFF/ON scorer call or public raw audit occurs in this preflight. Frozen historical TRAIN/DREAM reconstruction is limited to already approved TRAIN/DREAM, **never** old DEV/FINAL. The preflight closes an implementation/readiness verification gap, not an external cloud retention certification. [Details](../specs/OPPORTUNITY-001-LIVE-READONLY-PREFLIGHT.md) / [Issue #79](https://github.com/ryonakayama234/DekaSugi/issues/79).

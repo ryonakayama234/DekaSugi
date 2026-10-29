@@ -794,3 +794,15 @@ flowchart TD
   B -.->|"No"| X
 ```
 Public CLI arguments use the pre-captured raw SHA, exact approved main Git SHA and absolute private directory **locally**, not in GitHub CI logs. The owner supplies --execute-fresh-train64-once, --confirm-offsite-custody, --confirm-never-retry, --private-dir, --original-sha256 and --approved-main-commit. Missing/invalid confirmation fails before any real scorer runs. Existing immutable PILOT-V1, 64×3 choices, source locks, original third-audit hash, registry and meter contracts unchanged. This wrapper alone cannot prove WORM deletion protection, independent external custody or scientific result. [Review contract](../specs/OPPORTUNITY-001-ACTIVATION.md) / [Issue #79](https://github.com/ryonakayama234/DekaSugi/issues/79).
+
+
+## OPPORTUNITY-001 owner WSL2 READ-ONLY pretrial verification receipt (2026-10-29)
+```mermaid
+flowchart TD
+  S["Frozen source/choices verification"] --> P["Existing owner-only original: validate 64 third audits and fixed raw SHA"]
+  P --> L["Check prior one-shot STARTED directory ABSENT, without creating one"]
+  L --> T["Trusted deterministic source equality and frozen old TRAIN/DREAM skill"]
+  T --> R["Redacted receipt: hashes/counts, no-score=True, ledger_created=False"]
+  R -.->|"NOT an activation"| X["Distinct owner-only one-shot scoring approval"]
+```
+The schema `opportunity-live-readonly-preflight-v1` exposes only source main commit, original SHA/64-count, 192 choices, frozen skill hash and audit commitment aggregate, plus explicit `irreversible_run_ledger_created=false`, `new_train64_scored_trials=0`, `scoring_authorized=false`, `private_original_disclosed=false`. It refuses any pre-existing ledger and does not modify original.bin. A preflight failure prints a generic STOP without private path, third-audit, seed or family. This contract is independent of PR #80 activation and cannot assert deletion-proof retention. [Spec](../specs/OPPORTUNITY-001-LIVE-READONLY-PREFLIGHT.md).
