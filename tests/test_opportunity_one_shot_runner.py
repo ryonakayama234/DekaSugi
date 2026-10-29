@@ -68,6 +68,38 @@ class OneShotPrivateSyntheticTests(unittest.TestCase):
                         pass
             self.assertTrue((private / m.LEDGER_NAME / "STARTED.json").is_file())
 
+    def test_arm_is_reserved_before_score_no_second_invocation(self):
+        with TemporaryDirectory() as tmp:
+            private=Path(tmp)/"owner"
+            private.mkdir(mode=0o700)
+            t=SimpleNamespace(task_id="t-"+"e"*64)
+            calls=[]
+            def synthetic_scorer(task, audit, registry, learned):
+                calls.append(learned)
+                return ({"search":{"task_id":task.task_id}}, 2, 0,
+                        False, False, 0.1, 0.2, 0.3, 0.4)
+            with m._private_root(private) as fd:
+                with m._reserve_once(fd,"a"*40,"f"*64) as ledger:
+                    m._record_arm_once(ledger,0,t,object(),object(),{},
+                                       synthetic_scorer)
+                    self.assertEqual(len(calls),1)
+                    self.assertTrue((private/m.LEDGER_NAME/"trial-000-OFF.json").is_file())
+                    with self.assertRaises(FileExistsError):
+                        m._record_arm_once(ledger,0,t,object(),object(),{},
+                                           synthetic_scorer)
+                    self.assertEqual(len(calls),1)
+                    def broken(*args):
+                        raise RuntimeError("SYNTHETIC_FAILED")
+                    with self.assertRaises(RuntimeError):
+                        m._record_arm_once(ledger,1,t,object(),object(),{},
+                                           broken)
+                    self.assertTrue((private/m.LEDGER_NAME/"ARM_STARTED-001-OFF.json").is_file())
+                    self.assertFalse((private/m.LEDGER_NAME/"trial-001-OFF.json").exists())
+                    with self.assertRaises(FileExistsError):
+                        m._record_arm_once(ledger,1,t,object(),object(),{},
+                                           synthetic_scorer)
+                    self.assertEqual(len(calls),1)
+
     def test_pinned_fd_survives_pathname_swap(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
