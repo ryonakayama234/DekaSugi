@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from hashlib import sha1
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -51,6 +52,12 @@ def validate_repo_files(root: Path = ROOT) -> dict[str, object]:
     if (lock.get("new_train_pilot_scoring_permitted") is not False
             or lock.get("old_dev_or_final_scoring_permitted") is not False):
         raise CISafetyError("Historical method permits scoring unexpectedly")
+
+    # A direct script invocation has scripts/ rather than the repo root on
+    # sys.path. Add it only AFTER workflow, lock and old-workflow bytes were
+    # checked; never import project scoring packages during this step.
+    if str(root) not in sys.path:
+        sys.path.insert(0, str(root))
 
     # Import only TWO stdlib-based *source byte* checkers; do not call the
     # generator's verify_generator_lock(), which reconstructs public tasks.
