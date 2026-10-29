@@ -223,3 +223,5 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 - [WSL2 operator runbook: one-time private capture, local GPG encryption and encrypted Google Drive upload/restore](specs/OPPORTUNITY-001-PRIVATE-OPERATOR.md) (draft; do not execute before PR #75 review and merge; no scoring). 
 
 - [OPPORTUNITY-001 one-shot OFF/ON private-host scoring runner (currently hard-off, synthetic tests only)](specs/OPPORTUNITY-001-ONE-SHOT-RUNNER.md): source-first original validation, fixed frozen skill/policies, irreversible local ledger, separate activation gate.
+
+- [OPPORTUNITY-001 distinct one-shot owner-only main activation specification (real scoring prohibited in CI)](specs/OPPORTUNITY-001-ACTIVATION.md): clean approved origin/main, scoped dual switches, irreversible private ledger, external custody and independent review.
