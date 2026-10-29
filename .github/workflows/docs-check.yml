@@ -83,16 +83,10 @@ jobs:
         run: python -m packages.kernel --mode preflight --output .run/EXP-0002B-preflight.json
       - name: EXP-0002B TRAIN-only snapshot (no DEV/FINAL search)
         run: python -m packages.kernel --mode train --output .run/EXP-0002B-train-only.json
-      - name: EXP-0002B DEV engineering smoke (main push only; never PR)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: python -m packages.kernel.eval_cli --phase dev --output .run/EXP-0002B-DEV-smoke.json
-      - name: Upload EXP-0002B DEV smoke (not FINAL)
-        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: actions/upload-artifact@v4
-        with:
-          name: EXP-0002B-DEV-smoke
-          path: .run/EXP-0002B-DEV-smoke.json
-          if-no-files-found: warn
+      # OPPORTUNITY-001 scientific boundary: NEVER execute inherited EXP-0002B
+      # DEV/FINAL on PR OR main pushes. Previous main-only DEV smoke was a
+      # historical workflow regression; retain its archived past provenance but
+      # do not regenerate it. All tests below remain TRAIN/synthetic/hash only.
       - name: Upload EXP-0002B TRAIN-only diagnostics
         if: always()
         uses: actions/upload-artifact@v4
