@@ -2,7 +2,7 @@
 from __future__ import annotations
 from itertools import product
 import unittest
-from packages.evaluation import opportunity2_boundary as b
+from scripts import opportunity2_boundary as b
 
 
 class BoundaryTests(unittest.TestCase):
