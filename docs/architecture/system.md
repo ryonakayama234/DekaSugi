@@ -773,3 +773,32 @@ flowchart LR
 ```
 
 GitHub has *not* read owner-private raw score tuples; report is based on owner CLI receipt verified by independent scorer-normalization code. [Redacted outcome](../../experiments/OPPORTUNITY-001/runs/20261029-train64-real-paired-recount.md), [research audit #82](https://github.com/ryonakayama234/DekaSugi/issues/82), [new study #86](https://github.com/ryonakayama234/DekaSugi/issues/86). Main is intentionally not advanced while inherited historical DEV main-push smoke conflicts with the frozen source lock; do not quietly change that lock to publish results.
+
+## ARCH-001 OPPORTUNITY-002 — proposed bounded capability/identification study (PR1 docs-only)
+**Status:** proposed only; no code, synthetic run or new scored trial. Main owner `packages/evaluation`; preserve learner/kernel/registry freeze. [Spec](../specs/OPPORTUNITY-002.md) / [plan](../../experiments/OPPORTUNITY-002/plan.md).
+
+~~~mermaid
+flowchart TB
+  subgraph Cognitive["Existing frozen-capability path"]
+    T["Public TaskSpec"] --> K["Existing frozen Kernel / choice"]
+    L["Primitive and frozen SkillCandidate"] --> S["Synthesis + trusted Runtime"]
+    K --> S
+    S --> V["Independent Verification"]
+  end
+  subgraph Identification["PROPOSED: evaluation; PR1 contract, PR2 synthetic only"]
+    C["ContrastSpec: intervention, controls, estimand"] --> B["Independent boundary checker"]
+    B --> I["Identifiability assessment"]
+  end
+  subgraph Measurement["Existing metrology boundary"]
+    M["MetricSpec: units, population, missingness"] --> E["EvidenceEnvelope with trust provenance"]
+    E --> D["Estimate / scope-limited claim"]
+  end
+  L -.-> B
+  S -.-> B
+  V -.-> E
+  I -.-> M
+~~~
+
+The checker observes type-safe primitive/macro semantics and budgeted candidate sets, **not** original frozen private audit data. Kernel receives public-only information before choices; evaluator-only audit stays isolated. Macro expansion can preserve the semantic program set while changing search order/selected programs. Calibration proof/fixture PASS does not prove learning or transfer. No implicit arrows from diagnostic results back into a learner or previously frozen original source.
+
+The separately reviewed actual scorer, new evaluator-only source and private custody/one-shot gates are **future designs only**. Existing EXP-0003A old DEV/FINAL and OPPORTUNITY-001 original 64 are never replayed. [ARCH-002](contracts.md) includes precise data flow and versioning.
