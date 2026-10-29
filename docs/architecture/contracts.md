@@ -756,3 +756,26 @@ flowchart LR
 - Private schema `opportunity-private-audit-original-v1` is **never public** and binds original public choice raw SHA `1d08e6…`, canonical decisions `8a8625…`, new public task manifest `bc950e…`, independent third audit commitments `fd4a1a…` and 64 full evaluator-only audit records in original order.
 - Public receipt `opportunity-private-capture-receipt-v1` contains `raw_sha256,raw_size_bytes,private_record_count=64,different_filesystems_observed,public_choice_raw_sha256,audit_commitments_sha256,scored_trials=0,independent_private_raw_custody_verified=false,acl_version_retention_independent_restore_verified=false,scoring_authorized=false,private_examples_disclosed=false` plus version/status. **No private examples, path, family or seed may be logged.**
 - Source-first historic 14 blobs + fresh 9 blobs and preserved official original are checked before generating any new TRAIN tasks. No policy-inference or paired scorer call in this module. Two local readbacks do not prove access control, independent provider, object version/retention or global capture chronology; separate later audit must establish these. [Spec](../specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md) / [Issue #74](https://github.com/ryonakayama234/DekaSugi/issues/74) / [Issue #66](https://github.com/ryonakayama234/DekaSugi/issues/66).
+
+
+## OPPORTUNITY-001 2026-10-29 — real one-shot evaluation and irreversible evidence contracts (HARD OFF)
+This is a later integration contract, updating the older design-only descriptions above without rewriting their historical provenance. **Implemented in PR #78 but NOT activated:** `scripts/opportunity_one_shot_runner.py`; both `ONE_SHOT_ACTIVATED=False` and actual-pair `SCORING_ACTIVATED=False` are independent fail-closed gates. Only synthetic tests can drive their pure helpers in CI.
+
+```mermaid
+flowchart LR
+  S["Old14/new9 and original 192 decisions preflight"] --> P["Private original: 64 locked task IDs + 64 committed third examples"]
+  P --> F["Frozen skill + B1/B2/B3 snapshots, original SHA verified"]
+  F --> G["STARTED.json (exclusive, 0600, fsync)"]
+  G --> AO["ARM_STARTED-i-OFF (before OFF scoring)"]
+  AO --> RO["trial-i-OFF original canonical tuple (PRIVATE 0600)"]
+  RO --> AN["ARM_STARTED-i-ON (only if OFF passes)"]
+  AN --> RN["trial-i-ON original canonical tuple (PRIVATE 0600)"]
+  RN --> RP["pair-i redacted normalized summary (PRIVATE 0600)"]
+  RP --> C["COMPLETED after exactly 64 valid pairs"]
+  RO -.-> X["False_solved or runtime failure: STOPPED, no replay"]
+  RN -.-> X
+```
+
+**Run record schemas:** `opportunity-once-only-start-v1` contains approved source commit, preexisting original SHA, expected 64, irreversible no-retry flag; `opportunity-once-only-arm-start-v1` contains public task ID, index and OFF/ON arm; `opportunity-private-raw-trial-v1` contains task ID, arm and the exact original 9-element canonical `_audited_trial` tuple (private only); each `opportunity-paired-evidence-v1` includes public task ID/third-audit commitment, normalized OFF/ON outcomes, frozen policy choices and cost classifications, **no private third-audit example**. `opportunity-once-only-stop-v1` stores completed count/no-retry, not exception details; `opportunity-once-only-completion-v1` records exactly 64 completed pairs. All records reside outside public repo under owner-only private 0700 directory, exclusive 0600 files; no GitHub Actions scorer.
+
+The paired engine itself executes OFF before ON with a fresh Registry per arm and stops on OFF false_solved. Replaying an already started arm is prohibited even if its evaluation failed. A separate main-only exact-head reviewed activation is still necessary; private Drive `keepForever` alone is not deletion-proof WORM retention. See [one-shot source and contract](../specs/OPPORTUNITY-001-ONE-SHOT-RUNNER.md), [frozen method](../../experiments/OPPORTUNITY-001/pilot-v1.md) and [Issue #79](https://github.com/ryonakayama234/DekaSugi/issues/79). **Real scored new TRAIN64: 0.**

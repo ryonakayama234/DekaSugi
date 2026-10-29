@@ -704,3 +704,28 @@ flowchart TD
   T["Independent actual scorer and reviewed one-shot execution"] -.-> S
 ```
 **Implemented:** only [manual source-first capture CLI](../../scripts/capture_opportunity_private_original.py) and invented-fixture tests; no live capture invoked in PR CI or public Github Actions and no genuine new TRAIN64 original yet observed. **Not implemented/verified:** independently trusted durable private store, actual score runner, one-shot chronology/authorization. [Contract](contracts.md) / [scope](../specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md).
+
+
+## OPPORTUNITY-001 2026-10-29 — one-shot private-host scorer is IMPLEMENTED HARD-OFF (PR #78)
+This later engineering checkpoint supersedes the earlier historical "actual score runner not implemented" status **only as to code existence**. The owner reported genuine 64-row pre-scoring capture; separately, local GPG plaintext restoration and byte identity with the encrypted Drive object were checked, while full account-loss/deletion durability is not guaranteed. **New actual OFF/ON scored pairs remain 0.**
+
+```mermaid
+flowchart TD
+  A["Old 14 + new 9 source bytes first; official ORIGINAL 64x3 decisions"] --> B["Private original 0600 read by pinned dir_fd + raw SHA"]
+  B --> C["Validate 64 archived third audits and exact public/source IDs"]
+  C --> D["Rebuild/verify frozen top SkillCandidate from old TRAIN/DREAM only"]
+  D --> E{"Two activation flags and independently reviewed main-only custody/run approval?"}
+  E -->|"NO: current PR"| STOP["NO SCORING: hard OFF"]
+  E -.->|"Future separate reviewed activation"| F["Exclusive private STARTED ledger + fsync"]
+  F --> G["Each OFF arm: ARM_STARTED before actual scorer"]
+  G --> H["Save original OFF audited tuple privately before normalizing"]
+  H --> I{"OFF false_solved?"}
+  I -->|"YES"| ABORT["STOPPED + no rerun, retain original evidence"]
+  I -->|"NO"| J["Each ON arm: ARM_STARTED before actual scorer"]
+  J --> K["Save original ON tuple privately + redact paired result"]
+  K --> L{"More of 64?"}
+  L -->|"YES"| G
+  L -->|"NO"| DONE["COMPLETED; independent recount; no rerun"]
+```
+
+The exact run-level and arm-level STARTED markers live **outside public Git**, on the owner's private host, and are fsynced before score. Existing local directories cannot prove global no-retry after an administrator deletes them; external chronological custody must retain a durable record. Never export original audit values, raw scorer tuples, secret paths/passwords or seeds to GitHub/Actions. [One-shot contract](../specs/OPPORTUNITY-001-ONE-SHOT-RUNNER.md) / [Private runner](../../scripts/opportunity_one_shot_runner.py) / [activation issue](https://github.com/ryonakayama234/DekaSugi/issues/79).
