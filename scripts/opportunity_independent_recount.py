@@ -91,6 +91,17 @@ def _bucket():
         "on_primitive_calls_sum": 0,
         "off_tested_candidates_sum": 0,
         "on_tested_candidates_sum": 0,
+        "off_search_cpu_ms_sum": 0.0,
+        "on_search_cpu_ms_sum": 0.0,
+        "off_search_wall_ms_sum": 0.0,
+        "on_search_wall_ms_sum": 0.0,
+        "off_audit_cpu_ms_sum": 0.0,
+        "on_audit_cpu_ms_sum": 0.0,
+        "off_audit_wall_ms_sum": 0.0,
+        "on_audit_wall_ms_sum": 0.0,
+        "choice_disagreement_tasks": 0,
+        "choice_sensitivity_denominator": 0,
+        "policy_inference_cost": "not_metered_by_original_pilot",
         "policies": {
             p: {"decision_eligible": 0, "decision_errors": 0,
                 "missed_success": 0, "lost_success": 0,
@@ -117,6 +128,14 @@ def _count(b, pair):
     b["on_primitive_calls_sum"] += on["primitive_calls"]
     b["off_tested_candidates_sum"] += off["tested_candidates"]
     b["on_tested_candidates_sum"] += on["tested_candidates"]
+    for arm, record in (("off",off),("on",on)):
+        for meter in ("search_cpu_ms", "search_wall_ms",
+                      "audit_cpu_ms", "audit_wall_ms"):
+            b[f"{arm}_{meter}_sum"] += record[meter]
+    b["choice_sensitivity_denominator"] += 1
+    b["choice_disagreement_tasks"] += int(len({
+        pair["policies"][name]["action"] for name in POLICIES
+    }) > 1)
     for name in POLICIES:
         p = _exact(pair["policies"][name],
                    {"action", "decision_error", "missed_success",
