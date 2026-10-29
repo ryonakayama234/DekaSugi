@@ -381,3 +381,9 @@
 - PR1 commits docs/INDEX, ARCH-001, ARCH-002, ADR, roadmap, AGENTS, spec/prereg/run ledger **in one change**. For PR2, same synchronization plus source, independent tests, immutable synthetic run record and a separate review.
 - New fresh TRAIN identification experiment must freeze family universe, generators/seeds, effect/discordance assumptions and power/precision, exact policy/skill/decision receipts, private raw pretrial custody, source-first locks, and once-only activation in **another** separately approved method. No old OPPORTUNITY-001 TRAIN64 rescore/regeneration, no EXP-0003A DEV64/FINAL128 generation/scoring, no private raw in public CI.
 - **Main merge stop:** inherited `.github/workflows/docs-check.yml` main-push `EXP-0002B DEV engineering smoke` can conflict with historical frozen source locks. Do not merge until a separately reviewed safe remediation resolves this; do not alter old frozen byte locks for convenience. PR CI green alone is insufficient. Independent latest-head review and P0/P1 resolution are mandatory.
+
+## OPPORTUNITY-002 / PR2 synthetic-only boundary checker (separate stacked draft)
+- [独立した校正器](scripts/opportunity2_boundary.py)と[人工テスト](tests/test_opportunity2_boundary.py)は*評価研究用*だが本体`packages.evaluation`やsynthesis/learning/registry/scorer/generatorをimportしない、純粋なstdlibのfixture-only検査。新しい能力測定やsource-lock認証ではない。
+- BFS列挙と独立`itertools.product`の全集合照合で4展開ノードのOFF=40/ON=47構文、マクロ展開集合の一致を検証。人工的な`('  RED  ','red')`/`('  BLUE  ','blue')`で候補予算5のON-only到達差を検証。ASCII小文字`fiz`→`zif`負例は限定領域不変条件の補助検査であり、Unicode一般不可能性の証明ではない。
+- `ContrastSpec`や`BoundaryCertificate`はPR1設計段階のまま。PR2実装は実課題・historical trainer/DEV/FINAL・private原本・Drive・実学習Kernelに一切接続しない。CI PASSは人工校正に限る。最新headレビューと新しい研究方法の承認は別途必要。
+- 今後の変更単位でもARCH-001/ARCH-002、INDEX、AGENTS、roadmap、spec/plan/run ledgerを同期する。安全なmain統合は[Issue #88](https://github.com/ryonakayama234/DekaSugi/issues/88)の別途レビューを待つ。

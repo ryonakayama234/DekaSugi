@@ -885,3 +885,8 @@ Proposed new evidence fields are `public_solution_status`, `independent_third_au
 Private original third-example bytes, family/seed/source mapping, cloud credential/storage IDs and task-level outcome leaks cannot enter public Git, learner/Kernel, read-only synthetic diagnostics or Actions artifacts. Store exact raw/canonical hashes separately; hash alone is not origin, privacy, durability, independent auditing or chronological preregistration. Reject false_solved / non_comparable / invalid signatures before paired aggregation. Keep absence and no eligible support `not_estimable`, not imputed zero.
 
 The current main-push historical `EXP-0002B DEV smoke` + source-lock conflict blocks merging new PRs until separately reviewed remediation; no new DEV/FINAL activation or old original re-scoring is allowed.
+
+## ARCH-002 OPPORTUNITY-002 PR2 — synthetic receipt, not EvidenceEnvelope
+[独立スクリプト](../../scripts/opportunity2_boundary.py)が返す`opportunity2-synthetic-boundary/1`は、`off_eligible_syntax`, `on_eligible_syntax`, `on_expansion_equals_off_syntax`, `independent_product_oracle_equal`, `budget_5`/`budget_100`, `restricted_ascii_reverse_negative`, `historical_skill_source_authenticated=false`, `independent_review_completed=false`, `new_real_scored_tasks=0`, `scoring_authorized=false`を含む。これを真の第三例監査原本や正式`EvidenceEnvelope`と混同しない。
+
+実装の評価対象は人工public examplesのみで、private元データ、TRAIN64のtask_id、family/seed、旧DEV/FINAL、policy choice、raw scorer rowを読み込まない。未知の演算子や不正予算を拒否する。独立Product oracleは**構文集合**、明示されたBFS候補位置は**探索順**の検査であり、実験結果の信頼性やAI技能習得を証明しない。[tests](../../tests/test_opportunity2_boundary.py) / [plan](../../experiments/OPPORTUNITY-002/plan.md)。
