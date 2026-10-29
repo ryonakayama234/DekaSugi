@@ -227,3 +227,6 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 - [OPPORTUNITY-001 distinct one-shot owner-only main activation specification (real scoring prohibited in CI)](specs/OPPORTUNITY-001-ACTIVATION.md): clean approved origin/main, scoped dual switches, irreversible private ledger, external custody and independent review.
 
 - [OPPORTUNITY-001 owner-private read-only original/skill/choice preflight — no new scored trial and no irreversible STARTED](specs/OPPORTUNITY-001-LIVE-READONLY-PREFLIGHT.md).
+
+
+- [OPPORTUNITY-001 — 2026-10-29 actual new TRAIN64 64-pair OFF/ON result, independent private read-only recount and frozen **UNDERIDENTIFIED** branch](../experiments/OPPORTUNITY-001/runs/20261029-train64-real-paired-recount.md). **Latest research status**: scored 64/64 once, OFF=ON=48/64 correct, B1/B2/B3 errors 0/16 eligible, no rescoring. Preceding `not_run` entries are historical pretrial records, not present status. Report publication PR #85 is kept off main pending inherited main-push old DEV workflow/sourcelock remediation; the result is also logged under Issue #82.
