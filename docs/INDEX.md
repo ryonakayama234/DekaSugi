@@ -227,3 +227,5 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 - [OPPORTUNITY-001 distinct one-shot owner-only main activation specification (real scoring prohibited in CI)](specs/OPPORTUNITY-001-ACTIVATION.md): clean approved origin/main, scoped dual switches, irreversible private ledger, external custody and independent review.
 
 - [OPPORTUNITY-001 owner-private read-only original/skill/choice preflight — no new scored trial and no irreversible STARTED](specs/OPPORTUNITY-001-LIVE-READONLY-PREFLIGHT.md).
+
+- [OPPORTUNITY-001 independent read-only recount of stored genuine OFF/ON trial tuples and redacted aggregate (post-run only)](specs/OPPORTUNITY-001-INDEPENDENT-RECOUNT.md).
