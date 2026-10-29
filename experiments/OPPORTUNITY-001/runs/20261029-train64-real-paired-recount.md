@@ -1,5 +1,8 @@
 # OPPORTUNITY-001-PILOT-V1 — 2026-10-29 REAL TRAIN64 paired evaluation (read-only recount)
 
+id: OPPORTUNITY-001-TRAIN64-REAL-PAIRED-RECOUNT-20261029
+updated: 2026-10-29
+tags: opportunity, pilot-v1, genuine-train64, independent-readonly-recount, exploratory, no-rescoring
 status: OWNER_REPORTED_COMPLETED_64_PAIRED_INDEPENDENT_READONLY_RECOUNT
 date: 2026-10-29 Asia/Tokyo
 method: [Frozen exploratory PILOT-V1](../pilot-v1.md)
