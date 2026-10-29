@@ -171,6 +171,29 @@ def _redacted_only(pair: dict) -> dict:
     return pair
 
 
+def _record_arm_once(ledger_fd: int, index: int, task, audit,
+                     registry, learned: dict, scorer):
+    """Reserve each exact OFF or ON arm BEFORE scorer; store its original tuple.
+
+    A duplicate invocation stops BEFORE invoking the costly actual scorer.
+    A failed scorer still leaves an ARM_STARTED marker for forensic accounting.
+    """
+    if type(index) is not int or not 0 <= index < 64 or type(learned) is not dict:
+        _stop()
+    arm = "ON" if learned else "OFF"
+    _write_exclusive(ledger_fd, f"ARM_STARTED-{index:03d}-{arm}.json", {
+        "schema_version": "opportunity-once-only-arm-start-v1",
+        "task_id": task.task_id, "arm": arm, "index": index,
+    })
+    result = scorer(task, audit, registry, learned)
+    _write_exclusive(ledger_fd, f"trial-{index:03d}-{arm}.json", {
+        "schema_version": "opportunity-private-raw-trial-v1",
+        "task_id": task.task_id, "arm": arm,
+        "canonical_original_tuple": result,
+    })
+    return result
+
+
 def _require_checkout(expected_sha: str) -> None:
     if type(expected_sha) is not str or not re.fullmatch("[0-9a-f]{40}", expected_sha):
         _stop()
@@ -243,18 +266,9 @@ def run_private_once(private_dir: Path, expected_raw_sha256: str,
                     third_sha = sha256(engine._canonical(row["third_audit"])).hexdigest()
 
                     def recorded_trial(task, audit, registry, learned):
-                        # The exact canonical scorer is invoked ONCE per arm;
-                        # write the result before the engine's safety gate might
-                        # reject the OFF arm (false_solved), then never retry.
-                        arm = "ON" if learned else "OFF"
-                        raw_tuple = _audited_trial(task, audit, registry, learned)
-                        _write_exclusive(ledger_fd, f"trial-{i:03d}-{arm}.json", {
-                            "schema_version": "opportunity-private-raw-trial-v1",
-                            "task_id": task.task_id,
-                            "arm": arm,
-                            "canonical_original_tuple": raw_tuple,
-                        })
-                        return raw_tuple
+                        return _record_arm_once(
+                            ledger_fd, i, task, audit, registry, learned,
+                            _audited_trial)
 
                     pair = engine.assemble_audited_pair(
                         case.task, audited, skill, actions, third_sha,
