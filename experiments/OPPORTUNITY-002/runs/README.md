@@ -19,3 +19,7 @@ Each subsequent run MUST be a separate append-only document with: immutable run_
 Do not place any private third-example input/output, source family/seed/task-to-family mapping, credentials, cloud object IDs or decrypted scorer originals in this public ledger.
 
 [Plan](../plan.md) / [Spec](../../../docs/specs/OPPORTUNITY-002.md).
+
+## PR2 synthetic-only staged checkpoint
+- [Independent script](../../../scripts/opportunity2_boundary.py) and [adversarial synthetic tests](../../../tests/test_opportunity2_boundary.py) are staged as a separate stacked draft. Their source is independent of production evaluator package initialization and has no real scorer/generator/private original I/O. Planned evidence: OFF40/ON47, expanded-set equivalence, independent Cartesian oracle, synthetic budget-5 witness, restricted ASCII negative, invalid-input rejection.
+- At this writing, exact-head PR2 CI and human independent proof review are **pending**; do not report an observed pass from a drafted test. OPPORTUNITY-002 genuine scored tasks 0; existing TRAIN64/DEV64/FINAL128 untouched; separate successor CI/main merge blocker [#88](https://github.com/ryonakayama234/DekaSugi/issues/88).
