@@ -52,9 +52,15 @@ in CI and in the merged nonactivated implementation.
    local filesystem alone).
 7. Score 64 pairs sequentially, OFF before ON with the existing
    `false_solved` stop in canonical engine, never evaluate a DEV/FINAL.
-   Each independently normalized/redacted paired result is saved exclusively
-   in a private 0600 JSON file with fsync. No raw audit input/output,
-   source-record ID, family or seed is written to the pair files.
+   Before each OFF or ON arm, separately write and fsync ARM_STARTED so a
+   duplicate arm invocation stops before the scorer. Preserve the complete
+   originally returned audited tuple for that arm in an exclusive owner-private
+   0600 evidence file **before** normalizing it, even when OFF is false_solved;
+   an interrupted scoring call leaves its ARM_STARTED marker. Also write the
+   independently normalized/redacted paired result to a distinct private 0600
+   file with fsync. No raw audit input/output, source-record ID, family or seed
+   is written to the redacted pair files. No private raw trial file is made
+   public, even if the tuple does not appear to include the third example.
 8. Write `COMPLETED.json` only after all 64 pairs. On ANY failure, write
    `STOPPED.json` with completed count (no private example, path or exception
    string); never retry the run. Even successful completion permits no
