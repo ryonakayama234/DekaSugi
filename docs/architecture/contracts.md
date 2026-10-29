@@ -806,3 +806,15 @@ flowchart TD
   R -.->|"NOT an activation"| X["Distinct owner-only one-shot scoring approval"]
 ```
 The schema `opportunity-live-readonly-preflight-v1` exposes only source main commit, original SHA/64-count, 192 choices, frozen skill hash and audit commitment aggregate, plus explicit `irreversible_run_ledger_created=false`, `new_train64_scored_trials=0`, `scoring_authorized=false`, `private_original_disclosed=false`. It refuses any pre-existing ledger and does not modify original.bin. A preflight failure prints a generic STOP without private path, third-audit, seed or family. This contract is independent of PR #80 activation and cannot assert deletion-proof retention. [Spec](../specs/OPPORTUNITY-001-LIVE-READONLY-PREFLIGHT.md).
+
+
+## OPPORTUNITY-001 post-run independent recount evidence contract (NO scored work in this module)
+```mermaid
+flowchart LR
+  O["Existing private original + public original 192 choices"] --> S["Read-only owner-only 0700 ledger directory and strict 0600 JSON files"]
+  S --> A["Validate STARTED / COMPLETED or STOPPED chronology"]
+  A --> B["Exact per-arm STARTED, original scorer tuple, redacted 64 pair matches"]
+  B --> C["Only aggregate class/cost/policy/family stats in public"]
+  A -.->|"Incomplete"| I["No retry and no scientific conclusion"]
+```
+The planned report schema `opportunity-independent-recount-v1` records full 64 paired-valid denominator, six classes, overall+per-family OFF/ON audited accuracy and primitive calls/candidate counts, three policy decision error denominators, missed/lost success and regret sums for both-correct cases only, or an incomplete no-retry status. Individual per-task original tuples, audit examples, private paths, evaluator source IDs, seeds and family mapping stay private. All operations are read-only, with no original-score or DEV/FINAL code path. [Spec](../specs/OPPORTUNITY-001-INDEPENDENT-RECOUNT.md).
