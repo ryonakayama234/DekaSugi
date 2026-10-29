@@ -876,6 +876,12 @@ flowchart TD
   A -.-|NO private data| X
 ~~~
 
+### C-G2 prospective outcome adapter — NOT the legacy normalizer
+
+OPPORTUNITY-001 `normalize_audited_trial()` interprets `audit_invalid_solved/false_solved` as a strict safety stop and **must remain unchanged**. OPPORTUNITY-002 C-G2 requires a separate *future versioned* evaluator-only outcome type before any live trial: `public_found_audit_correct` / `public_found_audit_incorrect` (both publicly verified with independent third-audit result), `public_not_found` (valid search failure), `integrity_invalid` (contradictory public verification, selected AST, source, raw-label audit or source-first provenance; hard-stop), and `not_observed` (missing/incomplete; excluded). `public_found_audit_incorrect` is **valid generalization failure**, not legacy `false_solved`; `public_not_found` is **not** evidence of a failed public-solution's generalization.
+
+Proposed new evidence fields are `public_solution_status`, `independent_third_audit_correct`, `integrity_state`, `source_lock_version` and evaluator-only raw third-audit commitment; these are deliberately **not** added to old PILOT-V1 immutable schemas. Independent replay-free validation must verify all gates before aggregation, and emit `n_both_public_found`, `n_third_audit_discordant_given_both_public_found`, `n_paired_valid`, `n_integrity_invalid`, `n_not_observed`. No new adapter exists in PR1/PR2. [Research contract](../specs/OPPORTUNITY-002.md) / [future experiment plan](../../experiments/OPPORTUNITY-002/plan.md).
+
 Private original third-example bytes, family/seed/source mapping, cloud credential/storage IDs and task-level outcome leaks cannot enter public Git, learner/Kernel, read-only synthetic diagnostics or Actions artifacts. Store exact raw/canonical hashes separately; hash alone is not origin, privacy, durability, independent auditing or chronological preregistration. Reject false_solved / non_comparable / invalid signatures before paired aggregation. Keep absence and no eligible support `not_estimable`, not imputed zero.
 
 The current main-push historical `EXP-0002B DEV smoke` + source-lock conflict blocks merging new PRs until separately reviewed remediation; no new DEV/FINAL activation or old original re-scoring is allowed.
