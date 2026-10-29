@@ -226,8 +226,12 @@ def run_private_once(private_dir: Path, expected_raw_sha256: str,
                 skill.skill_id != "skill_8fe1361cb5014f85" or
                 policy_hashes != public["policy_snapshot_sha256"]):
             _stop()
-        # Reservation occurs strictly BEFORE the FIRST real OFF/ON trial.
-        # If anything fails after this, STARTED remains and rerun is forbidden.
+        # Reserve before FIRST live action. Retain exact original audited
+        # tuples per arm for independent recount, including OFF false_solved.
+        # These raw scorer tuples remain PRIVATE, never public/CI artifacts.
+        from packages.exp0003a.pr3 import _audited_trial
+        from packages.library import DEFAULT_PRIMITIVES, Registry
+        from packages.learning import registry_with_skill, validate_skill
         with _reserve_once(root_fd, approved_commit_sha, expected_raw_sha256) as ledger_fd:
             completed = 0
             try:
@@ -236,9 +240,28 @@ def run_private_once(private_dir: Path, expected_raw_sha256: str,
                     actions = {arm: decision["choices"][arm]["action"]
                                for arm in ("B1", "B2", "B3")}
                     audited = Example(**row["third_audit"])
-                    third_sha = sha256(_json(row["third_audit"]).strip()).hexdigest()
-                    pair = engine._unactivated_real_pair(
-                        case.task, audited, skill, actions, third_sha)
+                    third_sha = sha256(engine._canonical(row["third_audit"])).hexdigest()
+
+                    def recorded_trial(task, audit, registry, learned):
+                        # The exact canonical scorer is invoked ONCE per arm;
+                        # write the result before the engine's safety gate might
+                        # reject the OFF arm (false_solved), then never retry.
+                        arm = "ON" if learned else "OFF"
+                        raw_tuple = _audited_trial(task, audit, registry, learned)
+                        _write_exclusive(ledger_fd, f"trial-{i:03d}-{arm}.json", {
+                            "schema_version": "opportunity-private-raw-trial-v1",
+                            "task_id": task.task_id,
+                            "arm": arm,
+                            "canonical_original_tuple": raw_tuple,
+                        })
+                        return raw_tuple
+
+                    pair = engine.assemble_audited_pair(
+                        case.task, audited, skill, actions, third_sha,
+                        registry_factory=lambda: Registry(DEFAULT_PRIMITIVES),
+                        register_skill=registry_with_skill,
+                        validate_skill=validate_skill,
+                        audited_trial=recorded_trial)
                     _write_exclusive(ledger_fd, f"pair-{i:03d}.json",
                                      _redacted_only(pair))
                     completed += 1
