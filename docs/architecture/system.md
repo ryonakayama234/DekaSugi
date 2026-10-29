@@ -802,3 +802,15 @@ flowchart TB
 The checker observes type-safe primitive/macro semantics and budgeted candidate sets, **not** original frozen private audit data. Kernel receives public-only information before choices; evaluator-only audit stays isolated. Macro expansion can preserve the semantic program set while changing search order/selected programs. Calibration proof/fixture PASS does not prove learning or transfer. No implicit arrows from diagnostic results back into a learner or previously frozen original source.
 
 The separately reviewed actual scorer, new evaluator-only source and private custody/one-shot gates are **future designs only**. Existing EXP-0003A old DEV/FINAL and OPPORTUNITY-001 original 64 are never replayed. [ARCH-002](contracts.md) includes precise data flow and versioning.
+
+## ARCH-001 OPPORTUNITY-002 PR2 — isolated synthetic checker (implementation)
+~~~mermaid
+flowchart LR
+  A["Invented examples + fixed synthetic operators"] --> B["scripts/opportunity2_boundary.py"]
+  B --> C["Independent BFS and Cartesian-product oracle"]
+  C --> D["40/47, expanded closure, budget-5 witness"]
+  D --> E["Read-only synthetic summary / unittest"]
+  E -.->|NO import / NO data flow| L["Existing scorer / Kernel / learner / old sources"]
+  E -.->|NO authority| G["Future real evaluation"]
+~~~
+`scripts/opportunity2_boundary.py`は本番用`packages.evaluation`のimport初期化を回避する独立検査器。第三例、実験generator、凍結方策、オリジナル証拠に接続しない。[source](../../scripts/opportunity2_boundary.py) / [tests](../../tests/test_opportunity2_boundary.py) / [run](../../experiments/OPPORTUNITY-002/runs/README.md)。PR2は人工校正のみで、mainは別途安全ゲート。
