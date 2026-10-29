@@ -30,6 +30,30 @@ class ApprovedActivationSyntheticTests(unittest.TestCase):
         self.assertIs(engine.SCORING_ACTIVATED, False)
         self.assertIs(runner.ONE_SHOT_ACTIVATED, False)
 
+    def test_synthetic_interrupt_during_context_entry_restores_both_flags(self):
+        # Synthetic flag holders only; never call the actual scorer or runner.
+        # Simulate an interrupt immediately AFTER each activation assignment.
+        class InterruptAfterTrue(SimpleNamespace):
+            def __setattr__(self, name, value):
+                super().__setattr__(name, value)
+                if value is True:
+                    raise KeyboardInterrupt("SYNTHETIC_ENTRY_INTERRUPT")
+
+        for interrupted_side in ("runner", "engine"):
+            with self.subTest(interrupted_side=interrupted_side):
+                fake_runner = (InterruptAfterTrue(ONE_SHOT_ACTIVATED=False)
+                               if interrupted_side == "runner" else
+                               SimpleNamespace(ONE_SHOT_ACTIVATED=False))
+                fake_engine = (InterruptAfterTrue(SCORING_ACTIVATED=False)
+                               if interrupted_side == "engine" else
+                               SimpleNamespace(SCORING_ACTIVATED=False))
+                with self.assertRaisesRegex(
+                        KeyboardInterrupt, "SYNTHETIC_ENTRY_INTERRUPT"):
+                    with m._scoped_engine_activation(fake_runner, fake_engine):
+                        self.fail("SYNTHETIC: context body must not run")
+                self.assertIs(fake_runner.ONE_SHOT_ACTIVATED, False)
+                self.assertIs(fake_engine.SCORING_ACTIVATED, False)
+
     def test_missing_external_approval_stops_before_project_runner(self):
         for custody, never in ((False, False), (True, False), (False, True)):
             with patch.object(runner, "_require_checkout",
