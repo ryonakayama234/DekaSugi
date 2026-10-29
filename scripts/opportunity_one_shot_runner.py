@@ -202,11 +202,21 @@ def _require_checkout(expected_sha: str) -> None:
     try:
         actual = subprocess.check_output(
             ["git", "rev-parse", "HEAD"], cwd=ROOT, timeout=5).decode().strip()
+        main_head = subprocess.check_output(
+            ["git", "rev-parse", "refs/remotes/origin/main"],
+            cwd=ROOT, timeout=5).decode().strip()
+        remote = subprocess.check_output(
+            ["git", "remote", "get-url", "origin"],
+            cwd=ROOT, timeout=5).decode().strip()
         modified = subprocess.check_output(
             ["git", "status", "--porcelain"], cwd=ROOT, timeout=5)
     except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired):
         _stop()
-    if actual != expected_sha or modified:
+    # Exactly the independently reviewed main commit, not a local PR branch
+    # or a detached unmerged activation. Fetch origin/main before running.
+    if (actual != expected_sha or actual != main_head or modified
+            or remote.removesuffix(".git") !=
+               "https://github.com/ryonakayama234/DekaSugi"):
         _stop()
 
 
