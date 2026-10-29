@@ -54,3 +54,6 @@ References: [pilot method](../../experiments/OPPORTUNITY-001/pilot-v1.md),
 [reviewed runner](../../scripts/opportunity_one_shot_runner.py),
 [read-only preflight](../../scripts/opportunity_readonly_preflight.py),
 [issue #82](https://github.com/ryonakayama234/DekaSugi/issues/82).
+
+## Explicit metrology / no invented costs
+The per-family and overall aggregate also keeps original OFF and ON search CPU/wall, independent audit CPU/wall, tested candidates and primitive-call sums **separate**. The pretrial decision policy inference cost was not independently metered by this original pilot; report `not_metered_by_original_pilot`, never zero or an invented figure. `choice_sensitivity_denominator` is paired-valid count; `choice_disagreement_tasks` counts tasks where fixed original B1/B2/B3 actions disagree. Both-correct primitive-call regret has its own eligible denominator and other classifications have regret null. No p-value is reported.
