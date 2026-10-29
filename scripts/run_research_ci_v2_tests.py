@@ -6,10 +6,15 @@ legacy tests can regenerate historically frozen DEV/FINAL data.
 from __future__ import annotations
 
 from pathlib import Path
+import sys
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 TESTS = ROOT / "tests"
+# Direct `python scripts/...` execution otherwise hides the root package
+# path; only the explicit synthetic allowlist is imported by unittest.
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 REQUIRED = (
     "test_research_ci_v2.py",
     "test_docs_validation.py",
