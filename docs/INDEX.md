@@ -254,3 +254,7 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 ## ACTIVE-001 — 能動的問いの生成と適応 (2026-10-30; proposal)
 - [Issue #93](https://github.com/ryonakayama234/DekaSugi/issues/93) / [spec ACTIVE-001](specs/ACTIVE-001.md) / [ADR-0005](architecture/decisions/ADR-0005-active-inquiry.md) / [draft plan](../experiments/ACTIVE-001/plan.md) / [run index](../experiments/ACTIVE-001/runs/README.md) / [independent review checklist](specs/ACTIVE-001-REVIEW-CHECKLIST.md).
 - Scope: Stage I self-selected questions and within-task version-space updates; Stage II learned inquiry policy and Stage III cross-domain transfer remain future research. Legacy compatibility and isolated InquiryWorld v1 are separate. PR1 docs-only; new evaluations, intelligence growth, reviewer approval, safety gate and scientific preregistration are not claimed.
+
+## ACTIVE-001 PR2 synthetic implementation (2026-10-30)
+- [Fixed finite InquiryWorld](../packages/inquiry_world/__init__.py) / [semantic class active questioner](../packages/active_learning/__init__.py) / [local artificial tests](../tests/test_active_learning_synthetic.py) / [engineering receipt](../experiments/ACTIVE-001/runs/20261030-pr2-local-synthetic.md).
+- Local fixture: 5/5 tests Python 3.13.5, 878 semantic classes among 4,681 syntax expressions. NOT independent evaluation, not CI coverage, no scientifically scored unknown tasks and no evidence of Stage II/III learning or transfer.
