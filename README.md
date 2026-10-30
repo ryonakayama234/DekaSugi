@@ -106,3 +106,6 @@ reviewed main-only gate, and FINAL128 needs a separate explicit approval.
 上記の2026-10-25/27/28節は当時の履歴です。最新の公開研究事実は[OPPORTUNITY-001の真のTRAIN64ペア監査レポート](experiments/OPPORTUNITY-001/runs/20261029-train64-real-paired-recount.md)（[PR #85 merged](https://github.com/ryonakayama234/DekaSugi/pull/85)）です。64ペアで両arm正解48、片側のみ正解0、費用のみの一意差16、両失敗16。前登録判定は **UNDERIDENTIFIED** です。
 
 次の[Issue #86](https://github.com/ryonakayama234/DekaSugi/issues/86)は能力境界・識別可能性を研究する[PR1設計案](docs/specs/OPPORTUNITY-002.md)と[新実験計画案](experiments/OPPORTUNITY-002/plan.md)です。原始演算による表現可能性、予算内探索、選択/観測情報、学習・転移を区別します。**新しい採点・能力改善結果はありません。** 既存original 64/DEV64/FINAL128は不変・再採点禁止。main統合には既存main-push DEV smokeと凍結source lockの安全な整合が必要です。
+
+## ACTIVE-001 — 新規研究の事前登録案 (2026-10-30)
+現行mainで最後に統合された研究はOPPORTUNITY-002の**人工fixtureによる監査技術**であり、能力の伸長は未実証です。次の独立課題[ACTIVE-001 #93](https://github.com/ryonakayama234/DekaSugi/issues/93)は、公開例から残る仮説を使い、自ら何を質問するかを選ぶ **同一課題内の能動的適応** を計測する[提案仕様](docs/specs/ACTIVE-001.md)と[未凍結研究計画](experiments/ACTIVE-001/plan.md)です。既存の3演算互換検査と新規隔離8演算人工環境を区別し、B0/B1/B2で独立した未知入力を比較します。質問方策の学習（Stage II）や領域転移（Stage III）は未実装・未実証。旧実験原本は不変更、PR1は文書のみで、科学的スコアの新規取得は未承認です。

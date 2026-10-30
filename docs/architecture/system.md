@@ -853,3 +853,24 @@ flowchart TB
   Historic -.-|"NO runtime or data edge"| Synthetic
 ~~~
 This is a **synthetic-only** standalone code path. The `toy_bias_v1` order is an explicitly invented adversarial calibration, not the frozen DekaSugi policy. `current_v1` independently mirrors PR2's 40/47 synthetic grammar; finite negative results never prove a universal impossibility. An independent reviewer and separate owner authorization are required for any future real C-G2 evaluator, not merely a change of `phase`.
+
+## ARCH-001 ACTIVE-001 — 自ら問いを選ぶ能力（提案・未実装）
+**Status: proposed; PR1 design only; no scored study authorization.** [Spec](../specs/ACTIVE-001.md) / [ADR](decisions/ADR-0005-active-inquiry.md) / [plan](../../experiments/ACTIVE-001/plan.md).
+Legacy `packages/protocol`, `packages/synthesis`, `packages/learning`, historic scorers and source locks remain immutable; a new isolated `packages/inquiry_world` supplies a fixed typed finite program semantics, `packages/active_learning` selects queries/updates a semantic-version space, and a future independent `packages/active_evaluation` owns oracle answers and withheld labels.
+
+```mermaid
+flowchart TB
+  P["Public 2 examples + allowed unlabeled input IDs"] --> H["Active learner: semantic HypothesisSet"]
+  F["Fixed independent InquiryWorld grammar, 8 trusted ops"] --> H
+  H --> Q["Question proposer: max disagreement"]
+  Q --> O["Evaluator-owned Oracle, one answer"]
+  T["Hidden target function and holdout labels: evaluator only"] --> O
+  O -->|"selected query answer only"| U["BeliefUpdate: filter hypothesis classes"]
+  U --> S["Final solution representative"]
+  S --> V["Independent heldout auditor"]
+  T --> V
+  Q --> E["InquiryEpisode: sanitized train-compatible trace"]
+  U --> E
+  V --> R["EvaluationReport: separate authority, no train input"]
+```
+World A legacy read-only grammar is compatibility calibration; World B isolated new fixed 8-operation InquiryWorld is the prospective measurement universe, not newly invented learned semantics. B0 no queries / B1 uniform random questions / B2 max semantic disagreement; same task, grammar, questions and two-query ceiling. Stage II/SLEEP and Stage III/transfer are future gated work, not current ability results. A query-selection mechanism must never access future oracle answers, target/seed/family/hidden audit or the historic source/scorer. The original workflow external owner-disable gate and independently reviewed source-first freeze precede any new scored experiment/main merge.

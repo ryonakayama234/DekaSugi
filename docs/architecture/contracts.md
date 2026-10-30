@@ -927,3 +927,32 @@ This code does **not** import historical scorer/learner/kernel packages; it hold
 - **PR3 review correction (P1):** the replay MUST evaluate *all* public examples for every tested candidate (evaluate outcomes before applying `all`), because the meter records both public invocations. Short-circuit `all(generator)` without changing the meter misstates observed primitive calls. Independent fixture generator instruments actual primitive operations. Regression witness: current-like public trim/lower case budget100 must have OFF=14 and ON=10 explicitly metered calls under this **full-evaluation synthetic contract**, not the 9/7 calls of a short-circuit runner. This does not assert the historical production meter has identical semantics.
 
 - **PR3 Codex P1 missingness correction:** missing or known-key incomplete synthetic third-audit source invalidates pair-level observability **regardless of whether OFF/ON found a public solution**. Retain full arm replay/integrity validation, but place such a pair in `not_observed`, never in `n_paired_valid`; no invented all-task accuracy 0.0 where there was no third-audit evidence. Regression: both `not_found` with `audit_missing=True` => zero valid pairs, one missing pair, `not_estimable`.
+
+## ARCH-002 ACTIVE-001 — hypothesis/answer/evaluation trust separation (PR1 proposed)
+**Status: proposed; no runtime contract implemented.** [Spec](../specs/ACTIVE-001.md) / [plan](../../experiments/ACTIVE-001/plan.md) / [run ledger](../../experiments/ACTIVE-001/runs/README.md).
+
+| New record | Producer | Consumer / allowed fields | Never passed into learner |
+|---|---|---|---|
+| `HypothesisSet` | fixed grammar + public examples | learner: semantic-class IDs/representatives, count, public-observation digest | target ID, evaluator labels, source-family/seed |
+| `QueryProposal` | learner **before answer** | oracle: query ID, unlabelled input ID, provenance/chronology; predictor partition counts | future answers/private correctness |
+| `QueryAnswer` | evaluator-only Oracle | learner: answer for selected valid input, proposal commitment, observation order | hidden target identity or third-party audit |
+| `BeliefUpdate` | learner | learner and sanitized `InquiryEpisode`: prior/post commitments/counts/status | evaluator-only labels |
+| `InquiryEpisode` | learner logger | future TRAIN-only eligible input **after review** | unknown eval labels/source trace IDs |
+| `EvaluationReport` | independent evaluator | researcher: target-only audit verdict, paired per-task costs/metadata, invalid/missingness | no direct learner edge |
+
+```mermaid
+flowchart LR
+  PUBLIC["Public TaskSpec / 28-input candidate pool"] --> L["Active learner"]
+  Q["64 unlabeled query IDs"] --> L
+  L --> P["QueryProposal"]
+  SECRET["Target function + 64 heldout labels, evaluator private"] --> O["Oracle / Evaluator"]
+  P --> O
+  O -->|"answer selected question only"| L
+  L --> EP["Sanitized InquiryEpisode"]
+  L --> SOL["SolutionProposal"]
+  SOL --> EVAL["Separate independent auditor"]
+  SECRET --> EVAL
+  EVAL --> REP["EvaluationReport; no feedback to learner"]
+```
+
+The finite input alphabet has exactly 156 input strings including empty string: 28 public candidate + 64 unlabelled query + 64 heldout evaluator, disjoint. The candidate class key is the entire 156-input output vector; this is finite-domain semantic equivalence, not proof of universal equivalence. All comparison arms use same fixed primitive semantics and class weighting, stable query tie-break, maximum two **distinct** questions, and matched evaluation labels. A genuine new evaluator must separately version `model_inconsistent` (valid answer falsifies version space), `query_unidentifiable`, `budget_exhausted`, `not_observed` and `integrity_invalid` (hard-stop). Never mutate or reuse old `normalize_audited_trial` for this research. SHA-256 proves content identity only, not authenticity or private original custody.

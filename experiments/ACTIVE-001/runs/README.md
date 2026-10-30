@@ -1,0 +1,20 @@
+# ACTIVE-001 — run and engineering evidence ledger
+
+id: ACTIVE-001-RUN-INDEX
+status: planned; zero_experimental_observations
+updated: 2026-10-30
+tags: experiment, evidence, preregistration, audit
+
+## Status as of 2026-10-30
+PR1 creates a draft plan and architecture **only**. There are **zero new scored research trials**, zero confirmed gains, zero independent audit reports, zero official adoption decisions. The PR1 source is not frozen, the synthetic World B has not yet been formally evaluated, the numerical study has not been powered, and no sealed historic archive has been opened.
+
+## Distinct receipts
+- PR1 method and source review: pending; docs check should be reported from an actual run, never assumed.
+- PR2 synthetic code calibration: planned; keep each run as a new dated immutable record with exact git SHA, Python, seed/fixture hash, tests and failures.
+- PR3 evaluator/source lock: planned; cannot claim evaluator independence from a test of its own output.
+- Fresh one-shot scored study: prohibited until separately authorized and frozen; no filename or existence of a future artifact is implied.
+- Main merge safety: require independent verification of original old-workflow `disabled_manually`, exact-head safe CI and latest-head independent review, not merely acceptance of PR by an agent.
+
+Negative outcomes (including zero eligibility/underidentification) must be preserved. Old OPPORTUNITY-001 real TRAIN64, historical DEV/FINAL, historical workflow and immutable source members are not trial material for ACTIVE-001.
+
+[Plan](../plan.md) / [spec](../../../docs/specs/ACTIVE-001.md) / [Issue #93](https://github.com/ryonakayama234/DekaSugi/issues/93).
