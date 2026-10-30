@@ -43,6 +43,13 @@ class P3SyntheticStatisticsTests(unittest.TestCase):
         self.assertFalse(rare_null_all_positive.positive_evidence)
         self.assertEqual((rare_null_all_positive.lower,
                           rare_null_all_positive.upper), (-1., 1.))
+        for n, constant in ((8138, 0.0059), (3, 0.1),
+                            (4096, 1./9999.)):
+            with self.subTest(n=n, constant=constant):
+                rounded = paired_t_interval((constant,)*n)
+                self.assertEqual(rounded.status, "zero_sample_variance")
+                self.assertEqual((rounded.lower, rounded.upper), (-1., 1.))
+                self.assertFalse(rounded.positive_evidence)
         for constant in (0.25, 1.0, -1.0):
             with self.subTest(constant=constant):
                 bad = paired_t_interval((constant,)*16)
