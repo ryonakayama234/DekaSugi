@@ -35,3 +35,12 @@ tags: review, evidence, architecture, capability, opportunity
 - [ ] A **separate** new study and distinct review before any DEV/FINAL work.
 
 [Spec](OPPORTUNITY-002.md) / [Plan](../../experiments/OPPORTUNITY-002/plan.md) / [Issue #86](https://github.com/ryonakayama234/DekaSugi/issues/86).
+
+
+## PR3 independent exact-head audit checklist (2026-10-30)
+- [ ] Confirm `packages/opportunity2_audit` imports stdlib only; no original scorer, learner, generator, real data, archived audit or unrestricted test discovery; source-frozen original 9+14 bytes and legacy normalizer unchanged.
+- [ ] Independently audit strict synthetic schema and independently pinned checksum (no false origin/chronology attestation); public verifier, trace, primitive-call counts, selected AST and raw-vs-label audit failures must fail closed even when an attacker recalculates a hash.
+- [ ] Reproduce toy first-solution third-audit discordance and current-like 40/47 expanded-support equality; reject inference from finite probe absence to universal `STRUCTURALLY_UNIDENTIFIABLE`.
+- [ ] Review handling of legitimate `public_found_audit_incorrect`, `public_not_found`, `not_observed`, `non_comparable`, `integrity_invalid`, pair denominator conservation, `not_estimable`, accuracy-first eligible decision and whole-batch stop-on-integrity.
+- [ ] Validate latest PR head safe CI only, source-first lock checks and correctly documented run evidence; reviewer must be independent of PR author. Do not merge if independent P0/P1 review or the external main-push old DEV workflow disablement/verification is missing.
+- [ ] No scientific effect claim, new real method, owner-private third example, distribution freeze or scored new TASK execution.
