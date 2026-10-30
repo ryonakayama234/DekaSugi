@@ -3,6 +3,7 @@
 id: ADR-0007
 status: proposed_engineering; NOT_SCIENTIFIC_ADOPTION
 updated: 2026-10-31
+tags: architecture, active-learning, decision, research
 
 ## Research decision
 B1 (uniform-random-v1) chooses from all unasked question IDs if any positive-Gini choice exists. B2 (max-disagreement-v1) chooses the maximum exact integer Gini numerator. Their contrast confounds avoiding uninformative questions and ranking informative questions. Introduce **B1+** (informative-uniform-v1) strictly as an additional **secondary synthetic engineering control**, without changing B1, B2 or the proposed primary comparison in draft PR #97.

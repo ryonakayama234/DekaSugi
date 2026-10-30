@@ -3,6 +3,7 @@
 id: ACTIVE-001-B1PLUS-P1-ENGINEERING
 status: code_and_source_only; exact_head_CI_and_review_pending
 updated: 2026-10-31
+tags: experiments, synthetic, unscored, active-learning
 
 ## Goal and falsifiers
 Add policy \`informative-uniform-v1\` that draws only from unanswered positive-integer-Gini inputs. A zero-Gini choice, duplicate question, mismatched seed or historical choice, accepted tampering, changed B1 RNG domain or B2 argmax falsifies engineering acceptance.
