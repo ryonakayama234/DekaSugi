@@ -283,3 +283,19 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | Evidence ID | Question | Engineering receipt |
 |---|---|---|
 | ACTIVE-001-PR2-CONTAINERS | Can equality-preserving tuple/str/int subclasses launder forged semantic votes, answers or proposal fields through replay? Exact builtin types required before any learner calculation. | [Synthetic check](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md) / [Architecture](architecture/system.md) / [Contracts](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+## ACTIVE-001 Issue #96 — scientific feasibility before scoring (2026-10-30)
+| ID | Research question | Status | Documents |
+|---|---|---|---|
+| ACTIVE-001-METHOD-CANDIDATE-01 | When does within-task question selection produce **held-out decision value**, not merely a smaller hypothesis space? What task/family population and power justify N? | proposed_unfrozen; design_only; no_scoring | [Versioned method candidate](../experiments/ACTIVE-001/method-v1-candidate.md) / [Issue #96](https://github.com/ryonakayama234/DekaSugi/issues/96) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) / [unscored ledger](../experiments/ACTIVE-001/runs/20261030-pr3-feasibility-proposal.md) |
+
+Scientific state remains zero newly scored ACTIVE-001 observations. PR #94/#95 are an engineering reference baseline, not an accepted generalizing intelligence model.
+
+## ACTIVE-001 #96 — Stage I scientific design v2 (2026-10-30)
+| ID | State | Source |
+|---|---|---|
+| ACTIVE-001-DESIGN-V2 | review decision; NOT_FROZEN; no scoring | [Detailed hypotheses, feasible worlds, N4096, statistics and gates](../experiments/ACTIVE-001/method-v2-decision-draft.md) |
+| ADR-0006 | proposed architecture/scientific decision | [Why this methodology](architecture/decisions/ADR-0006-active001-scientific-design.md) |
+| ACTIVE-001-DESIGN-V2-REVIEW-LEDGER | unscored proposed evidence ledger | [Review and numeric-design obligations](../experiments/ACTIVE-001/runs/20261030-design-v2-review-ledger.md) |
+
+Previous [v1 candidate](../experiments/ACTIVE-001/method-v1-candidate.md) and [historical draft plan](../experiments/ACTIVE-001/plan.md) remain unchanged as earlier versioned thought. [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md).

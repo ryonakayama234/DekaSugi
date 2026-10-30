@@ -1039,3 +1039,69 @@ flowchart LR
   HOLDOUT["Evaluator-only answers"] -.->|"Never exposed"| RECON
 ~~~
 **Canonical storage contract:** `QuerySession.class_ids` is exactly `tuple` whose entries are exactly `str`, never a tuple or string subclass, because equality can differ from iteration. The compact `answers` tuple contains exact 3-tuples of (int ID, str output, str local receipt). The `trace` container is exactly tuple; each ordered entry is an exact tuple of typed `QueryProposal` and `QueryAnswer`. Session status, pool/world/split digest fields, and proposal and answer primitive fields must have exact builtin types; bool is rejected when int is required. Exact types are checked at the public boundary **before** Gini, random policy, history revalidation, or final-program selection. Per-prefix policy/receipt semantics and the active-query/2 schema remain unchanged. Hashes remain local consistency checks, NOT independent Oracle authentication. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+## ARCH-002 ACTIVE-001 #96 — candidate scientific-method record and data-flow contract (DESIGN ONLY)
+
+[Versioned candidate](../../experiments/ACTIVE-001/method-v1-candidate.md) / [run ledger](../../experiments/ACTIVE-001/runs/20261030-pr3-feasibility-proposal.md).
+This is a **prospective schema requirement** rather than an existing `packages/active_evaluation` API.
+
+~~~mermaid
+flowchart LR
+    DESIGN["FeasibilityPlan: F0-F4 strata, target family, N, seeds"] --> LOCK["Future SourceLock: source, split, task and policy commitments"]
+    LOCK --> OWNER["Independent evaluator / Oracle: future"]
+    OWNER --> PUB["PublicExamples: two labelled inputs"]
+    OWNER --> IDS["QueryPool: 64 unlabelled IDs"]
+    PUB --> ACTIVE["ActiveLearner QuerySession"]
+    IDS --> ACTIVE
+    ACTIVE --> PROPOSAL["QueryProposal: before-answer decision"]
+    PROPOSAL --> OWNER
+    OWNER --> ANSWER["QueryAnswer: selected-input response only"]
+    ANSWER --> ACTIVE
+    ACTIVE --> EPISODE["InquiryEpisode: ordered trace + final prediction"]
+    EPISODE --> AGG["PairedOutcome: task-level B2 and five B1 replicas"]
+    OWNER --> PRIVATE["Target + holdout labels: evaluator-only"]
+    PRIVATE --> AGG
+    AGG --> AUDIT["EvaluationReport: independence, missingness, CI, costs"]
+    PRIVATE -.->|forbidden| ACTIVE
+    AUDIT -.->|forbidden feedback| ACTIVE
+~~~
+
+Proposed record fields (do not implement or serialize before schema review):
+- `FeasibilityPlan`: `schema_version`, `catalog_digest`, `public_context_generator`, `strata_definitions`, `task_family_taxonomy`, `weights`, `variance_scenarios`, `inferential_unit`, `not_scored=true`.
+- `SourceLock` (future): exact source tree/blob hashes, fixed 156 universe, sorted 28/64/64 split hash, two public observations, target family/sample seed commitments, five B1 streams, B2/tie/stop semantics, evaluator version, alpha/power/confidence algorithm, CPU measurement and amortization units. Hashes alone do not prove source custody or process isolation.
+- `PairedOutcome` (future): `task_id`, `family_id`, `b0_accuracy`, `b2_accuracy`, `b1_accuracy_5`, `b1_mean`, `d_task`, `query_count`, `selector_cpu_ns`, `primitive_count`, `total_cpu_ns`, `validity_status`, source/evaluator receipts. B1 subtrials and 64 holdouts are **nested within task**, not independent task IDs.
+- `EvaluationReport` (future): explicit complete valid-task denominator, F0-F3 prevalence plus nested F4 count with pre-scored classification provenance, full-population `Delta=mean(D_task)`, family weighting/cluster-aware CI, missingness and rejected evidence, CPU/precomputation amortization, independent signatures, no optional stopping. A zero-question or zero-benefit valid task remains in the primary denominator.
+
+Existing `QuerySession`, `QueryProposal`, `QueryAnswer` exact-type/history validation remains unchanged. The implementation cannot read future `SourceLock` secret target labels, private audit evidence, `PairedOutcome` or `EvaluationReport` for selecting queries. No historical scoring activated.
+
+## ARCH-002 ACTIVE-001 #96 — Stage I v2 science and evidence contracts (PROPOSED ONLY)
+
+[Decision v2](../../experiments/ACTIVE-001/method-v2-decision-draft.md) / [ADR-0006](decisions/ADR-0006-active001-scientific-design.md).
+
+~~~mermaid
+flowchart LR
+  CAT["Canonical finite Catalog"] --> FEAS["FeasibilitySpec/2: public partition F0-F3, F4"]
+  FEAS --> LOCK["SourceLock/1: future source, split, private root"]
+  LOCK --> VIEW["PublicTaskView/1: two labels, query IDs"]
+  VIEW --> SESSION["Existing QuerySession"]
+  SESSION --> PROP["Existing QueryProposal"]
+  PROP --> ORACLE["Evaluator-owned Oracle"]
+  ORACLE --> ANS["Existing QueryAnswer"]
+  ANS --> SESSION
+  SESSION --> EP["InquiryEpisode/1: replay + final program"]
+  EP --> OUT["PairedOutcome/1: B0, five B1, B2; one task"]
+  SECRET["Private target + audit64"] --> ORACLE
+  SECRET --> OUT
+  OUT --> REPORT["EvaluationReport/1: paired CI + cost + validity"]
+  SECRET -.->|never learner input| SESSION
+  REPORT -.->|no task feedback| SESSION
+~~~
+
+- `FeasibilitySpec/2`: 378 distinct public pairs, partition block class counts, F0/F1/F2/F3 disjoint, F4 nested, weights |H|/(878*378), no official scored target or withheld accuracy. The bound P(F3)<0.05 excludes a +5pp population advantage, but P(F3)>=0.05 is not sufficient for benefit.
+- `SourceLock/1` future: tree/blob/semantic signatures, 28/64/64 split and exact seed, high-entropy secret-root commitment, reviewed PRF task-seed expansion, B1 five substreams, one IID sample of N4096, Python/runtime and analysis hashes. Digest ≠ secret custody.
+- `PublicTaskView/1` excludes target class ID, private root, target-family metadata, future Oracle answer and private audit labels/verdicts.
+- `InquiryEpisode/1` is a **sidecar** retaining exact original `active-query/2` immutable history and verified final program. Preserve canonical internal catalog and exact-type validation.
+- `PairedOutcome/1` stores task ID, B0, five nested B1 accuracies, B2, D=B2-mean(B1), statuses, query counts and CPU; 64 fixed auditor-only inputs are nested per task. Include all valid zero/negative opportunities in the full denominator. Invalid attestation is NOT zero accuracy.
+- `EvaluationReport/1` stores task-level paired t 95% CI, sample size, all losses, missingness, separate online and amortized costs, independent source attestation. Positive lower CI>0 is only in-world within-task advantage, not long-term learning or transfer. Five-point-size is descriptive, not a separate powered test.
+
+Proposed B1+ informative-only randomized control is **future secondary** and requires a distinct reviewed adapter; do not conflate with existing baseline B1. P0/P1 corruption forces STOP; no historical replay or scoring.
