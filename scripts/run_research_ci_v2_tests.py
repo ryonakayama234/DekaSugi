@@ -33,6 +33,8 @@ OPTIONAL = (
     "test_active_learning_container_boundary.py",
     # ACTIVE-001 P3: invented-only task difference statistics, no scorer.
     "test_active_statistics_synthetic.py",
+    # ACTIVE-001 E0: strict public wire allowlist only, no evaluator.
+    "test_active_custody_boundary.py",
 )
 
 
