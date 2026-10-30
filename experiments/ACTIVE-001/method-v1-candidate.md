@@ -34,9 +34,9 @@ Without sampling target labels or opening scored data, inspect the **permitted l
 - F1: `|H0|=1` already identifiable, zero query opportunity.
 - F2: `|H0|>1`, but all remaining allowed query inputs have zero disagreement: query-unidentifiable in this pool.
 - F3: `|H0|>1` with at least one informative question: structural information opportunity, **not** proof of positive task utility.
-- F4: two-step identification requires adaptive contingent branching; measure reachable branch distinctions within budget as a *secondary structural bound*, not an observed accuracy result.
+- F4 (secondary flag **within F3**, not a disjoint stratum): two-step identification requires adaptive contingent branching; measure reachable branch distinctions within budget as a structural bound, not an observed accuracy result.
 
-Classify coverage of public contexts under proposed public-example generator. Do not use the official target/holdout labels, existing historic train/DEV/FINAL, genuine oracle responses, or a future confirmation sample to choose favorable thresholds. For feasibility calculations, use a separately labelled invented design population and preserve its full source and limitations. A positive F3 prevalence does not establish B2 advantage.
+Classify the **disjoint F0–F3 categories** and the nested F4 flag under the proposed public-example generator. Do not use the official target/holdout labels, existing historic train/DEV/FINAL, genuine oracle responses, or a future confirmation sample to choose favorable thresholds. For feasibility calculations, use a separately labelled invented design population and preserve its full source and limitations. A positive F3 prevalence does not establish B2 advantage.
 
 Primary population must include F1/F2 and every valid zero-gain task. F3-only effects, if prespecified, are **secondary conditional** claims, with their denominator frozen before scoring.
 
