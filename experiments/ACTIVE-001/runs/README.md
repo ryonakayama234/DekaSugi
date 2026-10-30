@@ -36,3 +36,6 @@ Negative outcomes (including zero eligibility/underidentification) must be prese
 
 ## PR2 exact storage type checks after independent P2 review (2026-10-30)
 - [Lying-tuple semantic votes and type-confusion synthetic regression](20261030-pr2-container-types.md): records local-only validation separately from the previous canonical Catalog and MappingProxyType receipts. No historical score changes, new real evaluations or source-lock changes.
+
+## #96 — design-only feasibility candidate (2026-10-30)
+[Method candidate](../method-v1-candidate.md) / [pre-study analytical design ledger](20261030-pr3-feasibility-proposal.md). This adds **no scored task** and no independent evaluator, fixes neither N nor source/seed, and does not alter previous run receipts. Method validation, synthetic-only safe CI, exact-head independent review, and eventual separate activation remain pending.
