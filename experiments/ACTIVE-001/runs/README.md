@@ -43,3 +43,6 @@ Negative outcomes (including zero eligibility/underidentification) must be prese
 ## ACTIVE-001 #96 — stage-I research method v2 proposal (2026-10-30)
 
 [Versioned design v2](../method-v2-decision-draft.md) / [ADR-0006](../../../docs/architecture/decisions/ADR-0006-active001-scientific-design.md) / [Unscored review ledger](20261030-design-v2-review-ledger.md). Proposed structural Gate F (public partitions only) is distinct from the proposed later N4096 genuine independent comparison. No new scientific scores, private labels, historical heldout access, transfer or learned-query policy result. All earlier run receipts remain unchanged.
+
+## ACTIVE-001 P3 invented-only numerical statistics (2026-10-31)
+- [P3 exact-quantile and Monte Carlo engineering ledger](20261031-p3-invented-stat.md) / [P3 method](../p3-inference-numerical-draft.md). No scientific trial or official source/seed freeze; CI output is the source of any actually simulated percentages.

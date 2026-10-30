@@ -31,6 +31,8 @@ OPTIONAL = (
     "test_active_learning_catalog_integrity.py",
     "test_active_learning_lookup_canonicalization.py",
     "test_active_learning_container_boundary.py",
+    # ACTIVE-001 P3: invented-only task difference statistics, no scorer.
+    "test_active_statistics_synthetic.py",
 )
 
 

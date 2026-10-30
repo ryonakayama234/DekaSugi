@@ -131,3 +131,6 @@ Review-driven [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) uses 
 ## ACTIVE-001 #96 — refined scientific design v2 (2026-10-30; review draft)
 [Decision text v2](experiments/ACTIVE-001/method-v2-decision-draft.md) / [ADR-0006](docs/architecture/decisions/ADR-0006-active001-scientific-design.md) / [PR #97](https://github.com/ryonakayama234/DekaSugi/pull/97).
 A future **read-only structural Gate F** precedes a separately authorized, source-locked proposed **N4096** paired evaluation of independent with-replacement uniform semantic-class/public-pair task draws. N, seed, evaluator and source identity remain **NOT_FROZEN**, zero new scored ACTIVE-001 trials, no claim of Stage II learning or transfer.
+
+## ACTIVE-001 P3 — 統計的検出力の非採点チェック（2026-10-31）
+一次仮説B2−B1の**課題単位**差分に対し、Student-t 95% CIと有界IID Hoeffdingの保守的CIを人工差分だけで検査する [P3数値検証器](packages/active_statistics/__init__.py) を追加。4,096課題で真の+5ppのときの最悪分散の**正規近似**約89%検出力は保証ではなく、Hoeffdingによる保守的な80%十分条件は約8,138課題。どちらの標本数も研究採点用として凍結していない。実際の正答率を測らず旧データを再実行しない。[方法](experiments/ACTIVE-001/p3-inference-numerical-draft.md) / [記録](experiments/ACTIVE-001/runs/20261031-p3-invented-stat.md)。

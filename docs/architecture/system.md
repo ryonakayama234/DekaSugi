@@ -1019,3 +1019,16 @@ flowchart TB
 ~~~
 
 Blue-print only: `packages/active_feasibility`, `packages/active_evaluation` and their scorer/Oracle custody do not exist yet. Target class is sampled independently with replacement under an artificial law, conditional on a single locked 28/64/64 input split; F3 does not guarantee positive heldout utility, and Stage II/III remain outside scope.
+
+## ARCH-001 ACTIVE-001 P3 — invented-statistical-method separation (2026-10-31)
+~~~mermaid
+flowchart LR
+  IDEA["Synthetic bounded IID task differences only"] --> T["Task-level paired Student t CI"]
+  IDEA --> H["Bounded Hoeffding conservative CI"]
+  T --> MC["Invented Monte Carlo coverage/power diagnostic"]
+  H --> MC
+  MC --> DRAFT["P3 decision draft; no source/seed freeze"]
+  FUTURE["Future private 64-label evaluator / 5 B1 seeds per task"] -.->|"No data flow; not implemented here"| MC
+  OLD["Historically sealed DEV/FINAL/TRAIN"] -.->|"No import"| IDEA
+~~~
+Each synthetic D observation is already ONE task-level B2 minus within-task average B1; repeated B1 arms and 64 withheld inputs do not become IID sample units. Results cannot promote a learner before trusted evaluator and independently reviewed method. [ARCH-002](contracts.md) / [P3 method](../../experiments/ACTIVE-001/p3-inference-numerical-draft.md).
