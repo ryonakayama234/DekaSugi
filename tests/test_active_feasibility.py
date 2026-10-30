@@ -23,6 +23,21 @@ class GateFStructuralTests(unittest.TestCase):
         self.assertLessEqual(r.positive_query_task_weight_sum, r.query_opportunity_denominator)
         self.assertEqual(r.f4_status.split(";")[0], "not_computed")
 
+    def test_stable_invented_census_regression(self):
+        """Exact synthetic structure only: NO target truth or score is observed."""
+        r = self.report
+        self.assertEqual((r.f1_contexts, r.f2_contexts, r.f3_contexts),
+                         (37643, 5866, 47858))
+        self.assertEqual((r.f1_task_weight, r.f2_task_weight, r.f3_task_weight),
+                         (37643, 12130, 282111))
+        self.assertEqual(r.public_context_count, 91367)
+        self.assertEqual(r.positive_query_task_weight_sum, 11459844)
+        self.assertEqual(r.max_version_space_size, 276)
+        self.assertEqual(r.context_sha256,
+                         "9c135ace8f815e4b3ac2465c9918833c3becd43781faeedc36314c28c9203f12")
+        self.assertEqual(r.split_digest,
+                         "cbabb2d8f22e2cc73e69c82ae88733bfcfec97e4a6f749c66bf68e3ee2ca4c49")
+
     def test_repeat_determinism_and_fixture_guards(self):
         self.assertEqual(census_fixture(), self.report)
         for seed in (True, 0, -1, 20261031, None, 20261030.0):
