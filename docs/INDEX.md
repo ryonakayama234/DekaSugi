@@ -258,3 +258,8 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 ## ACTIVE-001 PR2 synthetic implementation (2026-10-30)
 - [Fixed finite InquiryWorld](../packages/inquiry_world/__init__.py) / [semantic class active questioner](../packages/active_learning/__init__.py) / [local artificial tests](../tests/test_active_learning_synthetic.py) / [engineering receipt](../experiments/ACTIVE-001/runs/20261030-pr2-local-synthetic.md).
 - Local fixture: 5/5 tests Python 3.13.5, 878 semantic classes among 4,681 syntax expressions. NOT independent evaluation, not CI coverage, no scientifically scored unknown tasks and no evidence of Stage II/III learning or transfer.
+
+## ACTIVE-001 PR2 integrity-repair checkpoint (2026-10-30)
+| ID | Status | Entry |
+|---|---|---|
+| ACTIVE-001-PR2-INTEGRITY | synthetic engineering; exact-head verification pending; no capability result | [Evidence](../experiments/ACTIVE-001/runs/20261030-pr2-integrity-repair.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) |

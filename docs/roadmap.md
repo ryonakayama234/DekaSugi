@@ -269,3 +269,6 @@ Research shift after OPPORTUNITY-001 UNDERIDENTIFIED and OPPORTUNITY-002 synthet
 
 ### ACTIVE-001 PR2 engineering checkpoint (2026-10-30)
 - A stacked draft PR2 adds isolated stdlib synthetic `inquiry_world` and `active_learning` code with 5/5 passing local fixture tests, 878 finite-domain semantic classes among 4,681 programs. The source/authentication/evaluator and scientific score remain future gates. [Engineering receipt](../experiments/ACTIVE-001/runs/20261030-pr2-local-synthetic.md).
+
+### ACTIVE-001 PR2 — hardening and explicit synthetic CI (2026-10-30)
+After the initial 5-test local calibration, independent PR #95 review found 3 P1 integrity gaps and 1 P2 test-coverage gap. Correct `packages/active_learning` (canonical state and policy replay), `packages/inquiry_world` (full split validation), and isolated synthetic tests; the two fixture suites are explicitly added to CI-SAFE-V2 allowlist. [Run ledger](../experiments/ACTIVE-001/runs/20261030-pr2-integrity-repair.md), ARCH-001/002 and AGENTS/INDEX are synchronized in the same PR. Hold for fresh independent exact-head review, safe CI and separate old-workflow disablement attestation; no real study, new skill, transfer or main merge authorized.

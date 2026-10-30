@@ -41,32 +41,32 @@ class SyntheticActiveQueryTests(unittest.TestCase):
 
     def test_max_disagreement_is_true_argmax(self):
         s = start("toy", self.public, self.split, self.catalog)
-        if s.status == "ambiguous":
-            p = propose_disagreement(s, self.catalog)
-            self.assertIsNotNone(p)
-            self.assertGreater(p.gini_numerator, 0)
-            self.assertEqual(p.gini_denominator, len(s.class_ids) ** 2)
-            self.assertEqual(p.gini_numerator, max(len(s.class_ids)**2 - sum(n*n for _, n in partitions(s, self.catalog, i)) for i in s.available_query_ids))
-            self.assertEqual(p.input_id, min(i for i in s.available_query_ids if len(s.class_ids)**2 - sum(n*n for _, n in partitions(s, self.catalog, i)) == p.gini_numerator))
-            self.assertEqual(propose_disagreement(s, self.catalog), p)
-            target = self.catalog.by_id[s.class_ids[-1]]
-            new = update(s, p, make_answer(p, target.output_signature[p.input_id]), self.catalog)
-            self.assertLessEqual(len(new.class_ids), len(s.class_ids))
-            self.assertIn(target.class_id, new.class_ids)
-            with self.assertRaises(ValueError):
-                update(new, p, make_answer(p, "bad"), self.catalog)
+        self.assertEqual(s.status, "ambiguous", "critical fixture must exercise query path")
+        p = propose_disagreement(s, self.catalog)
+        self.assertIsNotNone(p)
+        self.assertGreater(p.gini_numerator, 0)
+        self.assertEqual(p.gini_denominator, len(s.class_ids) ** 2)
+        self.assertEqual(p.gini_numerator, max(len(s.class_ids)**2 - sum(n*n for _, n in partitions(s, self.catalog, i)) for i in s.available_query_ids))
+        self.assertEqual(p.input_id, min(i for i in s.available_query_ids if len(s.class_ids)**2 - sum(n*n for _, n in partitions(s, self.catalog, i)) == p.gini_numerator))
+        self.assertEqual(propose_disagreement(s, self.catalog), p)
+        target = self.catalog.by_id[s.class_ids[-1]]
+        new = update(s, p, make_answer(p, target.output_signature[p.input_id]), self.catalog)
+        self.assertLessEqual(len(new.class_ids), len(s.class_ids))
+        self.assertIn(target.class_id, new.class_ids)
+        with self.assertRaises(ValueError):
+            update(new, p, make_answer(p, "bad"), self.catalog)
 
     def test_random_control_and_zero_budget(self):
         s = start("toy", self.public, self.split, self.catalog)
         baseline = start("toy", self.public, self.split, self.catalog, max_questions=0)
         self.assertEqual(baseline.class_ids, s.class_ids)
         self.assertIn(baseline.status, ("budget_exhausted", "identified"))
-        if s.status == "ambiguous":
-            p = propose_random(s, self.catalog, seed=8)
-            self.assertIsNotNone(p)
-            self.assertEqual(p, propose_random(s, self.catalog, seed=8))
-            self.assertIn(p.input_id, self.split.query_ids)
-            self.assertEqual(final_program(s, self.catalog), final_program(baseline, self.catalog))
+        self.assertEqual(s.status, "ambiguous", "critical fixture must exercise query path")
+        p = propose_random(s, self.catalog, seed=8)
+        self.assertIsNotNone(p)
+        self.assertEqual(p, propose_random(s, self.catalog, seed=8))
+        self.assertIn(p.input_id, self.split.query_ids)
+        self.assertEqual(final_program(s, self.catalog), final_program(baseline, self.catalog))
 
     def test_invalid_and_inconsistent(self):
         with self.assertRaises(ValueError):
@@ -74,15 +74,15 @@ class SyntheticActiveQueryTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             start("bad", (self.public[0], self.public[0]), self.split, self.catalog)
         s = start("toy", self.public, self.split, self.catalog)
-        if s.status == "ambiguous":
-            p = propose_disagreement(s, self.catalog)
-            with self.assertRaises(ValueError):
-                update(s, replace(p, gini_numerator=999), make_answer(p, "hello"), self.catalog)
-            with self.assertRaises(ValueError):
-                update(s, p, replace(make_answer(p, "hello"), receipt_digest="0"), self.catalog)
-            self.assertEqual(update(s, p, make_answer(p, "not-in-language"), self.catalog).status, "model_inconsistent")
-            with self.assertRaises(ValueError):
-                no_informative_query(s, self.catalog)
+        self.assertEqual(s.status, "ambiguous", "critical fixture must exercise query path")
+        p = propose_disagreement(s, self.catalog)
+        with self.assertRaises(ValueError):
+            update(s, replace(p, gini_numerator=999), make_answer(p, "hello"), self.catalog)
+        with self.assertRaises(ValueError):
+            update(s, p, replace(make_answer(p, "hello"), receipt_digest="0"), self.catalog)
+        self.assertEqual(update(s, p, make_answer(p, "not-in-language"), self.catalog).status, "model_inconsistent")
+        with self.assertRaises(ValueError):
+            no_informative_query(s, self.catalog)
 
 
 if __name__ == "__main__":

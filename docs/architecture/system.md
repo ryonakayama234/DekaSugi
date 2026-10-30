@@ -877,3 +877,20 @@ World A legacy read-only grammar is compatibility calibration; World B isolated 
 
 ## ARCH-001 ACTIVE-001 PR2 — synthetic engineering code status
 **Implemented in stacked PR2:** `packages/inquiry_world` enumerates trusted eight-op finite-domain typed String programs, splits 156 artificial inputs and groups semantic-equivalent candidates (878 classes in local fixture). `packages/active_learning` implements bounded `QuerySession`, integer Gini disagreement, random baseline query, synthetically-constructed `QueryAnswer`, update/stop conditions and deterministic final program. `packages/active_evaluation` and independent Oracle **do not exist yet**; `make_answer` is test-only and cannot establish authenticated external observations. No scoring, learned question-policy improvement, source freeze or workflow safety gate is asserted. [Local receipt](../../experiments/ACTIVE-001/runs/20261030-pr2-local-synthetic.md).
+
+## ARCH-001 ACTIVE-001 PR2 — deterministic query integrity gate (2026-10-30)
+```mermaid
+flowchart TB
+  P["2 public observations / 28 available public IDs"] --> CHECK["Validate input split: 28/64/64 and digest"]
+  CHECK --> S["QuerySession: semantic version space"]
+  S --> B["B0 none / B1 seed-random / B2 maximum disagreement"]
+  B --> Q["QueryProposal + prior-state commitment"]
+  Q --> A["Synthetic QueryAnswer (not authenticated Oracle)"]
+  A --> R["Reconstruct classes from ordered observations"]
+  R --> V{"Recheck budget/status, pool and chosen policy"}
+  V -->|valid| S
+  V -->|invalid| STOP["Fail closed"]
+  H["Evaluator-only target and withheld labels"] -.->|"No learner input"| S
+  O["Old locked scorers and evaluated records"] -.->|"No import, no replay"| S
+```
+The new guards check local consistency, not truth or authenticated external Oracle ownership. Stage I within-task updates are the only implemented research mechanism; Stage II learned question policies and Stage III transfer remain planned. The explicit synthetic CI allowlist does not unlock scored trials or change historical code. [Data contract](contracts.md) / [engineering run](../../experiments/ACTIVE-001/runs/20261030-pr2-integrity-repair.md).

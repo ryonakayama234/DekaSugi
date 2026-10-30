@@ -81,6 +81,26 @@ def input_split(seed: int) -> InputSplit:
     return InputSplit(public, query, audit, digest({"schema": SCHEMA, "public": public, "query": query, "audit": audit}))
 
 
+def validate_split(split: InputSplit) -> None:
+    """Reject overlapping, forged or incomplete input pools before learner access."""
+    if type(split) is not InputSplit:
+        raise ValueError("untrusted split type")
+    pools = (split.public_ids, split.query_ids, split.audit_ids)
+    for pool, count in zip(pools, (28, 64, 64)):
+        if (type(pool) is not tuple or len(pool) != count or
+            any(type(i) is not int or not 0 <= i < len(INPUTS) for i in pool) or
+            tuple(sorted(pool)) != pool or len(set(pool)) != count):
+            raise ValueError("invalid pool shape or IDs")
+    all_ids = split.public_ids + split.query_ids + split.audit_ids
+    if len(set(all_ids)) != len(INPUTS) or set(all_ids) != set(range(len(INPUTS))):
+        raise ValueError("overlapping or incomplete input pools")
+    if type(split.split_digest) is not str or split.split_digest != digest({
+        "schema": SCHEMA, "public": split.public_ids,
+        "query": split.query_ids, "audit": split.audit_ids
+    }):
+        raise ValueError("input split commitment mismatch")
+
+
 def build_catalog() -> Catalog:
     if len(INPUTS) != 156 or len(set(INPUTS)) != len(INPUTS):
         raise AssertionError("invalid input universe")

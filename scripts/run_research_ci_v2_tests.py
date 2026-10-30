@@ -24,7 +24,10 @@ REQUIRED = (
 )
 # A future stacked OPPORTUNITY-002 synthetic fixture becomes eligible once
 # merged; absence is not treated as evidence that the fixture passed.
-OPTIONAL = ("test_opportunity2_boundary.py", "test_opportunity2_audit.py")
+OPTIONAL = (
+    "test_opportunity2_boundary.py", "test_opportunity2_audit.py",
+    "test_active_learning_synthetic.py", "test_active_learning_integrity.py",
+)
 
 
 def run() -> int:

@@ -41,3 +41,9 @@ Related: [plan](../../experiments/ACTIVE-001/plan.md) / [runs](../../experiments
 
 ## PR2 engineering implementation status (2026-10-30; not scientific adoption)
 A separate stacked implementation adds `packages/inquiry_world` and `packages/active_learning` plus inventor-only fixture tests, not a genuine evaluator. Catalog enumeration locally found 878 semantic classes over 156 test-domain inputs. The `QueryAnswer` fixture receipt does not prove independent Oracle authorship, and `EvaluationReport`/adversarial identity validation remain future work. [Engineering receipt](../../experiments/ACTIVE-001/runs/20261030-pr2-local-synthetic.md). No scored research study, validated sample power, true learner policy update or transfer claim.
+
+## PR2 adversarial correction (2026-10-30; synthetic-only)
+- Accept an `InputSplit` only after full 28/64/64 partition, typed IDs, uniqueness, non-overlap and digest validation. The active session stores a commitment to public and query pool IDs; evaluator-only input labels remain inaccessible.
+- Reconstruct the complete canonical semantic-class set from two public examples and the ordered answer history at every public operation. Reject duplicate/reweighted semantic IDs, unsound status, exceeded budget, impossible query history, and modified input pools. `query_unidentifiable` requires absence of remaining discriminatory queries.
+- Recompute B2 true maximum Gini (including tie-break); replay B1 deterministic random selector using `QueryProposal.random_seed`. Hash-only equivalence of a proposed input is not enough. Note: selecting a seed after seeing outcomes remains scientifically invalid; external seed precommitment awaits PR3.
+- Original synthetic tests must unconditionally assert that the critical scenario is ambiguous. Adversarial tests are explicitly included in CI-SAFE-V2 allowlist. This produces engineering evidence only, never independently authenticated Oracle evidence or learned competence.

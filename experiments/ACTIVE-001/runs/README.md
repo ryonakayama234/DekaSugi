@@ -21,3 +21,6 @@ Negative outcomes (including zero eligibility/underidentification) must be prese
 
 ## PR2 invented-only local engineering receipt
 - [2026-10-30 — synthetic query engine, 5/5 local tests, 878 finite semantic classes](20261030-pr2-local-synthetic.md). This is a *separate engineering* record; official score count remains **zero**, and independent review/CI source gate is still pending.
+
+## PR2 review-driven integrity fix — 2026-10-30
+- [Synthetic-only state/split/policy replay correction](20261030-pr2-integrity-repair.md): separates new negative regression evidence from the earlier 5/5 local fixture receipt. No scored observation, independent evaluator or acquired generality is asserted. Record post-commit CI/independent review separately; original history is immutable.

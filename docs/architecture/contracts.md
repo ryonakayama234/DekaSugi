@@ -959,3 +959,20 @@ The finite input alphabet has exactly 156 input strings including empty string: 
 
 ## ARCH-002 ACTIVE-001 PR2 — implemented versus prospective records
 **Engineering-only implementations:** `Catalog`, `SemanticClass`, `InputSplit` in `packages/inquiry_world`; `QuerySession`, `QueryProposal`, `QueryAnswer` and `start`, `propose_disagreement`, `propose_random`, `partitions`, `update`, `final_program` in `packages/active_learning`. `make_answer()` creates **synthetic local evidence**, not an independent authentic Oracle receipt. Session digests only commit to supplied values; they do not prove caller provenance or reject all possible forged reconstructed session objects. `InquiryEpisode` archival contract, independent `EvaluationReport`, source-first verification and sealed output comparison are **unimplemented**. [Local receipt](../../experiments/ACTIVE-001/runs/20261030-pr2-local-synthetic.md) / [spec](../specs/ACTIVE-001.md).
+
+## ARCH-002 ACTIVE-001 PR2 — query-state and provenance invariants (2026-10-30)
+```mermaid
+flowchart LR
+  PUBLIC["2 public examples"] --> START["start()"]
+  SPLIT["InputSplit 28/64/64 + digest"] --> GATE["validate_split()"] --> START
+  START --> STATE["QuerySession: public pool, query pool, classes, history, budget"]
+  STATE --> CHECK["_assert_world(): reconstruct classes + verify budget/status"]
+  CHECK --> CHOOSE["B2 Gini argmax / B1 seeded random"]
+  CHOOSE --> PROP["QueryProposal: chosen ID, seed, state digest"]
+  PROP --> UPDATE["update(): independent selection replay"]
+  ANSWER["Synthetic QueryAnswer only"] --> UPDATE
+  UPDATE --> STATE
+  UPDATE -->|"contradiction"| STOP["ValueError / stop"]
+  SECRET["Evaluator-only target and heldout"] -.->|"No edge"| STATE
+```
+The `InputSplit` requires exactly 28/64/64 sorted unique integer (not boolean) input IDs spanning 0..155, pairwise disjoint and matching its schema digest. `QuerySession` stores exactly two distinct public observations, validated public/question pool IDs and linked pool commitment, ordered unique answer IDs, bounded (0..2) budget, coherent terminal state, and the **exact** semantic class set reconstructed from public plus answered observations. `QueryProposal.random_seed` is null for B2, nonnegative uint63 for B1. Acceptance replays true B2 maximum disagreement/tie or B1 deterministic seed choice, not only hash equality. Local checksum and pool linkage do **not** establish third-party oracle authenticity or seed custody; the future independent evaluator owns those trust boundaries. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-integrity-repair.md).

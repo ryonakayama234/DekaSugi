@@ -112,3 +112,6 @@ reviewed main-only gate, and FINAL128 needs a separate explicit approval.
 
 ## ACTIVE-001 PR2 — synthetic-only progress (stacked, 2026-10-30)
 The [isolated finite grammar](packages/inquiry_world/__init__.py) and [active query engine](packages/active_learning/__init__.py) have a [five-test local synthetic calibration receipt](experiments/ACTIVE-001/runs/20261030-pr2-local-synthetic.md): 878 meaningfully different finite-domain programs among 4,681 syntactic candidates. The independent evaluator is NOT implemented, the H1 scored study has not been run, and source/CI review and historic main-push safety verification still block merge.
+
+## ACTIVE-001 PR2 review-driven synthetic hardening (2026-10-30)
+[PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) addresses query-state, input partition and policy replay integrity with new negative fixture tests. [System diagram](docs/architecture/system.md) / [Data contract](docs/architecture/contracts.md) / [run receipt](experiments/ACTIVE-001/runs/20261030-pr2-integrity-repair.md). This is engineering-only; there is no scored ACTIVE-001 trial, learned policy or demonstrated transfer. Safe main integration still requires a fresh independent review and verified historical workflow disablement.
