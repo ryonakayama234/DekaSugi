@@ -43,3 +43,6 @@ Negative outcomes (including zero eligibility/underidentification) must be prese
 ## ACTIVE-001 #96 — stage-I research method v2 proposal (2026-10-30)
 
 [Versioned design v2](../method-v2-decision-draft.md) / [ADR-0006](../../../docs/architecture/decisions/ADR-0006-active001-scientific-design.md) / [Unscored review ledger](20261030-design-v2-review-ledger.md). Proposed structural Gate F (public partitions only) is distinct from the proposed later N4096 genuine independent comparison. No new scientific scores, private labels, historical heldout access, transfer or learned-query policy result. All earlier run receipts remain unchanged.
+
+## Gate F — invented public-context structural receipt (2026-10-30)
+[Unscored source-based census](20261030-gate-f-invented-census.md) / [Gate F module](../../../packages/active_feasibility/__init__.py) / [tests](../../../tests/test_active_feasibility.py). 331,884 potential class/pair task mass; 91,367 distinct public contexts; F3 282,111 class/pair mass (85.00%). No official target/Oracle/private audit; F4 `not_computed`. Review/CI and future source/seed freeze are separate gates. Keep prior run receipts immutable.
