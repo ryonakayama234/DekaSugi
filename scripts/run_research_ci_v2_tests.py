@@ -30,6 +30,7 @@ OPTIONAL = (
     "test_active_learning_history_integrity.py",
     "test_active_learning_catalog_integrity.py",
     "test_active_learning_lookup_canonicalization.py",
+    "test_active_learning_container_boundary.py",
 )
 
 

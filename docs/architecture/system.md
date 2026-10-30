@@ -947,3 +947,18 @@ flowchart TB
   AUDIT["Withheld evaluator labels"] -.->|"No learner input"| QUERY
 ~~~
 A proxy is a read-only **view**, not a deep-frozen snapshot; dict subclass equality can disagree with indexing. Therefore external `by_id` is **never consulted for prediction**, even when structural equality passes. This is local synthetic integrity, not independent Oracle/source authority, learned skill, or scientific performance. [Data flow](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-lookup-canonicalization.md).
+
+## ARCH-001 ACTIVE-001 PR2 — strict state-boundary validation (2026-10-30)
+~~~mermaid
+flowchart TB
+  CALLER["Caller-reconstructed QuerySession / proposal / answer"] --> TYPE["Exact built-in tuple, str, int field checks"]
+  TYPE -->|"mismatch / subclass"| REJECT["Fail closed with ValueError"]
+  TYPE -->|"valid exact primitive storage"| REPLAY["Canonical full-history and split replay"]
+  WORLD["Trusted cached canonical Catalog"] --> REPLAY
+  REPLAY --> PICK["B1 seeded random / B2 exact max-Gini"]
+  PICK --> UPDATE["Answer receipt and posterior update"]
+  UPDATE --> REPLAY
+  SECRET["Evaluator-only labels"] -.->|"No learner input"| PICK
+  OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
+~~~
+`tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).

@@ -124,3 +124,6 @@ The [draft PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) adds cach
 
 ## ACTIVE-001 PR2 — canonical lookup execution boundary (2026-10-30)
 Review-driven [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) uses a cached **internal** canonical Catalog for all predictions and program lookup, not a caller-supplied `MappingProxyType` which can hide overridden mapping reads. Synthetic adversarial regression, [ARCH-001](docs/architecture/system.md), [ARCH-002](docs/architecture/contracts.md), and [engineering receipt](experiments/ACTIVE-001/runs/20261030-pr2-lookup-canonicalization.md) are synchronized. No real scored tasks, new learned policy or independently authenticated evaluator are claimed.
+
+## ACTIVE-001 PR2 — exact-state types and replay (2026-10-30)
+[Draft PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) now checks that externally reconstructed semantic-class ID tuples and proposal/answer fields contain exact Python primitive types, preventing equality-preserving subclass operations from changing question scores. [System map](docs/architecture/system.md), [data contract](docs/architecture/contracts.md), [synthetic run](experiments/ACTIVE-001/runs/20261030-pr2-container-types.md). No historical scoring, independent source custody or measured intelligence gain is claimed.

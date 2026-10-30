@@ -33,3 +33,6 @@ Negative outcomes (including zero eligibility/underidentification) must be prese
 
 ## PR2 mappingproxy dynamic-lookup verification (2026-10-30)
 - [Internal canonical Catalog execution and equality-preserving forged `__getitem__` regression](20261030-pr2-lookup-canonicalization.md): synthetic-only engineering proof obligation, separate from earlier catalog-field and query-history receipts. No historical real evaluation or score revision.
+
+## PR2 exact storage type checks after independent P2 review (2026-10-30)
+- [Lying-tuple semantic votes and type-confusion synthetic regression](20261030-pr2-container-types.md): records local-only validation separately from the previous canonical Catalog and MappingProxyType receipts. No historical score changes, new real evaluations or source-lock changes.

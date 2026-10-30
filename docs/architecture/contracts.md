@@ -1025,3 +1025,17 @@ flowchart LR
   EVAL["Evaluator-only labels"] -.->|"No read path"| PRED
 ~~~
 **Caller input:** `Catalog` may be reconstructed, including `MappingProxyType(dict_subclass)`; proxy equality cannot establish the behavior of `__getitem__`. **Trusted computation:** `_assert_catalog` returns a private cached canonical reference. Both `start()` and `_assert_world()` bind this reference; every `by_id` prediction and final-program lookup uses the internal reference. A deceptive but equality-preserving external lookup may be admitted, but **must not change the output or permit false `query_unidentifiable`**. Mutation of a caller mapping must likewise have no influence. Existing active-query/2 trace, split integrity and B1/B2 policy gates remain intact. An independent evaluator and real scored evidence remain separate obligations. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-lookup-canonicalization.md).
+
+## ARCH-002 ACTIVE-001 PR2 — exact primitive types for replay (2026-10-30)
+~~~mermaid
+flowchart LR
+  IN["Untrusted QuerySession, QueryProposal, QueryAnswer"] --> GATE["Exact built-in field types"]
+  GATE -->|"class_ids tuple subclass / str subclass / bool-as-int"| STOP["ValueError"]
+  GATE -->|"valid"| RECON["Reconstruct semantic classes from observations"]
+  WORLD["Internal canonical Catalog"] --> RECON
+  RECON --> TRACE["Replay every proposal-answer prefix"]
+  TRACE --> CHOOSE["B2 true max disagreement / B1 fixed seed"]
+  CHOOSE --> RESULT["Validated hypothesis set / next question"]
+  HOLDOUT["Evaluator-only answers"] -.->|"Never exposed"| RECON
+~~~
+**Canonical storage contract:** `QuerySession.class_ids` is exactly `tuple` whose entries are exactly `str`, never a tuple or string subclass, because equality can differ from iteration. The compact `answers` tuple contains exact 3-tuples of (int ID, str output, str local receipt). The `trace` container is exactly tuple; each ordered entry is an exact tuple of typed `QueryProposal` and `QueryAnswer`. Session status, pool/world/split digest fields, and proposal and answer primitive fields must have exact builtin types; bool is rejected when int is required. Exact types are checked at the public boundary **before** Gini, random policy, history revalidation, or final-program selection. Per-prefix policy/receipt semantics and the active-query/2 schema remain unchanged. Hashes remain local consistency checks, NOT independent Oracle authentication. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).

@@ -101,6 +101,57 @@ class QueryAnswer:
     receipt_digest: str
 
 
+def _assert_proposal_fields(proposal: QueryProposal) -> None:
+    """Require exact primitive storage, not equality-preserving subclasses."""
+    if (type(proposal) is not QueryProposal or
+        type(proposal.task_id) is not str or
+        type(proposal.step) is not int or
+        type(proposal.input_id) is not int or
+        type(proposal.policy) is not str or
+        not (proposal.random_seed is None or type(proposal.random_seed) is int) or
+        type(proposal.class_count) is not int or
+        type(proposal.gini_numerator) is not int or
+        type(proposal.gini_denominator) is not int or
+        type(proposal.before_digest) is not str or
+        type(proposal.proposal_digest) is not str or
+        type(proposal.predictive_partition) is not tuple or
+        any(type(part) is not tuple or len(part) != 2 or
+            type(part[0]) is not str or type(part[1]) is not int
+            for part in proposal.predictive_partition)):
+        raise ValueError("noncanonical proposal field type")
+
+
+def _assert_answer_fields(answer: QueryAnswer) -> None:
+    if (type(answer) is not QueryAnswer or
+        type(answer.proposal_digest) is not str or
+        type(answer.input_id) is not int or
+        type(answer.step) is not int or
+        type(answer.output) is not str or
+        type(answer.receipt_digest) is not str):
+        raise ValueError("noncanonical answer field type")
+
+
+def _assert_session_fields(session: QuerySession) -> None:
+    """Block tuple/str/int subclasses whose equality and iteration disagree.
+
+    These are external entry-point storage contracts; the canonical replay
+    below validates the actual values and the complete state transition.
+    """
+    if (type(session) is not QuerySession or
+        type(session.class_ids) is not tuple or
+        any(type(cid) is not str for cid in session.class_ids) or
+        type(session.answers) is not tuple or
+        any(type(item) is not tuple or len(item) != 3 or
+            type(item[0]) is not int or type(item[1]) is not str or
+            type(item[2]) is not str for item in session.answers) or
+        type(session.trace) is not tuple or
+        type(session.status) is not str or
+        type(session.pool_digest) is not str or
+        type(session.world_digest) is not str or
+        type(session.split_digest) is not str):
+        raise ValueError("noncanonical session field type")
+
+
 def _status(class_ids: tuple[str, ...], answers: int, max_questions: int) -> Status:
     if not class_ids:
         return "model_inconsistent"
@@ -207,7 +258,8 @@ def _choose_without_revalidation(session: QuerySession, catalog: Catalog,
 
 def make_answer(proposal: QueryProposal, output: str) -> QueryAnswer:
     """Synthetic fixture receipt only; NO independent Oracle authentication."""
-    if type(proposal) is not QueryProposal or type(output) is not str or len(output) > 64:
+    _assert_proposal_fields(proposal)
+    if type(output) is not str or len(output) > 64:
         raise ValueError("invalid synthetic answer")
     payload = {"proposal": proposal.proposal_digest, "id": proposal.input_id,
                "step": proposal.step, "output": output}
@@ -233,8 +285,7 @@ def _apply_without_revalidation(session: QuerySession, proposal: QueryProposal,
 
 def _assert_world(session: QuerySession, catalog: Catalog) -> None:
     """Replay the *entire* ordered history; trust neither caller classes nor receipts."""
-    if type(session) is not QuerySession:
-        raise ValueError("invalid session")
+    _assert_session_fields(session)
     catalog = _assert_catalog(catalog)
     if (session.world_digest != catalog.universe_digest or
         type(session.task_id) is not str or not 1 <= len(session.task_id) <= 128 or
@@ -266,8 +317,9 @@ def _assert_world(session: QuerySession, catalog: Catalog) -> None:
         if type(pair) is not tuple or len(pair) != 2:
             raise ValueError("invalid historical proposal/answer pair")
         proposal, answer = pair
-        if (type(proposal) is not QueryProposal or
-            type(answer) is not QueryAnswer or replay.status != "ambiguous"):
+        _assert_proposal_fields(proposal)
+        _assert_answer_fields(answer)
+        if replay.status != "ambiguous":
             raise ValueError("question after terminal state or invalid record")
         if proposal.policy == "max-disagreement-v1":
             if proposal.random_seed is not None:
@@ -335,8 +387,9 @@ def no_informative_query(session: QuerySession, catalog: Catalog) -> QuerySessio
 def update(session: QuerySession, proposal: QueryProposal, answer: QueryAnswer,
            catalog: Catalog) -> QuerySession:
     _assert_world(session, catalog)
-    if (type(proposal) is not QueryProposal or type(answer) is not QueryAnswer or
-        session.status != "ambiguous"):
+    _assert_proposal_fields(proposal)
+    _assert_answer_fields(answer)
+    if session.status != "ambiguous":
         raise ValueError("invalid/stale question proposal")
     if proposal.policy == "max-disagreement-v1":
         if proposal.random_seed is not None:

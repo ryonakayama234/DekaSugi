@@ -278,3 +278,8 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | Evidence | Scope | Contract and record |
 |---|---|---|
 | ACTIVE-001-PR2-LOOKUP | Canonicalize the **actual prediction lookup** rather than relying on caller MappingProxyType equality; adversarial `dict.__getitem__` regression | [run](../experiments/ACTIVE-001/runs/20261030-pr2-lookup-canonicalization.md) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+## ACTIVE-001 PR2 — session container/type boundary (2026-10-30)
+| Evidence ID | Question | Engineering receipt |
+|---|---|---|
+| ACTIVE-001-PR2-CONTAINERS | Can equality-preserving tuple/str/int subclasses launder forged semantic votes, answers or proposal fields through replay? Exact builtin types required before any learner calculation. | [Synthetic check](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md) / [Architecture](architecture/system.md) / [Contracts](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
