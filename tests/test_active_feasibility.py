@@ -93,5 +93,88 @@ class GateFStructuralTests(unittest.TestCase):
             self.assertNotIn(forbidden, keys)
 
 
+
+class GateF4OperationalTests(unittest.TestCase):
+    """Independent tiny invented worlds only; no real Gate-F full census."""
+
+    def test_strict_two_question_adaptation(self):
+        from packages.active_feasibility.f4 import probe_f4
+        # First q splits 0/1 into two class pairs; q2 distinguishes the
+        # left group while q3 distinguishes the right group.
+        rows = (("0", "0", "0"), ("0", "1", "0"),
+                ("1", "0", "0"), ("1", "0", "1"))
+        p = probe_f4(rows)
+        self.assertEqual((p.status, p.fixed_identified, p.adaptive_identified,
+                          p.f4), ("computed", 2, 4, True))
+        self.assertEqual(p.best_fixed_pair, (0, 1))
+        self.assertEqual(p.best_adaptive_first, 0)
+        self.assertEqual(p.adaptive_second_by_answer, (("0", 1), ("1", 2)))
+
+    def test_exhaustive_independent_reference(self):
+        """Brute-force fixed pairs and *all* response-conditioned second maps."""
+        from itertools import product
+        from collections import Counter
+        from packages.active_feasibility.f4 import probe_f4
+        worlds = (
+            (("0", "0", "0"), ("0", "1", "0"),
+             ("1", "0", "0"), ("1", "0", "1")),
+            (("0", "0"), ("1", "0")),
+            (("z", "z", "z"), ("z", "z", "z"), ("z", "z", "z")),
+            (("z", "z"),),
+            (("0", "0", "1"), ("1", "0", "0"), ("1", "1", "0")),
+        )
+        for rows in worlds:
+            with self.subTest(rows=rows):
+                nq = len(rows[0])
+                N = 0
+                for q1 in range(nq):
+                    for q2 in range(q1 + 1, nq):
+                        sigs = tuple((r[q1], r[q2]) for r in rows)
+                        counts = Counter(sigs)
+                        N = max(N, sum(counts[x] == 1 for x in sigs))
+                A = 0
+                for q1 in range(nq):
+                    answers = tuple(sorted(set(r[q1] for r in rows)))
+                    q2_choices = tuple(j for j in range(nq) if j != q1)
+                    for mapping in product(q2_choices, repeat=len(answers)):
+                        signature = {
+                            i: (r[q1], r[mapping[answers.index(r[q1])]])
+                            for i, r in enumerate(rows)
+                        }
+                        counts = Counter(signature.values())
+                        A = max(A, sum(counts[sig] == 1 for sig in signature.values()))
+                report = probe_f4(rows)
+                self.assertEqual((report.fixed_identified,
+                                  report.adaptive_identified), (N, A))
+                self.assertEqual(report.f4, A > N)
+
+    def test_indistinguishable_does_not_become_identified(self):
+        from packages.active_feasibility.f4 import probe_f4
+        p = probe_f4((("x", "x"), ("x", "x"), ("x", "x")))
+        self.assertEqual((p.fixed_identified, p.adaptive_identified), (0, 0))
+        self.assertIs(p.f4, False)
+
+    def test_cost_guard_returns_unknown_not_false(self):
+        from packages.active_feasibility.f4 import probe_f4
+        rows = tuple(("0",)*64 for _ in range(100))
+        p = probe_f4(rows)
+        self.assertEqual(p.status, "not_computed/resource_budget")
+        self.assertIsNone(p.f4)
+        self.assertIsNone(p.fixed_identified)
+        self.assertIsNone(p.adaptive_identified)
+        self.assertGreater(p.work_upper_bound, 50_000)
+
+    def test_invalid_rows_and_exact_cost_type(self):
+        from packages.active_feasibility.f4 import probe_f4
+        bad_rows = ((), (("0",),), (("0","1"),("0",)),
+                    (("0","1"),("0",1)), (("0","1"),["1","0"]))
+        for x in bad_rows:
+            with self.subTest(rows=repr(x)), self.assertRaises(ValueError):
+                probe_f4(x)
+        for budget in (True, -1, 5_000_001, 2.0):
+            with self.subTest(budget=repr(budget)), self.assertRaises(ValueError):
+                probe_f4((("a", "b"),), max_work=budget)
+
+
 if __name__ == "__main__":
     unittest.main()

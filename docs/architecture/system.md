@@ -1037,3 +1037,18 @@ flowchart LR
 ~~~
 
 Weights: each nonempty public-output block of size |H| represents |H| of the 878 × 378 uniform class/public-pair combinations. F4 adaptive two-query effects are NOT measured. [Receipt](../../experiments/ACTIVE-001/runs/20261030-gate-f-invented-census.md).
+
+## ARCH-001 ACTIVE-001 P0 — strict F4 adaptive identification (2026-10-31)
+~~~mermaid
+flowchart LR
+  PUB["Invented 2-public-output context H / semantic classes"] --> V["Allowed 64 query prediction vectors ONLY"]
+  V --> FIX["N(H): best fixed two distinct queries"]
+  V --> ADAPT["A(H): first q then response-specific second q"]
+  FIX --> GATE{"A(H) > N(H) ?"}
+  ADAPT --> GATE
+  GATE --> F4["F4 nested in F3; counted by class weight if ever censused"]
+  V --> LIMIT{"Conservative comparison-work guard"}
+  LIMIT -->|"over budget"| UNKNOWN["F4=NOT_COMPUTED (null), not false"]
+  LBL["Oracle/target/auditor-only labels"] -.->|"never provided"| V
+~~~
+Implementation is a bounded, invented-only **per-context** reference probe. The 91,367-context Gate-F census, F0–F3 numbers, hash, and F4=not_computed field stay unchanged; any full F4 census requires #99/P2 cost gate. [Decision](../../experiments/ACTIVE-001/f4-operational-definition.md) / [Contracts](contracts.md) / [Run](../../experiments/ACTIVE-001/runs/20261031-f4-p0-engineering.md).
