@@ -283,3 +283,8 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | Evidence ID | Question | Engineering receipt |
 |---|---|---|
 | ACTIVE-001-PR2-CONTAINERS | Can equality-preserving tuple/str/int subclasses launder forged semantic votes, answers or proposal fields through replay? Exact builtin types required before any learner calculation. | [Synthetic check](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md) / [Architecture](architecture/system.md) / [Contracts](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+## ACTIVE-001 P1 — B1+ informative-uniform secondary control (2026-10-31)
+| ID | Status | References |
+|---|---|---|
+| ACTIVE-001-B1PLUS-P1 | Synthetic engineering candidate; no official scored task, no model-promotion claim; B1/B2 unchanged | [Spec](specs/ACTIVE-001.md) / [ADR-0007](architecture/decisions/ADR-0007-active001-b1plus-control.md) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) / [tests](../tests/test_active_learning_synthetic.py) / [run](../experiments/ACTIVE-001/runs/20261031-b1plus-p1-engineering.md) / [Issue #99](https://github.com/ryonakayama234/DekaSugi/issues/99) |

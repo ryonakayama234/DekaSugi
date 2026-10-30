@@ -962,3 +962,25 @@ flowchart TB
   OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
 ~~~
 `tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+## ARCH-001 ACTIVE-001 P1 B1+ control / future evaluator boundary (2026-10-31)
+~~~mermaid
+flowchart TD
+  PUBLIC["Invented 2 public examples / 28 public IDs"] --> CANON["Fixed canonical 878-class InquiryWorld"]
+  CANON --> SESSION["QuerySession active-query/2 / max two answers"]
+  SESSION --> ROUTE{"Choose policy"}
+  ROUTE --> B1["B1: uniform-random-v1 / all remaining"]
+  ROUTE --> PLUS["B1+: informative-uniform-v1 / positive integer Gini only"]
+  ROUTE --> B2["B2: max-disagreement-v1 / stable argmax"]
+  B1 --> PROPOSAL["QueryProposal with seed, groups, digest"]
+  PLUS --> PROPOSAL
+  B2 --> PROPOSAL
+  PROPOSAL --> ANS["Local synthetic QueryAnswer receipt"]
+  ANS --> REPLAY["Canonical exact-type + full prefix/policy/seed replay"]
+  REPLAY --> UPDATE["Consistent semantic class update + stop status"]
+  UPDATE --> SESSION
+  SESSION --> FINAL["Deterministic final representative"]
+  FINAL -.-> EV["Future separate independent evaluator / 64 withheld inputs"]
+  SECRET["Real target ID / evaluator labels / old sealed records"] -.->|"No input permitted"| ROUTE
+~~~
+Only the B1+ route is new. Its output is a query, not a measured score. Existing B1 seeded domain and B2 maximization, global source locks and old workflows remain unchanged. A future evaluator must isolate arm episodes and reject mixed-policy sessions. [ARCH-002](contracts.md) / [ADR-0007](decisions/ADR-0007-active001-b1plus-control.md) / [synthetic run](../../experiments/ACTIVE-001/runs/20261031-b1plus-p1-engineering.md).
