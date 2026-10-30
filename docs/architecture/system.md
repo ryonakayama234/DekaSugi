@@ -962,3 +962,32 @@ flowchart TB
   OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
 ~~~
 `tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+## ARCH-001 ACTIVE-001 #96 — feasibility, method, and future evaluator boundary (DESIGN ONLY)
+
+Proposed study-planning topology; does not denote a deployed evaluator or authorized scientific experiment. [Method candidate](../../experiments/ACTIVE-001/method-v1-candidate.md) / [Data contract](contracts.md) / [unscored ledger](../../experiments/ACTIVE-001/runs/20261030-pr3-feasibility-proposal.md).
+
+~~~mermaid
+flowchart TB
+    WORLD["Frozen candidate world: 156 inputs / 878 finite semantic classes"] --> STUDY["Design-only structural feasibility"]
+    STUDY --> STRATA["F0-F4: impossible / known / no query / informative / adaptive"]
+    STRATA --> POWER["Population weights + task-level power & dependence review"]
+    POWER --> GATE{"Independent method review: identifiable and powered?"}
+    GATE -->|no| REWORK["Revise candidate before score exposure"]
+    GATE -->|yes, separate authorization| FREEZE["Future source/seed/split/policy lock"]
+    FREEZE --> EVAL["Future independent evaluator (NOT implemented)"]
+    EVAL --> PUBLIC["Two labelled public examples + unlabelled query IDs"]
+    PUBLIC --> QUERY["Existing active_learning: B0/B1/B2 questions"]
+    QUERY --> ASK["One permitted proposal to evaluator-owned Oracle"]
+    ASK --> RESPONSE["Only response to chosen query"]
+    RESPONSE --> QUERY
+    EVAL --> HELD["Private target ID + 64 heldout labels"]
+    QUERY --> FINAL["Final program prediction"]
+    FINAL --> SCORE["Independent paired task-level accuracy + costs"]
+    HELD --> SCORE
+    SCORE --> REVIEW["Separate scientific adoption review"]
+    HELD -.->|never learner input| QUERY
+    SCORE -.->|never policy-tuning input| QUERY
+~~~
+
+**Existing, engineering-only:** \`packages/inquiry_world\` and \`packages/active_learning\` at merged main. **Primary task:** scientific evaluation methodology; **not yet implemented:** \`packages/active_evaluation\`. F0-F4 are proposed audit categories, not measured prevalence. The proposed branch does not execute or access historic scorers or holdouts. Stage II Wake-Sleep and Stage III transfer remain independent future gates.
