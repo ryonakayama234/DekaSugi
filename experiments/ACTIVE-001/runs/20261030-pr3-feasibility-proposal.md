@@ -18,7 +18,7 @@ tags: run, methodology, evidence, identifiability, power
 - Semantic-class information gain and downstream held-out accuracy have distinct objectives; some structures may allow zero useful information, and target distribution can differ from uniform semantic-class weighting.
 
 ## Reviewer checklist, all pending
-- [ ] Structural opportunity strata and full-population denominator independently justified.
+- [ ] Disjoint F0-F3 opportunity categories and nested F4 flag and full-population denominator independently justified.
 - [ ] Target family definition, sampling distribution, replacement rules and inferential cluster determined.
 - [ ] Sample-size/power/coverage independently calculated without true scored labels.
 - [ ] Pre-exposure split/seed/source/target ownership and independent evaluator trust gates specified.
