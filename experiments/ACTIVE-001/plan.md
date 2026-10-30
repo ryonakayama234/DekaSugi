@@ -62,3 +62,7 @@ Acceptance criterion: reproduce a `MappingProxyType(dict_subclass)` whose normal
 
 ## PR2 container-subclass integrity — local engineering gate (2026-10-30; NOT FROZEN)
 New P2 adversary on b2acf54 uses `LyingIds(tuple)` with equal values but overwritten `__iter__` to multiply a single semantic class's apparent voting weight. Test its effect on partitions, disagreement choice, random control, final_program and false terminal marking, then require exact primitive field types for session/proposal/answer/trace before replay. Add invented fixtures for subclass IDs, inner answer tuples, status/digests, bool-as-int proposals and history answer fields. Only explicit safe CI allowlist tests; never historical evaluator imports or scored experiment reruns. Scientific ACTIVE-001 observations = **0**. [Run](runs/20261030-pr2-container-types.md).
+
+## #96 pre-scoring method alternative — versioned candidate only (2026-10-30)
+
+See [method-v1-candidate.md](method-v1-candidate.md) and its [unscored review ledger](runs/20261030-pr3-feasibility-proposal.md) for a distinct proposed feasibility/design response to Issue #96. The current PR1 draft remains an unfrozen historical draft; this addendum does **not** freeze N=512, 5pp, 95% CI, target families, source seeds, scoring, or independent evaluator. The new candidate separates hypothesis reduction from held-out decision utility and the identification/power gate. No old or fresh scored data are read or executed.
