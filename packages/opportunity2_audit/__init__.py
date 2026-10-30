@@ -220,7 +220,14 @@ def _inspect(record: object, expected_sha256: str, expected_lock: str) -> dict:
     if type(r["public_examples"]) is not list or len(r["public_examples"]) != 2:
         _fail("public_examples")
     public = tuple(_example(e, "public") for e in r["public_examples"])
-    audit = None if r["audit_example"] is None else _example(r["audit_example"], "audit")
+    audit_raw = r["audit_example"]
+    # A deliberately incomplete, well-formed synthetic audit is unobserved.
+    # Extra/unknown keys are a contradiction, not a legitimate absence.
+    if (type(audit_raw) is dict and
+            set(audit_raw) < {"input", "output"}):
+        audit = None
+    else:
+        audit = None if audit_raw is None else _example(audit_raw, "audit")
     b = _exact(r["budget"], frozenset(("max_expanded_nodes", "max_candidates",
                                       "budget_id")), "budget_shape")
     if (type(b["max_expanded_nodes"]) is not int or b["max_expanded_nodes"] != 4
@@ -246,6 +253,9 @@ def _inspect(record: object, expected_sha256: str, expected_lock: str) -> dict:
     for arm in ACTIONS:
         if arm not in arms or arms[arm] is None:
             missing.append(arm + "_missing")
+            continue
+        if type(arms[arm]) is dict and set(arms[arm]) < ARM_KEYS:
+            missing.append(arm + "_truncated")
             continue
         outcome, calls, reason = _validate_arm(
             arms[arm], arm, c["profile"], public, audit,

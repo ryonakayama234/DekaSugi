@@ -8,6 +8,9 @@ from __future__ import annotations
 
 from copy import deepcopy
 from hashlib import sha256
+from itertools import product
+import ast
+from pathlib import Path
 import json
 import unittest
 
@@ -114,6 +117,25 @@ class Opportunity2AuditTests(unittest.TestCase):
         self.assertEqual(off[5], ("trim", "lower"))
         self.assertEqual(on[4], (a.MACRO,))
 
+    def test_independent_product_grammar_support_oracle(self) -> None:
+        for arm, expected in (("OFF", 40), ("ON", 47)):
+            registry = a.PRIMITIVES if arm == "OFF" else a.PRIMITIVES + (a.MACRO,)
+            oracle = {p for size in range(4)
+                      for p in product(registry, repeat=size)
+                      if 1 + sum(2 if op == a.MACRO else 1 for op in p) <= 4}
+            self.assertEqual(len(oracle), expected)
+            self.assertEqual(oracle, set(a.candidates("current_v1", arm)))
+
+    def test_adapter_has_no_production_imports(self) -> None:
+        tree = ast.parse(Path(a.__file__).read_text(encoding="utf-8"))
+        allowed = {"__future__", "hashlib", "itertools", "json", "re"}
+        for stmt in ast.walk(tree):
+            if isinstance(stmt, ast.Import):
+                self.assertTrue(all(x.name in allowed for x in stmt.names))
+            elif isinstance(stmt, ast.ImportFrom):
+                self.assertIn(stmt.module, allowed)
+                self.assertEqual(stmt.level, 0)
+
     def test_toy_generalization_discordance_valid_not_integrity(self) -> None:
         result = classify(fixture())
         self.assertEqual(result["status"], "valid")
@@ -164,6 +186,19 @@ class Opportunity2AuditTests(unittest.TestCase):
     def test_missing_third_audit_is_not_observed(self) -> None:
         row = fixture(audit_missing=True)
         self.assertEqual(classify(row)["status"], "not_observed")
+
+    def test_truncated_arm_and_third_example_are_not_observed(self) -> None:
+        row = fixture()
+        row["arms"]["ON"] = {"status": "solved"}
+        self.assertEqual(classify(row)["status"], "not_observed")
+        row = fixture()
+        row["audit_example"] = {"input": "RED"}
+        for arm in a.ACTIONS:
+            row["arms"][arm]["audit_correct_claim"] = None
+            row["arms"][arm]["audit_output_claim"] = None
+        self.assertEqual(classify(row)["status"], "not_observed")
+        row["audit_example"]["private_extra"] = "not allowed"
+        self.assertEqual(classify(row)["status"], "integrity_invalid")
 
     def test_budget_id_mismatch_is_non_comparable(self) -> None:
         row = fixture()

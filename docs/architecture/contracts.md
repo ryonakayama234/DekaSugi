@@ -921,3 +921,5 @@ flowchart LR
 ~~~
 
 This code does **not** import historical scorer/learner/kernel packages; it holds invented third examples in test-only public GitHub, never genuine evaluator-only bytes. There is no new official third-audit custody, cryptographic timestamping, independent authentication, power analysis or empirical learned-effect result. The historical `normalize_audited_trial()` retains its strict `false_solved` contract unchanged.
+
+- Explicitly absent arm or **strictly incomplete known-key** synthetic arm/audit records become `not_observed` and are excluded. Unknown extra keys or contradictory complete records remain `integrity_invalid`. Truncation may be informative and must not be silently imputed or interpreted as trustworthy trial completion.
