@@ -127,8 +127,13 @@ def paired_t_interval(differences: tuple[float, ...]) -> Interval:
     _validate_differences(differences)
     n = len(differences)
     mean = math.fsum(differences)/n
-    variance = math.fsum((d-mean)**2 for d in differences)/(n-1)
-    if variance == 0.:
+    # EXACT-equality constant-sample guard comes BEFORE floating-point
+    # centering: fsum(values)/n can round away from the repeated input,
+    # giving a spurious tiny variance and a false-positive t interval.
+    is_constant = all(d == differences[0] for d in differences[1:])
+    variance = (0. if is_constant else
+                math.fsum((d-mean)**2 for d in differences)/(n-1))
+    if is_constant or variance == 0.:
         # No Student-t uncertainty estimate is available: a constant positive
         # sample can arise from a mean-zero, rare-loss discrete IID law.
         # Return the vacuous known range of a bounded mean, not an estimated
