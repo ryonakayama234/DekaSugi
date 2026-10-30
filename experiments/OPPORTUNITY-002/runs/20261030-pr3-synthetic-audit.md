@@ -3,6 +3,7 @@
 id: OPPORTUNITY-002-PR3-SYNTHETIC
 updated: 2026-10-30
 status: implementation_staged; CI_pending; independent_review_pending
+tags: opportunity, synthetic, audit, generalization, engineering, not-scored
 phase: invented_synthetic_only
 new_real_scored_tasks: 0
 scoring_authorized: false
