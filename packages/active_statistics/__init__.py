@@ -129,10 +129,11 @@ def paired_t_interval(differences: tuple[float, ...]) -> Interval:
     mean = math.fsum(differences)/n
     variance = math.fsum((d-mean)**2 for d in differences)/(n-1)
     if variance == 0.:
-        # All values identical; no SE estimate from the sample. A zero-width
-        # t interval here can under-cover for discrete nondegenerate sources.
-        # Record special status rather than treating as proof of certainty.
-        return Interval(n, mean, mean, mean, mean > 0., "zero_sample_variance")
+        # No Student-t uncertainty estimate is available: a constant positive
+        # sample can arise from a mean-zero, rare-loss discrete IID law.
+        # Return the vacuous known range of a bounded mean, not an estimated
+        # t interval; NEVER claim a positive effect from this status.
+        return Interval(n, mean, -1., 1., False, "zero_sample_variance")
     margin = student_t_critical(n-1)*math.sqrt(variance/n)
     return Interval(n, mean, mean-margin, mean+margin, mean-margin > 0., "computed")
 
@@ -179,6 +180,9 @@ def nominal_normal_positive_power(n: int, *, delta: float = DELTA,
 _SYNTHETIC_LAWS: tuple[tuple[str, float], ...] = (
     ("all_zero_null", 0.),
     ("rademacher_null", 0.),
+    # Adversarial null: 99.99% tiny positive, 0.01% -1. The
+    # *population* mean is exactly zero; all-positive samples are common.
+    ("rare_negative_null", 0.),
     ("rademacher_positive_5pp", 0.05),
     ("sparse_positive_5pp", 0.05),
     ("point_mass_heavy_tails_5pp", 0.05),
@@ -192,6 +196,8 @@ def _draw(rng: random.Random, law: str) -> float:
         return 0.
     if law == "rademacher_null":
         return 1. if u < .5 else -1.
+    if law == "rare_negative_null":
+        return 1./9999. if u < .9999 else -1.
     if law == "rademacher_positive_5pp":
         return 1. if u < .525 else -1.
     if law == "sparse_positive_5pp":
@@ -222,7 +228,9 @@ def simulate_invented(*, n: int, repeats: int = 100,
             hci = hoeffding_interval(diffs)
             t_cover += tci.lower <= truth <= tci.upper
             h_cover += hci.lower <= truth <= hci.upper
-            t_positive += tci.positive_evidence
+            # Only an inferentially computed CI can provide positive
+            # evidence; status=zero_sample_variance is always STOP.
+            t_positive += tci.status == "computed" and tci.positive_evidence
             h_positive += hci.positive_evidence
             t_zero_var += tci.status == "zero_sample_variance"
         out.append({

@@ -20,3 +20,7 @@ Branch \`research/active001-p3-statistical-preflight\` based directly on scienti
 **Actual scored ACTIVE-001 observations: ZERO.** Exact-head CI and external review results must be checked and subsequently referenced in the PR/Issue; do not invent empirical frequencies before seeing output. A successful check is numerical engineering, not independently validated inference, split custody, source-freeze or a signed Oracle.
 
 [P3 method](../p3-inference-numerical-draft.md) / [Issue #99](https://github.com/ryonakayama234/DekaSugi/issues/99).
+
+## Exact-head code-review finding and corrective policy (2026-10-31)
+Codex reviewed original P3 head `99b3c0dad98acc866ef503cc63b982f0dc3851df` and found **P1: false positive** when an all-equal **positive** sample has zero sample variance. Example IID null: `P(D=1/9999)=0.9999, P(D=-1)=0.0001`. Original `paired_t_interval()` wrongly set `positive_evidence=True` on such samples. **Not scientifically acceptable**; original CI log is retained for provenance but the original implementation must not be treated as inferentially validated.
+Corrective behavior: `zero_sample_variance` is `NOT_ESTIMABLE`, always `positive_evidence=False`, with vacuous known bounded mean limits [-1,1]. Simulations explicitly contain this rare-negative mean-zero law and must record zero false-positive claims for it under the tested seeds. Final acceptance requires NEW exact-head CI and fresh Codex review; do not claim the previous CI or review certifies the new commit.

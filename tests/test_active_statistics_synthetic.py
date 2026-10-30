@@ -34,6 +34,20 @@ class P3SyntheticStatisticsTests(unittest.TestCase):
         zero = paired_t_interval((0.,)*64)
         self.assertEqual(zero.status, "zero_sample_variance")
         self.assertFalse(zero.positive_evidence)
+        self.assertEqual((zero.lower, zero.upper), (-1., 1.))
+        # Review-found false-positive counterexample: a rare-loss IID null
+        # can generate a strictly positive constant sample (P ~ 66% at N4096).
+        # This MUST NOT become any positive inferential evidence.
+        rare_null_all_positive = paired_t_interval((1./9999.,)*4096)
+        self.assertEqual(rare_null_all_positive.status, "zero_sample_variance")
+        self.assertFalse(rare_null_all_positive.positive_evidence)
+        self.assertEqual((rare_null_all_positive.lower,
+                          rare_null_all_positive.upper), (-1., 1.))
+        for constant in (0.25, 1.0, -1.0):
+            with self.subTest(constant=constant):
+                bad = paired_t_interval((constant,)*16)
+                self.assertFalse(bad.positive_evidence)
+                self.assertEqual(bad.status, "zero_sample_variance")
         self.assertTrue(hoeffding_interval((0.,)*64).lower < 0)
         for bad in ((True, 0.), ("0", 0.), (0., float("nan")), (2., 0.), (0.,), [0., 0.]):
             with self.subTest(bad=repr(bad)), self.assertRaises(ValueError):
@@ -54,7 +68,7 @@ class P3SyntheticStatisticsTests(unittest.TestCase):
     def test_monte_carlo_is_reproducible_and_unscored(self):
         a = simulate_invented(n=512, repeats=4)
         self.assertEqual(a, simulate_invented(n=512, repeats=4))
-        self.assertEqual(len(a), 6)
+        self.assertEqual(len(a), 7)
         for case in a:
             self.assertGreaterEqual(case["t_coverage_fraction"], 0.)
             self.assertLessEqual(case["t_coverage_fraction"], 1.)
@@ -69,7 +83,12 @@ class P3SyntheticStatisticsTests(unittest.TestCase):
         report = invented_p3_report(repeats=100)
         self.assertEqual(report["official_scored_active001_tasks"], 0)
         self.assertFalse(report["formal_source_or_seed_freeze"])
-        self.assertEqual(len(report["distributions"]), 18)
+        self.assertEqual(len(report["distributions"]), 21)
+        rare_null = [case for case in report["distributions"]
+                     if case["law"] == "rare_negative_null" and case["n"] == 4096]
+        self.assertEqual(len(rare_null), 1)
+        self.assertGreater(rare_null[0]["t_zero_sample_variance"], 0)
+        self.assertEqual(rare_null[0]["t_positive_fraction"], 0.)
         self.assertEqual(report["hoeffding_sufficient_n"], 8138)
         self.assertEqual(report["proposed_n_t"], 4096)
         for forbidden in ("target_id", "audit_labels", "heldout_accuracy",
