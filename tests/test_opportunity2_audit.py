@@ -173,6 +173,43 @@ class Opportunity2AuditTests(unittest.TestCase):
         self.assertEqual(classify(short)["arm_outcomes"]["OFF"], "public_not_found")
         self.assertEqual(classify(short)["arm_outcomes"]["ON"], "public_found_audit_correct")
 
+    def test_both_public_found_both_third_incorrect(self) -> None:
+        row = fixture(audit={"input": "RED", "output": "unexpected"})
+        self.assertEqual(classify(row)["arm_outcomes"], {
+            "OFF": "public_found_audit_incorrect",
+            "ON": "public_found_audit_incorrect",
+        })
+        summary = a.aggregate_pairs([row], {row["fixture_id"]: a.canonical_digest(row)})
+        self.assertEqual(summary["n_both_public_found"], 1)
+        self.assertEqual(summary["n_third_audit_discordant_given_both_public_found"], 0)
+        self.assertEqual(summary["n_neither_correct"], 1)
+        self.assertEqual(summary["policy_choice_error_rate"], "not_estimable")
+
+    def test_both_correct_equal_cost_is_not_unique_choice(self) -> None:
+        row = fixture(profile="current_v1", audit={"input": "RED", "output": "RED"})
+        summary = a.aggregate_pairs([row], {row["fixture_id"]: a.canonical_digest(row)})
+        self.assertEqual(summary["n_both_correct"], 1)
+        self.assertEqual(summary["n_eligible_policy_choices"], 0)
+        self.assertEqual(summary["n_policy_choice_errors"], 0)
+        self.assertEqual(summary["policy_choice_error_rate"], "not_estimable")
+
+    def test_denominator_conservation_with_missing_and_noncomparable(self) -> None:
+        valid = fixture()
+        missing = fixture(fixture_id="fx-pr3-unit-002")
+        missing["arms"]["ON"] = None
+        different = fixture(fixture_id="fx-pr3-unit-003")
+        different["arms"]["OFF"]["budget_id"] = "other-synthetic-budget"
+        rows = [valid, missing, different]
+        summary = a.aggregate_pairs(rows, {
+            row["fixture_id"]: a.canonical_digest(row) for row in rows})
+        self.assertEqual(summary["status"], "calibration_observed_not_scientific_result")
+        self.assertEqual(summary["n_input_pairs"], 3)
+        self.assertEqual(summary["n_paired_valid"], 1)
+        self.assertEqual(summary["n_not_observed"], 1)
+        self.assertEqual(summary["n_non_comparable"], 1)
+        self.assertEqual(sum(summary[k] for k in (
+            "n_paired_valid", "n_not_observed", "n_non_comparable")), 3)
+
     def test_true_public_not_found_not_generalization_miss(self) -> None:
         public = [{"input": "fiz", "output": "zif"},
                   {"input": "abc", "output": "cba"}]
