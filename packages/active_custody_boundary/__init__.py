@@ -126,6 +126,14 @@ def parse_public_task(raw: str) -> PublicTaskView:
     query = _ids(d["query_input_ids"], 64)
     if set(pub).intersection(query):
         raise ValueError("overlapping public and allowed-query pools")
+    audit_complement = tuple(i for i in range(156)
+                             if i not in set(pub + query))
+    expected_split_digest = sha256(_dump({
+        "schema": "inquiry-world/1", "public": pub,
+        "query": query, "audit": audit_complement,
+    }).encode("utf-8")).hexdigest()
+    if split_digest != expected_split_digest:
+        raise ValueError("canonical pool partition does not match split commitment")
     examples = d["public_examples"]
     if (type(examples) is not list or len(examples) != 2 or
         any(type(pair) is not list or len(pair) != 2 or

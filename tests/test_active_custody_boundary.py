@@ -70,6 +70,8 @@ class E0PublicWireTests(unittest.TestCase):
             dict(base, max_questions=True),
             dict(base, session_id="not-opaque"),
             dict(base, split_digest="bad-digest"),
+            # Same-length apparent split commitment for tampered allowed set
+            dict(base, split_digest="0"*64),
         )
         for item in corrupt:
             with self.subTest(corruption=item), self.assertRaises(ValueError):
