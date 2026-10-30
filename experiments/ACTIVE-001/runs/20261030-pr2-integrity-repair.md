@@ -23,3 +23,11 @@ Prior local PR2 fixture: 5 tests passed on an earlier branch head, **not** indep
 
 ## Safety and release gates
 No alteration of frozen OLD14/NEW9 source members, historical workflow, OPPORTUNITY-001 original TRAIN64, or scored DEV/FINAL. Do not merge draft PR #95 until new exact-head safe CI, independent P0/P1/P2 review and independent GitHub control-plane confirmation that the historical main-push DEV workflow remains `disabled_manually`. Subsequent scientific trials require separate preregistration/evaluator and explicit approval. Historic experimental evidence must never be replayed.
+
+## 2026-10-30 — exact corrective-head CI outcome, append-only
+
+- Verified commit: `639482cc709fdaf27f83f6e4f81377a022dfb45a` (15-file coherent change against earlier `00876b7ed3`).
+- GitHub Actions successor workflow: [run 41032936594](https://github.com/ryonakayama234/DekaSugi/actions/runs/41032936594), job `123986786809`, **completed SUCCESS**. Python setup, source-only immutable old9/old14 and v2 explicit allowlist checks, documentation/internal links, and whitelist-only synthetic unit tests all succeeded.
+- Decoded GitHub job log: **Ran 88 tests in 1.912s; OK**, including 5 original ACTIVE-001 fixtures and 5 new adversarial integrity fixtures (10 ACTIVE-001 tests), without historical evaluator or scored trial execution in successor CI.
+- This demonstrates engineering regression checks at the stated commit only, NOT a separate source-authenticated Oracle, scientific improvement, independent code review, or approval of new scored data.
+- The log append changes the branch head and therefore requires a *new* exact-head safe-CI check and independent review on the subsequent commit. Historical original-workflow control-plane state has **not** been verified by this run; main merge remains blocked.
