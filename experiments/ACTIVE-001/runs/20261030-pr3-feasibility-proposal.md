@@ -6,15 +6,15 @@ updated: 2026-10-30
 tags: run, methodology, evidence, identifiability, power
 
 ## Provenance
-- Basis: Issue #96 and main after PR #94/#95, SHA \`d9ad80fc844a09c312f6434d20d0d17fdcac4109\`.
+- Basis: Issue #96 and main after PR #94/#95, SHA `d9ad80fc844a09c312f6434d20d0d17fdcac4109`.
 - New work: candidate method and risks before research power/source freeze. No learner/evaluator code or historical source modifications in this task.
 - Confirmatory task evaluations: **0**; independent Stage-I evaluation: **not implemented**.
 - Local empirical runs by this documentation task: **none**. No claim of fresh synthetic engine tests or completed CI.
 - Linked proposal: [method candidate](../method-v1-candidate.md); [existing draft](../plan.md).
 
 ## Design-only reasoning receipt, NOT measurement
-- 512 independent task-level samples have nominal 95% normal half-width \`1.96*sigma_D/sqrt(512)\`; with unknown \`sigma_D\`, no precision guarantee. 64 withheld inputs and five B1 replicates are not independent sample multipliers.
-- At effect \`delta=0.05\`, two-sided alpha .05, 80% nominal paired-normal power, \`N ~ 3140.5 * sigma_D^2\`. These are analytical hypothetical inputs, not estimated real-world variance. No sample size fixed.
+- 512 independent task-level samples have nominal 95% normal half-width `1.96*sigma_D/sqrt(512)`; with unknown `sigma_D`, no precision guarantee. 64 withheld inputs and five B1 replicates are not independent sample multipliers.
+- At effect `delta=0.05`, two-sided alpha .05, 80% nominal paired-normal power, `N ~ 3140.5 * sigma_D^2`. These are analytical hypothetical inputs, not estimated real-world variance. No sample size fixed.
 - Semantic-class information gain and downstream held-out accuracy have distinct objectives; some structures may allow zero useful information, and target distribution can differ from uniform semantic-class weighting.
 
 ## Reviewer checklist, all pending
