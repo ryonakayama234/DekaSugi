@@ -44,3 +44,6 @@ Main merge blocked without exact-head independent review, safe CI, and independe
 Unfrozen numeric/provenance items: task/family sampling procedure, exact seeds, disjoint split algorithm/hash, semantic universe class count and distribution, confidence-interval computation/cluster units and power, availability of truly distinguishable target pairs, target-labelled-holdout authority, query cost definitions, deterministic precomputation CPU accounting and source-first lock. Every unresolved item must be frozen before formal evaluation; initial proposed numbers are **not** confirmatory authorization.
 
 [Spec](../../docs/specs/ACTIVE-001.md) / [run ledger](runs/README.md) / [ADR](../../docs/architecture/decisions/ADR-0005-active-inquiry.md) / [Issue #93](https://github.com/ryonakayama234/DekaSugi/issues/93).
+
+## PR2 engineering-only observation — not confirmation or method freeze
+An isolated synthetic fixture found 878 semantic classes / 4,681 syntax programs and passed 5 local Python 3.13.5 tests; full-scored study **still has zero observations**. Split seed 20261030 and first two public inputs belong to invented calibration, not to a source-locked confirmatory distribution. Study population/512 tasks/power/95% CI and target sampling remain NOT_FROZEN, and H1 acceptance cannot be assessed. [Receipt](runs/20261030-pr2-local-synthetic.md).
