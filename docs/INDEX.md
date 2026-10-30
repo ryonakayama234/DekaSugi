@@ -299,3 +299,8 @@ Scientific state remains zero newly scored ACTIVE-001 observations. PR #94/#95 a
 | ACTIVE-001-DESIGN-V2-REVIEW-LEDGER | unscored proposed evidence ledger | [Review and numeric-design obligations](../experiments/ACTIVE-001/runs/20261030-design-v2-review-ledger.md) |
 
 Previous [v1 candidate](../experiments/ACTIVE-001/method-v1-candidate.md) and [historical draft plan](../experiments/ACTIVE-001/plan.md) remain unchanged as earlier versioned thought. [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md).
+
+## ACTIVE-001 P3 — statistical precision and power preflight (2026-10-31)
+| ID | Status | Reference |
+|---|---|---|
+| ACTIVE-001-P3-INFERENCE | Invented-only bounded task-difference numeric check: Student-t/Hoefdding comparison, exact analytic 8138 sufficient alternative, N4096 provisional; no scored tasks, no scientific freeze | [P3 design](../experiments/ACTIVE-001/p3-inference-numerical-draft.md) / [source](../packages/active_statistics/__init__.py) / [tests](../tests/test_active_statistics_synthetic.py) / [run](../experiments/ACTIVE-001/runs/20261031-p3-invented-stat.md) / [Issue #99](https://github.com/ryonakayama234/DekaSugi/issues/99) |
