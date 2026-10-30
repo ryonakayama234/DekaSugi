@@ -990,4 +990,4 @@ flowchart TB
     SCORE -.->|never policy-tuning input| QUERY
 ~~~
 
-**Existing, engineering-only:** \`packages/inquiry_world\` and \`packages/active_learning\` at merged main. **Primary task:** scientific evaluation methodology; **not yet implemented:** \`packages/active_evaluation\`. F0-F4 are proposed audit categories, not measured prevalence. The proposed branch does not execute or access historic scorers or holdouts. Stage II Wake-Sleep and Stage III transfer remain independent future gates.
+**Existing, engineering-only:** `packages/inquiry_world` and `packages/active_learning` at merged main. **Primary task:** scientific evaluation methodology; **not yet implemented:** `packages/active_evaluation`. F0-F4 are proposed audit categories, not measured prevalence. The proposed branch does not execute or access historic scorers or holdouts. Stage II Wake-Sleep and Stage III transfer remain independent future gates.
