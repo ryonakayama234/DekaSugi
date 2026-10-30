@@ -970,7 +970,7 @@ Proposed study-planning topology; does not denote a deployed evaluator or author
 ~~~mermaid
 flowchart TB
     WORLD["Frozen candidate world: 156 inputs / 878 finite semantic classes"] --> STUDY["Design-only structural feasibility"]
-    STUDY --> STRATA["F0-F4: impossible / known / no query / informative / adaptive"]
+    STUDY --> STRATA["F0-F3 disjoint / F4 nested adaptive flag"]
     STRATA --> POWER["Population weights + task-level power & dependence review"]
     POWER --> GATE{"Independent method review: identifiable and powered?"}
     GATE -->|no| REWORK["Revise candidate before score exposure"]
@@ -990,4 +990,4 @@ flowchart TB
     SCORE -.->|never policy-tuning input| QUERY
 ~~~
 
-**Existing, engineering-only:** `packages/inquiry_world` and `packages/active_learning` at merged main. **Primary task:** scientific evaluation methodology; **not yet implemented:** `packages/active_evaluation`. F0-F4 are proposed audit categories, not measured prevalence. The proposed branch does not execute or access historic scorers or holdouts. Stage II Wake-Sleep and Stage III transfer remain independent future gates.
+**Existing, engineering-only:** `packages/inquiry_world` and `packages/active_learning` at merged main. **Primary task:** scientific evaluation methodology; **not yet implemented:** `packages/active_evaluation`. F0-F3 are proposed **disjoint** audit categories; F4 is a nested adaptive-query flag, not a separate stratum. No prevalence is measured. The proposed branch does not execute or access historic scorers or holdouts. Stage II Wake-Sleep and Stage III transfer remain independent future gates.
