@@ -307,3 +307,8 @@ Previous [v1 candidate](../experiments/ACTIVE-001/method-v1-candidate.md) and [h
 | ACTIVE-001-GATE-F-SOURCE | implementation in stacked PR; not on main | [Source](../packages/active_feasibility/__init__.py) / [Runner](../packages/active_feasibility/__main__.py) / [Tests](../tests/test_active_feasibility.py) |
 
 The 85.00% class-weighted F3 fraction uses invented seed 20261030 only and does not justify Stage I benefit or the future official split. The source version is not merged. See [method v2](../experiments/ACTIVE-001/method-v2-decision-draft.md) / [ADR-0006](architecture/decisions/ADR-0006-active001-scientific-design.md).
+
+## ACTIVE-001 P0 F4 operational reference (2026-10-31)
+| ID | State | Evidence |
+|---|---|---|
+| ACTIVE-001-F4-P0 | Strict two-question adaptive structural identification defined; toy only, full 91,367-context F4 NOT_COMPUTED; no scored evidence | [Operational definition](../experiments/ACTIVE-001/f4-operational-definition.md) / [source](../packages/active_feasibility/f4.py) / [tests](../tests/test_active_feasibility.py) / [run](../experiments/ACTIVE-001/runs/20261031-f4-p0-engineering.md) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) |

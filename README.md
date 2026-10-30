@@ -134,3 +134,6 @@ A future **read-only structural Gate F** precedes a separately authorized, sourc
 
 ## ACTIVE-001 Gate F — invented split structural engineering evidence (2026-10-30)
 [Unscored Gate-F receipt](experiments/ACTIVE-001/runs/20261030-gate-f-invented-census.md) / [source](packages/active_feasibility/__init__.py) / [synthetic tests](tests/test_active_feasibility.py). Exact finite census on **engineering-only fixture seed 20261030**, not the future official source-locked split: 91,367 nonempty public contexts; class/pair-weighted F1 37,643 (11.34%), F2 12,130 (3.65%), F3 282,111 (85.00%), total 331,884. **No truth/heldout accuracy, no new scored trials, no Stage-II/III claim; F4 not computed.** Source code exists only in a separate stacked Gate-F implementation PR until reviewed/merged.
+
+## ACTIVE-001 P0 — F4適応的質問の厳密な定義（2026-10-31）
+二つの固定質問で**一意に識別できる意味クラス数** N(H) と、最初の回答に応じて二つ目を変えた場合の一意識別数 A(H) を比較し、F4⇔A(H)>N(H) をF3内の**非排他的な構造フラグ**として定義した。小規模な人工世界で独立に網羅検証し、計算量の上限を超えれば \`NOT_COMPUTED\` を返す。F4の全数頻度・非公開入力の予測精度・新規正式採点は依然**未測定**。[定義](experiments/ACTIVE-001/f4-operational-definition.md) / [ARCH-001](docs/architecture/system.md) / [ARCH-002](docs/architecture/contracts.md) / [工学記録](experiments/ACTIVE-001/runs/20261031-f4-p0-engineering.md)。

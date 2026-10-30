@@ -46,3 +46,6 @@ Negative outcomes (including zero eligibility/underidentification) must be prese
 
 ## Gate F — invented public-context structural receipt (2026-10-30)
 [Unscored source-based census](20261030-gate-f-invented-census.md) / [Gate F module](../../../packages/active_feasibility/__init__.py) / [tests](../../../tests/test_active_feasibility.py). 331,884 potential class/pair task mass; 91,367 distinct public contexts; F3 282,111 class/pair mass (85.00%). No official target/Oracle/private audit; F4 `not_computed`. Review/CI and future source/seed freeze are separate gates. Keep prior run receipts immutable.
+
+## P0 F4 identification definition and toy reference (2026-10-31)
+- [Bounded F4 synthetic-only reference engineering gate](20261031-f4-p0-engineering.md): compare fixed distinct pair with outcome-contingent second question, independent toy brute force, full context census **not computed**, scientific scores **zero**, CI verified separately on PR head.
