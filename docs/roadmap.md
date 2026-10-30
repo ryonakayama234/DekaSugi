@@ -266,3 +266,6 @@ Research shift after OPPORTUNITY-001 UNDERIDENTIFIED and OPPORTUNITY-002 synthet
 - Stage II (future): SLEEP/DREAM learn reusable inquiry-policy structure from **TRAIN-only** episodes and test frozen policy on independently new tasks.
 - Stage III (future): measure transfer of abstraction `choose an observation that distinguishes hypotheses` through genuinely distinct adapters. Neither Stage II nor III is proven.
 - Do not modify or rescore legacy real TRAIN64, DEV/FINAL, source locks, old workflow; old workflow owner-disable status and exact-head independent review gate main integration. No confirmed human/AGI-level competence claim.
+
+### ACTIVE-001 PR2 engineering checkpoint (2026-10-30)
+- A stacked draft PR2 adds isolated stdlib synthetic `inquiry_world` and `active_learning` code with 5/5 passing local fixture tests, 878 finite-domain semantic classes among 4,681 programs. The source/authentication/evaluator and scientific score remain future gates. [Engineering receipt](../experiments/ACTIVE-001/runs/20261030-pr2-local-synthetic.md).
