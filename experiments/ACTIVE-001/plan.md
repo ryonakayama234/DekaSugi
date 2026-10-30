@@ -66,3 +66,7 @@ New P2 adversary on b2acf54 uses `LyingIds(tuple)` with equal values but overwri
 ## #96 pre-scoring method alternative — versioned candidate only (2026-10-30)
 
 See [method-v1-candidate.md](method-v1-candidate.md) and its [unscored review ledger](runs/20261030-pr3-feasibility-proposal.md) for a distinct proposed feasibility/design response to Issue #96. The current PR1 draft remains an unfrozen historical draft; this addendum does **not** freeze N=512, 5pp, 95% CI, target families, source seeds, scoring, or independent evaluator. The new candidate separates hypothesis reduction from held-out decision utility and the identification/power gate. No old or fresh scored data are read or executed.
+
+## ACTIVE-001 #96 — Stage I decision text v2 (2026-10-30, UNFROZEN)
+
+[Versioned decision draft v2](method-v2-decision-draft.md) / [ADR-0006](../../docs/architecture/decisions/ADR-0006-active001-scientific-design.md) / [no-scoring ledger](runs/20261030-design-v2-review-ledger.md) refine future methodology without rewriting the historical PR1 draft. Proposed Stage I separates an unscored finite public-context feasibility audit from N4096 IID task-level B2-vs-B1 comparison under a uniform 878 semantic-class and public-pair distribution with replacement, conditional on a frozen split. This is NOT independently reviewed/frozen; no target/seed/evaluator activation and zero official ACTIVE-001 scientific scores.
