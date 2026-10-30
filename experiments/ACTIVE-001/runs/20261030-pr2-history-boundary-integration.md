@@ -3,6 +3,7 @@
 id: ACTIVE-001-RUN-20261030-PR2-HISTORY
 status: STAGED_FOR_DRAFT_PR_REVIEW_NOT_SCIENTIFIC_SCORING
 updated: 2026-10-30
+tags: active-learning, synthetic, engineering, evidence, active-query/2
 prior_head: d453ffac82f54029201ee73017940c42ed2a9cf2
 pr: https://github.com/ryonakayama234/DekaSugi/pull/95
 
