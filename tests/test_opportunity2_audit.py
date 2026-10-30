@@ -235,6 +235,20 @@ class Opportunity2AuditTests(unittest.TestCase):
         row = fixture(audit_missing=True)
         self.assertEqual(classify(row)["status"], "not_observed")
 
+    def test_third_audit_missing_even_when_neither_public_solution_found(self) -> None:
+        impossible_public = [{"input": "fiz", "output": "zif"},
+                             {"input": "abc", "output": "cba"}]
+        row = fixture(profile="current_v1", public=impossible_public,
+                      audit_missing=True)
+        self.assertEqual(row["arms"]["OFF"]["status"], "not_found")
+        self.assertEqual(row["arms"]["ON"]["status"], "not_found")
+        self.assertEqual(classify(row)["status"], "not_observed")
+        result = a.aggregate_pairs([row], {row["fixture_id"]: a.canonical_digest(row)})
+        self.assertEqual(result["n_paired_valid"], 0)
+        self.assertEqual(result["n_not_observed"], 1)
+        self.assertEqual(result["paired_audited_accuracy_diff"], "not_estimable")
+        self.assertEqual(result["third_audit_discordance_rate"], "not_estimable")
+
     def test_truncated_arm_and_third_example_are_not_observed(self) -> None:
         row = fixture()
         row["arms"]["ON"] = {"status": "solved"}

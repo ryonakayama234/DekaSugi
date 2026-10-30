@@ -268,6 +268,11 @@ def _inspect(record: object, expected_sha256: str, expected_lock: str) -> dict:
         if reason:
             missing.append(reason + "_" + arm)
         mismatch |= arms[arm]["budget_id"] != b["budget_id"]
+    # Third-audit source is required for the PAIR's scientific denominator,
+    # even if neither public first solution was found. Search failure must not
+    # silently convert an absent third audit into observed negative accuracy.
+    if audit is None and not missing:
+        missing.append("third_audit_missing")
     if missing:
         return {"status": "not_observed", "reason": ",".join(missing),
                 "arm_outcomes": outcomes, "costs": costs, "choice": c["policy_choice"]}
