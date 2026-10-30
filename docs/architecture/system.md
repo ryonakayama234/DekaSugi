@@ -1019,3 +1019,21 @@ flowchart TB
 ~~~
 
 Blue-print only: `packages/active_feasibility`, `packages/active_evaluation` and their scorer/Oracle custody do not exist yet. Target class is sampled independently with replacement under an artificial law, conditional on a single locked 28/64/64 input split; F3 does not guarantee positive heldout utility, and Stage II/III remain outside scope.
+
+## ARCH-001 — Gate F synthetic source implementation status (2026-10-30)
+Proposed Gate F from the [v2 study design](../../experiments/ACTIVE-001/method-v2-decision-draft.md) is now prototyped **on its own stacked PR** as `packages/active_feasibility`; this does NOT implement the future `active_evaluation` or alter the merged `inquiry_world`/ `active_learning` core.
+
+~~~mermaid
+flowchart LR
+  C["Immutable existing synthetic Catalog: 878 classes"] --> PUB["Public pool only: 28 IDs; choose 2"]
+  C --> Q["Allowed query pool only: 64 IDs"]
+  PUB --> H["Group classes by 2 public outputs; 91,367 contexts"]
+  Q --> D["Compare 64 possible output partitions of each context"]
+  H --> D
+  D --> OUT["StructuralReport/1: F1/F2/F3 counts + weights + hash"]
+  OUT --> RECHECK["Second full-population calculation + fixture tests"]
+  RECHECK --> LEDGER["Unscored calibration receipt; F4 unknown"]
+  SECRET["No official target, no evaluator-only truth"] -.->|forbidden| D
+~~~
+
+Weights: each nonempty public-output block of size |H| represents |H| of the 878 × 378 uniform class/public-pair combinations. F4 adaptive two-query effects are NOT measured. [Receipt](../../experiments/ACTIVE-001/runs/20261030-gate-f-invented-census.md).
