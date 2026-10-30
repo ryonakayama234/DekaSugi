@@ -49,3 +49,6 @@ Negative outcomes (including zero eligibility/underidentification) must be prese
 
 ## P0 F4 identification definition and toy reference (2026-10-31)
 - [Bounded F4 synthetic-only reference engineering gate](20261031-f4-p0-engineering.md): compare fixed distinct pair with outcome-contingent second question, independent toy brute force, full context census **not computed**, scientific scores **zero**, CI verified separately on PR head.
+
+## ACTIVE-001 P2 synthetic-only computational budget (2026-10-31)
+- [Invented CPU/wall/RSS measurement receipt and CI provenance](20261031-p2-invented-cpu.md), [measurement contract](../p2-resource-budget-draft.md). This is **not** Stage-I target scoring or a full F4 census; only exact-head CI log can supply actual numbers.

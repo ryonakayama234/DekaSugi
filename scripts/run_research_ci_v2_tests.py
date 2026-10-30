@@ -33,6 +33,8 @@ OPTIONAL = (
     "test_active_learning_container_boundary.py",
     # ACTIVE-001 Gate F: invented public-context-only census, no scorer/Oracle.
     "test_active_feasibility.py",
+    # ACTIVE-001 P2: invented-only CPU instrumentation and dry-run counts.
+    "test_active_cost_preflight.py",
 )
 
 

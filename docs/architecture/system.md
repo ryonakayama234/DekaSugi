@@ -1052,3 +1052,19 @@ flowchart LR
   LBL["Oracle/target/auditor-only labels"] -.->|"never provided"| V
 ~~~
 Implementation is a bounded, invented-only **per-context** reference probe. The 91,367-context Gate-F census, F0–F3 numbers, hash, and F4=not_computed field stay unchanged; any full F4 census requires #99/P2 cost gate. [Decision](../../experiments/ACTIVE-001/f4-operational-definition.md) / [Contracts](contracts.md) / [Run](../../experiments/ACTIVE-001/runs/20261031-f4-p0-engineering.md).
+
+## ARCH-001 ACTIVE-001 P2 — invented-only measurement graph (2026-10-31)
+~~~mermaid
+flowchart LR
+  FIX["Invented split 20261030 / public observations"] --> CAT["Catalog rebuild or cached access"]
+  CAT --> GATEF["One F0–F3 structural census / no target"]
+  CAT --> LEARN["B1/B2 session, choice, answer update, replay"]
+  LEARN --> SWEEP["64 allowed-query-input predictions, no truth"]
+  LEARN --> F4["Tiny invented F4 toy; full F4 NOT_COMPUTED"]
+  GATEF --> CLOCK["Process CPU / wall / cumulative Linux peak RSS"]
+  SWEEP --> CLOCK
+  F4 --> CLOCK
+  CLOCK --> PROJECTION["512/1024/4096 task counts and rough CPU-only scenarios"]
+  SEAL["Old frozen scored data / official targets / audit labels"] -.->|"Never input"| LEARN
+~~~
+The profiler runs from an expressly allowlisted **synthetic test**, without any GitHub Actions workflow source modification. B1+ is on standalone draft PR #100; it contributes *scenario counts only* here, with no measured policy-specific CPU. [Cost draft](../../experiments/ACTIVE-001/p2-resource-budget-draft.md) / [ARCH-002](contracts.md).

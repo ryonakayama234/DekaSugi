@@ -312,3 +312,8 @@ The 85.00% class-weighted F3 fraction uses invented seed 20261030 only and does 
 | ID | State | Evidence |
 |---|---|---|
 | ACTIVE-001-F4-P0 | Strict two-question adaptive structural identification defined; toy only, full 91,367-context F4 NOT_COMPUTED; no scored evidence | [Operational definition](../experiments/ACTIVE-001/f4-operational-definition.md) / [source](../packages/active_feasibility/f4.py) / [tests](../tests/test_active_feasibility.py) / [run](../experiments/ACTIVE-001/runs/20261031-f4-p0-engineering.md) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) |
+
+## ACTIVE-001 P2 invented-only resource preflight (2026-10-31)
+| ID | Gate status | References |
+|---|---|---|
+| ACTIVE-001-P2-COST | CPU/wall/RSS instrumentation for invented-only toy, 7-arm/12-arm 512/1024/4096 planning counts; evaluator-only labels never read, no scored trials | [P2 draft](../experiments/ACTIVE-001/p2-resource-budget-draft.md) / [instrumentation](../packages/active_cost/__init__.py) / [safe tests](../tests/test_active_cost_preflight.py) / [receipt](../experiments/ACTIVE-001/runs/20261031-p2-invented-cpu.md) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) |
