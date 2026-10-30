@@ -46,3 +46,6 @@ Negative outcomes (including zero eligibility/underidentification) must be prese
 
 ## ACTIVE-001 P3 invented-only numerical statistics (2026-10-31)
 - [P3 exact-quantile and Monte Carlo engineering ledger](20261031-p3-invented-stat.md) / [P3 method](../p3-inference-numerical-draft.md). No scientific trial or official source/seed freeze; CI output is the source of any actually simulated percentages.
+
+## E0 ACTIVE-001 invented-only public protocol and leak-denial tests (2026-10-31)
+- [E0 strict public wire frame, no-leak negative tests and safe CI evidence](20261031-e0-public-wire.md) / [E0 design](../e0-custody-boundary-draft.md). This is NOT a trusted independent evaluator, audit or scientific score.

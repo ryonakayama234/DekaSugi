@@ -1032,3 +1032,16 @@ flowchart LR
   OLD["Historically sealed DEV/FINAL/TRAIN"] -.->|"No import"| IDEA
 ~~~
 Each synthetic D observation is already ONE task-level B2 minus within-task average B1; repeated B1 arms and 64 withheld inputs do not become IID sample units. Results cannot promote a learner before trusted evaluator and independently reviewed method. [ARCH-002](contracts.md) / [P3 method](../../experiments/ACTIVE-001/p3-inference-numerical-draft.md).
+
+## ARCH-001 ACTIVE-001 E0 — public wire vs independent custodian (2026-10-31)
+~~~mermaid
+flowchart LR
+  CUST["Future E1 isolated custodian: target/secret root/64 labels"] -->|"only allowlisted E0 public task frame"| GUARD["E0 strict JSON schema + split/session integrity"]
+  GUARD --> LEARN["Learner: public examples and 64 query IDs"]
+  LEARN -->|"one permitted query frame"| GUARD
+  GUARD -->|"E1 future authenticated one-answer Oracle"| LEARN
+  LEARN -->|"final program only, never audit predictions"| GUARD
+  GUARD -->|"E1 future private offline score; NOT implemented"| CUST
+  BAD["Hidden target ID / seed root / future answers / audit labels"] -->|"strict reject"| GUARD
+~~~
+The only implemented code here is **E0 input/output frame validation on invented fixtures**, not the dashed or future actions of a real custodian. Same-process Python isolation, SHA commitments and synthetic CI do not prove independence/authenticity. E1 must use physically/process-separated custody after method freeze and E2 requires separate explicit one-shot scientific authorization. [E0 design](../../experiments/ACTIVE-001/e0-custody-boundary-draft.md) / [ARCH-002](contracts.md).
