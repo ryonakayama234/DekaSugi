@@ -1043,7 +1043,7 @@ flowchart LR
 ## ARCH-002 ACTIVE-001 #96 — candidate scientific-method record and data-flow contract (DESIGN ONLY)
 
 [Versioned candidate](../../experiments/ACTIVE-001/method-v1-candidate.md) / [run ledger](../../experiments/ACTIVE-001/runs/20261030-pr3-feasibility-proposal.md).
-This is a **prospective schema requirement** rather than an existing \`packages/active_evaluation\` API.
+This is a **prospective schema requirement** rather than an existing `packages/active_evaluation` API.
 
 ~~~mermaid
 flowchart LR
@@ -1067,9 +1067,9 @@ flowchart LR
 ~~~
 
 Proposed record fields (do not implement or serialize before schema review):
-- \`FeasibilityPlan\`: \`schema_version\`, \`catalog_digest\`, \`public_context_generator\`, \`strata_definitions\`, \`task_family_taxonomy\`, \`weights\`, \`variance_scenarios\`, \`inferential_unit\`, \`not_scored=true\`.
-- \`SourceLock\` (future): exact source tree/blob hashes, fixed 156 universe, sorted 28/64/64 split hash, two public observations, target family/sample seed commitments, five B1 streams, B2/tie/stop semantics, evaluator version, alpha/power/confidence algorithm, CPU measurement and amortization units. Hashes alone do not prove source custody or process isolation.
-- \`PairedOutcome\` (future): \`task_id\`, \`family_id\`, \`b0_accuracy\`, \`b2_accuracy\`, \`b1_accuracy_5\`, \`b1_mean\`, \`d_task\`, \`query_count\`, \`selector_cpu_ns\`, \`primitive_count\`, \`total_cpu_ns\`, \`validity_status\`, source/evaluator receipts. B1 subtrials and 64 holdouts are **nested within task**, not independent task IDs.
-- \`EvaluationReport\` (future): explicit complete valid-task denominator, F0-F4 prevalence with pre-scored classification provenance, full-population \`Delta=mean(D_task)\`, family weighting/cluster-aware CI, missingness and rejected evidence, CPU/precomputation amortization, independent signatures, no optional stopping. A zero-question or zero-benefit valid task remains in the primary denominator.
+- `FeasibilityPlan`: `schema_version`, `catalog_digest`, `public_context_generator`, `strata_definitions`, `task_family_taxonomy`, `weights`, `variance_scenarios`, `inferential_unit`, `not_scored=true`.
+- `SourceLock` (future): exact source tree/blob hashes, fixed 156 universe, sorted 28/64/64 split hash, two public observations, target family/sample seed commitments, five B1 streams, B2/tie/stop semantics, evaluator version, alpha/power/confidence algorithm, CPU measurement and amortization units. Hashes alone do not prove source custody or process isolation.
+- `PairedOutcome` (future): `task_id`, `family_id`, `b0_accuracy`, `b2_accuracy`, `b1_accuracy_5`, `b1_mean`, `d_task`, `query_count`, `selector_cpu_ns`, `primitive_count`, `total_cpu_ns`, `validity_status`, source/evaluator receipts. B1 subtrials and 64 holdouts are **nested within task**, not independent task IDs.
+- `EvaluationReport` (future): explicit complete valid-task denominator, F0-F4 prevalence with pre-scored classification provenance, full-population `Delta=mean(D_task)`, family weighting/cluster-aware CI, missingness and rejected evidence, CPU/precomputation amortization, independent signatures, no optional stopping. A zero-question or zero-benefit valid task remains in the primary denominator.
 
-Existing \`QuerySession\`, \`QueryProposal\`, \`QueryAnswer\` exact-type/history validation remains unchanged. The implementation cannot read future \`SourceLock\` secret target labels, private audit evidence, \`PairedOutcome\` or \`EvaluationReport\` for selecting queries. No historical scoring activated.
+Existing `QuerySession`, `QueryProposal`, `QueryAnswer` exact-type/history validation remains unchanged. The implementation cannot read future `SourceLock` secret target labels, private audit evidence, `PairedOutcome` or `EvaluationReport` for selecting queries. No historical scoring activated.
