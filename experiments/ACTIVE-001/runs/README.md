@@ -39,3 +39,7 @@ Negative outcomes (including zero eligibility/underidentification) must be prese
 
 ## #96 — design-only feasibility candidate (2026-10-30)
 [Method candidate](../method-v1-candidate.md) / [pre-study analytical design ledger](20261030-pr3-feasibility-proposal.md). This adds **no scored task** and no independent evaluator, fixes neither N nor source/seed, and does not alter previous run receipts. Method validation, synthetic-only safe CI, exact-head independent review, and eventual separate activation remain pending.
+
+## ACTIVE-001 #96 — stage-I research method v2 proposal (2026-10-30)
+
+[Versioned design v2](../method-v2-decision-draft.md) / [ADR-0006](../../../docs/architecture/decisions/ADR-0006-active001-scientific-design.md) / [Unscored review ledger](20261030-design-v2-review-ledger.md). Proposed structural Gate F (public partitions only) is distinct from the proposed later N4096 genuine independent comparison. No new scientific scores, private labels, historical heldout access, transfer or learned-query policy result. All earlier run receipts remain unchanged.
