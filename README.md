@@ -109,3 +109,21 @@ reviewed main-only gate, and FINAL128 needs a separate explicit approval.
 
 ## ACTIVE-001 — 新規研究の事前登録案 (2026-10-30)
 現行mainで最後に統合された研究はOPPORTUNITY-002の**人工fixtureによる監査技術**であり、能力の伸長は未実証です。次の独立課題[ACTIVE-001 #93](https://github.com/ryonakayama234/DekaSugi/issues/93)は、公開例から残る仮説を使い、自ら何を質問するかを選ぶ **同一課題内の能動的適応** を計測する[提案仕様](docs/specs/ACTIVE-001.md)と[未凍結研究計画](experiments/ACTIVE-001/plan.md)です。既存の3演算互換検査と新規隔離8演算人工環境を区別し、B0/B1/B2で独立した未知入力を比較します。質問方策の学習（Stage II）や領域転移（Stage III）は未実装・未実証。旧実験原本は不変更、PR1は文書のみで、科学的スコアの新規取得は未承認です。
+
+## ACTIVE-001 PR2 — synthetic-only progress (stacked, 2026-10-30)
+The [isolated finite grammar](packages/inquiry_world/__init__.py) and [active query engine](packages/active_learning/__init__.py) have a [five-test local synthetic calibration receipt](experiments/ACTIVE-001/runs/20261030-pr2-local-synthetic.md): 878 meaningfully different finite-domain programs among 4,681 syntactic candidates. The independent evaluator is NOT implemented, the H1 scored study has not been run, and source/CI review and historic main-push safety verification still block merge.
+
+## ACTIVE-001 PR2 review-driven synthetic hardening (2026-10-30)
+[PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) addresses query-state, input partition and policy replay integrity with new negative fixture tests. [System diagram](docs/architecture/system.md) / [Data contract](docs/architecture/contracts.md) / [run receipt](experiments/ACTIVE-001/runs/20261030-pr2-integrity-repair.md). This is engineering-only; there is no scored ACTIVE-001 trial, learned policy or demonstrated transfer. Safe main integration still requires a fresh independent review and verified historical workflow disablement.
+
+## ACTIVE-001 PR2 — question-history and input-boundary hardening (2026-10-30)
+[Draft PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) stages active-query/2: verify the full canonical public/query/evaluator split and revalidate each question-choice/answer prefix. [System flow](docs/architecture/system.md) / [Data contract](docs/architecture/contracts.md) / [Engineering receipt](experiments/ACTIVE-001/runs/20261030-pr2-history-boundary-integration.md). This does not authorize a real scored study, assert acquired skill or imply independent Oracle trust.
+
+## ACTIVE-001 PR2 — fixed-world Catalog integrity (2026-10-30)
+The [draft PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) adds cached canonical Catalog checks so reconstructed local class signatures and by_id lookups cannot forge the supposed absence of informative queries. [Architecture](docs/architecture/system.md) / [contracts](docs/architecture/contracts.md) / [engineering receipt](experiments/ACTIVE-001/runs/20261030-pr2-catalog-integrity.md). Synthetic tests and CI do not certify source-authenticated scientific improvement, independent Oracle custody or generalization.
+
+## ACTIVE-001 PR2 — canonical lookup execution boundary (2026-10-30)
+Review-driven [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) uses a cached **internal** canonical Catalog for all predictions and program lookup, not a caller-supplied `MappingProxyType` which can hide overridden mapping reads. Synthetic adversarial regression, [ARCH-001](docs/architecture/system.md), [ARCH-002](docs/architecture/contracts.md), and [engineering receipt](experiments/ACTIVE-001/runs/20261030-pr2-lookup-canonicalization.md) are synchronized. No real scored tasks, new learned policy or independently authenticated evaluator are claimed.
+
+## ACTIVE-001 PR2 — exact-state types and replay (2026-10-30)
+[Draft PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) now checks that externally reconstructed semantic-class ID tuples and proposal/answer fields contain exact Python primitive types, preventing equality-preserving subclass operations from changing question scores. [System map](docs/architecture/system.md), [data contract](docs/architecture/contracts.md), [synthetic run](experiments/ACTIVE-001/runs/20261030-pr2-container-types.md). No historical scoring, independent source custody or measured intelligence gain is claimed.

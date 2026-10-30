@@ -956,3 +956,86 @@ flowchart LR
 ```
 
 The finite input alphabet has exactly 156 input strings including empty string: 28 public candidate + 64 unlabelled query + 64 heldout evaluator, disjoint. The candidate class key is the entire 156-input output vector; this is finite-domain semantic equivalence, not proof of universal equivalence. All comparison arms use same fixed primitive semantics and class weighting, stable query tie-break, maximum two **distinct** questions, and matched evaluation labels. A genuine new evaluator must separately version `model_inconsistent` (valid answer falsifies version space), `query_unidentifiable`, `budget_exhausted`, `not_observed` and `integrity_invalid` (hard-stop). Never mutate or reuse old `normalize_audited_trial` for this research. SHA-256 proves content identity only, not authenticity or private original custody.
+
+## ARCH-002 ACTIVE-001 PR2 — implemented versus prospective records
+**Engineering-only implementations:** `Catalog`, `SemanticClass`, `InputSplit` in `packages/inquiry_world`; `QuerySession`, `QueryProposal`, `QueryAnswer` and `start`, `propose_disagreement`, `propose_random`, `partitions`, `update`, `final_program` in `packages/active_learning`. `make_answer()` creates **synthetic local evidence**, not an independent authentic Oracle receipt. Session digests only commit to supplied values; they do not prove caller provenance or reject all possible forged reconstructed session objects. `InquiryEpisode` archival contract, independent `EvaluationReport`, source-first verification and sealed output comparison are **unimplemented**. [Local receipt](../../experiments/ACTIVE-001/runs/20261030-pr2-local-synthetic.md) / [spec](../specs/ACTIVE-001.md).
+
+## ARCH-002 ACTIVE-001 PR2 — query-state and provenance invariants (2026-10-30)
+```mermaid
+flowchart LR
+  PUBLIC["2 public examples"] --> START["start()"]
+  SPLIT["InputSplit 28/64/64 + digest"] --> GATE["validate_split()"] --> START
+  START --> STATE["QuerySession: public pool, query pool, classes, history, budget"]
+  STATE --> CHECK["_assert_world(): reconstruct classes + verify budget/status"]
+  CHECK --> CHOOSE["B2 Gini argmax / B1 seeded random"]
+  CHOOSE --> PROP["QueryProposal: chosen ID, seed, state digest"]
+  PROP --> UPDATE["update(): independent selection replay"]
+  ANSWER["Synthetic QueryAnswer only"] --> UPDATE
+  UPDATE --> STATE
+  UPDATE -->|"contradiction"| STOP["ValueError / stop"]
+  SECRET["Evaluator-only target and heldout"] -.->|"No edge"| STATE
+```
+The `InputSplit` requires exactly 28/64/64 sorted unique integer (not boolean) input IDs spanning 0..155, pairwise disjoint and matching its schema digest. `QuerySession` stores exactly two distinct public observations, validated public/question pool IDs and linked pool commitment, ordered unique answer IDs, bounded (0..2) budget, coherent terminal state, and the **exact** semantic class set reconstructed from public plus answered observations. `QueryProposal.random_seed` is null for B2, nonnegative uint63 for B1. Acceptance replays true B2 maximum disagreement/tie or B1 deterministic seed choice, not only hash equality. Local checksum and pool linkage do **not** establish third-party oracle authenticity or seed custody; the future independent evaluator owns those trust boundaries. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-integrity-repair.md).
+
+## ARCH-002 ACTIVE-001 — active-query/2 split and answer-trace contract (2026-10-30)
+~~~mermaid
+flowchart LR
+  PUB["28 public IDs + 2 observed outputs"] --> GATE["Validate canonical inquiry-world/1 split"]
+  Q["64 question IDs"] --> GATE
+  GATE --> S["QuerySession + full ordered trace"]
+  S --> R["Rebuild public-only initial hypothesis set"]
+  R --> P["Replay each B2 argmax / B1 fixed-seed query"]
+  P --> A["Verify each synthetic answer receipt"]
+  A --> T{"Prefix terminal state reached?"}
+  T -->|"No"| R
+  T -->|"Yes"| STOP["Reject additional questions"]
+  AUDIT["64 evaluator-only labels"] -.->|"Forbidden"| S
+~~~
+Session input-pool contract: sorted, unique, integer 28 public and 64 query IDs; evaluator pool reconstructed as their 64-ID complement; recompute the canonical inquiry-world/1 input-split digest and compare it with the stored split commitment at every public entry. QuerySession.trace stores a tuple of (QueryProposal, QueryAnswer), with exact local replay of the choice, local receipt and stop condition per prefix. QuerySession.answers must equal the trace's compact projection. active-query/2 is not serialized-compatible with synthetic active-query/1; B1 seed-to-input values can change due to the new session digest. No hash here is independent evaluator authority or a scientifically precommitted source, seed or Oracle; these require separate future evaluation safeguards. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-history-boundary-integration.md).
+
+## ARCH-002 ACTIVE-001 PR2 — Catalog trust boundary and data flow (2026-10-30)
+~~~mermaid
+flowchart LR
+  GRAMMAR["Trusted 8-op DSL / finite 156 inputs"] --> CANON["_canonical_catalog: cached complete reference"]
+  CALLER["Reconstructed/untrusted Catalog"] --> ASSERT["_assert_catalog"]
+  CANON --> ASSERT
+  ASSERT -->|"equal canonical contents"| START["start / _assert_world"]
+  ASSERT -->|"mismatch"| ERROR["ValueError"]
+  START --> SESSION["QuerySession + full ordered trace"]
+  SESSION --> POLICY["B1 seeded / B2 max-Gini"]
+  POLICY --> ANSWER["Synthetic local answer receipt"]
+  ANSWER --> REPLAY["Replay canonical classes + split + all prefixes"]
+  REPLAY --> SESSION
+  HIDDEN["Evaluator-only truth"] -.->|"No learner data flow"| SESSION
+~~~
+Exact Catalog structural contract: `type(catalog) is Catalog`, `classes` is a tuple, `by_id` uses a read-only `MappingProxyType`, and dataclass equality against a lazily cached deterministic `build_catalog()` reference covers the full ordered class list, every output_signature and representative program, lookup keys and values, universe_digest and syntax_count. Both `start()` and session replay entry checks enforce it. The immutable canonical cache is internal process state; local integrity does NOT authenticate an independently custodied evaluator, hidden labels, or the source itself. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-catalog-integrity.md).
+
+## ARCH-002 ACTIVE-001 PR2 — caller catalog validation vs canonical calculation (2026-10-30)
+~~~mermaid
+flowchart LR
+  UNTRUST["Caller Catalog with untrusted lookup behavior"] --> GUARD["_assert_catalog: structural equality"]
+  MODEL["Internal deterministic build_catalog()"] --> CACHE["Cached canonical reference"]
+  CACHE --> GUARD
+  GUARD -->|"Valid"| SNAPSHOT["Use internal reference, not caller mapping"]
+  GUARD -->|"Invalid"| ERROR["ValueError"]
+  SNAPSHOT --> PRED["Semantic-class output signatures + programs"]
+  PRED --> PICK["Gini/seeded question + posterior"]
+  PICK --> HIST["Replay each history prefix"]
+  HIST --> PRED
+  EVAL["Evaluator-only labels"] -.->|"No read path"| PRED
+~~~
+**Caller input:** `Catalog` may be reconstructed, including `MappingProxyType(dict_subclass)`; proxy equality cannot establish the behavior of `__getitem__`. **Trusted computation:** `_assert_catalog` returns a private cached canonical reference. Both `start()` and `_assert_world()` bind this reference; every `by_id` prediction and final-program lookup uses the internal reference. A deceptive but equality-preserving external lookup may be admitted, but **must not change the output or permit false `query_unidentifiable`**. Mutation of a caller mapping must likewise have no influence. Existing active-query/2 trace, split integrity and B1/B2 policy gates remain intact. An independent evaluator and real scored evidence remain separate obligations. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-lookup-canonicalization.md).
+
+## ARCH-002 ACTIVE-001 PR2 — exact primitive types for replay (2026-10-30)
+~~~mermaid
+flowchart LR
+  IN["Untrusted QuerySession, QueryProposal, QueryAnswer"] --> GATE["Exact built-in field types"]
+  GATE -->|"class_ids tuple subclass / str subclass / bool-as-int"| STOP["ValueError"]
+  GATE -->|"valid"| RECON["Reconstruct semantic classes from observations"]
+  WORLD["Internal canonical Catalog"] --> RECON
+  RECON --> TRACE["Replay every proposal-answer prefix"]
+  TRACE --> CHOOSE["B2 true max disagreement / B1 fixed seed"]
+  CHOOSE --> RESULT["Validated hypothesis set / next question"]
+  HOLDOUT["Evaluator-only answers"] -.->|"Never exposed"| RECON
+~~~
+**Canonical storage contract:** `QuerySession.class_ids` is exactly `tuple` whose entries are exactly `str`, never a tuple or string subclass, because equality can differ from iteration. The compact `answers` tuple contains exact 3-tuples of (int ID, str output, str local receipt). The `trace` container is exactly tuple; each ordered entry is an exact tuple of typed `QueryProposal` and `QueryAnswer`. Session status, pool/world/split digest fields, and proposal and answer primitive fields must have exact builtin types; bool is rejected when int is required. Exact types are checked at the public boundary **before** Gini, random policy, history revalidation, or final-program selection. Per-prefix policy/receipt semantics and the active-query/2 schema remain unchanged. Hashes remain local consistency checks, NOT independent Oracle authentication. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).

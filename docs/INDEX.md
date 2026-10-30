@@ -254,3 +254,32 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 ## ACTIVE-001 — 能動的問いの生成と適応 (2026-10-30; proposal)
 - [Issue #93](https://github.com/ryonakayama234/DekaSugi/issues/93) / [spec ACTIVE-001](specs/ACTIVE-001.md) / [ADR-0005](architecture/decisions/ADR-0005-active-inquiry.md) / [draft plan](../experiments/ACTIVE-001/plan.md) / [run index](../experiments/ACTIVE-001/runs/README.md) / [independent review checklist](specs/ACTIVE-001-REVIEW-CHECKLIST.md).
 - Scope: Stage I self-selected questions and within-task version-space updates; Stage II learned inquiry policy and Stage III cross-domain transfer remain future research. Legacy compatibility and isolated InquiryWorld v1 are separate. PR1 docs-only; new evaluations, intelligence growth, reviewer approval, safety gate and scientific preregistration are not claimed.
+
+## ACTIVE-001 PR2 synthetic implementation (2026-10-30)
+- [Fixed finite InquiryWorld](../packages/inquiry_world/__init__.py) / [semantic class active questioner](../packages/active_learning/__init__.py) / [local artificial tests](../tests/test_active_learning_synthetic.py) / [engineering receipt](../experiments/ACTIVE-001/runs/20261030-pr2-local-synthetic.md).
+- Local fixture: 5/5 tests Python 3.13.5, 878 semantic classes among 4,681 syntax expressions. NOT independent evaluation, not CI coverage, no scientifically scored unknown tasks and no evidence of Stage II/III learning or transfer.
+
+## ACTIVE-001 PR2 integrity-repair checkpoint (2026-10-30)
+| ID | Status | Entry |
+|---|---|---|
+| ACTIVE-001-PR2-INTEGRITY | synthetic engineering; exact-head verification pending; no capability result | [Evidence](../experiments/ACTIVE-001/runs/20261030-pr2-integrity-repair.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) |
+
+## ACTIVE-001 PR2 canonical split and replayable trace (2026-10-30)
+| Evidence ID | State | References |
+|---|---|---|
+| ACTIVE-001-PR2-HISTORY | Implementation staged on draft PR #95; exact-head CI and new independent review required; 0 scored trials | [engineering run](../experiments/ACTIVE-001/runs/20261030-pr2-history-boundary-integration.md) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+## ACTIVE-001 PR2 canonical Catalog hardening (2026-10-30)
+| Evidence ID | Engineering scope | Run |
+|---|---|---|
+| ACTIVE-001-PR2-CATALOG | Fixed finite-world semantic classes, signatures, representative programs, canonical by_id, syntax count and world digest checked at every public learner entry; synthetic-only | [P2 review response](../experiments/ACTIVE-001/runs/20261030-pr2-catalog-integrity.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) |
+
+## ACTIVE-001 — P2 mappingproxy lookup trust boundary (2026-10-30)
+| Evidence | Scope | Contract and record |
+|---|---|---|
+| ACTIVE-001-PR2-LOOKUP | Canonicalize the **actual prediction lookup** rather than relying on caller MappingProxyType equality; adversarial `dict.__getitem__` regression | [run](../experiments/ACTIVE-001/runs/20261030-pr2-lookup-canonicalization.md) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+## ACTIVE-001 PR2 — session container/type boundary (2026-10-30)
+| Evidence ID | Question | Engineering receipt |
+|---|---|---|
+| ACTIVE-001-PR2-CONTAINERS | Can equality-preserving tuple/str/int subclasses launder forged semantic votes, answers or proposal fields through replay? Exact builtin types required before any learner calculation. | [Synthetic check](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md) / [Architecture](architecture/system.md) / [Contracts](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |

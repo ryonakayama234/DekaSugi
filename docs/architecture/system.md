@@ -874,3 +874,91 @@ flowchart TB
   V --> R["EvaluationReport: separate authority, no train input"]
 ```
 World A legacy read-only grammar is compatibility calibration; World B isolated new fixed 8-operation InquiryWorld is the prospective measurement universe, not newly invented learned semantics. B0 no queries / B1 uniform random questions / B2 max semantic disagreement; same task, grammar, questions and two-query ceiling. Stage II/SLEEP and Stage III/transfer are future gated work, not current ability results. A query-selection mechanism must never access future oracle answers, target/seed/family/hidden audit or the historic source/scorer. The original workflow external owner-disable gate and independently reviewed source-first freeze precede any new scored experiment/main merge.
+
+## ARCH-001 ACTIVE-001 PR2 — synthetic engineering code status
+**Implemented in stacked PR2:** `packages/inquiry_world` enumerates trusted eight-op finite-domain typed String programs, splits 156 artificial inputs and groups semantic-equivalent candidates (878 classes in local fixture). `packages/active_learning` implements bounded `QuerySession`, integer Gini disagreement, random baseline query, synthetically-constructed `QueryAnswer`, update/stop conditions and deterministic final program. `packages/active_evaluation` and independent Oracle **do not exist yet**; `make_answer` is test-only and cannot establish authenticated external observations. No scoring, learned question-policy improvement, source freeze or workflow safety gate is asserted. [Local receipt](../../experiments/ACTIVE-001/runs/20261030-pr2-local-synthetic.md).
+
+## ARCH-001 ACTIVE-001 PR2 — deterministic query integrity gate (2026-10-30)
+```mermaid
+flowchart TB
+  P["2 public observations / 28 available public IDs"] --> CHECK["Validate input split: 28/64/64 and digest"]
+  CHECK --> S["QuerySession: semantic version space"]
+  S --> B["B0 none / B1 seed-random / B2 maximum disagreement"]
+  B --> Q["QueryProposal + prior-state commitment"]
+  Q --> A["Synthetic QueryAnswer (not authenticated Oracle)"]
+  A --> R["Reconstruct classes from ordered observations"]
+  R --> V{"Recheck budget/status, pool and chosen policy"}
+  V -->|valid| S
+  V -->|invalid| STOP["Fail closed"]
+  H["Evaluator-only target and withheld labels"] -.->|"No learner input"| S
+  O["Old locked scorers and evaluated records"] -.->|"No import, no replay"| S
+```
+The new guards check local consistency, not truth or authenticated external Oracle ownership. Stage I within-task updates are the only implemented research mechanism; Stage II learned question policies and Stage III transfer remain planned. The explicit synthetic CI allowlist does not unlock scored trials or change historical code. [Data contract](contracts.md) / [engineering run](../../experiments/ACTIVE-001/runs/20261030-pr2-integrity-repair.md).
+
+## ARCH-001 ACTIVE-001 PR2 — complete local history verification (2026-10-30)
+~~~mermaid
+flowchart TD
+  PUBLIC["Two public examples / 28 public IDs"] --> SPLIT["Canonical 28/64/64 split commitment"]
+  SPLIT --> SESSION["Active learner: active-query/2 state"]
+  SESSION --> SELECT["B2 exact max-Gini / B1 seeded random"]
+  SELECT --> PROP["Selected proposal + synthetic answer"]
+  PROP --> TRACE["Append full proposal-answer trace"]
+  TRACE --> REPLAY["Replay every history prefix from public state"]
+  REPLAY --> VALID{"Canonical split, policy, receipt, budget and stop invariant?"}
+  VALID -->|"Valid"| SESSION
+  VALID -->|"Invalid"| REJECT["Fail closed"]
+  SECRET["Withheld evaluator labels"] -.->|"No learner edge"| SESSION
+  HISTORIC["Frozen scorers and scored history"] -.->|"No runtime edge"| SESSION
+~~~
+This is local synthetic engineering only: a digest is a consistency check, not an external Oracle signature or proof of useful transfer. The query policy cannot continue after a terminal state. [ARCH-002](contracts.md) and [run ledger](../../experiments/ACTIVE-001/runs/20261030-pr2-history-boundary-integration.md).
+
+## ARCH-001 ACTIVE-001 PR2 — trusted canonical candidate catalogue (2026-10-30)
+~~~mermaid
+flowchart TB
+  WORLD["Fixed 8-operation inquiry world / 156 inputs"] --> BUILD["Deterministic canonical catalogue 4,681 syntactic programs"]
+  BUILD --> CANON["Cached immutable 878 semantic classes + by_id lookup"]
+  EXT["Caller-supplied Catalog"] --> VALID{"Complete equality: classes, signatures, AST, by_id, syntax_count, digest?"}
+  CANON --> VALID
+  VALID -->|"valid"| SESSION["Active learner: QuerySession, B1/B2"]
+  VALID -->|"invalid"| REJECT["Reject / ValueError"]
+  SESSION --> TRACE["Full ordered proposal-answer trace"]
+  TRACE --> REPLAY["Verify every history prefix and canonical split"]
+  REPLAY --> SESSION
+  PRIVATE["Evaluator-only target and labels"] -.->|"No access"| SESSION
+  OLD["Frozen original scorers and evidence"] -.->|"No runtime edge"| SESSION
+~~~
+This is a consistency check against a fixed **experimenter-authored** synthetic world, not a learned representation, independently signed source, real measured generalization or trusted Oracle. The canonical reference is generated once per process, not enumerated on every question; equality still checks all semantic contents. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-catalog-integrity.md).
+
+## ARCH-001 ACTIVE-001 PR2 — internal canonical computation (2026-10-30)
+~~~mermaid
+flowchart TB
+  EX["Caller Catalog / MappingProxyType / custom dict.__getitem__"] --> CHECK["Catalog validation: reject ordinary mismatch"]
+  WORLD["Fixed eight-op, 156-input DSL"] --> CACHE["Cached internally built canonical Catalog"]
+  CACHE --> CHECK
+  CHECK -->|"Local consistency valid"| BOUNDARY["Replace caller reference with trusted internal Catalog"]
+  CHECK -->|"Mismatch"| REJECT["Fail closed"]
+  BOUNDARY --> QUERY["B1 seeded / B2 max-Gini question choice"]
+  CACHE --> LOOKUP["Canonical prediction/representative-program lookup only"]
+  LOOKUP --> QUERY
+  QUERY --> TRACE["Ordered question/answer trace"]
+  TRACE --> REPLAY["History prefix and terminal-state replay"]
+  LOOKUP --> REPLAY
+  REPLAY --> QUERY
+  AUDIT["Withheld evaluator labels"] -.->|"No learner input"| QUERY
+~~~
+A proxy is a read-only **view**, not a deep-frozen snapshot; dict subclass equality can disagree with indexing. Therefore external `by_id` is **never consulted for prediction**, even when structural equality passes. This is local synthetic integrity, not independent Oracle/source authority, learned skill, or scientific performance. [Data flow](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-lookup-canonicalization.md).
+
+## ARCH-001 ACTIVE-001 PR2 — strict state-boundary validation (2026-10-30)
+~~~mermaid
+flowchart TB
+  CALLER["Caller-reconstructed QuerySession / proposal / answer"] --> TYPE["Exact built-in tuple, str, int field checks"]
+  TYPE -->|"mismatch / subclass"| REJECT["Fail closed with ValueError"]
+  TYPE -->|"valid exact primitive storage"| REPLAY["Canonical full-history and split replay"]
+  WORLD["Trusted cached canonical Catalog"] --> REPLAY
+  REPLAY --> PICK["B1 seeded random / B2 exact max-Gini"]
+  PICK --> UPDATE["Answer receipt and posterior update"]
+  UPDATE --> REPLAY
+  SECRET["Evaluator-only labels"] -.->|"No learner input"| PICK
+  OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
+~~~
+`tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
