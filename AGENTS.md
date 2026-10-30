@@ -448,3 +448,8 @@
 - Proposed primary task law: N4096 independent semantic-class/public-pair draws with replacement. Five B1 repetitions and 64 audit inputs are nested, not 5*64 independent tasks; no out-of-domain conclusion. Include noninformative and negative-gain valid tasks.
 - Existing B1 may choose zero-Gini inputs; proposed informative-uniform B1+ is a distinct, future secondary diagnostic requiring new reviewed implementation. Do not silently modify `active-query/2` or label B1+ as existing B1.
 - Independent method/power review, CPU feasibility, source and seed lock, private Oracle custody, separate evaluator PR and explicit one-shot activation must all succeed before any science score; keep historical locks and old workflow untouched.
+
+## ACTIVE-001 Gate F — code/measurement boundary for proposed structural implementation (2026-10-30)
+- [Gate-F receipt](experiments/ACTIVE-001/runs/20261030-gate-f-invented-census.md) defines an **invented, not source-locked** calibration using fixture seed 20261030. `packages.active_feasibility.census_fixture` must never accept a future official seed/target, Oracle response, evaluator-only label or historical scorer input.
+- Counts must be **public-context-count** and **semantic-class/pair-weighted task-count** separately. F0-F3 are disjoint; weighted mass is 878 × 378 = 331884; F4 is `not_computed`, not `False`. The 85.0% F3 prevalence proves only existence of discrimination opportunities, NOT any B2 heldout advantage.
+- Require full no-target, no-private-oracle source review, a second independent full-population partition calculation, stable digest, and new safe CI before claiming engineering acceptance. No private evaluator, N4096 source freeze, or experimental activation is authorized.

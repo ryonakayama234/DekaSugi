@@ -1105,3 +1105,21 @@ flowchart LR
 - `EvaluationReport/1` stores task-level paired t 95% CI, sample size, all losses, missingness, separate online and amortized costs, independent source attestation. Positive lower CI>0 is only in-world within-task advantage, not long-term learning or transfer. Five-point-size is descriptive, not a separate powered test.
 
 Proposed B1+ informative-only randomized control is **future secondary** and requires a distinct reviewed adapter; do not conflate with existing baseline B1. P0/P1 corruption forces STOP; no historical replay or scoring.
+
+## ARCH-002 — active-feasibility/1 exact unscored report, branch implementation (2026-10-30)
+
+~~~mermaid
+flowchart LR
+  CLASS["Canonical class signatures"] --> GROUP["Public-input 2-label grouping"]
+  GROUP --> IDENT["F1 singleton"]
+  GROUP --> Q["64 allowed query partition tests"]
+  Q --> NODISC["F2 no discriminatory question"]
+  Q --> DISC["F3 positive discriminatory question"]
+  IDENT --> REPT["StructuralReport / active-feasibility/1"]
+  NODISC --> REPT
+  DISC --> REPT
+  REPT --> HASH["Ordered deterministic context SHA256 + receipt"]
+  PRIVATE["Future target + evaluator-only labels"] -.->|must never enter| REPT
+~~~
+
+[Source](../../packages/active_feasibility/__init__.py) / [receipt](../../experiments/ACTIVE-001/runs/20261030-gate-f-invented-census.md). `StructuralReport` is immutable and includes schema/role, fixture seed, universe and split digests, class count, public pair count, 331884 candidate task mass, 91367 public context count, separate F0–F3 context and class/pair-weighted counts, positive-query-weight numerator and denominator, maximum |H|, F4 status explicitly `not_computed`, and the SHA-256 of ordered public-context structural rows. No target ID, private Oracle, B1/B2 trace, truth labels or accuracy; it is **not** the future evaluator `PairedOutcome`. Fixture seed is deliberately restricted to the previous synthetic engineering seed `20261030`; no official source freeze.

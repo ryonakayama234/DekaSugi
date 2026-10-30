@@ -31,6 +31,8 @@ OPTIONAL = (
     "test_active_learning_catalog_integrity.py",
     "test_active_learning_lookup_canonicalization.py",
     "test_active_learning_container_boundary.py",
+    # ACTIVE-001 Gate F: invented public-context-only census, no scorer/Oracle.
+    "test_active_feasibility.py",
 )
 
 
