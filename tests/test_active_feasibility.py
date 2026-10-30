@@ -63,6 +63,29 @@ class GateFStructuralTests(unittest.TestCase):
             seen_f3 |= actual > 0
         self.assertTrue(seen_f3)
 
+    def test_full_population_independent_signature_proof(self):
+        """Second exact derivation, without the Gate-F query-count helper."""
+        cat = build_catalog()
+        split = input_split(20261030)
+        tally = {"F1": [0, 0], "F2": [0, 0], "F3": [0, 0]}
+        qids = split.query_ids
+        for p1, p2 in combinations(split.public_ids, 2):
+            groups = defaultdict(list)
+            for cls in cat.classes:
+                groups[(cls.output_signature[p1], cls.output_signature[p2])].append(cls)
+            for block in groups.values():
+                if len(block) == 1:
+                    label = "F1"
+                else:
+                    first = block[0].output_signature
+                    label = "F2" if all(all(cls.output_signature[q] == first[q] for q in qids)
+                                         for cls in block[1:]) else "F3"
+                tally[label][0] += 1
+                tally[label][1] += len(block)
+        self.assertEqual(tally, {"F1": [37643, 37643],
+                                 "F2": [5866, 12130],
+                                 "F3": [47858, 282111]})
+
     def test_absence_of_evaluator_contract(self):
         keys = set(self.report.to_dict())
         self.assertTrue({"world_digest", "split_digest", "f3_task_weight", "context_sha256"} <= keys)
