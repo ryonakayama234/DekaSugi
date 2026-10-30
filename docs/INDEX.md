@@ -244,3 +244,9 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 ## OPPORTUNITY-002 / PR2 — synthetic-only boundary checker
 - [独立実装](../scripts/opportunity2_boundary.py)、[人工テスト](../tests/test_opportunity2_boundary.py)、[run台帳](../experiments/OPPORTUNITY-002/runs/README.md)。3つの原始操作と仮想の二操作マクロでOFF40/ON47構文、表現集合同値、候補予算5の人工例をチェックする。**学習・正式技能・本番スコア・元SkillCandidateのhash認証ではない**。
 - 元の[PR1仕様](specs/OPPORTUNITY-002.md)・[独立レビューリスト](specs/OPPORTUNITY-002-REVIEW-CHECKLIST.md)を継承。研究者レビュー・source lock・本番実験の事前登録は別ゲート。main統合安全阻害要因は[Issue #88](https://github.com/ryonakayama234/DekaSugi/issues/88)。
+
+
+## 2026-10-30 — OPPORTUNITY-002 / PR3 synthetic C-G2 audit adapter
+- [Issue #91](https://github.com/ryonakayama234/DekaSugi/issues/91) / [isolated implementation](../packages/opportunity2_audit/__init__.py) / [invented-only tests](../tests/test_opportunity2_audit.py) / [run and evidence scope](../experiments/OPPORTUNITY-002/runs/20261030-pr3-synthetic-audit.md).
+- [ARCH-001 architecture](architecture/system.md) / [ARCH-002 evidence and data-flow contract](architecture/contracts.md) / [scientific design](specs/OPPORTUNITY-002.md) / [method](../experiments/OPPORTUNITY-002/plan.md) / [independent review gate](specs/OPPORTUNITY-002-REVIEW-CHECKLIST.md).
+- New separately versioned `opportunity2-audit-normalizer/1`: evidence-integrity gate, first-solution replay, public vs third audit outcomes, invalid-stopped aggregation, strict denominators and finite reachability probe. Synthetic calibration != genuine generalization, active learning or skill growth; no live scoring authorization. Earlier PR1/PR2 sections above preserve their original chronological status.

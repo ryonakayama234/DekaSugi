@@ -26,3 +26,8 @@ Do not place any private third-example input/output, source family/seed/task-to-
 
 ## Recorded PR2 synthetic CI (after staged checkpoint)
 - [2026-10-29 PR2 independent synthetic boundary calibration receipt](20261029-pr2-synthetic-calibration.md): initial staged PR2 SHA `7f12a623ce12bda9ac03dd3ec4f60754999a3a7b`, official Actions run `40859385151` **PASS**, 247 unit tests including five new boundary tests; 89 Markdown documents validated. No genuine new scored data or skill improvement. Independent exact-head scientific review and latest-head CI remain separate pending gates.
+
+
+## PR3 — 2026-10-30 isolated synthetic audit adapter
+- [PR3 proposed engineering evidence](20261030-pr3-synthetic-audit.md) / [new adapter](../../../packages/opportunity2_audit/__init__.py) / [adversarial tests](../../../tests/test_opportunity2_audit.py), parent [Issue #91](https://github.com/ryonakayama234/DekaSugi/issues/91).
+- Distinguishes invented record integrity, public first-solution search, synthetic third-example correctness, missing/non-comparable records and finite first-solution reachability. Older real TRAIN64 is never rerun. Independent latest-head review, source lock and main-push safety gate are distinct from any synthetic CI PASS.

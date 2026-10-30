@@ -1,0 +1,31 @@
+# OPPORTUNITY-002 PR3 — synthetic C-G2 evidence adapter engineering record
+
+id: OPPORTUNITY-002-PR3-SYNTHETIC
+updated: 2026-10-30
+status: synthetic_ci_pass_on_recorded_commit; independent_review_pending; merge_not_authorized
+tags: opportunity, synthetic, audit, generalization, engineering, not-scored
+phase: invented_synthetic_only
+new_real_scored_tasks: 0
+scoring_authorized: false
+
+## Source and reproducibility
+- Parent [Issue #91](https://github.com/ryonakayama234/DekaSugi/issues/91); baseline main `07e3cdbc2d4789658a460ed157bbfafbff811e6d`. New engineering branch `research/opportunity002-pr3-audit-normalizer`. Exact PR SHA / Actions run / observed test counts are **pending**, not fabricated.
+- Test command: `python scripts/check_research_ci_v2.py && python scripts/check_docs.py && python scripts/run_research_ci_v2_tests.py` (Python 3.12; standard library; safe allowlist). Do not use whole-project `unittest discover`, historical generator/scorer or any private archive.
+- Contract `opportunity2-audit-normalizer/1`, synthetic fixture values only, checksum pinned separately for each row, first solution replay, public and third audit independently reconstructed, strict trace/AST/meter fields, integrity hard stop and no mixed-valid estimates.
+- In this phase synthetic third example is intentionally PUBLIC test data; it is never owner-private evaluator-only material. The artificial `toy_bias_v1` profile deliberately changes ordering to create a witness; `current_v1` is only independent synthetic grammar modeling. No inference about the actual frozen policy's unseen generalization, no claimed learning or skill promotion.
+- The old source lock 9 files, EXP-0003A 14 files, original opportunity_actual normalizer, true one-shot TRAIN64 and old DEV/FINAL must remain unchanged. The GitHub CI itself cannot attest external private custody or the operational state of the inherited legacy workflow.
+
+## Claims / limitations
+- This entry is an **implementation-stage plan**, not an observed passing test. After exact-head CI, independently validated counts and review must be appended or linked, not silently claimed here.
+- Proposed outcomes: `public_found_audit_correct`, `public_found_audit_incorrect`, `public_not_found`, `not_observed`, `integrity_invalid` and non-comparable pair state. Zero support => `not_estimable`. Unexpected evidence => whole-batch `invalid_stopped`.
+- Author self-audit is not independent review. No official new experiment distribution, no numerical statistical-power claim and no real scoring activation.
+
+[Plan](../plan.md) / [Spec](../../../docs/specs/OPPORTUNITY-002.md) / [ARCH-001](../../../docs/architecture/system.md) / [ARCH-002](../../../docs/architecture/contracts.md).
+
+## Observed CI evidence (append-only checkpoint; 2026-10-30)
+- Tested PR head `6405b3ee33b5af58159130698da36a541e6531e8`, workflow [Research verification v2 / run #40989175061](https://github.com/ryonakayama234/DekaSugi/actions/runs/40989175061), job `123847155505`: **completed SUCCESS**.
+- Independent-source static verification printed `static_source_integrity_pass`: historic PILOT-V1 original **9 source files**, EXP-0003A **14 source files**, frozen original workflow blob `1a3ce868010a320216642abf56093dc3a89d8e91`; `historic_dev_or_final_generated=false` and `scoring_authorized=false`.
+- `python scripts/check_docs.py`: **94 Markdown documents PASS**.
+- `python scripts/run_research_ci_v2_tests.py`: **74 explicitly allowlisted synthetic/safety unit tests PASS**, Python 3.12, completion 0.127 seconds reported in GitHub job log; no broad test discovery.
+- Independent Codex initial-head review P1 found verifier short-circuit vs meter inconsistency, now corrected in head `6405b3e`: all two public examples execute before aggregate verdict, fixture-side meter is observed actual primitive calls, regression OFF=14 / ON=10 in artificial current-like case. [Review thread](https://github.com/ryonakayama234/DekaSugi/pull/92#discussion_r4419750264). A latest-head reviewer verdict remains separate from this CI.
+- This receipt records a **specific earlier tested source commit**, not an automatic CI endorsement of later documentation-only commits. Exact new head and external legacy workflow disablement still require separate verification; `successor_main_merge_authorized=false` in the source gate. True new scored tasks **0**, statistical performance results **none**, learned-ability effects **not measured**.

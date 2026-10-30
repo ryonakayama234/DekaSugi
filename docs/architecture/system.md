@@ -829,3 +829,27 @@ flowchart LR
   E -.->|NO authority| G["Future real evaluation"]
 ~~~
 `scripts/opportunity2_boundary.py`は本番用`packages.evaluation`のimport初期化を回避する独立検査器。第三例、実験generator、凍結方策、オリジナル証拠に接続しない。[source](../../scripts/opportunity2_boundary.py) / [tests](../../tests/test_opportunity2_boundary.py) / [run](../../experiments/OPPORTUNITY-002/runs/README.md)。PR2は人工校正のみで、mainは別途安全ゲート。
+
+
+## ARCH-001 OPPORTUNITY-002 PR3 — independent C-G2 synthetic adapter (2026-10-30)
+~~~mermaid
+flowchart TB
+  subgraph Historic["Historic frozen source: NO IMPORT / NO WRITE"]
+    H["Original opportunity_actual normalizer"]
+    K["Kernel / Synthesizer / Learner / Old scorers"]
+  end
+  subgraph Synthetic["New isolated packages/opportunity2_audit (stdlib only)"]
+    F["Invented public + synthetic third audit fixture"] --> I["External pin and exact schema / integrity gate"]
+    P["Independently supplied expected fixture digest"] --> I
+    I --> R["Independent first-solution candidate replay"]
+    R --> V["Canonical selected AST, public verifier, trace and meter checks"]
+    V --> A["Third-example raw execution vs claimed output/label"]
+    A --> O["Separate integrity / search / audit state axes"]
+    O --> M["Paired eligible-denominator aggregation"]
+    R --> Q["Finite reachability probe: witness or INCONCLUSIVE"]
+  end
+  M --> E["Synthetic engineering receipt, not scientific ability claim"]
+  Q --> E
+  Historic -.-|"NO runtime or data edge"| Synthetic
+~~~
+This is a **synthetic-only** standalone code path. The `toy_bias_v1` order is an explicitly invented adversarial calibration, not the frozen DekaSugi policy. `current_v1` independently mirrors PR2's 40/47 synthetic grammar; finite negative results never prove a universal impossibility. An independent reviewer and separate owner authorization are required for any future real C-G2 evaluator, not merely a change of `phase`.

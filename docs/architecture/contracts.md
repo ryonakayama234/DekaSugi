@@ -890,3 +890,40 @@ The current main-push historical `EXP-0002B DEV smoke` + source-lock conflict bl
 [独立スクリプト](../../scripts/opportunity2_boundary.py)が返す`opportunity2-synthetic-boundary/1`は、`off_eligible_syntax`, `on_eligible_syntax`, `on_expansion_equals_off_syntax`, `independent_product_oracle_equal`, `budget_5`/`budget_100`, `restricted_ascii_reverse_negative`, `historical_skill_source_authenticated=false`, `independent_review_completed=false`, `new_real_scored_tasks=0`, `scoring_authorized=false`を含む。これを真の第三例監査原本や正式`EvidenceEnvelope`と混同しない。
 
 実装の評価対象は人工public examplesのみで、private元データ、TRAIN64のtask_id、family/seed、旧DEV/FINAL、policy choice、raw scorer rowを読み込まない。未知の演算子や不正予算を拒否する。独立Product oracleは**構文集合**、明示されたBFS候補位置は**探索順**の検査であり、実験結果の信頼性やAI技能習得を証明しない。[tests](../../tests/test_opportunity2_boundary.py) / [plan](../../experiments/OPPORTUNITY-002/plan.md)。
+
+
+## ARCH-002 OPPORTUNITY-002 PR3 — executable synthetic data contract (2026-10-30)
+**Status:** engineering implementation proposed on [Issue #91](https://github.com/ryonakayama234/DekaSugi/issues/91); no real trial/evaluator activation. [Adapter](../../packages/opportunity2_audit/__init__.py) / [negative tests](../../tests/test_opportunity2_audit.py).
+
+- `schema_version=opportunity2-audit-normalizer/1`, `evidence_class=SYNTHETIC_INVENTED_ONLY`, restricted synthetic `fx-` ID, `source_lock=synthetic-opportunity2-cg2/1`, exactly two public pairs, nullable synthetic third pair, budget cap4 and candidates 1..100; exact fields, no unknown/private fields.
+- Caller supplies a **separately pinned** SHA256 of the full canonical JSON record (`sort_keys=True`, UTF-8, compact separators, `allow_nan=False`). Hash self-consistency is not original custody or authentic chronology. Synthetic `choice_decided_at` and `observed_at` enforce only declared structural order; `choice_pretrial_sealed` is not an independent timestamped commitment.
+- Each arm records `status, program, selected_ast, tested_candidates, public_verifier_passed, audit_correct_claim, audit_output_claim, trace_sha256, primitive_calls, by_op, observed_at, budget_id`. The adapter independently replays fixed synthetic candidate order with FIRST public match, selects the exact AST, evaluates all public pairs and the independent synthetic third pair, reconstructs full trace and canonical verifier primitive meter (two public examples per tested candidate). The claimed verifier result and audit label have **no authority**.
+- Three orthogonal axes: Integrity `VALID/INVALID/MISSING`, Search `FOUND/NOT_FOUND/UNKNOWN`, third audit `PASS/FAIL/NA/UNKNOWN`. Derived arm outcomes: `public_found_audit_correct`, `public_found_audit_incorrect`, `public_not_found`; missing => `not_observed`. Invalid evidence => pair `integrity_invalid` hard stop; coherent but differently labelled budget IDs => `non_comparable`, not a fifth false observation. Both-found third-audit discordance differs from all-task paired accuracy.
+- **Aggregator stop rule:** if one row has an invalid digest/schema/source/AST/replay/chronology/label, or a duplicate/unpinned ID occurs, return `invalid_stopped`, `estimates=null` and diagnostic invalid count; never mix valid data into a reported estimand. Otherwise report `n_paired_valid, n_both_public_found, n_third_audit_discordant_given_both_public_found, n_public_not_found_arms/pairs, n_not_observed, n_non_comparable, n_integrity_invalid`; all-task accuracy difference, both-found discordance and accuracy-first then canonical verifier-call policy error use their own denominators. Denominator zero => `not_estimable`.
+- Comparison profiles `current_v1` (PR2 fixed 3 primitive operators + invented lower(trim(Input)) macro, 4 expanded nodes) and `toy_bias_v1` (deliberately different first-solution ordering for a reachable contract-calibration witness) have **distinct scientific interpretations**. `finite_reachability_probe` yields `IDENTIFIABLE` for a constructed finite witness or `INCONCLUSIVE` when one is not seen, NEVER `STRUCTURALLY_UNIDENTIFIABLE` from enumeration alone.
+
+~~~mermaid
+flowchart LR
+  X["Separately pinned synthetic fixture digest"] --> V["Exact schema / pinned source lock"]
+  F["Invented public + synthetic audit pairs"] --> V
+  V --> R["First-match replay and counter/AST/trace verification"]
+  R --> S{"Result"}
+  S -->|"coherent solved"| G["Third audit correct or incorrect"]
+  S -->|"coherent no-find"| N["Public not found"]
+  S -->|"missing"| M["Not observed"]
+  S -->|"incomparable contract"| C["Non comparable"]
+  S -->|"contradiction"| I["Integrity invalid: STOP"]
+  G --> A["Paired metric denominator"]
+  N --> A
+  M --> A
+  C --> A
+  I -.-|"NO estimates"| A
+~~~
+
+This code does **not** import historical scorer/learner/kernel packages; it holds invented third examples in test-only public GitHub, never genuine evaluator-only bytes. There is no new official third-audit custody, cryptographic timestamping, independent authentication, power analysis or empirical learned-effect result. The historical `normalize_audited_trial()` retains its strict `false_solved` contract unchanged.
+
+- Explicitly absent arm or **strictly incomplete known-key** synthetic arm/audit records become `not_observed` and are excluded. Unknown extra keys or contradictory complete records remain `integrity_invalid`. Truncation may be informative and must not be silently imputed or interpreted as trustworthy trial completion.
+
+- **PR3 review correction (P1):** the replay MUST evaluate *all* public examples for every tested candidate (evaluate outcomes before applying `all`), because the meter records both public invocations. Short-circuit `all(generator)` without changing the meter misstates observed primitive calls. Independent fixture generator instruments actual primitive operations. Regression witness: current-like public trim/lower case budget100 must have OFF=14 and ON=10 explicitly metered calls under this **full-evaluation synthetic contract**, not the 9/7 calls of a short-circuit runner. This does not assert the historical production meter has identical semantics.
+
+- **PR3 Codex P1 missingness correction:** missing or known-key incomplete synthetic third-audit source invalidates pair-level observability **regardless of whether OFF/ON found a public solution**. Retain full arm replay/integrity validation, but place such a pair in `not_observed`, never in `n_paired_valid`; no invented all-task accuracy 0.0 where there was no third-audit evidence. Regression: both `not_found` with `audit_missing=True` => zero valid pairs, one missing pair, `not_estimable`.
