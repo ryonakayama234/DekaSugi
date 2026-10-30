@@ -60,6 +60,28 @@ class P3SyntheticStatisticsTests(unittest.TestCase):
             with self.subTest(bad=repr(bad)), self.assertRaises(ValueError):
                 paired_t_interval(bad)
 
+    def test_tiny_spread_never_falsely_gives_zero_margin(self):
+        ordinary = paired_t_interval((0., 0., 0., 0., 0.6))
+        tiny = paired_t_interval((0., 0., 0., 0., 6e-162))
+        self.assertEqual((ordinary.status, tiny.status),
+                         ("computed", "computed"))
+        self.assertFalse(ordinary.positive_evidence)
+        self.assertFalse(tiny.positive_evidence)
+        self.assertLess(tiny.lower, 0.)
+        self.assertGreater(tiny.upper, 0.)
+        self.assertLess(0., tiny.upper-tiny.lower)
+        # Even the smallest representable subnormal cannot be reported
+        # as positive evidence when the CI margin loses precision.
+        smallest = paired_t_interval((0., 0., 0., 0., 5e-324))
+        self.assertFalse(smallest.positive_evidence)
+        self.assertIn(smallest.status, ("computed", "precision_loss"))
+        # Historical exact-constant rounding edge cases also remain STOP.
+        for value, count in ((0.0059, 8138), (0.1, 3)):
+            with self.subTest(value=value):
+                z = paired_t_interval((value,)*count)
+                self.assertEqual(z.status, "zero_sample_variance")
+                self.assertFalse(z.positive_evidence)
+
     def test_analytic_power_and_distribution_free_sufficient_n(self):
         self.assertEqual(hoeffding_sufficient_n(), 8138)
         z = nominal_normal_positive_power(4096)

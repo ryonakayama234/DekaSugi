@@ -27,3 +27,6 @@ Corrective behavior: `zero_sample_variance` is `NOT_ESTIMABLE`, always `positive
 
 ## Follow-up numerical precision finding (2026-10-31)
 Second Codex review of head `0912ba63ca706a339e36c20c4573d41d11783d71` found floating-point centering could bypass the zero-sample-variance guard: `(0.0059,)*8138` or `(0.1,)*3` yielded tiny nonzero variance and false positive. The corrective reference now detects **all exactly identical observed values before computing variance**, always returning `zero_sample_variance`/vacuous [-1,1]/no positive evidence. Add both exact regressions. A fresh exact-head safe CI and independent code review are mandatory; previous heads remain superseded, not proof of resolution.
+
+## Third corrective review: underflow safety
+Codex at `477b77530d71437062fc600e5af13fc2a993d189` found an **additional P2** false positive: `(0.,0.,0.,0.,6e-162)` had an underflowed standard-error term, unlike `(0.,0.,0.,0.,.6)`. The new code normalizes differences before squaring, restores the correct scale **after** calculating Student-t margin and fail-closes on nonrepresentable margins. Exact-head CI and Codex reviews must be checked anew; previous successful check runs are NOT evidence for the new head. All scientific task scores remain zero.
