@@ -18,3 +18,6 @@ PR1 creates a draft plan and architecture **only**. There are **zero new scored 
 Negative outcomes (including zero eligibility/underidentification) must be preserved. Old OPPORTUNITY-001 real TRAIN64, historical DEV/FINAL, historical workflow and immutable source members are not trial material for ACTIVE-001.
 
 [Plan](../plan.md) / [spec](../../../docs/specs/ACTIVE-001.md) / [Issue #93](https://github.com/ryonakayama234/DekaSugi/issues/93).
+
+## PR2 invented-only local engineering receipt
+- [2026-10-30 — synthetic query engine, 5/5 local tests, 878 finite semantic classes](20261030-pr2-local-synthetic.md). This is a *separate engineering* record; official score count remains **zero**, and independent review/CI source gate is still pending.
