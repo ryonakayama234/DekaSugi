@@ -36,3 +36,6 @@ Negative outcomes (including zero eligibility/underidentification) must be prese
 
 ## PR2 exact storage type checks after independent P2 review (2026-10-30)
 - [Lying-tuple semantic votes and type-confusion synthetic regression](20261030-pr2-container-types.md): records local-only validation separately from the previous canonical Catalog and MappingProxyType receipts. No historical score changes, new real evaluations or source-lock changes.
+
+## P1 B1+ invented-only engineering (2026-10-31)
+- [B1+ source, test and evidence-status receipt](20261031-b1plus-p1-engineering.md): separate mechanism control on canonical replay; frozen old B1/B2; **0 scored ACTIVE-001 tasks**. CI results and review outcomes must be verified on the PR's exact final head; the existence of this note is not proof of test pass.

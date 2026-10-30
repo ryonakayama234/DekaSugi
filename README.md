@@ -127,3 +127,6 @@ Review-driven [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) uses 
 
 ## ACTIVE-001 PR2 — exact-state types and replay (2026-10-30)
 [Draft PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) now checks that externally reconstructed semantic-class ID tuples and proposal/answer fields contain exact Python primitive types, preventing equality-preserving subclass operations from changing question scores. [System map](docs/architecture/system.md), [data contract](docs/architecture/contracts.md), [synthetic run](experiments/ACTIVE-001/runs/20261030-pr2-container-types.md). No historical scoring, independent source custody or measured intelligence gain is claimed.
+
+## ACTIVE-001 P1 — B1+の非採点工学的対照（2026-10-31）
+[Issue #99/P1](https://github.com/ryonakayama234/DekaSugi/issues/99) に従い、既存B1/B2は保持したまま \`informative-uniform-v1\` を追加。固定した人工世界の現在の意味仮説集合でGini分子が正の未質問入力だけを一様抽選し、全履歴で選択の適法性を再計算する。これは「無情報質問の回避」と「有情報質問の順位付け」を将来区別する対照であり、学習済み方策でも知能向上の実測でもない。**新規正式採点0件、過去のデータ再採点なし。** [ADR](docs/architecture/decisions/ADR-0007-active001-b1plus-control.md) / [ARCH-001](docs/architecture/system.md) / [ARCH-002](docs/architecture/contracts.md) / [run](experiments/ACTIVE-001/runs/20261031-b1plus-p1-engineering.md)。

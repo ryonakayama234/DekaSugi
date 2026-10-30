@@ -232,7 +232,8 @@ def _choose_without_revalidation(session: QuerySession, catalog: Catalog,
                                  policy: str, seed: int | None) -> QueryProposal | None:
     if session.status != "ambiguous":
         return None
-    if policy not in ("max-disagreement-v1", "uniform-random-v1"):
+    if policy not in ("max-disagreement-v1", "uniform-random-v1",
+                      "informative-uniform-v1"):
         raise ValueError("unrecognized query policy")
     if policy == "max-disagreement-v1":
         if seed is not None:
@@ -250,9 +251,15 @@ def _choose_without_revalidation(session: QuerySession, catalog: Catalog,
     if policy == "max-disagreement-v1":
         chosen = min(i for i, n in scores if n == best)
     else:
+        # B1 keeps its exact historical choice domain and candidate pool.
+        # B1+ excludes Gini-zero questions, without changing B1 or B2.
+        domain = ("active001-random-v1" if policy == "uniform-random-v1"
+                  else "active001-informative-uniform-v1")
+        pool = (remaining if policy == "uniform-random-v1"
+                else [i for i, numerator in scores if numerator > 0])
         chosen = random.Random(
-            f"active001-random-v1:{seed}:{session.commitment()}"
-        ).choice(remaining)
+            f"{domain}:{seed}:{session.commitment()}"
+        ).choice(pool)
     return _proposal_without_revalidation(session, catalog, chosen, policy, seed)
 
 
@@ -324,7 +331,7 @@ def _assert_world(session: QuerySession, catalog: Catalog) -> None:
         if proposal.policy == "max-disagreement-v1":
             if proposal.random_seed is not None:
                 raise ValueError("B2 seed must be null")
-        elif proposal.policy == "uniform-random-v1":
+        elif proposal.policy in ("uniform-random-v1", "informative-uniform-v1"):
             if type(proposal.random_seed) is not int or not 0 <= proposal.random_seed < 2**63:
                 raise ValueError("invalid historical B1 seed")
         else:
@@ -376,6 +383,21 @@ def propose_random(session: QuerySession, catalog: Catalog,
     return _choose_without_revalidation(session, catalog, "uniform-random-v1", seed)
 
 
+def propose_informative_random(session: QuerySession, catalog: Catalog,
+                               *, seed: int) -> QueryProposal | None:
+    """B1+: uniform seeded choice among *remaining informative* questions.
+
+    Informative means strictly positive integer Gini numerator under the
+    current canonical semantic version space; this is not an outcome score.
+    The original B1 uniform-over-all-remaining and B2 argmax stay unchanged.
+    """
+    _assert_world(session, catalog)
+    if type(seed) is not int or not 0 <= seed < 2**63:
+        raise ValueError("invalid informative-uniform policy seed")
+    return _choose_without_revalidation(session, catalog,
+                                        "informative-uniform-v1", seed)
+
+
 def no_informative_query(session: QuerySession, catalog: Catalog) -> QuerySession:
     _assert_world(session, catalog)
     if (session.status != "ambiguous" or
@@ -394,7 +416,7 @@ def update(session: QuerySession, proposal: QueryProposal, answer: QueryAnswer,
     if proposal.policy == "max-disagreement-v1":
         if proposal.random_seed is not None:
             raise ValueError("B2 seed must be null")
-    elif proposal.policy == "uniform-random-v1":
+    elif proposal.policy in ("uniform-random-v1", "informative-uniform-v1"):
         if type(proposal.random_seed) is not int or not 0 <= proposal.random_seed < 2**63:
             raise ValueError("B1 seed invalid")
     else:
