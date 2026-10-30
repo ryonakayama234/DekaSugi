@@ -263,3 +263,8 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | ID | Status | Entry |
 |---|---|---|
 | ACTIVE-001-PR2-INTEGRITY | synthetic engineering; exact-head verification pending; no capability result | [Evidence](../experiments/ACTIVE-001/runs/20261030-pr2-integrity-repair.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) |
+
+## ACTIVE-001 PR2 canonical split and replayable trace (2026-10-30)
+| Evidence ID | State | References |
+|---|---|---|
+| ACTIVE-001-PR2-HISTORY | Implementation staged on draft PR #95; exact-head CI and new independent review required; 0 scored trials | [engineering run](../experiments/ACTIVE-001/runs/20261030-pr2-history-boundary-integration.md) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |

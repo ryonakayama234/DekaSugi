@@ -24,3 +24,6 @@ Negative outcomes (including zero eligibility/underidentification) must be prese
 
 ## PR2 review-driven integrity fix — 2026-10-30
 - [Synthetic-only state/split/policy replay correction](20261030-pr2-integrity-repair.md): separates new negative regression evidence from the earlier 5/5 local fixture receipt. No scored observation, independent evaluator or acquired generality is asserted. Record post-commit CI/independent review separately; original history is immutable.
+
+## PR2 full historical-query replay engineering checkpoint (2026-10-30)
+- [Canonical 28/64/64 split and active-query/2 trace correction](20261030-pr2-history-boundary-integration.md): staged regression scope, provenance limits and exact-head CI/review gates. Distinct from the preceding five-test and 88-test engineering receipts; no new scored research trials.

@@ -27,6 +27,7 @@ REQUIRED = (
 OPTIONAL = (
     "test_opportunity2_boundary.py", "test_opportunity2_audit.py",
     "test_active_learning_synthetic.py", "test_active_learning_integrity.py",
+    "test_active_learning_history_integrity.py",
 )
 
 

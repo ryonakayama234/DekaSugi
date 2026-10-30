@@ -894,3 +894,20 @@ flowchart TB
   O["Old locked scorers and evaluated records"] -.->|"No import, no replay"| S
 ```
 The new guards check local consistency, not truth or authenticated external Oracle ownership. Stage I within-task updates are the only implemented research mechanism; Stage II learned question policies and Stage III transfer remain planned. The explicit synthetic CI allowlist does not unlock scored trials or change historical code. [Data contract](contracts.md) / [engineering run](../../experiments/ACTIVE-001/runs/20261030-pr2-integrity-repair.md).
+
+## ARCH-001 ACTIVE-001 PR2 — complete local history verification (2026-10-30)
+~~~mermaid
+flowchart TD
+  PUBLIC["Two public examples / 28 public IDs"] --> SPLIT["Canonical 28/64/64 split commitment"]
+  SPLIT --> SESSION["Active learner: active-query/2 state"]
+  SESSION --> SELECT["B2 exact max-Gini / B1 seeded random"]
+  SELECT --> PROP["Selected proposal + synthetic answer"]
+  PROP --> TRACE["Append full proposal-answer trace"]
+  TRACE --> REPLAY["Replay every history prefix from public state"]
+  REPLAY --> VALID{"Canonical split, policy, receipt, budget and stop invariant?"}
+  VALID -->|"Valid"| SESSION
+  VALID -->|"Invalid"| REJECT["Fail closed"]
+  SECRET["Withheld evaluator labels"] -.->|"No learner edge"| SESSION
+  HISTORIC["Frozen scorers and scored history"] -.->|"No runtime edge"| SESSION
+~~~
+This is local synthetic engineering only: a digest is a consistency check, not an external Oracle signature or proof of useful transfer. The query policy cannot continue after a terminal state. [ARCH-002](contracts.md) and [run ledger](../../experiments/ACTIVE-001/runs/20261030-pr2-history-boundary-integration.md).

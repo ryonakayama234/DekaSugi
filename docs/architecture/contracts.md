@@ -976,3 +976,19 @@ flowchart LR
   SECRET["Evaluator-only target and heldout"] -.->|"No edge"| STATE
 ```
 The `InputSplit` requires exactly 28/64/64 sorted unique integer (not boolean) input IDs spanning 0..155, pairwise disjoint and matching its schema digest. `QuerySession` stores exactly two distinct public observations, validated public/question pool IDs and linked pool commitment, ordered unique answer IDs, bounded (0..2) budget, coherent terminal state, and the **exact** semantic class set reconstructed from public plus answered observations. `QueryProposal.random_seed` is null for B2, nonnegative uint63 for B1. Acceptance replays true B2 maximum disagreement/tie or B1 deterministic seed choice, not only hash equality. Local checksum and pool linkage do **not** establish third-party oracle authenticity or seed custody; the future independent evaluator owns those trust boundaries. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-integrity-repair.md).
+
+## ARCH-002 ACTIVE-001 — active-query/2 split and answer-trace contract (2026-10-30)
+~~~mermaid
+flowchart LR
+  PUB["28 public IDs + 2 observed outputs"] --> GATE["Validate canonical inquiry-world/1 split"]
+  Q["64 question IDs"] --> GATE
+  GATE --> S["QuerySession + full ordered trace"]
+  S --> R["Rebuild public-only initial hypothesis set"]
+  R --> P["Replay each B2 argmax / B1 fixed-seed query"]
+  P --> A["Verify each synthetic answer receipt"]
+  A --> T{"Prefix terminal state reached?"}
+  T -->|"No"| R
+  T -->|"Yes"| STOP["Reject additional questions"]
+  AUDIT["64 evaluator-only labels"] -.->|"Forbidden"| S
+~~~
+Session input-pool contract: sorted, unique, integer 28 public and 64 query IDs; evaluator pool reconstructed as their 64-ID complement; recompute the canonical inquiry-world/1 input-split digest and compare it with the stored split commitment at every public entry. QuerySession.trace stores a tuple of (QueryProposal, QueryAnswer), with exact local replay of the choice, local receipt and stop condition per prefix. QuerySession.answers must equal the trace's compact projection. active-query/2 is not serialized-compatible with synthetic active-query/1; B1 seed-to-input values can change due to the new session digest. No hash here is independent evaluator authority or a scientifically precommitted source, seed or Oracle; these require separate future evaluation safeguards. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-history-boundary-integration.md).
