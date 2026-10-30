@@ -38,3 +38,6 @@ Use canonical JSON UTF-8 SHA256; simple digests establish identity, not custody,
 Only independently authorized future SLEEP can load sanitized train episodes to propose reusable query plans. No third-audit/eval labels enter train history, and frozen policy is evaluated on disjoint held-out target families. Stage III needs separate domain adapters and shared intellectual-action representation; adapter implementation effort is not learned intelligence.
 
 Related: [plan](../../experiments/ACTIVE-001/plan.md) / [runs](../../experiments/ACTIVE-001/runs/README.md) / [ADR](../architecture/decisions/ADR-0005-active-inquiry.md) / [Issue #93](https://github.com/ryonakayama234/DekaSugi/issues/93).
+
+## PR2 engineering implementation status (2026-10-30; not scientific adoption)
+A separate stacked implementation adds `packages/inquiry_world` and `packages/active_learning` plus inventor-only fixture tests, not a genuine evaluator. Catalog enumeration locally found 878 semantic classes over 156 test-domain inputs. The `QueryAnswer` fixture receipt does not prove independent Oracle authorship, and `EvaluationReport`/adversarial identity validation remain future work. [Engineering receipt](../../experiments/ACTIVE-001/runs/20261030-pr2-local-synthetic.md). No scored research study, validated sample power, true learner policy update or transfer claim.
