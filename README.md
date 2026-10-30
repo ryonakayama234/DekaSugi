@@ -127,3 +127,7 @@ Review-driven [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) uses 
 
 ## ACTIVE-001 PR2 — exact-state types and replay (2026-10-30)
 [Draft PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) now checks that externally reconstructed semantic-class ID tuples and proposal/answer fields contain exact Python primitive types, preventing equality-preserving subclass operations from changing question scores. [System map](docs/architecture/system.md), [data contract](docs/architecture/contracts.md), [synthetic run](experiments/ACTIVE-001/runs/20261030-pr2-container-types.md). No historical scoring, independent source custody or measured intelligence gain is claimed.
+
+## ACTIVE-001 #96 — refined scientific design v2 (2026-10-30; review draft)
+[Decision text v2](experiments/ACTIVE-001/method-v2-decision-draft.md) / [ADR-0006](docs/architecture/decisions/ADR-0006-active001-scientific-design.md) / [PR #97](https://github.com/ryonakayama234/DekaSugi/pull/97).
+A future **read-only structural Gate F** precedes a separately authorized, source-locked proposed **N4096** paired evaluation of independent with-replacement uniform semantic-class/public-pair task draws. N, seed, evaluator and source identity remain **NOT_FROZEN**, zero new scored ACTIVE-001 trials, no claim of Stage II learning or transfer.
