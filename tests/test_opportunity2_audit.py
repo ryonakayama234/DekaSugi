@@ -17,18 +17,25 @@ import unittest
 from packages import opportunity2_audit as a
 
 
-def _execute(program: tuple[str, ...], value: str) -> str:
+def _execute(program: tuple[str, ...], value: str,
+             observed_meter: dict[str, int] | None = None) -> str:
+    """Independently count operations actually executed, not estimated costs."""
+    def charged(op: str, source: str) -> str:
+        if observed_meter is not None:
+            observed_meter[op] = observed_meter.get(op, 0) + 1
+        if op == "trim":
+            return source.strip()
+        if op == "lower":
+            return source.lower()
+        if op == "upper":
+            return source.upper()
+        raise AssertionError("unsupported synthetic op")
+
     for op in program:
         if op == a.MACRO:
-            value = value.strip().lower()
-        elif op == "trim":
-            value = value.strip()
-        elif op == "lower":
-            value = value.lower()
-        elif op == "upper":
-            value = value.upper()
+            value = charged("lower", charged("trim", value))
         else:
-            raise AssertionError("unsupported synthetic op")
+            value = charged(op, value)
     return value
 
 
@@ -53,12 +60,12 @@ def _trial(profile: str, arm: str, public: list[dict],
             break
         tested += 1
         stream.update(json.dumps(list(program), separators=(",", ":")).encode("ascii") + b"\n")
-        ops = []
-        for op in program:
-            ops.extend(("trim", "lower") if op == a.MACRO else (op,))
-        for op in ops:
-            tally[op] = tally.get(op, 0) + len(public)
-        if all(_execute(program, row["input"]) == row["output"] for row in public):
+        # Observe every actual primitive call, including examples that fail.
+        public_verdicts = tuple(
+            _execute(program, row["input"], tally) == row["output"]
+            for row in public
+        )
+        if all(public_verdicts):
             status, selected = "solved", program
             break
     output = (_execute(selected, audit["input"])
@@ -158,6 +165,10 @@ class Opportunity2AuditTests(unittest.TestCase):
             "ON": "public_found_audit_correct"})
         self.assertEqual(long["arms"]["OFF"]["tested_candidates"], 6)
         self.assertEqual(long["arms"]["ON"]["tested_candidates"], 5)
+        # The reviewer caught short-circuit all(); actual two-public-example
+        # invocation counts must be recomputed, not inferred from formulae.
+        self.assertEqual(long["arms"]["OFF"]["primitive_calls"], 14)
+        self.assertEqual(long["arms"]["ON"]["primitive_calls"], 10)
         short = fixture(profile="current_v1", public=public, audit=audit, budget=5)
         self.assertEqual(classify(short)["arm_outcomes"]["OFF"], "public_not_found")
         self.assertEqual(classify(short)["arm_outcomes"]["ON"], "public_found_audit_correct")

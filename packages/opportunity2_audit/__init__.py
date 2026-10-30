@@ -147,7 +147,10 @@ def _replay(profile: str, arm: str, public: tuple[tuple[str, str], ...],
         primitive_ops = expand(program)
         for op in primitive_ops:
             by_op[op] = by_op.get(op, 0) + len(public)
-        if all(apply(program, x) == y for x, y in public):
+        # The metering contract charges EVERY public verifier invocation.
+        # Do not short-circuit after the first public example fails.
+        public_verdicts = tuple(apply(program, x) == y for x, y in public)
+        if all(public_verdicts):
             output = None if audit is None else apply(program, audit[0])
             return {"status": "solved", "program": list(program),
                     "tested_candidates": tested, "trace_sha256": trace.hexdigest(),
