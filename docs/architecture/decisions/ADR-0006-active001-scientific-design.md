@@ -6,7 +6,7 @@ updated: 2026-10-30
 tags: architecture, methodology, active-learning, measurement, decision
 
 ## Context
-The current \`packages/inquiry_world\` + \`packages/active_learning\` engine (merged PR #94/#95) can choose informative queries and update finite-domain hypotheses, but it has no independently scored Stage-I utility claim. Previous OPPORTUNITY-001 TRAIN64 was UNDERIDENTIFIED. The proposed N=512/+5pp design did not justify statistical power; max Gini on a uniform semantic version space is not the same objective as held-out decision accuracy. Existing B1 chooses uniformly even among zero-information questions, so a positive B2/B1 gap may be an avoidance-of-waste effect.
+The current `packages/inquiry_world` + `packages/active_learning` engine (merged PR #94/#95) can choose informative queries and update finite-domain hypotheses, but it has no independently scored Stage-I utility claim. Previous OPPORTUNITY-001 TRAIN64 was UNDERIDENTIFIED. The proposed N=512/+5pp design did not justify statistical power; max Gini on a uniform semantic version space is not the same objective as held-out decision accuracy. Existing B1 chooses uniformly even among zero-information questions, so a positive B2/B1 gap may be an avoidance-of-waste effect.
 
 ## Decision (proposed, not frozen)
 1. Make **information opportunity, decision utility and economic cost distinct constructs**; measure bounded *within-episode epistemic adaptation*, not across-episode learner growth.
@@ -27,6 +27,6 @@ The current \`packages/inquiry_world\` + \`packages/active_learning\` engine (me
 N4096 is a proposal, not an observed-power result or a sample-size freeze; no fixed positive practical utility guaranteed. A finite deterministic world can support a precise **conditional synthetic** capability claim, not natural language, new concepts or domain transfer. If information opportunity is structurally absent or cost infeasible, terminate before official target exposure and issue a new protocol version.
 
 ## Implementation boundary
-**Primary module:** future independent \`packages/active_evaluation\` / scientific methodology. **New proposed auxiliary:** \`packages/active_feasibility\` read-only. **Protected unchanged:** \`packages/inquiry_world\`, \`packages/active_learning\`, legacy scorers, historic source locks/workflows, original evidence. No code changes under this ADR.
+**Primary module:** future independent `packages/active_evaluation` / scientific methodology. **New proposed auxiliary:** `packages/active_feasibility` read-only. **Protected unchanged:** `packages/inquiry_world`, `packages/active_learning`, legacy scorers, historic source locks/workflows, original evidence. No code changes under this ADR.
 
 Detailed method: [Stage I design v2](../../../experiments/ACTIVE-001/method-v2-decision-draft.md). Architecture: [ARCH-001](../system.md); contracts: [ARCH-002](../contracts.md); records: [unscored review ledger](../../../experiments/ACTIVE-001/runs/20261030-design-v2-review-ledger.md).
