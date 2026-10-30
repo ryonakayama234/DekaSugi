@@ -299,3 +299,11 @@ Scientific state remains zero newly scored ACTIVE-001 observations. PR #94/#95 a
 | ACTIVE-001-DESIGN-V2-REVIEW-LEDGER | unscored proposed evidence ledger | [Review and numeric-design obligations](../experiments/ACTIVE-001/runs/20261030-design-v2-review-ledger.md) |
 
 Previous [v1 candidate](../experiments/ACTIVE-001/method-v1-candidate.md) and [historical draft plan](../experiments/ACTIVE-001/plan.md) remain unchanged as earlier versioned thought. [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md).
+
+## ACTIVE-001 — Gate F exact synthetic feasibility source (2026-10-30)
+| ID | Status | Reference |
+|---|---|---|
+| ACTIVE-001-GATE-F-FIXTURE-01 | invented finite-structure calibration, no scientific scoring; F4 pending | [Non-scored evidence ledger](../experiments/ACTIVE-001/runs/20261030-gate-f-invented-census.md) |
+| ACTIVE-001-GATE-F-SOURCE | implementation in stacked PR; not on main | [Source](../packages/active_feasibility/__init__.py) / [Runner](../packages/active_feasibility/__main__.py) / [Tests](../tests/test_active_feasibility.py) |
+
+The 85.00% class-weighted F3 fraction uses invented seed 20261030 only and does not justify Stage I benefit or the future official split. The source version is not merged. See [method v2](../experiments/ACTIVE-001/method-v2-decision-draft.md) / [ADR-0006](architecture/decisions/ADR-0006-active001-scientific-design.md).
