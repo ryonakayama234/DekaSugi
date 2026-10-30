@@ -27,3 +27,6 @@ Negative outcomes (including zero eligibility/underidentification) must be prese
 
 ## PR2 full historical-query replay engineering checkpoint (2026-10-30)
 - [Canonical 28/64/64 split and active-query/2 trace correction](20261030-pr2-history-boundary-integration.md): staged regression scope, provenance limits and exact-head CI/review gates. Distinct from the preceding five-test and 88-test engineering receipts; no new scored research trials.
+
+## PR2 catalog integrity review response (2026-10-30)
+- [Canonical finite-world Catalog validation and adversarial regression](20261030-pr2-catalog-integrity.md). New synthetic engineering evidence is separate from previous history/split correction and does not alter frozen observations; actual newly scored ACTIVE-001 tasks remain **0**.

@@ -6,17 +6,40 @@ from __future__ import annotations
 
 from collections import Counter
 from dataclasses import asdict, dataclass, replace
+from functools import lru_cache
+from types import MappingProxyType
 import random
 from typing import Literal
 
 from packages.inquiry_world import (
-    Catalog, InputSplit, INPUTS, SCHEMA, digest, validate_split,
+    Catalog, InputSplit, INPUTS, SCHEMA, build_catalog, digest, validate_split,
 )
 
 Status = Literal[
     "ambiguous", "identified", "query_unidentifiable", "budget_exhausted",
     "model_inconsistent",
 ]
+
+
+@lru_cache(maxsize=1)
+def _canonical_catalog() -> Catalog:
+    """Build the trusted, fixed finite-world catalog once per process."""
+    return build_catalog()
+
+
+def _assert_catalog(catalog: Catalog) -> None:
+    """Reject forged classes, signatures, representative programs or ID lookups.
+
+    The world digest covers only world semantics; it does NOT commit to
+    reconstructed Catalog.classes or Catalog.by_id. This comparison checks
+    the full canonical generated catalogue (including syntax_count), while
+    cached construction avoids 4,681 program enumerations per operation.
+    """
+    if (type(catalog) is not Catalog or
+        type(catalog.classes) is not tuple or
+        type(catalog.by_id) is not MappingProxyType or
+        catalog != _canonical_catalog()):
+        raise ValueError("catalog deviates from canonical finite world")
 
 
 @dataclass(frozen=True, slots=True)
@@ -85,8 +108,9 @@ def _status(class_ids: tuple[str, ...], answers: int, max_questions: int) -> Sta
 def start(task_id: str, public_examples: tuple[tuple[int, str], ...],
           split: InputSplit, catalog: Catalog, *, max_questions: int = 2) -> QuerySession:
     validate_split(split)
-    if type(catalog) is not Catalog or type(task_id) is not str or not 1 <= len(task_id) <= 128:
-        raise ValueError("invalid catalog/task ID")
+    _assert_catalog(catalog)
+    if type(task_id) is not str or not 1 <= len(task_id) <= 128:
+        raise ValueError("invalid task ID")
     if type(max_questions) is not int or not 0 <= max_questions <= 2:
         raise ValueError("question budget outside fixed limit")
     if type(public_examples) is not tuple or len(public_examples) != 2:
@@ -203,8 +227,9 @@ def _apply_without_revalidation(session: QuerySession, proposal: QueryProposal,
 
 def _assert_world(session: QuerySession, catalog: Catalog) -> None:
     """Replay the *entire* ordered history; trust neither caller classes nor receipts."""
-    if type(session) is not QuerySession or type(catalog) is not Catalog:
-        raise ValueError("invalid session or catalog")
+    if type(session) is not QuerySession:
+        raise ValueError("invalid session")
+    _assert_catalog(catalog)
     if (session.world_digest != catalog.universe_digest or
         type(session.task_id) is not str or not 1 <= len(session.task_id) <= 128 or
         type(session.max_questions) is not int or not 0 <= session.max_questions <= 2):

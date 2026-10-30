@@ -992,3 +992,20 @@ flowchart LR
   AUDIT["64 evaluator-only labels"] -.->|"Forbidden"| S
 ~~~
 Session input-pool contract: sorted, unique, integer 28 public and 64 query IDs; evaluator pool reconstructed as their 64-ID complement; recompute the canonical inquiry-world/1 input-split digest and compare it with the stored split commitment at every public entry. QuerySession.trace stores a tuple of (QueryProposal, QueryAnswer), with exact local replay of the choice, local receipt and stop condition per prefix. QuerySession.answers must equal the trace's compact projection. active-query/2 is not serialized-compatible with synthetic active-query/1; B1 seed-to-input values can change due to the new session digest. No hash here is independent evaluator authority or a scientifically precommitted source, seed or Oracle; these require separate future evaluation safeguards. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-history-boundary-integration.md).
+
+## ARCH-002 ACTIVE-001 PR2 — Catalog trust boundary and data flow (2026-10-30)
+~~~mermaid
+flowchart LR
+  GRAMMAR["Trusted 8-op DSL / finite 156 inputs"] --> CANON["_canonical_catalog: cached complete reference"]
+  CALLER["Reconstructed/untrusted Catalog"] --> ASSERT["_assert_catalog"]
+  CANON --> ASSERT
+  ASSERT -->|"equal canonical contents"| START["start / _assert_world"]
+  ASSERT -->|"mismatch"| ERROR["ValueError"]
+  START --> SESSION["QuerySession + full ordered trace"]
+  SESSION --> POLICY["B1 seeded / B2 max-Gini"]
+  POLICY --> ANSWER["Synthetic local answer receipt"]
+  ANSWER --> REPLAY["Replay canonical classes + split + all prefixes"]
+  REPLAY --> SESSION
+  HIDDEN["Evaluator-only truth"] -.->|"No learner data flow"| SESSION
+~~~
+Exact Catalog structural contract: `type(catalog) is Catalog`, `classes` is a tuple, `by_id` uses a read-only `MappingProxyType`, and dataclass equality against a lazily cached deterministic `build_catalog()` reference covers the full ordered class list, every output_signature and representative program, lookup keys and values, universe_digest and syntax_count. Both `start()` and session replay entry checks enforce it. The immutable canonical cache is internal process state; local integrity does NOT authenticate an independently custodied evaluator, hidden labels, or the source itself. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-catalog-integrity.md).

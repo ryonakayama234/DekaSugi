@@ -911,3 +911,20 @@ flowchart TD
   HISTORIC["Frozen scorers and scored history"] -.->|"No runtime edge"| SESSION
 ~~~
 This is local synthetic engineering only: a digest is a consistency check, not an external Oracle signature or proof of useful transfer. The query policy cannot continue after a terminal state. [ARCH-002](contracts.md) and [run ledger](../../experiments/ACTIVE-001/runs/20261030-pr2-history-boundary-integration.md).
+
+## ARCH-001 ACTIVE-001 PR2 — trusted canonical candidate catalogue (2026-10-30)
+~~~mermaid
+flowchart TB
+  WORLD["Fixed 8-operation inquiry world / 156 inputs"] --> BUILD["Deterministic canonical catalogue 4,681 syntactic programs"]
+  BUILD --> CANON["Cached immutable 878 semantic classes + by_id lookup"]
+  EXT["Caller-supplied Catalog"] --> VALID{"Complete equality: classes, signatures, AST, by_id, syntax_count, digest?"}
+  CANON --> VALID
+  VALID -->|"valid"| SESSION["Active learner: QuerySession, B1/B2"]
+  VALID -->|"invalid"| REJECT["Reject / ValueError"]
+  SESSION --> TRACE["Full ordered proposal-answer trace"]
+  TRACE --> REPLAY["Verify every history prefix and canonical split"]
+  REPLAY --> SESSION
+  PRIVATE["Evaluator-only target and labels"] -.->|"No access"| SESSION
+  OLD["Frozen original scorers and evidence"] -.->|"No runtime edge"| SESSION
+~~~
+This is a consistency check against a fixed **experimenter-authored** synthetic world, not a learned representation, independently signed source, real measured generalization or trusted Oracle. The canonical reference is generated once per process, not enumerated on every question; equality still checks all semantic contents. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-catalog-integrity.md).

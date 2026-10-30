@@ -268,3 +268,8 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | Evidence ID | State | References |
 |---|---|---|
 | ACTIVE-001-PR2-HISTORY | Implementation staged on draft PR #95; exact-head CI and new independent review required; 0 scored trials | [engineering run](../experiments/ACTIVE-001/runs/20261030-pr2-history-boundary-integration.md) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+## ACTIVE-001 PR2 canonical Catalog hardening (2026-10-30)
+| Evidence ID | Engineering scope | Run |
+|---|---|---|
+| ACTIVE-001-PR2-CATALOG | Fixed finite-world semantic classes, signatures, representative programs, canonical by_id, syntax count and world digest checked at every public learner entry; synthetic-only | [P2 review response](../experiments/ACTIVE-001/runs/20261030-pr2-catalog-integrity.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) |

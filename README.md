@@ -118,3 +118,6 @@ The [isolated finite grammar](packages/inquiry_world/__init__.py) and [active qu
 
 ## ACTIVE-001 PR2 — question-history and input-boundary hardening (2026-10-30)
 [Draft PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) stages active-query/2: verify the full canonical public/query/evaluator split and revalidate each question-choice/answer prefix. [System flow](docs/architecture/system.md) / [Data contract](docs/architecture/contracts.md) / [Engineering receipt](experiments/ACTIVE-001/runs/20261030-pr2-history-boundary-integration.md). This does not authorize a real scored study, assert acquired skill or imply independent Oracle trust.
+
+## ACTIVE-001 PR2 — fixed-world Catalog integrity (2026-10-30)
+The [draft PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) adds cached canonical Catalog checks so reconstructed local class signatures and by_id lookups cannot forge the supposed absence of informative queries. [Architecture](docs/architecture/system.md) / [contracts](docs/architecture/contracts.md) / [engineering receipt](experiments/ACTIVE-001/runs/20261030-pr2-catalog-integrity.md). Synthetic tests and CI do not certify source-authenticated scientific improvement, independent Oracle custody or generalization.
