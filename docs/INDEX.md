@@ -304,3 +304,8 @@ Previous [v1 candidate](../experiments/ACTIVE-001/method-v1-candidate.md) and [h
 | ID | Status | Reference |
 |---|---|---|
 | ACTIVE-001-P3-INFERENCE | Invented-only bounded task-difference numeric check: Student-t/Hoefdding comparison, exact analytic 8138 sufficient alternative, N4096 provisional; no scored tasks, no scientific freeze | [P3 design](../experiments/ACTIVE-001/p3-inference-numerical-draft.md) / [source](../packages/active_statistics/__init__.py) / [tests](../tests/test_active_statistics_synthetic.py) / [run](../experiments/ACTIVE-001/runs/20261031-p3-invented-stat.md) / [Issue #99](https://github.com/ryonakayama234/DekaSugi/issues/99) |
+
+## ACTIVE-001 E0 — public-only evaluator interface preflight (2026-10-31)
+| ID | Engineering state | Evidence |
+|---|---|---|
+| ACTIVE-001-E0 | Strict synthetic public/query/answer/final JSON frame contracts and leak-denial regression; **no authenticated independent evaluator**, no scorer | [E0 protocol](../experiments/ACTIVE-001/e0-custody-boundary-draft.md) / [source](../packages/active_custody_boundary/__init__.py) / [negative tests](../tests/test_active_custody_boundary.py) / [run](../experiments/ACTIVE-001/runs/20261031-e0-public-wire.md) / [Issue #104](https://github.com/ryonakayama234/DekaSugi/issues/104) |

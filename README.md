@@ -134,3 +134,6 @@ A future **read-only structural Gate F** precedes a separately authorized, sourc
 
 ## ACTIVE-001 P3 — 統計的検出力の非採点チェック（2026-10-31）
 一次仮説B2−B1の**課題単位**差分に対し、Student-t 95% CIと有界IID Hoeffdingの保守的CIを人工差分だけで検査する [P3数値検証器](packages/active_statistics/__init__.py) を追加。4,096課題で真の+5ppのときの最悪分散の**正規近似**約89%検出力は保証ではなく、Hoeffdingによる保守的な80%十分条件は約8,138課題。どちらの標本数も研究採点用として凍結していない。実際の正答率を測らず旧データを再実行しない。[方法](experiments/ACTIVE-001/p3-inference-numerical-draft.md) / [記録](experiments/ACTIVE-001/runs/20261031-p3-invented-stat.md)。
+
+## ACTIVE-001 E0 — 独立評価のためのデータ入口の検査（2026-10-31）
+AI側に渡せるJSON項目を公開観測・合法な質問候補・その質問への1回答だけに制限する [E0インターフェース](packages/active_custody_boundary/__init__.py) を追加。正解ID、秘密Seed、採点用ラベル、将来の回答、結果の混入・不正な再送・入力分割の改ざんを**合成負例テストで拒否**する。**重要：まだ真の独立評価器ではない**。本物の採点は別プロセス保管、正式な方法凍結と別途実行承認が必要。[設計](experiments/ACTIVE-001/e0-custody-boundary-draft.md) / [Issue #104](https://github.com/ryonakayama234/DekaSugi/issues/104).
