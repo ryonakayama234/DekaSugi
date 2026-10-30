@@ -6,16 +6,16 @@ updated: 2026-10-30
 tags: experiment, planning, preregistration, evidence, audit
 
 ## Source basis
-Main at \`d9ad80fc844a09c312f6434d20d0d17fdcac4109\` (PR #94/#95 integrated engineering reference). Existing draft PR #97 is a documentation-only design review. [Method v2](../method-v2-decision-draft.md), [ADR-0006](../../../docs/architecture/decisions/ADR-0006-active001-scientific-design.md).
+Main at `d9ad80fc844a09c312f6434d20d0d17fdcac4109` (PR #94/#95 integrated engineering reference). Existing draft PR #97 is a documentation-only design review. [Method v2](../method-v2-decision-draft.md), [ADR-0006](../../../docs/architecture/decisions/ADR-0006-active001-scientific-design.md).
 
 ## Evidence status
 - New actual scored ACTIVE-001 trials: **ZERO**.
 - New actual task-generated targets / oracle labels / 64 private evaluations: **NONE**.
 - Historical locked EXP-0003A / OPPORTUNITY-001 / EXP-0002B scoring: **NOT TOUCHED**.
-- Current document calculates **planning bounds only**; \`n=4096\` and split/seed/analysis are NOT independently frozen.
+- Current document calculates **planning bounds only**; `n=4096` and split/seed/analysis are NOT independently frozen.
 - 878 semantic classes / 4,681 syntax programs are **previously recorded synthetic engineering measurements**, not remeasured in this doc.
-- \`878*C(28,2)=331884\` is a mathematical count of potential finite target/public-pair combinations, not independent experiments.
-- Variance bound \`Var(D)<=1\`, N4096 normal-approx CI worst halfwidth \`0.030625\`, and nominal positive detection power ≈0.89 at delta=.05, sigma=1: **analytic planning**, not actual observed precision, total cost or scientifically validated power.
+- `878*C(28,2)=331884` is a mathematical count of potential finite target/public-pair combinations, not independent experiments.
+- Variance bound `Var(D)<=1`, N4096 normal-approx CI worst halfwidth `0.030625`, and nominal positive detection power ≈0.89 at delta=.05, sigma=1: **analytic planning**, not actual observed precision, total cost or scientifically validated power.
 
 ## Must independently verify before freeze (ALL pending)
 - [ ] Review that the uniform independent sampling-with-replacement task law and inferential unit match the intended limited claim.
