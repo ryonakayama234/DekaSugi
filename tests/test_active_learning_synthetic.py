@@ -149,28 +149,32 @@ class SyntheticInformativeUniformTests(unittest.TestCase):
     def test_full_replay_after_answer_and_second_question(self):
         from packages.active_learning import propose_informative_random
         s = self.session()
-        target = self.catalog.by_id[s.class_ids[-1]]
         p = propose_informative_random(s, self.catalog, seed=37)
-        s2 = update(s, p, make_answer(p, target.output_signature[p.input_id]),
-                    self.catalog)
+        # Choose a canonical invented response that genuinely leaves a
+        # second informative step. Never silently skip two-query coverage.
+        s2 = None
+        for output, count in p.predictive_partition:
+            if count < 2:
+                continue
+            candidate = update(s, p, make_answer(p, output), self.catalog)
+            if candidate.status == "ambiguous":
+                s2 = candidate
+                break
+        self.assertIsNotNone(s2, "fixture must actually exercise second query")
+        target = self.catalog.by_id[s2.class_ids[0]]
         self.assertIn(target.class_id, s2.class_ids)
         self.assertEqual(len(s2.trace), 1)
         self.assertEqual(s2.trace[0][0], p)
-        self.assertEqual(final_program(s2, self.catalog),
-                         self.catalog.by_id[s2.class_ids[0]].program)
-        if s2.status == "ambiguous":
-            p2 = propose_informative_random(s2, self.catalog, seed=38)
-            self.assertIsNotNone(p2)
-            self.assertNotEqual(p2.input_id, p.input_id)
-            self.assertIn(p2.input_id, self.informative(s2))
-            s3 = update(s2, p2, make_answer(
-                p2, target.output_signature[p2.input_id]), self.catalog)
-            self.assertIn(s3.status, ("identified", "budget_exhausted"))
-            self.assertEqual(len(s3.trace), 2)
-            self.assertIn(target.class_id, s3.class_ids)
-        else:
-            self.assertIn(s2.status, ("identified", "query_unidentifiable",
-                                      "budget_exhausted"))
+        self.assertEqual(final_program(s2, self.catalog), target.program)
+        p2 = propose_informative_random(s2, self.catalog, seed=38)
+        self.assertIsNotNone(p2)
+        self.assertNotEqual(p2.input_id, p.input_id)
+        self.assertIn(p2.input_id, self.informative(s2))
+        s3 = update(s2, p2, make_answer(
+            p2, target.output_signature[p2.input_id]), self.catalog)
+        self.assertIn(s3.status, ("identified", "budget_exhausted"))
+        self.assertEqual(len(s3.trace), 2)
+        self.assertIn(target.class_id, s3.class_ids)
 
     def test_no_informative_context_stops_without_question(self):
         from collections import defaultdict
