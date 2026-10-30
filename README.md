@@ -137,3 +137,6 @@ A future **read-only structural Gate F** precedes a separately authorized, sourc
 
 ## ACTIVE-001 P0 — F4適応的質問の厳密な定義（2026-10-31）
 二つの固定質問で**一意に識別できる意味クラス数** N(H) と、最初の回答に応じて二つ目を変えた場合の一意識別数 A(H) を比較し、F4⇔A(H)>N(H) をF3内の**非排他的な構造フラグ**として定義した。小規模な人工世界で独立に網羅検証し、計算量の上限を超えれば \`NOT_COMPUTED\` を返す。F4の全数頻度・非公開入力の予測精度・新規正式採点は依然**未測定**。[定義](experiments/ACTIVE-001/f4-operational-definition.md) / [ARCH-001](docs/architecture/system.md) / [ARCH-002](docs/architecture/contracts.md) / [工学記録](experiments/ACTIVE-001/runs/20261031-f4-p0-engineering.md)。
+
+## ACTIVE-001 P2 — 合成実験によるCPU見積もり（2026-10-31）
+正式採点を行わず、人工公開コンテキストに限定してカタログ生成・質問選択/履歴再生・F0–F3全数構造計算・予測のCPU/壁時計時間とプロセス最大RSSを測定する [P2計測器](packages/active_cost/__init__.py) を追加。7アーム案とB1+込みの12アーム案を512/1024/4096課題で**概算**し、統計P3に引き渡す。B1+の実CPUとF4全数の費用は未測定。旧スコア・評価専用ラベル・固定ソース・旧Workflowは変更していない。[手法](experiments/ACTIVE-001/p2-resource-budget-draft.md) / [run記録](experiments/ACTIVE-001/runs/20261031-p2-invented-cpu.md)。

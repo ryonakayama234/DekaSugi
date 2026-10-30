@@ -46,8 +46,6 @@ class P2SyntheticCostTests(unittest.TestCase):
             self.assertEqual(len(phase["cpu_ns"]), phase["repeats"])
         self.assertGreaterEqual(result["process_maxrss_kib_after"],
                                 result["process_maxrss_kib_before"])
-        self.assertGreaterEqual(extrapolate_cpu_ns(
-            {}, n_tasks=4096, include_b1plus=False) if False else 0, 0)
         forbidden = ("target_id", "audit_labels", "heldout_accuracy",
                      "oracle_answer", "preregistered_score")
         for key in forbidden:
