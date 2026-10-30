@@ -30,3 +30,6 @@ Negative outcomes (including zero eligibility/underidentification) must be prese
 
 ## PR2 catalog integrity review response (2026-10-30)
 - [Canonical finite-world Catalog validation and adversarial regression](20261030-pr2-catalog-integrity.md). New synthetic engineering evidence is separate from previous history/split correction and does not alter frozen observations; actual newly scored ACTIVE-001 tasks remain **0**.
+
+## PR2 mappingproxy dynamic-lookup verification (2026-10-30)
+- [Internal canonical Catalog execution and equality-preserving forged `__getitem__` regression](20261030-pr2-lookup-canonicalization.md): synthetic-only engineering proof obligation, separate from earlier catalog-field and query-history receipts. No historical real evaluation or score revision.

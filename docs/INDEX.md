@@ -273,3 +273,8 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | Evidence ID | Engineering scope | Run |
 |---|---|---|
 | ACTIVE-001-PR2-CATALOG | Fixed finite-world semantic classes, signatures, representative programs, canonical by_id, syntax count and world digest checked at every public learner entry; synthetic-only | [P2 review response](../experiments/ACTIVE-001/runs/20261030-pr2-catalog-integrity.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) |
+
+## ACTIVE-001 — P2 mappingproxy lookup trust boundary (2026-10-30)
+| Evidence | Scope | Contract and record |
+|---|---|---|
+| ACTIVE-001-PR2-LOOKUP | Canonicalize the **actual prediction lookup** rather than relying on caller MappingProxyType equality; adversarial `dict.__getitem__` regression | [run](../experiments/ACTIVE-001/runs/20261030-pr2-lookup-canonicalization.md) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |

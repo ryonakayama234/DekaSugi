@@ -29,6 +29,7 @@ OPTIONAL = (
     "test_active_learning_synthetic.py", "test_active_learning_integrity.py",
     "test_active_learning_history_integrity.py",
     "test_active_learning_catalog_integrity.py",
+    "test_active_learning_lookup_canonicalization.py",
 )
 
 

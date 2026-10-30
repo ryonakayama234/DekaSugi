@@ -928,3 +928,22 @@ flowchart TB
   OLD["Frozen original scorers and evidence"] -.->|"No runtime edge"| SESSION
 ~~~
 This is a consistency check against a fixed **experimenter-authored** synthetic world, not a learned representation, independently signed source, real measured generalization or trusted Oracle. The canonical reference is generated once per process, not enumerated on every question; equality still checks all semantic contents. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-catalog-integrity.md).
+
+## ARCH-001 ACTIVE-001 PR2 — internal canonical computation (2026-10-30)
+~~~mermaid
+flowchart TB
+  EX["Caller Catalog / MappingProxyType / custom dict.__getitem__"] --> CHECK["Catalog validation: reject ordinary mismatch"]
+  WORLD["Fixed eight-op, 156-input DSL"] --> CACHE["Cached internally built canonical Catalog"]
+  CACHE --> CHECK
+  CHECK -->|"Local consistency valid"| BOUNDARY["Replace caller reference with trusted internal Catalog"]
+  CHECK -->|"Mismatch"| REJECT["Fail closed"]
+  BOUNDARY --> QUERY["B1 seeded / B2 max-Gini question choice"]
+  CACHE --> LOOKUP["Canonical prediction/representative-program lookup only"]
+  LOOKUP --> QUERY
+  QUERY --> TRACE["Ordered question/answer trace"]
+  TRACE --> REPLAY["History prefix and terminal-state replay"]
+  LOOKUP --> REPLAY
+  REPLAY --> QUERY
+  AUDIT["Withheld evaluator labels"] -.->|"No learner input"| QUERY
+~~~
+A proxy is a read-only **view**, not a deep-frozen snapshot; dict subclass equality can disagree with indexing. Therefore external `by_id` is **never consulted for prediction**, even when structural equality passes. This is local synthetic integrity, not independent Oracle/source authority, learned skill, or scientific performance. [Data flow](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-lookup-canonicalization.md).

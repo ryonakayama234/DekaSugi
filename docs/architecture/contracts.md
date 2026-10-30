@@ -1009,3 +1009,19 @@ flowchart LR
   HIDDEN["Evaluator-only truth"] -.->|"No learner data flow"| SESSION
 ~~~
 Exact Catalog structural contract: `type(catalog) is Catalog`, `classes` is a tuple, `by_id` uses a read-only `MappingProxyType`, and dataclass equality against a lazily cached deterministic `build_catalog()` reference covers the full ordered class list, every output_signature and representative program, lookup keys and values, universe_digest and syntax_count. Both `start()` and session replay entry checks enforce it. The immutable canonical cache is internal process state; local integrity does NOT authenticate an independently custodied evaluator, hidden labels, or the source itself. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-catalog-integrity.md).
+
+## ARCH-002 ACTIVE-001 PR2 — caller catalog validation vs canonical calculation (2026-10-30)
+~~~mermaid
+flowchart LR
+  UNTRUST["Caller Catalog with untrusted lookup behavior"] --> GUARD["_assert_catalog: structural equality"]
+  MODEL["Internal deterministic build_catalog()"] --> CACHE["Cached canonical reference"]
+  CACHE --> GUARD
+  GUARD -->|"Valid"| SNAPSHOT["Use internal reference, not caller mapping"]
+  GUARD -->|"Invalid"| ERROR["ValueError"]
+  SNAPSHOT --> PRED["Semantic-class output signatures + programs"]
+  PRED --> PICK["Gini/seeded question + posterior"]
+  PICK --> HIST["Replay each history prefix"]
+  HIST --> PRED
+  EVAL["Evaluator-only labels"] -.->|"No read path"| PRED
+~~~
+**Caller input:** `Catalog` may be reconstructed, including `MappingProxyType(dict_subclass)`; proxy equality cannot establish the behavior of `__getitem__`. **Trusted computation:** `_assert_catalog` returns a private cached canonical reference. Both `start()` and `_assert_world()` bind this reference; every `by_id` prediction and final-program lookup uses the internal reference. A deceptive but equality-preserving external lookup may be admitted, but **must not change the output or permit false `query_unidentifiable`**. Mutation of a caller mapping must likewise have no influence. Existing active-query/2 trace, split integrity and B1/B2 policy gates remain intact. An independent evaluator and real scored evidence remain separate obligations. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-lookup-canonicalization.md).

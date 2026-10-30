@@ -121,3 +121,6 @@ The [isolated finite grammar](packages/inquiry_world/__init__.py) and [active qu
 
 ## ACTIVE-001 PR2 — fixed-world Catalog integrity (2026-10-30)
 The [draft PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) adds cached canonical Catalog checks so reconstructed local class signatures and by_id lookups cannot forge the supposed absence of informative queries. [Architecture](docs/architecture/system.md) / [contracts](docs/architecture/contracts.md) / [engineering receipt](experiments/ACTIVE-001/runs/20261030-pr2-catalog-integrity.md). Synthetic tests and CI do not certify source-authenticated scientific improvement, independent Oracle custody or generalization.
+
+## ACTIVE-001 PR2 — canonical lookup execution boundary (2026-10-30)
+Review-driven [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) uses a cached **internal** canonical Catalog for all predictions and program lookup, not a caller-supplied `MappingProxyType` which can hide overridden mapping reads. Synthetic adversarial regression, [ARCH-001](docs/architecture/system.md), [ARCH-002](docs/architecture/contracts.md), and [engineering receipt](experiments/ACTIVE-001/runs/20261030-pr2-lookup-canonicalization.md) are synchronized. No real scored tasks, new learned policy or independently authenticated evaluator are claimed.

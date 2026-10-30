@@ -27,19 +27,25 @@ def _canonical_catalog() -> Catalog:
     return build_catalog()
 
 
-def _assert_catalog(catalog: Catalog) -> None:
+def _assert_catalog(catalog: Catalog) -> Catalog:
     """Reject forged classes, signatures, representative programs or ID lookups.
 
     The world digest covers only world semantics; it does NOT commit to
     reconstructed Catalog.classes or Catalog.by_id. This comparison checks
     the full canonical generated catalogue (including syntax_count), while
     cached construction avoids 4,681 program enumerations per operation.
+
+    A caller may supply a MappingProxyType wrapping a dict subclass whose
+    __getitem__ disagrees with equality.  Never return that untrusted mapping:
+    all predictions and program lookups use the internally built canonical
+    catalogue returned by this gate.
     """
     if (type(catalog) is not Catalog or
         type(catalog.classes) is not tuple or
         type(catalog.by_id) is not MappingProxyType or
         catalog != _canonical_catalog()):
         raise ValueError("catalog deviates from canonical finite world")
+    return _canonical_catalog()
 
 
 @dataclass(frozen=True, slots=True)
@@ -108,7 +114,7 @@ def _status(class_ids: tuple[str, ...], answers: int, max_questions: int) -> Sta
 def start(task_id: str, public_examples: tuple[tuple[int, str], ...],
           split: InputSplit, catalog: Catalog, *, max_questions: int = 2) -> QuerySession:
     validate_split(split)
-    _assert_catalog(catalog)
+    catalog = _assert_catalog(catalog)
     if type(task_id) is not str or not 1 <= len(task_id) <= 128:
         raise ValueError("invalid task ID")
     if type(max_questions) is not int or not 0 <= max_questions <= 2:
@@ -144,7 +150,7 @@ def _remaining(session: QuerySession) -> list[int]:
 
 def _partition_without_revalidation(session: QuerySession, catalog: Catalog,
                                     input_id: int) -> tuple[tuple[str, int], ...]:
-    counts = Counter(catalog.by_id[cid].output_signature[input_id]
+    counts = Counter(_canonical_catalog().by_id[cid].output_signature[input_id]
                      for cid in session.class_ids)
     return tuple(sorted(counts.items()))
 
@@ -212,7 +218,7 @@ def make_answer(proposal: QueryProposal, output: str) -> QueryAnswer:
 def _apply_without_revalidation(session: QuerySession, proposal: QueryProposal,
                                 answer: QueryAnswer, catalog: Catalog) -> QuerySession:
     kept = tuple(cid for cid in session.class_ids if
-                 catalog.by_id[cid].output_signature[proposal.input_id] == answer.output)
+                 _canonical_catalog().by_id[cid].output_signature[proposal.input_id] == answer.output)
     answers = session.answers + ((proposal.input_id, answer.output,
                                   answer.receipt_digest),)
     trace = session.trace + ((proposal, answer),)
@@ -229,7 +235,7 @@ def _assert_world(session: QuerySession, catalog: Catalog) -> None:
     """Replay the *entire* ordered history; trust neither caller classes nor receipts."""
     if type(session) is not QuerySession:
         raise ValueError("invalid session")
-    _assert_catalog(catalog)
+    catalog = _assert_catalog(catalog)
     if (session.world_digest != catalog.universe_digest or
         type(session.task_id) is not str or not 1 <= len(session.task_id) <= 128 or
         type(session.max_questions) is not int or not 0 <= session.max_questions <= 2):
@@ -354,4 +360,4 @@ def update(session: QuerySession, proposal: QueryProposal, answer: QueryAnswer,
 
 def final_program(session: QuerySession, catalog: Catalog) -> tuple[str, ...] | None:
     _assert_world(session, catalog)
-    return catalog.by_id[session.class_ids[0]].program if session.class_ids else None
+    return _canonical_catalog().by_id[session.class_ids[0]].program if session.class_ids else None
