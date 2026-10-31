@@ -70,3 +70,6 @@ Public fixture equality was vulnerable to a tuple subclass that compares equal b
 
 ## F0-B invented-only separate-process query wire
 A fixed-public-fixture child process implements strict JSONL open/query/close with two visible public examples, at most two unique whitelisted query answers, denial of audit-ID probes, duplicate/overquota/replayed questions, unknown commands, malformed fields and oversized frames. It never scores or exports target IDs or audit truth. **A separate process is not automatically a secure evaluator**; the worker code and seeds are public and run under the same account. Independent authenticated Oracle with sealed source is still mandatory for any new real TRAIN. [Receipt](../../experiments/EXP-COEV-001/runs/20261031-f0b-toy-ipc.md).
+
+## F0-B P2 exact JSON wire hardening
+The synthetic child-process worker now rejects duplicate JSON object keys *during decoding*; default last-key-wins would bypass `op`/`input_id` exact schema checks. Literal raw frame negative tests include duplicate scoring/opening and audit/query ID overwrite. No genuine secret Oracle or target scoring, source-freeze gate unchanged.
