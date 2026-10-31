@@ -150,3 +150,7 @@ The invented-only toy IPC worker rejects duplicate JSON `op` and `input_id` keys
 
 ## COEV F0-D WSL readiness and ciphertext input guard
 Owner confirmed GnuPG 2.4.4 available under WSL2; no real key or source was generated. Draft PR #119 fixes named-pipe indefinite wait with nonblocking regular-file validation and negative tests, without decrypting or scoring historical/private data. [Receipt](experiments/EXP-COEV-001/runs/20261031-f0d-drive-vault.md).
+
+
+## F0-D second input-path hardening
+GitHub Draft #119 handles both ciphertext and JSON receipt as bounded, regular-file-only nonblocking input. Owner reported WSL2 staging mode 700, an engineering preparation only. Formal independent custodian, private source and measured H1 are not yet present. [Receipt](experiments/EXP-COEV-001/runs/20261031-f0d-drive-vault.md).
