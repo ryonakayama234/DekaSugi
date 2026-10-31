@@ -50,3 +50,6 @@ New mandatory order: **(0) research design + pretrial finite-world feasibility; 
 Reference: [Issue #106](https://github.com/ryonakayama234/DekaSugi/issues/106), [PR #107](https://github.com/ryonakayama234/DekaSugi/pull/107) method-review P1.
 ## PR2 checkpoint (unscored)
 G1 source/typed-execute/finite catalog / integrity tests staged with `test_concept_world.py` in safe synthetic CI allowlist. Exact-head CI and independent review required, no target trial/holdout and no H1 outcome. New parent #106; stacked implementation PR2 is not a method/source/seed freeze or an official score trigger.
+
+## F0-A feasibility checkpoint — unscored public preview, NOT_FROZEN
+Public, disclosed, fixed-salt split simulation allocates semantic classes 358/179/358 (TRAIN/DEV/FINAL) across 29 plain and 866 conditional finite-domain representatives. No class overlap; this is **not** the real sample source or secure class custodian. Hypothetical 2048 final IID-with-replacement task draws will repeat many class IDs, so provide within-pool target repetitions and family sensitivity in any eventual formal analysis. Pretrial structural test does not certify power, sampling independence, compute feasibility, source custody or H1 effect. Separate Gate F0 #110 must review/freeze a *new* secret-rooted allocation before genuine TRAIN. [Run](runs/20261031-f0a-structural-preview.md).
