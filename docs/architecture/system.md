@@ -1048,3 +1048,24 @@ Power tables and resource instrumentation intentionally do not import private Or
 
 ## ARCH-001 F0-C boundary and cost review
 CI measured CPU/wall and cumulative VmHWM on public invented TRAIN256 fixture; the cost probe is not a 2048-task worst-case bound. Independent P3 edge clarified that lower confidence bound **must be strictly above zero** in every branch (including variance zero); the claimed effect floor remains non-strict >=0.10. Reproducible evidence in [run receipt](../../experiments/EXP-COEV-001/runs/20261031-f0c-analytic-resource.md).
+
+
+## EXP-COEV-001 L3 decision-v1 architecture (DESIGN ONLY)
+The integrated proposed diagram, exact mechanism claims and independent custody sequence live in [research decision v1](../specs/EXP-COEV-001-RESEARCH-DECISION-v1.md#6-architecture-and-trust-boundary). 
+
+```mermaid
+flowchart LR
+  P["PublicTaskView"] --> W["WAKE + active questions"]
+  O["Independent TRAIN custodian"] -->|authorized answers| W
+  W --> E["Episode with failures"]
+  E --> S["SLEEP: typed concept induction"]
+  E --> U["Transferable context-concept policy"]
+  S --> F["Frozen learned Snapshot"]
+  U --> F
+  F --> I["Bounded C2 inference"]
+  P --> I
+  I --> V["Independent FINAL evaluator"]
+  H["Sealed audit truth"] --> V
+  V --> R["Evidence, recount, adoption decision"]
+```
+A toy process or encrypted archive does not establish an independent secret holder. No formal TRAIN/DEV/FINAL is authorized; C0-C4 historical meaning remains unchanged.

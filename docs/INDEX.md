@@ -312,3 +312,7 @@ New experiments do not inherit ACTIVE-001 E0 custody nor any source/seed freeze 
 
 ## F0-C resource CI evidence and strict-boundary review
 [Engineering resource/paired-power receipt](../experiments/EXP-COEV-001/runs/20261031-f0c-analytic-resource.md): actual synthetic256/arm CPU/VmHWM on GitHub runner, and Codex P3 strict >0 CI boundary remediation with negative test. Neither formal measurement nor fixed CPU budget.
+
+
+## EXP-COEV-001 — L3研究設計決定案v1
+[統合設計・統計・アブレーション・大きな開発工程](specs/EXP-COEV-001-RESEARCH-DECISION-v1.md)（status: decision_proposal / NOT_FROZEN / no formal scoring）。[計画](../experiments/EXP-COEV-001/plan.md)・[ARCH-001](architecture/system.md)・[ARCH-002](architecture/contracts.md)・[実験目録](../experiments/EXP-COEV-001/runs/README.md)を同一PRで同期。これを学習の成功や独立Oracleの成立と混同しない。

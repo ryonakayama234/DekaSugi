@@ -35,3 +35,7 @@ Original PR3 digest strings refer only to the earlier publicly seeded engineerin
 
 ## F0-C actual invented-only cost measurement + P3 edge
 [Paired-power and CPU/RSS receipt](20261031-f0c-analytic-resource.md) contains GitHub safe CI #41191597779 exact-head synthetic timing and peak RSS, plus reviewer P3 correction requiring strict confidence lower>0 even for variance zero. No official score, no CPU hard limits yet.
+
+
+## Research design decision v1 — NO SCORED RUN
+[Integrated decision design](../../../docs/specs/EXP-COEV-001-RESEARCH-DECISION-v1.md) drafted 2026-11-01; evidence type = `design_only`, no numerical new run, no formal TRAIN, no source freeze, no evaluator activation. All previous pilot records retained unchanged.
