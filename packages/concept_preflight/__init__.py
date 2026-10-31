@@ -47,17 +47,32 @@ def synthetic_pool_preview(catalog: SemanticCatalog | None = None,
     payload={"schema":SPLIT_SCHEMA,"world":c.world_digest,"train":a,"dev":b,"final":z}
     return PoolPreview(SPLIT_SCHEMA,c.world_digest,a,b,z,digest(payload))
 
-def validate_preview(preview: PoolPreview, catalog: SemanticCatalog | None=None) -> None:
-    if type(preview) is not PoolPreview:
-        raise ValueError("Untrusted pool preview")
-    c=_trusted_catalog(build_catalog() if catalog is None else catalog)
-    canonical=synthetic_pool_preview(c)
-    if preview != canonical:
+def _validated_preview(preview: PoolPreview, catalog: SemanticCatalog) -> PoolPreview:
+    """Validate exact builtins; return canonical, NEVER caller-owned containers."""
+    if (type(preview) is not PoolPreview or type(preview.schema) is not str or
+            type(preview.world_digest) is not str or type(preview.commitment) is not str):
+        raise ValueError("Untrusted preview metadata")
+    for ids in (preview.train_class_ids, preview.dev_class_ids, preview.final_class_ids):
+        if (type(ids) is not tuple or
+                any(type(i) is not int or not 0 <= i < len(catalog.representatives) for i in ids)):
+            raise ValueError("Untrusted class ID container")
+    canonical=synthetic_pool_preview(catalog)
+    if (preview.schema != canonical.schema or
+            preview.world_digest != canonical.world_digest or
+            preview.commitment != canonical.commitment or
+            preview.train_class_ids != canonical.train_class_ids or
+            preview.dev_class_ids != canonical.dev_class_ids or
+            preview.final_class_ids != canonical.final_class_ids):
         raise ValueError("Forged, stale, or noncanonical synthetic pool preview")
+    return canonical
+
+def validate_preview(preview: PoolPreview, catalog: SemanticCatalog | None=None) -> None:
+    c=_trusted_catalog(build_catalog() if catalog is None else catalog)
+    _validated_preview(preview,c)
 
 def preflight_metrics(preview: PoolPreview, catalog: SemanticCatalog | None=None) -> dict[str, object]:
-    validate_preview(preview,catalog)
     c=_trusted_catalog(build_catalog() if catalog is None else catalog)
+    preview=_validated_preview(preview,c)
     counts={"TRAIN":len(preview.train_class_ids),"DEV":len(preview.dev_class_ids),
             "FINAL":len(preview.final_class_ids)}
     stratify={name:{"plain":sum(c.representatives[i].predicate_id is None for i in xs),
