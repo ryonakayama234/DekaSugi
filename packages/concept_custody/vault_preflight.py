@@ -84,6 +84,31 @@ def verify_ciphertext_receipt(path: str, *, method_commit: str,
            type(receipt[k]) is not type(value) for k,value in canonical.items()):
         raise ValueError("Forged, stale or incomplete ciphertext receipt")
 
+def _read_receipt_json(path: str) -> dict[str,object]:
+    """Bounded nonblocking regular-file-only receipt; reject FIFOs before read."""
+    if type(path) is not str or not path:
+        raise ValueError("Invalid receipt path")
+    flags=os.O_RDONLY | os.O_NONBLOCK
+    if hasattr(os,"O_NOFOLLOW"):
+        flags |= os.O_NOFOLLOW
+    if hasattr(os,"O_CLOEXEC"):
+        flags |= os.O_CLOEXEC
+    fd=os.open(path,flags)
+    try:
+        info=os.fstat(fd)
+        if not stat.S_ISREG(info.st_mode) or not 0 < info.st_size <= 65536:
+            raise ValueError("Receipt must be a bounded regular file")
+        with os.fdopen(os.dup(fd),"rb") as stream:
+            raw=stream.read(65537)
+        if len(raw)!=info.st_size or len(raw)>65536:
+            raise ValueError("Receipt size changed or exceeds limit")
+        result=json.loads(raw.decode("utf-8"),object_pairs_hook=_unique_keys)
+        if type(result) is not dict:
+            raise ValueError("Receipt must be an exact JSON object")
+        return result
+    finally:
+        os.close(fd)
+
 def _unique_keys(pairs: list[tuple[str,object]]) -> dict[str,object]:
     result={}
     for key,value in pairs:
@@ -106,8 +131,7 @@ def main() -> int:
         print(json.dumps(output,sort_keys=True,separators=(",",":")))
     else:
         if not args.receipt: parser.error("verify requires --receipt")
-        with open(args.receipt,encoding="utf-8") as f:
-            receipt=json.load(f,object_pairs_hook=_unique_keys)
+        receipt=_read_receipt_json(args.receipt)
         verify_ciphertext_receipt(args.ciphertext,method_commit=args.method_commit,
                                   artifact_kind=args.kind,receipt=receipt)
         print('{"status":"PUBLIC_CIPHERTEXT_HASH_MATCH_ONLY"}')
