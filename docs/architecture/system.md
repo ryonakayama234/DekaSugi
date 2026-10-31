@@ -1003,3 +1003,15 @@ flowchart LR
   Selection -.-> Future["Future concept_learning and separate-process custodian NOT implemented"]
 ```
 InputSplit can calculate a canonical 28/64/64 structural partition but is **not** a learner-facing authority or guarantee of sealed evaluator labels. The old source and scientific runs remain untouched. [Local engineering receipt](../../experiments/EXP-COEV-001/runs/20261031-pr2-g1-local-calibration.md).
+
+
+## ARCH-001 F0-A synthetic class-pool feasibility (NOT an evaluator)
+```mermaid
+flowchart TD
+  G[Canonical G1 895 semantic classes] --> S[Stratify plain vs conditional]
+  S --> P[Public fixed-salt throwaway preview]
+  P --> D[358 TRAIN / 179 DEV / 358 FINAL classes]
+  D --> M[Disjointness and repeated-class statistical arithmetic]
+  M -.-> F[Future separate private source + custodian freeze BEFORE registered TRAIN]
+```
+Preview IDs and public salt cannot be transferred to the formal experiment. The preflight imports no old scorer, private Oracle or labels; [receipt](../../experiments/EXP-COEV-001/runs/20261031-f0a-structural-preview.md).
