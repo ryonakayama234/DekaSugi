@@ -312,3 +312,7 @@ New experiments do not inherit ACTIVE-001 E0 custody nor any source/seed freeze 
 
 ## COEV F0-B duplicate JSON-key denial
 [Toy query worker](../packages/concept_custody/toy_worker.py) and [raw-frame regression](../tests/test_concept_custody_synthetic.py) now reject duplicate `op`/`input_id` keys during JSON decoding, before whitelist/query checks. Engineering-only trust boundary, no formal scoring.
+
+
+## EXP-COEV-001 F0-D Google Drive ciphertext staging
+[Local ciphertext-only preflight](../packages/concept_custody/vault_preflight.py), [synthetic negative tests](../tests/test_concept_custody_drive.py), [Drive metadata-only run receipt](../experiments/EXP-COEV-001/runs/20261031-f0d-drive-vault.md). Historical OPPORTUNITY-001 secrets untouched; separate empty owner-only COEV folder. No official source/Oracle/score; F0-D Issue #116 open.
