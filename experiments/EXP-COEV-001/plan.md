@@ -56,3 +56,6 @@ Actual deterministic invented-world TRAIN256, same target/public pairs, query ca
 
 ## PR3 snapshot integrity P2 mitigation
 The exact source snapshot digest now covers full learned concept representation, ordered support IDs and policy/provenance; strict validator rejects altered bodies, parameters, gain and counters even if an attacker refreshes a self-computed hash to inconsistent state. Preliminary public TRAIN256 old hashes are source-specific and not scientific evidence. Gate F0 must precede all formal TRAIN.
+
+## F0-C prospective method and resource check — no official observations
+Implement pure hypothetical paired D analysis: N=2048, 95% bounded task-level Hoeffding radius ~.060, prespecified joint effect >=.10 and positive lower CI. At exactly true effect .10 a hard >=.10 sample threshold has normal-approx acceptance ~.5. Sensitivity over discordance and hypothetical design-effect inflation, not measured ICC. Public-only 8/arm CI subprocess benchmark and opt-in 256/arm full probe report Linux CPU/wall/cumulative RSS, **not** a worst-case formal FINAL2048 cap. Independent source/population weights/controls/error handling/power/CPU hard cap remain NOT_FROZEN; see [F0-C receipt](runs/20261031-f0c-analytic-resource.md) and Gate #115. No official Oracle/DEV/FINAL.
