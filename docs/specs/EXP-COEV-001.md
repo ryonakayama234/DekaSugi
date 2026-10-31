@@ -73,3 +73,6 @@ A fixed-public-fixture child process implements strict JSONL open/query/close wi
 
 ## F0-B P2 exact JSON wire hardening
 The synthetic child-process worker now rejects duplicate JSON object keys *during decoding*; default last-key-wins would bypass `op`/`input_id` exact schema checks. Literal raw frame negative tests include duplicate scoring/opening and audit/query ID overwrite. No genuine secret Oracle or target scoring, source-freeze gate unchanged.
+
+## F0-D reviewer boundary and owner readiness
+A synthetic writerless named-pipe exploit previously hung the ciphertext hash reader before file type checks. The preflight opens nonblocking then requires a regular file, with inspect/verify subprocess regression. The owner demonstrated WSL GnuPG 2.4.4 availability, **not** a generated key, separate OS principal, formal seed or authenticated evaluator. Real TRAIN remains unapproved.
