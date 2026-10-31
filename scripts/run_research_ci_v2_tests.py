@@ -35,6 +35,7 @@ OPTIONAL = (
     "test_concept_preflight.py",  # EXP-COEV-001 F0-A public synthetic structural preview
     "test_concept_custody_synthetic.py",  # EXP-COEV-001 F0-B toy-only child-process IPC denial
     "test_concept_custody_drive.py",  # EXP-COEV-001 F0-D ciphertext-only local hash negative tests
+    "test_concept_custody_gpg_public.py",  # EXP-COEV-001 F0-D disposable public AES256 GPG rehearsal
 )
 
 
