@@ -1062,3 +1062,7 @@ New versioned frames (design-only): `concept-learning/1.0` PublicTaskView = opaq
 
 ## ARCH-002 F0-C statistical/resource contract (NOT an evaluator)
 `Design(tasks:int=2048, threshold:float=0.10, alpha:float=0.05)`, `paired_hoeffding_radius` and `approximate_joint_success_power(true_lift,discordance,design,design_effect)` accept **hypothetical** bounded paired-task D=+1/-1/0 parameters, not raw labels or scored outputs. The two-sided bounded-IID Hoeffding radius for D range 2 is `sqrt(2*ln(2/alpha)/N)`. Normal approximate joint gate uses max(threshold,radius), hypothetical variance q-delta^2 and an explicitly *hypothetical* design-effect multiplier; not valid as a class-cluster CI without prespecification. Public `--mode smoke|full` resource command reports environment, per-phase CPU/wall and process-level cumulative VmHWM; no official secrets, no scientific effect. No hard CPU/RSS claims yet; F0 cannot freeze until independently benchmarked.
+
+
+## ARCH-002 F0-C strict vs non-strict acceptance and empirical timing
+For degenerate D variance zero, passing the joint protocol means `true_lift>=threshold` **AND** `true_lift>paired_hoeffding_radius`; equality at the CI radius fails. Synthetic runner #41191597779 emitted CPU/wall and whole-process VmHWM for 256 public tasks per arm on Python 3.12/Linux. No upper-bound guarantee, cross-machine transfer or scientific source/holdout inference follows. Resource hard-stop budgets require preregistration before formal TRAIN.
