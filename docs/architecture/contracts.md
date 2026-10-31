@@ -1066,3 +1066,7 @@ New versioned frames (design-only): `concept-learning/1.0` PublicTaskView = opaq
 
 ## ARCH-002 F0-C strict vs non-strict acceptance and empirical timing
 For degenerate D variance zero, passing the joint protocol means `true_lift>=threshold` **AND** `true_lift>paired_hoeffding_radius`; equality at the CI radius fails. Synthetic runner #41191597779 emitted CPU/wall and whole-process VmHWM for 256 public tasks per arm on Python 3.12/Linux. No upper-bound guarantee, cross-machine transfer or scientific source/holdout inference follows. Resource hard-stop budgets require preregistration before formal TRAIN.
+
+
+## EXP-COEV-001 proposed L3 data contract v1 (NOT_FROZEN)
+[Design dossier](../specs/EXP-COEV-001-RESEARCH-DECISION-v1.md#7-data-contracts) defines `PublicTaskView -> QueryRequest -> SignedQueryAnswer -> Episode -> (ConceptCandidate, PolicyStats) -> FrozenSnapshot -> EvaluationPrediction -> independent EvidenceEnvelope`. `PolicyStats` is concept-ID/context keyed (with both attempts and failures), not exact training program-ID memorization. Strict public/private separation; task-level fractional audit64 `D_i` in [-1,1], never assumed binary. Formal per-frame schema and resource budgets require F0-C/F0-D review and independent freeze. This update is architecture design, no implementation, no score.

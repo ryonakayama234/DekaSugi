@@ -62,3 +62,7 @@ Implement pure hypothetical paired D analysis: N=2048, 95% bounded task-level Ho
 
 ## F0-C CPU and P3 independent review checkpoint
 CI #41191597779 used public synthetic 256/arm and captured full source CPU/wall and process cumulative VmHWM. Actual single-run random TRAIN CPU .127820s, active TRAIN .277251s; no assumption of linear scaling or guaranteed cap for formal independent evaluation. P3 corrected strict CI lower >0 at exactly zero variance, added N8/N9 boundary test. Gate #115 remains NOT_FROZEN until independent full method/power/cost review; [receipt](runs/20261031-f0c-analytic-resource.md).
+
+
+## Decision proposal v1 — pending independent scientific preregistration
+[Integrated decision dossier](../../docs/specs/EXP-COEV-001-RESEARCH-DECISION-v1.md) proposes class-disjoint conditional-on-fixed-pool task-level H1, transferable context×concept policy statistics, concept-only/policy-only/uninformed-library mechanistic controls, fractional audit64 `D_i`, large-workflow G0→G4 and custodian hard gates. **This is NOT an amendment of a frozen method**: the method is NOT_FROZEN, numbers and control details remain subject to F0-C/F0-D independent verification. No real TRAIN/DEV/FINAL, public-source reclassification or automatic scoring.

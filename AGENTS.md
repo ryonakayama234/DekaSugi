@@ -467,3 +467,7 @@ Codex reviewer found concept-body/support drift despite matching old snapshot ha
 
 ## EXP-COEV-001 F0-C exact-head resource/P3 update (2026-10-31)
 GitHub CI synthetic-only full 256/arm resource probe (run #41191597779) measured random TRAIN 0.127820s CPU, active TRAIN 0.277251s CPU; G1 fresh catalog 0.207334s CPU; process cumulative VmHWM at final step 27336 KiB. Single Azure Linux/Python3.12 run, NOT a hard cost cap or official target evidence. Independent Codex P3 found an exact zero-variance CI-lower==0 edge; corrected `approximate_joint_success_power` to require strict >0 lower separately from >=threshold, with boundary test. Full source freeze/resource/power not yet approved. [Evidence](experiments/EXP-COEV-001/runs/20261031-f0c-analytic-resource.md).
+
+
+## EXP-COEV-001 — 研究決定案v1（非凍結）
+[統合研究設計](docs/specs/EXP-COEV-001-RESEARCH-DECISION-v1.md) はL3課題間学習、概念の転移とID記憶の分離、task-level 64-audit fractional outcome、因果対照、独立custodianを扱う**未凍結の決定案**。G0人工fixture学習/採点とG1以降の正式TRAIN/DEV/FINALを混同しない。既存のC0-C4を無断変更せず、追加アブレーションや数値予算は独立レビュー後にF0 source/method freezeしてから採用。実装変更時はARCH-001/ARCH-002/INDEX/plan/runを同一PRで同期。旧正式実験は再採点禁止。
