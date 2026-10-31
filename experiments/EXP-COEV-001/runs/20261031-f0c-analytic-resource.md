@@ -18,3 +18,18 @@ Public script `python -m scripts.run_coev_f0c_resource_preflight --mode smoke|fu
 
 ## Remaining F0-C exit criteria
 Prospectively choose (1) class-family sampling quotas and target estimand; (2) repetitions/cluster and CI method, (3) N/power vs 10 percentage-point threshold, (4) matched-capacity null controls and learning attribution, (5) actual resource hard limits; (6) exact code/seed manifest. This receipt is a score-free design artifact and does not authorize real TRAIN or FINAL.
+
+## First actual GitHub CI full-public benchmark observation (2026-10-31)
+- CI-SAFE-V2 run [#41191597779](https://github.com/ryonakayama234/DekaSugi/actions/runs/41191597779), exact head `6c18e1ab18bd9c2b771f3eb19df1bddcc8c6fc38`, 134 tests passed. This run preceded reviewer P3 zero-variance math fix; resource harness files and G1/TRAIN logic are unchanged by the P3 fix. New latest-head CI still required.
+- GitHub-hosted Ubuntu/Linux Azure x86_64 (kernel 7.0.0-1017-azure, glibc2.43), Python 3.12.15, reported 4 logical CPUs. Single unreplicated process, hot OS caches and no independently measured load variance.
+- Fresh `build_catalog()`: wall **0.207325 s**, CPU **0.207334 s**, VmHWM **26692 KiB**.
+- Repeated cached `build_catalog()`: wall **0.000003 s**, CPU **0.000004 s**, process VmHWM still 26692 KiB.
+- Synthetic TRAIN256 `random`: wall **0.127810 s**, CPU **0.127820 s**, cumulative VmHWM **27004 KiB**.
+- Synthetic TRAIN256 `active`: wall **0.277281 s**, CPU **0.277251 s**, cumulative VmHWM **27284 KiB**.
+- 32 repeated `recommend_programs` calls, 64 publicly consistent candidates: wall **0.120950 s** and CPU **0.120785 s** for all 32; cumulative process VmHWM **27336 KiB** (~26.7 MiB).
+- The overall independent **CI suite** (tests plus validation) used ~9.67 s inside the test runner; those timings are NOT the same as per-arm source timings. Active query computation used ~2.17x random-arm CPU on this fixture despite requiring fewer Oracle question labels in earlier pilot.
+- Peaks are cumulative `/proc/self/status:VmHWM`, not incremental per-step allocated bytes. A 256-task same-process invented fixture is neither 2048-target evaluation, nor proof of bounded worst-case CPU or memory, nor source-independent truth.
+- Safe CI output is the primary evidence. Do not treat these single-run numbers as hard caps or claimed L3 learning generalization; measure variability, worst-case candidate and audit costs, and predeclare hard resource stop rules before F0 freeze.
+
+## Independent reviewer P3 on zero-variance strict inequality
+A reviewer found a valid degenerate edge `Design(tasks=8, alpha=2*exp(-4))`, Hoeffding radius exactly 1 and deterministic D=1. The previous `variance==0` branch used non-strict `D>=max(tau,radius)`, wrongly returning pass probability 1 even though CI lower=0 fails strict `>0`. Corrected to require separately `true_lift>=threshold` and `true_lift>radius`; new negative/boundary test covers N8 vs N9. The default N2048 result is unchanged. Re-review and new exact-head safe CI remain mandatory.
