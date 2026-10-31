@@ -320,3 +320,7 @@ New experiments do not inherit ACTIVE-001 E0 custody nor any source/seed freeze 
 
 ## COEV F0-D reviewer FIFO fail-closed fix
 [Ciphertext verifier](../packages/concept_custody/vault_preflight.py) rejects a writerless FIFO without blocking by opening nonblocking and checking regular file type; [test](../tests/test_concept_custody_drive.py) covers inspect/verify. Owner WSL GnuPG 2.4.4 availability is recorded; no private key or real data generated.
+
+
+## F0-D second receipt-path negative check
+[Ciphertext/receipt preflight](../packages/concept_custody/vault_preflight.py) applies bounded nonblocking regular-file-only reads to both input and receipt; [regression tests](../tests/test_concept_custody_drive.py) include FIFO used as the `--receipt` argument. Owner reported staging directory mode 700; not independent data custody.
