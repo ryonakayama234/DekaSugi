@@ -79,3 +79,6 @@ A synthetic writerless named-pipe exploit previously hung the ciphertext hash re
 
 ## F0-D source/receipt path hardening and owner WSL directory milestone
 After the original FIFO-on-ciphertext fix, reviewer found a separate FIFO-on-JSON-receipt hang. Rectified with bounded nonblocking regular-file parsing and negative test for verify's `--receipt`, including symlink/oversize denial. Owner confirms mode 700 on WSL2 staging after `umask 077`; this is not an independent private evaluator or a frozen source. Formal TRAIN remains blocked.
+
+## F0-D public cryptography dry-run
+Owner reported that Linux DAC denies ordinary UID access but permits custodian UID access to 0700 custodian HOME. A publicly invented disposable GPG AES256 symmetric roundtrip and wrong-key negative are introduced in CI-SAFE-V2; this verifies tooling and basic crypto only. It does not generate a private key or actual target truth, establish independence from owner/sudo, or permit formal TRAIN/FINAL. [Evidence](../../experiments/EXP-COEV-001/runs/20261031-f0d-public-gpg.md).
