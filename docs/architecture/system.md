@@ -1061,3 +1061,7 @@ Reject FIFOs and other non-regular `*.gpg` paths without waiting for a writer, u
 
 ### F0-D separate receipt-file security boundary
 Both ciphertext and its public JSON receipt are untrusted local input paths: nonblocking descriptor opening, regular-file check, strict size and schema limits, no silent FIFO wait. The WSL staging directory currently has owner-reported mode 700 only.
+
+
+## ARCH-001 F0-D public GPG-only process rehearsal
+Public invented fixture -> temp 0700 GPG sandbox -> ephemeral symmetric AES256 roundtrip -> reject wrong toy passphrase -> delete disposable workspace. No source/seed, independent Oracle, key escrow, connected Drive access or scoring in this pipeline. [Receipt](../../experiments/EXP-COEV-001/runs/20261031-f0d-public-gpg.md).
