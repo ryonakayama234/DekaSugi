@@ -1015,3 +1015,14 @@ flowchart TD
   M -.-> F[Future separate private source + custodian freeze BEFORE registered TRAIN]
 ```
 Preview IDs and public salt cannot be transferred to the formal experiment. The preflight imports no old scorer, private Oracle or labels; [receipt](../../experiments/EXP-COEV-001/runs/20261031-f0a-structural-preview.md).
+
+
+## ARCH-001 F0-A verified-pool source selection
+```mermaid
+flowchart LR
+  Caller[Untrusted PoolPreview] --> Check[Exact tuple/int type and field match]
+  Check -->|valid| Canon[Rebuilt internal canonical preview]
+  Check -->|forged iterator| Stop[Fail closed]
+  Canon --> Metrics[Metrics only from trusted internal tuples]
+```
+The entire preview is synthetic/public, not an authenticated source of hidden targets.
