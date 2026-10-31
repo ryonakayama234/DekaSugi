@@ -26,3 +26,6 @@ Codex P1 on PR #107 identified the draft's invalid TRAIN-before-freeze ordering.
 
 ## F0-A public structural source-preview diagnostic (#111)
 [Unscored feasibility receipt](20261031-f0a-structural-preview.md): 895 finite-domain classes, public throwaway class pools 358/179/358 with per-stratum counts, deterministic source reconstruction and same-hash forgery negative tests. Not frozen scientific class assignment, not an independent Oracle, no actual registered TRAIN/DEV/FINAL. Scientific method/seed source remains Gate F0 #110.
+
+## F0-A P2 correction receipt
+The original 5-test public synthetic preview passed basic integrity but missed tuple-subclass iteration spoofing. New exact built-in type and canonical-only count validation plus additional regression are staged; original observations remain unscored. New exact-head safe CI and independent re-review needed.
