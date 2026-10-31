@@ -1032,3 +1032,15 @@ flowchart LR
   V -->|invalid| X[Fail closed]
 ```
 This is only in-process local provenance integrity; no independent Oracle attestation.
+
+
+## ARCH-001 F0-C design-only power/resource analysis
+```mermaid
+flowchart LR
+  H[Hypothetical paired delta/q/DE] --> A[Pure power table and Hoeffding math]
+  I[Public toy seed and typed G1] --> B[Bounded Linux CPU/wall/VmHWM probe]
+  A --> G[F0-C independent design review]
+  B --> G
+  G -.-> F[Separate pre-TRAIN method/source freeze, NOT executed]
+```
+Power tables and resource instrumentation intentionally do not import private Oracle or official evaluator; repeated target class is not a new semantic class. [Ledger](../../experiments/EXP-COEV-001/runs/20261031-f0c-analytic-resource.md).
