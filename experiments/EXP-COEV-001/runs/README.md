@@ -32,3 +32,6 @@ The original 5-test public synthetic preview passed basic integrity but missed t
 
 ## F0-B public-toy separate-process negative test index
 [Fixed-fixture JSONL denial receipt](20261031-f0b-toy-ipc.md): source, five subprocess tests and limitations. Same account/public target, NO authenticated Oracle, NO real experiment scoring or activation. Complements F0-A public structural pool preview; does not substitute for pre-TRAIN scientific freeze.
+
+## F0-B raw duplicate-key adversarial test
+Public-toy IPC source now detects and denies duplicate keys before any schema/phase checks, following independent Codex P2. New sixth subprocess synthetic negative test; historic first 5/5 remains immutable. Exact-head safe CI/re-review needed. No new score.
