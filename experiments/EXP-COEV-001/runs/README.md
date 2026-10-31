@@ -41,3 +41,6 @@ GnuPG 2.4.4 installed in owner WSL verified by owner-provided terminal screensho
 
 ## F0-D receipt path follow-up
 [Unscored Drive staging receipt](20261031-f0d-drive-vault.md) includes owner-reported chmod 700 confirmation and second reviewer P2: FIFO supplied as `--receipt` cannot block. No independent custody attestation yet.
+
+## F0-D public disposable symmetric GPG test
+[Unscored source-free receipt](20261031-f0d-public-gpg.md) records reported WSL Linux DAC deny/allow and an isolated public dummy GnuPG AES256 roundtrip with wrong-passphrase denial. This is NOT a production cipher key, registered source or formal scoring.
