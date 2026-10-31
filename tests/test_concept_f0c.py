@@ -29,6 +29,17 @@ class AnalyticPreflightTests(unittest.TestCase):
             Design(tasks=True)
         with self.assertRaises(ValueError):
             approximate_joint_success_power(.12,.5,design_effect=.9)
+    def test_strict_ci_lower_at_zero_variance_boundary(self):
+        # Reviewer P3: when radius==1 and D is identically 1, lower==0
+        # does not satisfy the strict positivity CI requirement.
+        boundary=Design(tasks=8,alpha=float(2*exp(-4)))
+        self.assertAlmostEqual(paired_hoeffding_radius(boundary),1.0)
+        self.assertEqual(approximate_joint_success_power(1.0,1.0,boundary),0.0)
+        # Increasing N makes the lower bound strictly positive.
+        relaxed=Design(tasks=9,alpha=float(2*exp(-4)))
+        self.assertLess(paired_hoeffding_radius(relaxed),1.0)
+        self.assertEqual(approximate_joint_success_power(1.0,1.0,relaxed),1.0)
+
     def test_table_is_always_explicitly_unscored(self):
         table=illustrative_design_table()
         self.assertEqual(len(table["scenarios"]),27)
