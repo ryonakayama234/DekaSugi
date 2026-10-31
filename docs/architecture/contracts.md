@@ -1066,3 +1066,7 @@ A `PoolPreview` class ID container MUST be the exact built-in `tuple` containing
 
 ## ARCH-002 F0-B P2 JSON object member uniqueness
 Each input JSON object MUST have unique keys, recursively checked at decode time with `json.loads(..., object_pairs_hook=_reject_duplicate_object_keys)` before any schema/state/ID authorization. `{"op":"score","op":"open"}` and `{"op":"query","input_id":AUDIT,"input_id":QUERY}` must be denied, without consuming quota; test uses literal raw JSONL because Python dictionaries cannot represent duplicates. This remains a toy E0 contract, not trusted evaluator authentication.
+
+
+### F0-D nonblocking descriptor validation
+The ciphertext verifier must apply `O_NONBLOCK` before `fstat` to avoid unbounded wait on an attacker-controlled writerless FIFO; `O_NOFOLLOW`/`O_CLOEXEC` used where supported. Inspect and verify must both reject FIFO paths within a bounded subprocess test without accessing their contents. Local owner GnuPG version check does not prove trusted independent custody.
