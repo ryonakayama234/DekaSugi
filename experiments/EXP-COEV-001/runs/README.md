@@ -35,3 +35,9 @@ The original 5-test public synthetic preview passed basic integrity but missed t
 
 ## F0-B raw duplicate-key adversarial test
 Public-toy IPC source now detects and denies duplicate keys before any schema/phase checks, following independent Codex P2. New sixth subprocess synthetic negative test; historic first 5/5 remains immutable. Exact-head safe CI/re-review needed. No new score.
+
+## F0-D owner workstation prerequisite
+GnuPG 2.4.4 installed in owner WSL verified by owner-provided terminal screenshot; source not frozen and no keys/seeds/truth generated. [F0-D ciphertext receipt](20261031-f0d-drive-vault.md) records public-only verification and separate FIFO nonblocking regression, with exact-head review and safe CI required.
+
+## F0-D receipt path follow-up
+[Unscored Drive staging receipt](20261031-f0d-drive-vault.md) includes owner-reported chmod 700 confirmation and second reviewer P2: FIFO supplied as `--receipt` cannot block. No independent custody attestation yet.

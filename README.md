@@ -146,3 +146,11 @@ The [toy query worker](packages/concept_custody/toy_worker.py) demonstrates a st
 
 ## COEV F0-B JSON duplicate-key integrity update
 The invented-only toy IPC worker rejects duplicate JSON `op` and `input_id` keys before authorization, with raw-frame adversarial regression. It remains a disclosed same-account fixture, not an independent Oracle. Formal TRAIN cannot start before source/secret seed and separate custodian freeze in [Gate #110](https://github.com/ryonakayama234/DekaSugi/issues/110).
+
+
+## COEV F0-D WSL readiness and ciphertext input guard
+Owner confirmed GnuPG 2.4.4 available under WSL2; no real key or source was generated. Draft PR #119 fixes named-pipe indefinite wait with nonblocking regular-file validation and negative tests, without decrypting or scoring historical/private data. [Receipt](experiments/EXP-COEV-001/runs/20261031-f0d-drive-vault.md).
+
+
+## F0-D second input-path hardening
+GitHub Draft #119 handles both ciphertext and JSON receipt as bounded, regular-file-only nonblocking input. Owner reported WSL2 staging mode 700, an engineering preparation only. Formal independent custodian, private source and measured H1 are not yet present. [Receipt](experiments/EXP-COEV-001/runs/20261031-f0d-drive-vault.md).

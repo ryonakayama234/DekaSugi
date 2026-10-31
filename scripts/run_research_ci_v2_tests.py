@@ -34,6 +34,7 @@ OPTIONAL = (
     "test_concept_world.py",  # EXP-COEV-001 G1 invented-only; no evaluation import
     "test_concept_preflight.py",  # EXP-COEV-001 F0-A public synthetic structural preview
     "test_concept_custody_synthetic.py",  # EXP-COEV-001 F0-B toy-only child-process IPC denial
+    "test_concept_custody_drive.py",  # EXP-COEV-001 F0-D ciphertext-only local hash negative tests
 )
 
 

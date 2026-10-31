@@ -62,3 +62,9 @@ Strict invented-only separate-process JSONL worker rejects non-whitelisted input
 
 ## F0-B P2 duplicate-key preflight
 Adversarial review found JSON duplicate-key last-value-wins behavior; worker now rejects duplicate keys in every object before processing. Raw JSONL regression sends `score/open` and `audit/query` overwritten keys and checks denial plus unchanged quota. Local engineering only; independent Oracle and prospective scientific source freeze not yet present.
+
+## F0-D nonblocking resource guard
+The ciphertext preflight must reject writerless FIFOs without blocking while keeping symlink and non-regular-file denial. New synthetic inspect/verify subprocess regression. Owner's WSL GPG 2.4.4 screenshot verifies only tooling availability; do not solicit secrets or generate/score the prospective study before #115/#116 acceptance.
+
+## F0-D second reviewed FIFO path and owner preparation
+The JSON receipt file receives the same nonblocking/regular-file type validation as the ciphertext candidate; reject untrusted FIFO, symlink and oversize receipts, preserving strict JSON uniqueness checks. Owner reported a local WSL2 staging directory with permission mode 700. No secret source or authenticated evaluator is operational.
