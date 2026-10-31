@@ -1062,3 +1062,7 @@ A `PoolPreview` class ID container MUST be the exact built-in `tuple` containing
 
 ## ARCH-002 F0-B toy-only IPC wire contract
 `coev-e0-toy-query/1`: exact JSON-object frames `{"op":"open"}`, `{"op":"query","input_id":int}`, `{"op":"close"}`. Public response includes exact 2 selected pairs and query cap 2; queried response contains only selected input ID and answer; close returns consumed count; all invalid actions emit constant `{"error":"REJECTED"}`. Max input frame 1024 bytes, no arbitrary unknown keys, duplicate/replayed IDs, bool IDs, audit pool IDs, extra queries or score operations. The toy fixed target and seeds are PUBLIC; this wire provides no external authenticity and is a test double, never the formal Oracle/evaluator. The independent evaluator requires a separate issuer, protected seeds, authenticated response/evidence and reviewed source commitments before real TRAIN.
+
+
+## ARCH-002 F0-B P2 JSON object member uniqueness
+Each input JSON object MUST have unique keys, recursively checked at decode time with `json.loads(..., object_pairs_hook=_reject_duplicate_object_keys)` before any schema/state/ID authorization. `{"op":"score","op":"open"}` and `{"op":"query","input_id":AUDIT,"input_id":QUERY}` must be denied, without consuming quota; test uses literal raw JSONL because Python dictionaries cannot represent duplicates. This remains a toy E0 contract, not trusted evaluator authentication.
