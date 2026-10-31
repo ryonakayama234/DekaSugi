@@ -15,3 +15,6 @@ tags: runs, evidence, provenance, research
 | L4 transfer | not_registered | Future experiment | No transfer result |
 
 Historical OPPORTUNITY-001 TRAIN64 and EXP-0003A DEV/FINAL are never inputs to this study. A PR containing invented fixture tests cannot be described as scientific scoring. All future entries retain failed and negative results.
+
+## 2026-10-31 PR2 feasibility work-in-progress (non-scientific)
+Local invented-world structural probe: **3,741 syntax programs; 895 distinct 156-input semantic classes; 866 conditional representatives**. Six module unit tests passed locally (not a GitHub CI receipt). These are design-time computational facts, **not trained outcomes, target accuracy, or official scoring**. Exact source and tests are to be staged separately in implementation PR2; retain results as untrusted-local until exact-head verification. The proposed FINAL2048 refers to repeated IID draws from a sealed class pool, never to 2,048 distinct classes.
