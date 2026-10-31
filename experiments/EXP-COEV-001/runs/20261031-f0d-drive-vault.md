@@ -13,3 +13,6 @@ Owner-operated local custody may separate evaluator material from the learning c
 
 ## Follow-up: owner tool check and P2 denial remediation
 On 2026-10-31 the owner supplied screenshot evidence of WSL GnuPG 2.4.4. This only checks available tooling; it is NOT an evaluator identity, encryption-key custody or official source. Subsequent independent Codex P2 review identified an indefinitely blocking `os.open` on writerless FIFO path. Added `O_NONBLOCK` before `fstat` regular-file validation, plus synthetic direct API and timeout-bound subprocess negative tests on inspect and verify. Exact-head CI and re-review required. This remains an entirely public synthetic engineering result.
+
+## Owner WSL setup and second security review (2026-10-31)
+Owner provided shell output showing `umask 077`, staging mkdir/chmod and `stat` mode **700** for a WSL Linux home storage directory; name and home path are intentionally omitted from public evidence. This validates only local directory permissions, not key isolation. Subsequent Codex P2 noticed nonblocking ciphertext open still left blocking JSON `--receipt` file open; the verifier now applies nonblocking, no-follow (if available), regular-file and <=64KiB guards to receipt input and tests FIFO/symlink/oversize attacks. No new source, actual encrypted file, GPG secret key or scientific evidence generated.
