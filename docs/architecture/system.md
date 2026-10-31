@@ -1020,3 +1020,15 @@ flowchart TD
   Snapshot -.-> Future["Independent class-disjoint evaluation NOT implemented"]
 ```
 The hidden target is not serialized into Episode or Snapshot, but same-process simulator is **not** an OS process trust boundary. The module must not receive genuine private FINAL data; the learned concept library is not `DEFAULT_REGISTRY`. [TRAIN receipt](../../experiments/EXP-COEV-001/runs/20261031-pr3-local-train-only.md).
+
+
+## ARCH-001 COEV-001 PR3 snapshot tamper boundary
+```mermaid
+flowchart LR
+  B[Typed Concept body and support] --> H[Full-payload digest]
+  P[Policy + TRAIN receipt digest] --> H
+  H --> V[Strict validate_snapshot]
+  V -->|valid| Q[Public task candidate ranking]
+  V -->|invalid| X[Fail closed]
+```
+This is only in-process local provenance integrity; no independent Oracle attestation.
