@@ -1057,3 +1057,7 @@ Local SHA-256 receipt verification for future encrypted study artifacts. This is
 
 ### F0-D input-file denial boundary
 Reject FIFOs and other non-regular `*.gpg` paths without waiting for a writer, using nonblocking open and file-descriptor regularity validation. This is an invented-fixture source-integrity preflight only.
+
+
+### F0-D separate receipt-file security boundary
+Both ciphertext and its public JSON receipt are untrusted local input paths: nonblocking descriptor opening, regular-file check, strict size and schema limits, no silent FIFO wait. The WSL staging directory currently has owner-reported mode 700 only.
