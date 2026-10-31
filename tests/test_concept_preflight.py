@@ -29,6 +29,20 @@ class PreflightTests(unittest.TestCase):
         self.assertEqual(tampered.commitment,self.preview.commitment)
         with self.assertRaises(ValueError):validate_preview(tampered,self.catalog)
         with self.assertRaises(ValueError):preflight_metrics(tampered,self.catalog)
+    def test_tuple_subclass_with_forged_iteration_rejected(self):
+        # The underlying tuple equals the canonical IDs, but iteration lies.
+        class ForgedTuple(tuple):
+            def __iter__(self):
+                return iter((self_fake_final,) * len(self))
+        ForgedTuple.self_fake_final=self.preview.final_class_ids[0]
+        fake=replace(self.preview,train_class_ids=ForgedTuple(self.preview.train_class_ids))
+        self.assertTrue(fake.train_class_ids == self.preview.train_class_ids)
+        self.assertEqual(fake.commitment,self.preview.commitment)
+        with self.assertRaises(ValueError):
+            validate_preview(fake,self.catalog)
+        with self.assertRaises(ValueError):
+            preflight_metrics(fake,self.catalog)
+
     def test_no_custom_private_seed(self):
         with self.assertRaises(ValueError):synthetic_pool_preview(self.catalog,salt="real-private-seed")
     def test_malformed_catalog(self):
