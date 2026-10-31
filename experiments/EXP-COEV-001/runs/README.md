@@ -23,3 +23,6 @@ Local invented-world structural probe: **3,741 syntax programs; 895 distinct 156
 Codex P1 on PR #107 identified the draft's invalid TRAIN-before-freeze ordering. Public PR3 256-task simulation is **engineering-only** and cannot become confirmatory TRAIN evidence. A separate pre-TRAIN method/source/seed/pool/Oracle custody freeze is mandatory before new real TRAIN; a post-TRAIN policy snapshot freeze follows. Current official new TRAIN/DEV/FINAL observation count remains **zero**.
 ## PR2 stacked implementation candidate
 [PR2 G1 local calibration](20261031-pr2-g1-local-calibration.md): synthetic-only 6 local unittest tests; 895 class count; GitHub CI / exact-head review pending. No supervised TRAIN, paired evaluation or final result.
+
+## PR3 genuine TRAIN-only learning implementation (synthetic local)
+[2026-10-31 PR3 training receipt](20261031-pr3-local-train-only.md): 256 paired invented TRAIN tasks, random 105 solved vs active 231, eight learned templates each, 64-bucket policy snapshots and local SHA digests. This is real experience-conditioned candidate learning under a same-process TRAIN simulator, not independent DEV/FINAL evidence. No official scoring authority.

@@ -50,3 +50,6 @@ New mandatory order: **(0) research design + pretrial finite-world feasibility; 
 Reference: [Issue #106](https://github.com/ryonakayama234/DekaSugi/issues/106), [PR #107](https://github.com/ryonakayama234/DekaSugi/pull/107) method-review P1.
 ## PR2 checkpoint (unscored)
 G1 source/typed-execute/finite catalog / integrity tests staged with `test_concept_world.py` in safe synthetic CI allowlist. Exact-head CI and independent review required, no target trial/holdout and no H1 outcome. New parent #106; stacked implementation PR2 is not a method/source/seed freeze or an official score trigger.
+
+## PR3 TRAIN engineering checkpoint (2026-10-31)
+Actual deterministic invented-world TRAIN256, same target/public pairs, query cap 2, 105 random vs 231 active binary verified class-ID matches. Approximate MDL template induction yields 8 candidates per arm; 64-bucket contextual frequencies are frozen into local snapshots. These data are training observations and no new unseen target class score, not H1 evidence. Pinned local receipt digests appear in [run](runs/20261031-pr3-local-train-only.md). No independent evaluator or official FINAL/DEV activation has been authorized; preserve exact source, run local/safe CI first, and review negative cases.
