@@ -962,3 +962,33 @@ flowchart TB
   OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
 ~~~
 `tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## EXP-COEV-001 PR1 — ARCH-001 proposal for isolated new L3 research (2026-10-31; proposed, no scoring)
+```mermaid
+flowchart TB
+  P[PublicTaskView 2 examples and allowed query IDs] --> W[ConceptWorld G1 typed programs]
+  W --> K[ConceptSearch bounded candidate search]
+  K --> Q[Inquiry question selector]
+  Q -->|allowlisted query request| O[Custodian Oracle separate process future]
+  O -->|authenticated selected answer only| E[Wake TRAIN episodes]
+  E --> S[Sleep typed anti-unification and compression]
+  S --> L[Concept Library and contextual policy snapshot]
+  L --> K
+  K -->|frozen final candidate| H[Custodian private 64-input audit future]
+  H --> R[Read-only measured evidence]
+```
+Existing `packages/inquiry_world`, `packages/active_learning` and historical scorers remain untouched. New `packages/concept_world`, `concept_learning`, `concept_search`, `concept_custody`, `concept_metrology` are **proposed**; no independent evaluator or learning implementation exists at PR1. [Experiment spec](../specs/EXP-COEV-001.md).
+
+
+## ARCH-001 COEV-001 pretraining freeze security gate v0.2
+```mermaid
+flowchart TD
+  E[Invented engineering fixtures; visible seed] --> F[Independent method + class pool + secret seed + source/custodian freeze]
+  F -->|after independent approval| T[Fresh formal TRAIN via independent Oracle]
+  T --> S[Freeze actual learned concept library + policy]
+  S --> D[Separate verified DEV]
+  D -->|distinct activation and unchanged method| H[New one-shot FINAL evaluation]
+  H --> A[Independent recount + immutable evidence]
+```
+PR3 invented TRAIN run precedes F only because it is explicitly **an unscored engineering calibration**, never the registered TRAIN dataset. Outcome-dependent population selection after F prohibited. See [v0.2 plan](../../experiments/EXP-COEV-001/plan.md).
