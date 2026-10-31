@@ -127,3 +127,7 @@ Review-driven [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) uses 
 
 ## ACTIVE-001 PR2 — exact-state types and replay (2026-10-30)
 [Draft PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) now checks that externally reconstructed semantic-class ID tuples and proposal/answer fields contain exact Python primitive types, preventing equality-preserving subclass operations from changing question scores. [System map](docs/architecture/system.md), [data contract](docs/architecture/contracts.md), [synthetic run](experiments/ACTIVE-001/runs/20261030-pr2-container-types.md). No historical scoring, independent source custody or measured intelligence gain is claimed.
+
+
+## EXP-COEV-001 PR1 — research proposal, not a result (2026-10-31; proposed, no scoring)
+[EXP-COEV-001 — Concept Evolution](docs/specs/EXP-COEV-001.md) ([Issue #106](https://github.com/ryonakayama234/DekaSugi/issues/106)) is a **new, isolated design direction** aiming to measure persistent cross-task learned concepts. Proposed TRAIN256/DEV128/FINAL2048, five paired arms, typed G1 grammar and strict evaluator custody. **No COEV learning, scientific scoring, skill adoption or transfer claim has been performed** by PR1; old studies remain immutable. Read [plan](experiments/EXP-COEV-001/plan.md) for unresolved class-supply and statistical independence gates.

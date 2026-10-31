@@ -283,3 +283,9 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | Evidence ID | Question | Engineering receipt |
 |---|---|---|
 | ACTIVE-001-PR2-CONTAINERS | Can equality-preserving tuple/str/int subclasses launder forged semantic votes, answers or proposal fields through replay? Exact builtin types required before any learner calculation. | [Synthetic check](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md) / [Architecture](architecture/system.md) / [Contracts](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+
+## EXP-COEV-001 PR1 — index: concept-learning (2026-10-31; proposed, no scoring)
+| EXP-COEV-001 | Persistent cross-task L3 concept learning, typed G1, counterexample-guided Wake/Sleep | proposed; design_only; no scoring | [spec](specs/EXP-COEV-001.md) / [plan](../experiments/EXP-COEV-001/plan.md) / [ADR-0006](architecture/decisions/ADR-0006-coev-learned-concepts.md) / [run ledger](../experiments/EXP-COEV-001/runs/README.md) / [Issue #106](https://github.com/ryonakayama234/DekaSugi/issues/106) |
+
+New experiments do not inherit ACTIVE-001 E0 custody nor any source/seed freeze as a certified independent evaluator.
