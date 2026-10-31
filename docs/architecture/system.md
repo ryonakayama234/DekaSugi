@@ -1049,3 +1049,7 @@ flowchart LR
   Schema --> Query[Whitelist + <=2 selected answers]
 ```
 The worker remains public-fixture/same-account; no independent confidentiality claim.
+
+
+## ARCH-001 COEV F0-D preflight
+Local SHA-256 receipt verification for future encrypted study artifacts. This is engineering-only and not independent scientific evaluation.
