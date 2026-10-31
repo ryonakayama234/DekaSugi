@@ -64,3 +64,6 @@ Reference: [Issue #106](https://github.com/ryonakayama234/DekaSugi/issues/106), 
 
 ## F0-A structural feasibility preview (Issue #111; no official scoring)
 The candidate class-pool split can be represented by **358 TRAIN, 179 DEV, 358 FINAL** disjoint finite-domain behavior classes using independently stratified plain/conditional representative groups. This is a fixed-salt *PUBLIC SYNTHETIC PREVIEW* only, not an independent source/seed freeze, actual TRAIN or source of official targets. At 2048 hypothetical IID with-replacement FINAL task draws from 358 equally likely class IDs, many task sessions repeat identical semantic functions. The conditional-on-frozen-pool estimand and statistical assumptions remain subject to F0 review; no evidence of positive heldout H1 is generated. [Receipt](../../experiments/EXP-COEV-001/runs/20261031-f0a-structural-preview.md).
+
+## F0-A reviewer P2 canonical-pool correction
+Public fixture equality was vulnerable to a tuple subclass that compares equal but iterates forged class IDs. Metrics now validate exact built-in tuple/int types and use internally reconstructed canonical pools, with new same-digest forged-iterator negative test. Independent source/seed authority still unimplemented; results structural only.
