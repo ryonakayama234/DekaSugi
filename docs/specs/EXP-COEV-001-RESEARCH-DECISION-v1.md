@@ -5,6 +5,17 @@ status: decision_proposal; NOT_FROZEN; NOT_SCORED; NO_ACTIVATION
 updated: 2026-11-01
 tags: research-decision, active-learning, wake-sleep, concept-induction, causal-ablation, statistics, architecture
 
+## 読者向け要約：今回決めること
+
+**研究対象：課題間の持続的学習（L3）。** DekaSugiが、経験から獲得した抽象概念と選択方策によって、訓練に使っていない意味クラスの課題を改善できるかを、未学習条件との対比較で検証します。G1の原始演算は人間が与えるため、今回の成果を「原始演算の自律的発明」や「汎用知能」とは呼びません。
+
+**設計上の中心変更：** 既存の「成功したプログラムIDを覚える」方策を、そのまま汎化能力の根拠にしません。型付き構文木から抽象化した概念を外部ライブラリに記録し、公開課題の特徴ごとに概念の試行回数・成功・失敗・費用を学習します。概念だけ、方策だけ、同数の無情報概念、非学習という対照条件を置いて、何が効いたのかを区別します。
+
+**研究プログラムの進行：** G0は人工環境で学習・採点・異常系まで通す工学的な一気通貫検証。G1は独立した秘密管理者、標本分布、推定方法、計算資源、コードと評価器の事前凍結。G2は新しい正式TRAINとSnapshot固定・独立DEV。G3は**別途明示された許可後に限る**一度限りのFINALと独立再集計。G4は採否判断と次期参照版への昇格です。研究単位は大きくまとめますが、過去のFINALを再採点しません。
+
+**現在の状態：提案済み・未凍結・正式採点なし。** 詳細な定義・図・入出力・統計条件・失敗条件は以下の技術本文を正本とします。
+
+
 > This is an **engineering and scientific-method design decision proposal**, not an independently approved preregistration, source lock, authorized formal TRAIN, DEV or FINAL run. It must pass F0-C/F0-D/F0-E before any formal observations. Parent [#106](https://github.com/ryonakayama234/DekaSugi/issues/106), [#110](https://github.com/ryonakayama234/DekaSugi/issues/110), [#115](https://github.com/ryonakayama234/DekaSugi/issues/115), [#116](https://github.com/ryonakayama234/DekaSugi/issues/116), [#117](https://github.com/ryonakayama234/DekaSugi/issues/117); source PR #107/#108/#109 and design preflight #118.
 
 ## 1. Operational research object and claims
