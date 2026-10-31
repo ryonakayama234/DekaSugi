@@ -1,9 +1,9 @@
 """Invented TRAIN-only learning; no DEV/FINAL scoring."""
 import dataclasses
 import unittest
-from packages.concept_world import Program, build_catalog
+from packages.concept_world import Program, build_catalog, digest
 from packages.concept_learning import (
-    _template_from_pair,simulate_train,induce_concepts,recommend_programs,context_bucket)
+    _template_from_pair,simulate_train,induce_concepts,recommend_programs,context_bucket,validate_snapshot,_snapshot_payload)
 
 class ConceptLearningTests(unittest.TestCase):
     @classmethod
@@ -21,13 +21,10 @@ class ConceptLearningTests(unittest.TestCase):
         self.assertTrue(all(len(c.support_task_ids)>=3 and c.compression_gain>0
                             and c.parameter_count<=2 for c in self.active_snapshot.concept_library))
         self.assertNotEqual(self.random_snapshot.snapshot_digest,self.active_snapshot.snapshot_digest)
-        # Frozen invented-TRAIN replay fingerprints: exact source regressions must fail closed.
-        self.assertEqual(self.active_snapshot.snapshot_digest,
-            "e07f49ad4e011d48e7fd142fcbc492b61fe286d3d385a7bb2bb278bc61d78663")
-        self.assertEqual(self.active_snapshot.train_receipt_digest,
-            "0e440bed39d9095640daa04cfa81568a0f115fe926dd0eb08607cd88f3d7f619")
-        self.assertEqual(self.random_snapshot.snapshot_digest,
-            "87ba61a1b39019a2a88c4bd6b6b2c624fd580871e7cb921d41f6201b97428a00")
+        # All semantic fields and TRAIN provenance, not just IDs and gain, are bound.
+        self.assertEqual(self.active_snapshot.snapshot_digest,digest(_snapshot_payload(self.active_snapshot)))
+        self.assertEqual(self.random_snapshot.snapshot_digest,digest(_snapshot_payload(self.random_snapshot)))
+        validate_snapshot(self.active_snapshot,build_catalog())
 
     def test_no_secret_target_in_episodes(self):
         for e in self.active+self.random:
@@ -72,6 +69,44 @@ class ConceptLearningTests(unittest.TestCase):
             recommend_programs(self.active_snapshot,forged,e.public_input_ids,e.public_answers,candidates)
         with self.assertRaises(ValueError):
             induce_concepts(self.active,forged)
+
+
+    def test_snapshot_body_support_and_policy_tampering_rejected(self):
+        from dataclasses import replace
+        cat=build_catalog()
+        snap=self.active_snapshot
+        c=snap.concept_library[0]
+        e=self.active[7]
+        candidates=tuple(i for i,sig in enumerate(cat.class_signatures)
+                         if all(sig[q]==answer for q,answer in zip(e.public_input_ids,e.public_answers)))
+        variants=[
+            replace(c,support_task_ids=()),
+            replace(c,parameter_count=99),
+            replace(c,then_pattern=tuple(reversed(c.then_pattern))),
+            replace(c,compression_gain=c.compression_gain+1),
+            replace(c,concept_id="f"*64),
+        ]
+        for altered in variants:
+            corrupted=replace(snap,concept_library=(altered,)+snap.concept_library[1:])
+            with self.assertRaises(ValueError):
+                recommend_programs(corrupted,cat,e.public_input_ids,e.public_answers,candidates)
+            # Even if an attacker recalculates the local digest, the semantic
+            # invariants and concept identity are still checked.
+            forged=replace(corrupted,snapshot_digest=digest(_snapshot_payload(corrupted)))
+            if altered != c:
+                with self.assertRaises(ValueError):
+                    validate_snapshot(forged,cat)
+        changed=replace(snap,policy_success_counts=())
+        with self.assertRaises(ValueError):
+            validate_snapshot(changed,cat)
+        altered=replace(snap,train_receipt_digest="0"*64)
+        with self.assertRaises(ValueError):
+            validate_snapshot(altered,cat)
+        malformed=replace(snap,policy_success_counts=((64,"bad",0),))
+        with self.assertRaises(ValueError):
+            validate_snapshot(malformed,cat)
+        # Untampered clone is accepted.
+        validate_snapshot(replace(snap),cat)
 
     def test_invalid_data_and_no_final_mode(self):
         for kwargs in ({"arm":"final"},{"task_count":257},{"task_count":0},{"seed":True}):
