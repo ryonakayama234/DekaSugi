@@ -31,6 +31,7 @@ OPTIONAL = (
     "test_active_learning_catalog_integrity.py",
     "test_active_learning_lookup_canonicalization.py",
     "test_active_learning_container_boundary.py",
+    "test_concept_world.py",  # EXP-COEV-001 G1 invented-only; no evaluation import
 )
 
 
