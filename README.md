@@ -146,3 +146,7 @@ Learned concept snapshots now hash and verify complete typed concept bodies, sup
 
 ## EXP-COEV-001 F0-C engineering power/resource design
 The [paired hypothetical power module](packages/concept_f0c/__init__.py) and [bounded public Linux resource preflight](scripts/run_coev_f0c_resource_preflight.py) explain 2048-task task-level confidence bounds, discordance/variance sensitivity and measured CPU/wall/cumulative process memory under invented fixtures. No real evaluation labels, official TRAIN or known unknown-class learning effect; independent prospective method/custody/secret-source locks are still #115/#116/#117. [Unscored receipt](experiments/EXP-COEV-001/runs/20261031-f0c-analytic-resource.md).
+
+
+## EXP-COEV-001 F0-C measured invented-only resource preflight
+GitHub safe CI produced actual CPU/wall and process cumulative peak RSS for synthetic TRAIN256 active/random (under 1 second per arm on one runner) plus concept ranking. It also caught/fixed a strict CI-boundary edge. These are engineering figures, not guaranteed formal 2048-evaluation budgets or L3 test results. [Full evidence](experiments/EXP-COEV-001/runs/20261031-f0c-analytic-resource.md); scientific Gate #115 remains prospective.
