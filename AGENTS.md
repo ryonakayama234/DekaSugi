@@ -439,3 +439,7 @@
 
 ## EXP-COEV-001 PR1 — new L3 learning study (2026-10-31; proposed, no scoring)
 The approved design direction is a new independent, typed concept-learning research branch [EXP-COEV-001](docs/specs/EXP-COEV-001.md) ([Issue #106](https://github.com/ryonakayama234/DekaSugi/issues/106)). Distinguish experimenter-given grammar from learner-induced concepts, keep prior frozen experiment source/old scored labels untouched, no arbitrary generated executable code. Separate TRAIN learning from independent FINAL; the new study is NOT_FROZEN and no one-shot scoring permission is granted by merging this documentation. In every work PR update ARCH-001/ARCH-002, experiment plan/run, AGENTS and INDEX with exact-head independent review. Do not re-enable historic Research verification CI.
+
+
+## EXP-COEV-001 binding method gate v0.2 (2026-10-31)
+Local PR3 TRAIN256 results are invented-only engineering; **not** the prospective scientific TRAIN population. Method, disjoint semantic-class pools, source and secret seed commitments, independent train-Oracle custody, power/CPU and historic workflow-disable checks MUST be independently reviewed and FROZEN before first formal TRAIN observation. Formal TRAIN then produces snapshot; real DEV/FINAL only later as separately gated. The earlier PR1 milestone ordering is superseded. [Corrected plan](experiments/EXP-COEV-001/plan.md).
