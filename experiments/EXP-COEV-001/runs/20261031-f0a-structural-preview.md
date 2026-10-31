@@ -24,3 +24,6 @@ Five synthetic regression tests in PR verify counts, exact disjointness, determi
 A future different, secret-rooted and independently owned class allocation and audit protocol must be reviewed/frozen **before** new registered TRAIN. Verify conditional and semantic-family opportunity, effective sample independence, target-specific costs, actual Oracle isolation/approval, source commitments, strict statistical and resource controls. F0-A cannot satisfy independent custody or grant a scorer activation by itself.
 
 [Parent F0 #110](https://github.com/ryonakayama234/DekaSugi/issues/110) / [subissue #111](https://github.com/ryonakayama234/DekaSugi/issues/111) / [study #106](https://github.com/ryonakayama234/DekaSugi/issues/106).
+
+## Source correction following independent P2 (2026-10-31)
+Original preview API accepted a tuple subclass capable of overriding iteration while preserving equality and claimed commitment. Corrected source requires exact built-in tuple/int types, validates all fields and computes statistics from a reconstructed canonical preview. Adds sixth invented-only negative unittest for same-digest tuple-subclass forged iterator. Original 5/5 local record remains historical; new GitHub exact-head CI/review must confirm the corrected version. No real source/secret or H1 results.
