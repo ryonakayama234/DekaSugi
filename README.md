@@ -131,3 +131,7 @@ Review-driven [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) uses 
 
 ## EXP-COEV-001 PR1 — research proposal, not a result (2026-10-31; proposed, no scoring)
 [EXP-COEV-001 — Concept Evolution](docs/specs/EXP-COEV-001.md) ([Issue #106](https://github.com/ryonakayama234/DekaSugi/issues/106)) is a **new, isolated design direction** aiming to measure persistent cross-task learned concepts. Proposed TRAIN256/DEV128/FINAL2048, five paired arms, typed G1 grammar and strict evaluator custody. **No COEV learning, scientific scoring, skill adoption or transfer claim has been performed** by PR1; old studies remain immutable. Read [plan](experiments/EXP-COEV-001/plan.md) for unresolved class-supply and statistical independence gates.
+
+
+## EXP-COEV-001 scientific validity gate revision (2026-10-31)
+Local PR3 256 invented TRAIN fixtures are engineering-only, never the formal preregistered TRAIN dataset. Following independent Codex methodology P1, future **real** TRAIN requires a separately reviewed and frozen target class split, IID sampling law, task/Oracle source and private seeds, analysis and independent custody **before training**. Skill snapshots are frozen only after that new TRAIN. No real scored or confirmed H1 evidence exists.
