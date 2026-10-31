@@ -470,3 +470,7 @@ An independent reviewer demonstrated that default `json.loads` silently overwrit
 
 ## EXP-COEV-001 F0-D owner-only Google Drive ciphertext staging (2026-10-31)
 The existing Drive owner-only encrypted archives belong to historical OPPORTUNITY-001; never decrypt/reuse them in COEV. A new empty owner-only COEV Drive staging folder was verified, ID private (never add public URL here). Drive permits the learner-connected account to read files, so only encrypted ciphertext may go there, never source roots, private evaluation labels or decryption keys. `packages/concept_custody/vault_preflight.py` is a **public ciphertext SHA/size receipt verifier**, not GPG encryption verification, independent attestation or true scientific source freeze. New negative tests are in safe optional CI allowlist. The owner can operate an isolated local evaluator without another human for learner-only separation, but must not claim third-party independent custody. Formal data source and Oracle remain unbuilt and not approved. [Receipt](experiments/EXP-COEV-001/runs/20261031-f0d-drive-vault.md).
+
+
+### F0-D P2 FIFO denial and workstation readiness (2026-10-31)
+Reviewer found a writerless named pipe `.gpg` could block forever during `os.open`. Ciphertext checker now opens with `O_NONBLOCK` (plus no-follow and close-on-exec where available), then rejects non-regular descriptors with `fstat`. Synthetic Linux regression covers both inspect and verify via timeout subprocess. Owner confirmed WSL GnuPG 2.4.4 availability only; no real key, source or independent Oracle created.
