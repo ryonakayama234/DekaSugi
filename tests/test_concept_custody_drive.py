@@ -1,5 +1,6 @@
 """Synthetic bytes labelled .gpg are NOT real encryption or a real secret source."""
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -74,6 +75,33 @@ class DriveVaultPreflightTests(unittest.TestCase):
             link.symlink_to(target)
             with self.assertRaises(OSError):
                 ciphertext_receipt(str(link),method_commit=METHOD,artifact_kind="sealed_source")
+
+    def test_fifo_without_writer_is_rejected_without_blocking(self):
+        # Reviewer P2: plain O_RDONLY blocks forever on a writerless FIFO
+        # before fstat can check file type. Exercise both entry points.
+        with tempfile.TemporaryDirectory() as tmp:
+            pipe=Path(tmp)/"hostile.gpg"
+            os.mkfifo(pipe)
+            with self.assertRaises(ValueError):
+                ciphertext_receipt(str(pipe),method_commit=METHOD,
+                                   artifact_kind="sealed_source")
+            cmd=[sys.executable,"-m","packages.concept_custody.vault_preflight",
+                 "--ciphertext",str(pipe),"--method-commit",METHOD,
+                 "--kind","sealed_source"]
+            for mode in ("inspect","verify"):
+                args=cmd+["--mode",mode]
+                if mode=="verify":
+                    regular=Path(tmp)/"normal.gpg"
+                    regular.write_bytes(b"PUBLIC-TEST-ONLY")
+                    receipt=ciphertext_receipt(str(regular),method_commit=METHOD,
+                                               artifact_kind="sealed_source")
+                    file=Path(tmp)/"receipt.json"
+                    file.write_text(json.dumps(receipt),encoding="utf-8")
+                    args+=["--receipt",str(file)]
+                result=subprocess.run(args,cwd=ROOT,text=True,capture_output=True,
+                                      timeout=5,check=False)
+                self.assertNotEqual(result.returncode,0)
+                self.assertNotIn("PUBLIC-TEST-ONLY",result.stdout)
 
     def test_cli_inspect_verify_never_decrypts_or_exposes_plaintext(self):
         with tempfile.TemporaryDirectory() as tmp:
