@@ -13,3 +13,6 @@ Expanding legacy DSL in place threatens frozen evidence; treating a named macro 
 
 ## Consequences / risks
 G1 is a finite toy world: result does not establish rich-world transfer. Class exhaustion, low opportunity prevalence, inability to freeze honest IID targets, and CPU economics may invalidate planned N2048; must be diagnosed and revised BEFORE evaluation. Abstract templates require safe canonical expansion, exact type validation, provenance, and prevention of evaluator-to-learner feedback. Separate trained snapshots from accepted global skills. Keep docs/process and experiments/EXP-COEV-001 ledger coherent in every follow-up PR.
+
+## Decision amendment v0.2: pre-TRAIN freeze before observation
+Codex P1 review identified a causal-validity threat in the old proposed order. Public-seeded PR3 synthetic TRAIN is an algorithm engineering fixture. A **new**, independently reviewed method/class-split/seed/source/custodian freeze MUST occur before any registered TRAIN256; only after this may the learned snapshot be generated and frozen for future DEV/FINAL. The former PR3→PR4 TRAIN-first sequence is superseded. No source/seed freeze or official scoring is claimed.
