@@ -53,3 +53,6 @@ G1 source/typed-execute/finite catalog / integrity tests staged with `test_conce
 
 ## PR3 TRAIN engineering checkpoint (2026-10-31)
 Actual deterministic invented-world TRAIN256, same target/public pairs, query cap 2, 105 random vs 231 active binary verified class-ID matches. Approximate MDL template induction yields 8 candidates per arm; 64-bucket contextual frequencies are frozen into local snapshots. These data are training observations and no new unseen target class score, not H1 evidence. Pinned local receipt digests appear in [run](runs/20261031-pr3-local-train-only.md). No independent evaluator or official FINAL/DEV activation has been authorized; preserve exact source, run local/safe CI first, and review negative cases.
+
+## PR3 snapshot integrity P2 mitigation
+The exact source snapshot digest now covers full learned concept representation, ordered support IDs and policy/provenance; strict validator rejects altered bodies, parameters, gain and counters even if an attacker refreshes a self-computed hash to inconsistent state. Preliminary public TRAIN256 old hashes are source-specific and not scientific evidence. Gate F0 must precede all formal TRAIN.
