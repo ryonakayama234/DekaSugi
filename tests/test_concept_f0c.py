@@ -1,6 +1,6 @@
 """Synthetic-only F0-C statistical sanity; NO target truth/score access."""
 import unittest
-from math import sqrt,log
+from math import sqrt,log,exp
 from packages.concept_f0c import Design,paired_hoeffding_radius,approximate_joint_success_power,illustrative_design_table
 
 class AnalyticPreflightTests(unittest.TestCase):
