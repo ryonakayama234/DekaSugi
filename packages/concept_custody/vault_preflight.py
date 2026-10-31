@@ -29,9 +29,13 @@ def _hash_candidate(path: str) -> tuple[int,str]:
     """Hash bounded ciphertext candidate without resolving symlink targets."""
     if type(path) is not str or not path or Path(path).suffix != ".gpg":
         raise ValueError("Ciphertext filename must end with .gpg")
-    flags=os.O_RDONLY
+    # NONBLOCK prevents an attacker-controlled FIFO from hanging os.open()
+    # before the fstat regular-file validation can reject it.
+    flags=os.O_RDONLY | os.O_NONBLOCK
     if hasattr(os,"O_NOFOLLOW"):
         flags |= os.O_NOFOLLOW
+    if hasattr(os,"O_CLOEXEC"):
+        flags |= os.O_CLOEXEC
     fd=os.open(path,flags)
     try:
         st=os.fstat(fd)
