@@ -19,6 +19,15 @@ def _answer(value: str) -> str:
 def _frame(value: dict[str,object]) -> str:
     return json.dumps(value,sort_keys=True,separators=(",",":"),ensure_ascii=True)
 
+def _reject_duplicate_object_keys(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    """Reject duplicate keys in every JSON object before schema validation."""
+    result: dict[str, object]={}
+    for key,value in pairs:
+        if type(key) is not str or key in result:
+            raise ValueError("duplicate or malformed JSON object key")
+        result[key]=value
+    return result
+
 def run() -> int:
     domain=inputs()
     partition=split_inputs(_TOY_SEED)
@@ -35,7 +44,7 @@ def run() -> int:
             sys.stdout.flush()
             break
         try:
-            item=json.loads(line)
+            item=json.loads(line,object_pairs_hook=_reject_duplicate_object_keys)
             if type(item) is not dict or any(type(k) is not str for k in item):
                 raise ValueError("frame")
             if item=={"op":"open"} and not opened and not finished:
