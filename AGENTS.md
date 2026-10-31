@@ -457,3 +457,8 @@ Local PR3 TRAIN256 results are invented-only engineering; **not** the prospectiv
 
 ## EXP-COEV-001 F0-A P2 adversarial review correction (2026-10-31)
 An independent reviewer found that a tuple subclass with forged `__iter__` could make a same-commitment preview compare equal but yield different counts. `_validated_preview` now checks exact `tuple` containers and exact `int` class IDs, then all structural fields against the internally regenerated canonical preview; downstream metrics use only that internal canonical reference. New negative test reproduces the subclass attack. No official sample or score is produced.
+
+
+## EXP-COEV-001 F0-B fixed toy-process query wire (Issue #113; 2026-10-31)
+- `packages/concept_custody.toy_worker` is **publicly seeded invented-only** separate-process JSONL wire; no evaluator secrets or official scoring. Exactly one `open` gives two public examples, at most two unique query IDs return chosen answers, `close` gives count. Any audit-ID probe, overquota, unknown state, extra key, bool ID, oversize line is rejected without audit/target/score. It is not an independent authenticated Oracle, and must never be used for formal TRAIN/DEV/FINAL.
+- Only reviewed synthetic `test_concept_custody_synthetic.py` enters CI-SAFE-V2 optional allowlist. Keep historic workflow/source sealed; no arbitrary generated Python/shell. [Test receipt](experiments/EXP-COEV-001/runs/20261031-f0b-toy-ipc.md). Formal custody/secret-source freeze is separate Gate F0 #110.

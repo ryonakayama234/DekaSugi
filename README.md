@@ -138,3 +138,7 @@ Local PR3 256 invented TRAIN fixtures are engineering-only, never the formal pre
 
 ## EXP-COEV-001 F0-A unscored feasibility
 A new public-salt structural preview partitions the G1 **895 semantic classes** into disjoint 358 TRAIN /179 DEV /358 FINAL pools, with deterministic integrity tests and repeated-class sampling arithmetic. The preview is **not** the real experiment allocation or a scientific score; [Gate F0 #110](https://github.com/ryonakayama234/DekaSugi/issues/110) still requires a separately owned/committed private source and independently reviewed method before new registered TRAIN. [Receipt](experiments/EXP-COEV-001/runs/20261031-f0a-structural-preview.md).
+
+
+## EXP-COEV-001 F0-B process boundary, engineering-only
+The [toy query worker](packages/concept_custody/toy_worker.py) demonstrates a strict child-process question wire using only a published synthetic target. It limits selected answers and refuses audit-ID probes, repeats, invalid state, and scoring requests. Five synthetic subprocess tests cover these rules. **It is NOT an independently authenticated Oracle** and may not touch real EXP-COEV-001 TRAIN/DEV/FINAL. [Receipt](experiments/EXP-COEV-001/runs/20261031-f0b-toy-ipc.md).

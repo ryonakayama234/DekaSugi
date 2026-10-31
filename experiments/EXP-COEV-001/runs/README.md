@@ -29,3 +29,6 @@ Codex P1 on PR #107 identified the draft's invalid TRAIN-before-freeze ordering.
 
 ## F0-A P2 correction receipt
 The original 5-test public synthetic preview passed basic integrity but missed tuple-subclass iteration spoofing. New exact built-in type and canonical-only count validation plus additional regression are staged; original observations remain unscored. New exact-head safe CI and independent re-review needed.
+
+## F0-B public-toy separate-process negative test index
+[Fixed-fixture JSONL denial receipt](20261031-f0b-toy-ipc.md): source, five subprocess tests and limitations. Same account/public target, NO authenticated Oracle, NO real experiment scoring or activation. Complements F0-A public structural pool preview; does not substitute for pre-TRAIN scientific freeze.
