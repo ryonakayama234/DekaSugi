@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections import Counter
 from dataclasses import dataclass, asdict
 import random
-from packages.concept_world import Program, SemanticCatalog, build_catalog, digest, inputs, query_argmax, split_inputs, _trusted_catalog
+from packages.concept_world import Program, SemanticCatalog, build_catalog, digest, inputs, query_argmax, split_inputs, _trusted_catalog, OPERATIONS, PREDICATES
 
 @dataclass(frozen=True, slots=True)
 class Episode:
@@ -96,10 +96,83 @@ def context_bucket(public_inputs: tuple[int,int],public_answers: tuple[str,str])
                 for i,out in zip(public_inputs,public_answers))
     return int(digest(feats)[:8],16)%64
 
+
+def _snapshot_payload(snapshot: Snapshot) -> dict[str, object]:
+    """All persisted semantic content and training provenance is hash-bound."""
+    return {"arm": snapshot.arm, "world": snapshot.world_digest,
+            "train": snapshot.train_receipt_digest,
+            "concepts": [asdict(c) for c in snapshot.concept_library],
+            "policy": snapshot.policy_success_counts}
+
+def validate_snapshot(snapshot: Snapshot, catalog: SemanticCatalog) -> None:
+    """Reject stale/tampered local snapshots. Not external authentication."""
+    if type(snapshot) is not Snapshot:
+        raise ValueError("Untrusted snapshot type")
+    if (type(snapshot.arm) is not str or snapshot.arm not in ("active", "random") or
+            type(snapshot.world_digest) is not str or
+            snapshot.world_digest != catalog.world_digest or
+            type(snapshot.train_receipt_digest) is not str or
+            len(snapshot.train_receipt_digest) != 64 or
+            any(c not in "0123456789abcdef" for c in snapshot.train_receipt_digest) or
+            type(snapshot.snapshot_digest) is not str or
+            type(snapshot.concept_library) is not tuple or
+            len(snapshot.concept_library) > 8 or
+            type(snapshot.policy_success_counts) is not tuple):
+        raise ValueError("Invalid snapshot metadata")
+    if len(set(c.concept_id for c in snapshot.concept_library if type(c) is Concept)) != len(snapshot.concept_library):
+        raise ValueError("Duplicate or invalid concept")
+    for c in snapshot.concept_library:
+        if type(c) is not Concept:
+            raise ValueError("Invalid concept type")
+        if (c.predicate_id not in (None, *PREDICATES) or
+            type(c.then_pattern) is not tuple or type(c.else_pattern) is not tuple or
+            len(c.then_pattern) > 2 or len(c.else_pattern) > 2 or
+            (c.predicate_id is None and bool(c.else_pattern)) or
+            len(c.then_pattern) + len(c.else_pattern) < 2 or
+            any(type(x) not in (str, type(None)) or (x is not None and x not in OPERATIONS)
+                for x in c.then_pattern + c.else_pattern) or
+            type(c.support_task_ids) is not tuple or len(c.support_task_ids) < 3 or
+            any(type(t) is not str or not t for t in c.support_task_ids) or
+            tuple(sorted(set(c.support_task_ids))) != c.support_task_ids or
+            type(c.parameter_count) is not int or type(c.compression_gain) is not int or
+            type(c.concept_id) is not str):
+            raise ValueError("Invalid concept shape or provenance")
+        holes=c.then_pattern.count(None)+c.else_pattern.count(None)
+        if holes != c.parameter_count or holes > 2 or not any(
+                op is not None for op in c.then_pattern+c.else_pattern):
+            raise ValueError("Invalid concept parameters")
+        tokens=len(c.then_pattern)+len(c.else_pattern)+(c.predicate_id is not None)
+        gain=len(c.support_task_ids)*(tokens-(1+holes))-(tokens+holes+1)
+        if c.compression_gain != gain or gain <= 0:
+            raise ValueError("Invalid concept compression gain")
+        identity=digest({"predicate":c.predicate_id,"then":c.then_pattern,"else":c.else_pattern})
+        if c.concept_id != identity:
+            raise ValueError("Concept ID does not bind its body")
+    ordered=tuple(sorted(snapshot.concept_library,
+        key=lambda c:(-c.compression_gain,-len(c.support_task_ids),c.concept_id)))
+    if ordered != snapshot.concept_library:
+        raise ValueError("Noncanonical concept ordering")
+    valid_ids={p.program_id for p in catalog.representatives}
+    seen=set()
+    for triple in snapshot.policy_success_counts:
+        if (type(triple) is not tuple or len(triple)!=3 or
+                type(triple[0]) is not int or not 0<=triple[0]<64 or
+                type(triple[1]) is not str or triple[1] not in valid_ids or
+                type(triple[2]) is not int or triple[2]<1):
+            raise ValueError("Invalid policy record")
+        if (triple[0],triple[1]) in seen:
+            raise ValueError("Duplicate policy record")
+        seen.add((triple[0],triple[1]))
+    if tuple(sorted(snapshot.policy_success_counts)) != snapshot.policy_success_counts:
+        raise ValueError("Policy must be canonical")
+    if digest(_snapshot_payload(snapshot)) != snapshot.snapshot_digest:
+        raise ValueError("Snapshot content/provenance digest mismatch")
+
 def recommend_programs(snapshot: Snapshot,catalog: SemanticCatalog,public_inputs: tuple[int,int],
                        public_answers: tuple[str,str],candidates: tuple[int,...],
                        max_candidates: int=64) -> tuple[int,...]:
     catalog=_trusted_catalog(catalog)
+    validate_snapshot(snapshot,catalog)
     if (type(max_candidates) is not int or not 1<=max_candidates<=256 or
         type(candidates) is not tuple or len(set(candidates))!=len(candidates) or
         any(type(i) is not int or not 0<=i<len(catalog.representatives) for i in candidates)):
@@ -161,6 +234,8 @@ def simulate_train(seed: int=20261031,task_count: int=256,arm: str="active") -> 
                    for e in saved if e.train_verified_success)
     policy=tuple(sorted((b,p,n) for (b,p),n in counts.items() if p is not None))
     receipt=digest([asdict(e) for e in saved])
-    snapshot_id=digest({"arm":arm,"world":cat.world_digest,"train":receipt,
-        "concepts":[(c.concept_id,c.compression_gain) for c in library],"policy":policy})
-    return saved,Snapshot(arm,cat.world_digest,receipt,library,policy,snapshot_id)
+    provisional=Snapshot(arm,cat.world_digest,receipt,library,policy,"")
+    snapshot_id=digest(_snapshot_payload(provisional))
+    snapshot=Snapshot(arm,cat.world_digest,receipt,library,policy,snapshot_id)
+    validate_snapshot(snapshot,cat)
+    return saved,snapshot
