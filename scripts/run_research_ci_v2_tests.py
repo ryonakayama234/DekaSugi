@@ -32,6 +32,8 @@ OPTIONAL = (
     "test_active_learning_lookup_canonicalization.py",
     "test_active_learning_container_boundary.py",
     "test_concept_world.py",  # EXP-COEV-001 G1 invented-only; no evaluation import
+    "test_concept_f0c.py",  # EXP-COEV-001 F0-C hypothetical paired-design arithmetic
+    "test_concept_f0c_resource_smoke.py",  # EXP-COEV-001 F0-C bounded invented-only process resource probe
     "test_concept_learning.py",  # EXP-COEV-001 local TRAIN-only synthetic proof, no holdout
 )
 
