@@ -1003,3 +1003,32 @@ flowchart LR
   Selection -.-> Future["Future concept_learning and separate-process custodian NOT implemented"]
 ```
 InputSplit can calculate a canonical 28/64/64 structural partition but is **not** a learner-facing authority or guarantee of sealed evaluator labels. The old source and scientific runs remain untouched. [Local engineering receipt](../../experiments/EXP-COEV-001/runs/20261031-pr2-g1-local-calibration.md).
+
+
+## ARCH-001 EXP-COEV-001 PR3 — actual TRAIN-only data path
+```mermaid
+flowchart TD
+  T["Invented TRAIN generator target held internally"] --> Oracle["TRAIN-only answer/boolean verifier; same process"]
+  G["G1 semantic Catalog; 895 classes"] --> Query["Within-task random / max-disagreement selector"]
+  Oracle -->|selected answers only| Query
+  Query --> Episode["Public Episode + TRAIN success feedback"]
+  Episode --> Sleep["Typed anti-unification + >=3 independent supports + approximate MDL"]
+  Sleep --> Library["<=8 immutable candidate concepts"]
+  Episode --> Context["64-bucket publicly observable feature policy"]
+  Context --> Snapshot["Digest-only frozen research snapshot"]
+  Library --> Snapshot
+  Snapshot -.-> Future["Independent class-disjoint evaluation NOT implemented"]
+```
+The hidden target is not serialized into Episode or Snapshot, but same-process simulator is **not** an OS process trust boundary. The module must not receive genuine private FINAL data; the learned concept library is not `DEFAULT_REGISTRY`. [TRAIN receipt](../../experiments/EXP-COEV-001/runs/20261031-pr3-local-train-only.md).
+
+
+## ARCH-001 COEV-001 PR3 snapshot tamper boundary
+```mermaid
+flowchart LR
+  B[Typed Concept body and support] --> H[Full-payload digest]
+  P[Policy + TRAIN receipt digest] --> H
+  H --> V[Strict validate_snapshot]
+  V -->|valid| Q[Public task candidate ranking]
+  V -->|invalid| X[Fail closed]
+```
+This is only in-process local provenance integrity; no independent Oracle attestation.

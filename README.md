@@ -135,3 +135,10 @@ Review-driven [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) uses 
 
 ## EXP-COEV-001 scientific validity gate revision (2026-10-31)
 Local PR3 256 invented TRAIN fixtures are engineering-only, never the formal preregistered TRAIN dataset. Following independent Codex methodology P1, future **real** TRAIN requires a separately reviewed and frozen target class split, IID sampling law, task/Oracle source and private seeds, analysis and independent custody **before training**. Skill snapshots are frozen only after that new TRAIN. No real scored or confirmed H1 evidence exists.
+
+## EXP-COEV-001 — new TRAIN-only research implementation (2026-10-31; stacked draft)
+New [typed G1 concept world](packages/concept_world/__init__.py) and [concept-learning TRAIN simulator](packages/concept_learning/__init__.py) are staged in distinct Draft PRs on top of [research spec](docs/specs/EXP-COEV-001.md). Locally in the invented TRAIN256 suite, 105/256 tasks were correctly class-identified after random questions and 231/256 after active questions, inducing 8 structural candidate concepts per arm. This is **TRAIN engineering**, NOT measured out-of-class generalization, independent scoring, CPU benefit, or final skill adoption. [Receipt](experiments/EXP-COEV-001/runs/20261031-pr3-local-train-only.md).
+
+
+## EXP-COEV-001 PR3 integrity gate
+Learned concept snapshots now hash and verify complete typed concept bodies, support provenance and full policy data. Local pilot fingerprint examples from the original code are obsolete for the revised source. This is unscored TRAIN engineering and does not bypass [pre-TRAIN Gate F0 #110](https://github.com/ryonakayama234/DekaSugi/issues/110).
