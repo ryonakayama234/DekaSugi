@@ -482,3 +482,7 @@ Owner confirmed Linux staging directory mode 700 after `umask 077`; this is owne
 
 ## COEV F0-D public dummy GPG rehearsal (2026-10-31)
 Owner-reported WSL access test confirms normal UID denied custodian HOME read/traverse and custodian UID allowed. This is local DAC, not independent custody or administrator exclusion. `packages/concept_custody/public_gpg_rehearsal.py` makes only temporary PUBLIC dummy bytes, transient symmetric GPG AES256 passphrase, tests encryption/decryption and wrong-passphrase rejection, then cleans its private temp folder. NO real GPG key, source seeds, hidden scores or genuine custody involved. New synthetic-only test on SAFE-V2 allowlist; [receipt](experiments/EXP-COEV-001/runs/20261031-f0d-public-gpg.md). Keep real source locked.
+
+
+## COEV F0-D public toy capability/nonce/HMAC contract (#121, 2026-10-31)
+After owner-run GPG dummy success, a strict **same-process PUBLIC TOY** query protocol was added, with ephemeral bearer capability, exact TRAIN-only arm/session/sequence/unique nonce, max 2 allowed distinct queries and audit/DEV/FINAL denial. Accepted responses chain content SHA256 plus disposable toy HMAC key; mutation and replay negatives are in SAFE-V2 allowlist. This is not an independently authenticated Oracle, protected key, signed actual scientific transcript or registered TRAIN. [Run ledger](experiments/EXP-COEV-001/runs/20261031-f0d-toy-capability.md).
