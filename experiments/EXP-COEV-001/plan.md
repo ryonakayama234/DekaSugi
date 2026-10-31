@@ -59,3 +59,6 @@ The exact source snapshot digest now covers full learned concept representation,
 
 ## F0-C prospective method and resource check — no official observations
 Implement pure hypothetical paired D analysis: N=2048, 95% bounded task-level Hoeffding radius ~.060, prespecified joint effect >=.10 and positive lower CI. At exactly true effect .10 a hard >=.10 sample threshold has normal-approx acceptance ~.5. Sensitivity over discordance and hypothetical design-effect inflation, not measured ICC. Public-only 8/arm CI subprocess benchmark and opt-in 256/arm full probe report Linux CPU/wall/cumulative RSS, **not** a worst-case formal FINAL2048 cap. Independent source/population weights/controls/error handling/power/CPU hard cap remain NOT_FROZEN; see [F0-C receipt](runs/20261031-f0c-analytic-resource.md) and Gate #115. No official Oracle/DEV/FINAL.
+
+## F0-C CPU and P3 independent review checkpoint
+CI #41191597779 used public synthetic 256/arm and captured full source CPU/wall and process cumulative VmHWM. Actual single-run random TRAIN CPU .127820s, active TRAIN .277251s; no assumption of linear scaling or guaranteed cap for formal independent evaluation. P3 corrected strict CI lower >0 at exactly zero variance, added N8/N9 boundary test. Gate #115 remains NOT_FROZEN until independent full method/power/cost review; [receipt](runs/20261031-f0c-analytic-resource.md).
