@@ -462,3 +462,7 @@ An independent reviewer found that a tuple subclass with forged `__iter__` could
 ## EXP-COEV-001 F0-B fixed toy-process query wire (Issue #113; 2026-10-31)
 - `packages/concept_custody.toy_worker` is **publicly seeded invented-only** separate-process JSONL wire; no evaluator secrets or official scoring. Exactly one `open` gives two public examples, at most two unique query IDs return chosen answers, `close` gives count. Any audit-ID probe, overquota, unknown state, extra key, bool ID, oversize line is rejected without audit/target/score. It is not an independent authenticated Oracle, and must never be used for formal TRAIN/DEV/FINAL.
 - Only reviewed synthetic `test_concept_custody_synthetic.py` enters CI-SAFE-V2 optional allowlist. Keep historic workflow/source sealed; no arbitrary generated Python/shell. [Test receipt](experiments/EXP-COEV-001/runs/20261031-f0b-toy-ipc.md). Formal custody/secret-source freeze is separate Gate F0 #110.
+
+
+## COEV F0-B P2 JSON duplicate-key fix (2026-10-31)
+An independent reviewer demonstrated that default `json.loads` silently overwrites duplicate `op` or `input_id` keys, potentially allowing malformed frames past exact-object tests. Child worker now uses `object_pairs_hook` to reject duplicate keys before state/schema evaluation. New raw (not dictionary-serialized) JSONL attack regression verifies spoofed `score`->`open` and audit-ID->query-ID overwrite are denied, with quota unaffected. Still only a PUBLIC synthetic worker, no real Oracle.
