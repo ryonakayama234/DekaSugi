@@ -32,3 +32,6 @@ Original PR3 digest strings refer only to the earlier publicly seeded engineerin
 
 ## F0-C prospective power/resource design (no target truth)
 [Analytic paired-test and Linux probe receipt](20261031-f0c-analytic-resource.md) reports invented-only hypothetical power/variance sensitivity and bounded public-resource instrumentation. No independently sampled target outcomes, official TRAIN/DEV/FINAL or source/seed freeze. Review under #115.
+
+## F0-C actual invented-only cost measurement + P3 edge
+[Paired-power and CPU/RSS receipt](20261031-f0c-analytic-resource.md) contains GitHub safe CI #41191597779 exact-head synthetic timing and peak RSS, plus reviewer P3 correction requiring strict confidence lower>0 even for variance zero. No official score, no CPU hard limits yet.
