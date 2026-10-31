@@ -1,6 +1,8 @@
 # EXP-COEV-001 F0-C: prospective paired power and PUBLIC resource harness
 
+id: EXP-COEV-001-F0C-ANALYTIC-RESOURCE
 status: ANALYTIC_DESIGN + INVENTED_ONLY_BENCHMARK; NOT_FROZEN; NO_SCORES
+tags: paired-power, sensitivity, resource-preflight, invented-only
 updated: 2026-10-31
 parent: #115 / #110 / #106
 
