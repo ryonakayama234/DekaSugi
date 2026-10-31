@@ -16,6 +16,12 @@ def wire(*frames):
         input=payload,text=True,capture_output=True,timeout=10,cwd=ROOT,check=True)
     return [json.loads(row) for row in proc.stdout.splitlines()]
 
+def raw_wire(payload: str):
+    # Construct raw ambiguous JSON frames (not representable by Python dict).
+    proc=subprocess.run([sys.executable,"-m","packages.concept_custody.toy_worker"],
+        input=payload,text=True,capture_output=True,timeout=10,cwd=ROOT,check=True)
+    return [json.loads(row) for row in proc.stdout.splitlines()]
+
 class ToyQueryWireTests(unittest.TestCase):
     def test_only_selected_two_answers(self):
         answer=wire({"op":"open"},{"op":"query","input_id":QUERY_IDS[0]},
@@ -55,6 +61,25 @@ class ToyQueryWireTests(unittest.TestCase):
         self.assertEqual([x.get("error") for x in a[:4]],
                          ["REJECTED",None,"REJECTED","REJECTED"])
         self.assertEqual(a[4]["op"],"answer")
+    def test_duplicate_raw_json_keys_denied_before_authorization(self):
+        # Audit ID in first occurrence cannot be silently overwritten by a query ID.
+        q=QUERY_IDS[0]
+        audit=AUDIT_IDS[0]
+        frames=(
+            '{"op":"score","op":"open"}\n'
+            '{"op":"open"}\n'
+            '{"op":"query","input_id":'+str(audit)+',"input_id":'+str(q)+'}\n'
+            '{"op":"query","input_id":'+str(q)+'}\n'
+            '{"op":"close"}\n'
+        )
+        replies=raw_wire(frames)
+        self.assertEqual(replies[0],{"error":"REJECTED"})
+        self.assertEqual(replies[1]["op"],"opened")
+        self.assertEqual(replies[2],{"error":"REJECTED"})
+        self.assertEqual(replies[3]["op"],"answer")
+        self.assertEqual(replies[3]["input_id"],q)
+        self.assertEqual(replies[4]["questions_answered"],1)
+
     def test_oversize_frame_fails_closed(self):
         self.assertEqual(wire({"op":"open","padding":"x"*2000}),
                          [{"error":"REJECTED"}])
