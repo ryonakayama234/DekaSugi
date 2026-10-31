@@ -29,3 +29,6 @@ Codex P1 on PR #107 identified the draft's invalid TRAIN-before-freeze ordering.
 
 ## PR3 P2 reproducibility amendment (2026-10-31)
 Original PR3 digest strings refer only to the earlier publicly seeded engineering algorithm; after mandatory full-payload hashing they cannot be treated as matching current source. New CI synthetic negative tests bind concept body/support/policy; no independent custodian or registered TRAIN/FINAL result.
+
+## F0-C prospective power/resource design (no target truth)
+[Analytic paired-test and Linux probe receipt](20261031-f0c-analytic-resource.md) reports invented-only hypothetical power/variance sensitivity and bounded public-resource instrumentation. No independently sampled target outcomes, official TRAIN/DEV/FINAL or source/seed freeze. Review under #115.
