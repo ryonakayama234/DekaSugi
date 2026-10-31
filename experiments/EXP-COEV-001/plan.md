@@ -68,3 +68,6 @@ The ciphertext preflight must reject writerless FIFOs without blocking while kee
 
 ## F0-D second reviewed FIFO path and owner preparation
 The JSON receipt file receives the same nonblocking/regular-file type validation as the ciphertext candidate; reject untrusted FIFO, symlink and oversize receipts, preserving strict JSON uniqueness checks. Owner reported a local WSL2 staging directory with permission mode 700. No secret source or authenticated evaluator is operational.
+
+## F0-D local UID and disposable GPG rehearsal
+The owner-reported DAC functional test shows deny for normal UID, allow for custodian UID on home. The new **PUBLIC SYNTHETIC ONLY** ephemeral GPG AES256 rehearsal encrypts, decrypts, and denies incorrect toy passphrase in a temporary 0700 workspace. No actual source, evaluator, private key, signed transcript, third-party custody or registered observations; see [run](runs/20261031-f0d-public-gpg.md). Independent source/analysis freeze remains mandatory.
