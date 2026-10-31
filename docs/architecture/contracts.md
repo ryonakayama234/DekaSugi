@@ -1074,3 +1074,7 @@ The ciphertext verifier must apply `O_NONBLOCK` before `fstat` to avoid unbounde
 
 ### F0-D receipt path input constraints
 `--receipt` JSON must be a nonempty regular file <=65536 bytes opened with `O_NONBLOCK`, `O_NOFOLLOW`/`O_CLOEXEC` if provided by Linux, and checked with `fstat` before parsing. Reject writerless FIFOs, symlinks, oversized files and duplicate JSON keys; never let a malicious path hang an operation. Owner's chmod 700 confirms only directory permissions, not separation or formal source freeze.
+
+
+## ARCH-002 F0-D disposable GPG test boundary
+Only unprivileged Linux user runs `public_gpg_rehearsal`. Use per-run 0700 tempfile/GNUPGHOME and 0600 ephemeral symmetric passphrase file, GPG subprocess argv (no shell) with timeouts. Public known dummy plaintext, AES256 symmetric encryption and exact decryption comparison, wrong passphrase rejection, no secret or filesystem paths in output. All ephemeral files deleted. Test is NOT production key management or a registered Oracle/source.
