@@ -300,3 +300,7 @@ New experiments do not inherit ACTIVE-001 E0 custody nor any source/seed freeze 
 
 ## EXP-COEV-001 F0-A — public synthetic class partition preview
 [Structural pool preflight](../packages/concept_preflight/__init__.py) / [negative tests](../tests/test_concept_preflight.py) / [design-only receipt](../experiments/EXP-COEV-001/runs/20261031-f0a-structural-preview.md) / [Issue #111](https://github.com/ryonakayama234/DekaSugi/issues/111). Source class pools 358 TRAIN, 179 DEV, 358 FINAL in a fixed artificial preview; NOT the registered source. Future independent pre-TRAIN freeze: [Gate F0 #110](https://github.com/ryonakayama234/DekaSugi/issues/110).
+
+
+## F0-A P2 forged-iterator hardening
+[Structural preflight](../packages/concept_preflight/__init__.py) rejects same-commitment fake tuple subclasses; [regression test](../tests/test_concept_preflight.py) proves fail-closed and internal-canonical-only counting. Still public synthetic data, not real class partition.
