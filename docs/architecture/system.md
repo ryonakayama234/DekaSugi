@@ -1032,3 +1032,19 @@ flowchart LR
   V -->|invalid| X[Fail closed]
 ```
 This is only in-process local provenance integrity; no independent Oracle attestation.
+
+
+## ARCH-001 F0-C design-only power/resource analysis
+```mermaid
+flowchart LR
+  H[Hypothetical paired delta/q/DE] --> A[Pure power table and Hoeffding math]
+  I[Public toy seed and typed G1] --> B[Bounded Linux CPU/wall/VmHWM probe]
+  A --> G[F0-C independent design review]
+  B --> G
+  G -.-> F[Separate pre-TRAIN method/source freeze, NOT executed]
+```
+Power tables and resource instrumentation intentionally do not import private Oracle or official evaluator; repeated target class is not a new semantic class. [Ledger](../../experiments/EXP-COEV-001/runs/20261031-f0c-analytic-resource.md).
+
+
+## ARCH-001 F0-C boundary and cost review
+CI measured CPU/wall and cumulative VmHWM on public invented TRAIN256 fixture; the cost probe is not a 2048-task worst-case bound. Independent P3 edge clarified that lower confidence bound **must be strictly above zero** in every branch (including variance zero); the claimed effect floor remains non-strict >=0.10. Reproducible evidence in [run receipt](../../experiments/EXP-COEV-001/runs/20261031-f0c-analytic-resource.md).

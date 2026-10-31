@@ -304,3 +304,11 @@ New experiments do not inherit ACTIVE-001 E0 custody nor any source/seed freeze 
 
 ## EXP-COEV-001 PR3 P2 integrity fix
 [Typed learned concepts](../packages/concept_learning/__init__.py) / [tampering regression tests](../tests/test_concept_learning.py): full semantic body/support and policy are now bound to snapshot digests. Historical local prototype digests in [TRAIN receipt](../experiments/EXP-COEV-001/runs/20261031-pr3-local-train-only.md) are source-version-specific and superseded. Formal prospective source/method freeze tracked in [Issue #110](https://github.com/ryonakayama234/DekaSugi/issues/110).
+
+
+## EXP-COEV-001 F0-C — analytic power and invented-only resource instrumentation
+[Paired-design sensitivity math](../packages/concept_f0c/__init__.py) / [math tests](../tests/test_concept_f0c.py) / [Linux resource probe](../scripts/run_coev_f0c_resource_preflight.py) / [resource smoke regression](../tests/test_concept_f0c_resource_smoke.py) / [unscored receipt](../experiments/EXP-COEV-001/runs/20261031-f0c-analytic-resource.md) / [F0-C #115](https://github.com/ryonakayama234/DekaSugi/issues/115). Nothing accesses sealed evaluator classes or real labels; independent custody is still F0-D #116.
+
+
+## F0-C resource CI evidence and strict-boundary review
+[Engineering resource/paired-power receipt](../experiments/EXP-COEV-001/runs/20261031-f0c-analytic-resource.md): actual synthetic256/arm CPU/VmHWM on GitHub runner, and Codex P3 strict >0 CI boundary remediation with negative test. Neither formal measurement nor fixed CPU budget.
