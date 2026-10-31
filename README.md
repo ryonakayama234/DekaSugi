@@ -154,3 +154,7 @@ Owner confirmed GnuPG 2.4.4 available under WSL2; no real key or source was gene
 
 ## F0-D second input-path hardening
 GitHub Draft #119 handles both ciphertext and JSON receipt as bounded, regular-file-only nonblocking input. Owner reported WSL2 staging mode 700, an engineering preparation only. Formal independent custodian, private source and measured H1 are not yet present. [Receipt](experiments/EXP-COEV-001/runs/20261031-f0d-drive-vault.md).
+
+
+## COEV F0-D owner Linux DAC + dummy cryptography rehearsal
+Owner reports basic deny-to-ordinary / allow-to-custodian Linux home access. [Public invented-only GPG rehearsal](packages/concept_custody/public_gpg_rehearsal.py) exercises disposable symmetric AES256 encrypt/decrypt/wrong-passphrase denial, with no real confidential source, secret key or official evaluation. [Evidence](experiments/EXP-COEV-001/runs/20261031-f0d-public-gpg.md).
