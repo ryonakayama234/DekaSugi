@@ -316,3 +316,7 @@ New experiments do not inherit ACTIVE-001 E0 custody nor any source/seed freeze 
 
 ## EXP-COEV-001 F0-D Google Drive ciphertext staging
 [Local ciphertext-only preflight](../packages/concept_custody/vault_preflight.py), [synthetic negative tests](../tests/test_concept_custody_drive.py), [Drive metadata-only run receipt](../experiments/EXP-COEV-001/runs/20261031-f0d-drive-vault.md). Historical OPPORTUNITY-001 secrets untouched; separate empty owner-only COEV folder. No official source/Oracle/score; F0-D Issue #116 open.
+
+
+## COEV F0-D reviewer FIFO fail-closed fix
+[Ciphertext verifier](../packages/concept_custody/vault_preflight.py) rejects a writerless FIFO without blocking by opening nonblocking and checking regular file type; [test](../tests/test_concept_custody_drive.py) covers inspect/verify. Owner WSL GnuPG 2.4.4 availability is recorded; no private key or real data generated.
