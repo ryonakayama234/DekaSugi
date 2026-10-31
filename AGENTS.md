@@ -478,3 +478,7 @@ Reviewer found a writerless named pipe `.gpg` could block forever during `os.ope
 
 ## COEV F0-D owner WSL staging and second P2 read-path closure (2026-10-31)
 Owner confirmed Linux staging directory mode 700 after `umask 077`; this is owner-reported OS metadata, not real custody isolation. Reviewer second P2 found `--receipt` used blocking `open()` on a writerless FIFO. Now receipt is read with nonblocking no-follow (when supported), descriptor regular-file validation and a 64 KiB maximum; timeout tests cover FIFO receipt, symlink and oversize receipt. Neither step generates a key, secret, new target or real scoring.
+
+
+## COEV F0-D public dummy GPG rehearsal (2026-10-31)
+Owner-reported WSL access test confirms normal UID denied custodian HOME read/traverse and custodian UID allowed. This is local DAC, not independent custody or administrator exclusion. `packages/concept_custody/public_gpg_rehearsal.py` makes only temporary PUBLIC dummy bytes, transient symmetric GPG AES256 passphrase, tests encryption/decryption and wrong-passphrase rejection, then cleans its private temp folder. NO real GPG key, source seeds, hidden scores or genuine custody involved. New synthetic-only test on SAFE-V2 allowlist; [receipt](experiments/EXP-COEV-001/runs/20261031-f0d-public-gpg.md). Keep real source locked.

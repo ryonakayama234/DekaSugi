@@ -324,3 +324,7 @@ New experiments do not inherit ACTIVE-001 E0 custody nor any source/seed freeze 
 
 ## F0-D second receipt-path negative check
 [Ciphertext/receipt preflight](../packages/concept_custody/vault_preflight.py) applies bounded nonblocking regular-file-only reads to both input and receipt; [regression tests](../tests/test_concept_custody_drive.py) include FIFO used as the `--receipt` argument. Owner reported staging directory mode 700; not independent data custody.
+
+
+## F0-D owner DAC and public GPG rehearsal
+[Disposable dummy GnuPG AES256 rehearsal](../packages/concept_custody/public_gpg_rehearsal.py), [synthetic CI negative test](../tests/test_concept_custody_gpg_public.py), [unscored receipt](../experiments/EXP-COEV-001/runs/20261031-f0d-public-gpg.md). Owner reports normal UID denied / custodian UID allowed Linux HOME access. No real keys, secret source, third-party independence or score.
