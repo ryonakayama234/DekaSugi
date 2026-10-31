@@ -142,3 +142,7 @@ A new public-salt structural preview partitions the G1 **895 semantic classes** 
 
 ## EXP-COEV-001 F0-B process boundary, engineering-only
 The [toy query worker](packages/concept_custody/toy_worker.py) demonstrates a strict child-process question wire using only a published synthetic target. It limits selected answers and refuses audit-ID probes, repeats, invalid state, and scoring requests. Five synthetic subprocess tests cover these rules. **It is NOT an independently authenticated Oracle** and may not touch real EXP-COEV-001 TRAIN/DEV/FINAL. [Receipt](experiments/EXP-COEV-001/runs/20261031-f0b-toy-ipc.md).
+
+
+## COEV F0-B JSON duplicate-key integrity update
+The invented-only toy IPC worker rejects duplicate JSON `op` and `input_id` keys before authorization, with raw-frame adversarial regression. It remains a disclosed same-account fixture, not an independent Oracle. Formal TRAIN cannot start before source/secret seed and separate custodian freeze in [Gate #110](https://github.com/ryonakayama234/DekaSugi/issues/110).
