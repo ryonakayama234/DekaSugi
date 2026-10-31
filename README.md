@@ -135,3 +135,6 @@ Review-driven [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) uses 
 
 ## EXP-COEV-001 scientific validity gate revision (2026-10-31)
 Local PR3 256 invented TRAIN fixtures are engineering-only, never the formal preregistered TRAIN dataset. Following independent Codex methodology P1, future **real** TRAIN requires a separately reviewed and frozen target class split, IID sampling law, task/Oracle source and private seeds, analysis and independent custody **before training**. Skill snapshots are frozen only after that new TRAIN. No real scored or confirmed H1 evidence exists.
+
+## EXP-COEV-001 F0-A unscored feasibility
+A new public-salt structural preview partitions the G1 **895 semantic classes** into disjoint 358 TRAIN /179 DEV /358 FINAL pools, with deterministic integrity tests and repeated-class sampling arithmetic. The preview is **not** the real experiment allocation or a scientific score; [Gate F0 #110](https://github.com/ryonakayama234/DekaSugi/issues/110) still requires a separately owned/committed private source and independently reviewed method before new registered TRAIN. [Receipt](experiments/EXP-COEV-001/runs/20261031-f0a-structural-preview.md).
