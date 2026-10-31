@@ -53,3 +53,6 @@ G1 source/typed-execute/finite catalog / integrity tests staged with `test_conce
 
 ## F0-A feasibility checkpoint — unscored public preview, NOT_FROZEN
 Public, disclosed, fixed-salt split simulation allocates semantic classes 358/179/358 (TRAIN/DEV/FINAL) across 29 plain and 866 conditional finite-domain representatives. No class overlap; this is **not** the real sample source or secure class custodian. Hypothetical 2048 final IID-with-replacement task draws will repeat many class IDs, so provide within-pool target repetitions and family sensitivity in any eventual formal analysis. Pretrial structural test does not certify power, sampling independence, compute feasibility, source custody or H1 effect. Separate Gate F0 #110 must review/freeze a *new* secret-rooted allocation before genuine TRAIN. [Run](runs/20261031-f0a-structural-preview.md).
+
+## F0-A P2 fix before study source freeze
+Independent reviewer demonstrated a same-commitment tuple subclass whose overridden iterator lied about stratum counts. Patched strict element/container type verification and canonical-only downstream computation; negative test reproduces it. This is a synthetic source-integrity control, not genuine custody or registered TRAIN/FINAL scoring.
