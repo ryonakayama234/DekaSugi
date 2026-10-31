@@ -1038,3 +1038,14 @@ flowchart LR
   Child -.-> Future[Real independent evaluator NOT BUILT]
 ```
 The child process runs under same account and includes a published toy target, so the boundary establishes frame denial behavior but **not** confidential custody, attestation or pretraining source freeze. [Receipt](../../experiments/EXP-COEV-001/runs/20261031-f0b-toy-ipc.md).
+
+
+## ARCH-001 COEV F0-B P2 duplicate JSON-frame gate
+```mermaid
+flowchart LR
+  Raw[Raw UTF-8 JSONL] --> Decode[Duplicate key rejection via pairs hook]
+  Decode -->|valid| Schema[Strict fields and session state]
+  Decode -->|duplicated| Stop[REJECTED]
+  Schema --> Query[Whitelist + <=2 selected answers]
+```
+The worker remains public-fixture/same-account; no independent confidentiality claim.
