@@ -103,6 +103,44 @@ class DriveVaultPreflightTests(unittest.TestCase):
                 self.assertNotEqual(result.returncode,0)
                 self.assertNotIn("PUBLIC-TEST-ONLY",result.stdout)
 
+    def test_fifo_as_receipt_never_hangs(self):
+        # Reviewer second P2: a valid ciphertext + FIFO receipt used to
+        # hang the verify command before JSON syntax checks.
+        with tempfile.TemporaryDirectory() as tmp:
+            data=Path(tmp)/"public.gpg"
+            data.write_bytes(b"PUBLIC-INVENTED-NOT-ENCRYPTED")
+            receipt_fifo=Path(tmp)/"hostile-receipt.json"
+            os.mkfifo(receipt_fifo)
+            cmd=[sys.executable,"-m","packages.concept_custody.vault_preflight",
+                 "--mode","verify","--ciphertext",str(data),
+                 "--method-commit",METHOD,"--kind","sealed_source",
+                 "--receipt",str(receipt_fifo)]
+            result=subprocess.run(cmd,cwd=ROOT,text=True,capture_output=True,
+                                  timeout=5,check=False)
+            self.assertNotEqual(result.returncode,0)
+            self.assertNotIn("PUBLIC-INVENTED",result.stdout)
+
+    def test_receipt_symlink_and_oversize_denied(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            data=Path(tmp)/"public.gpg"
+            data.write_bytes(b"PUBLIC-INVENTED-NOT-ENCRYPTED")
+            original=Path(tmp)/"receipt.json"
+            original.write_text(json.dumps(ciphertext_receipt(
+                str(data),method_commit=METHOD,artifact_kind="sealed_source")),encoding="utf-8")
+            link=Path(tmp)/"link.json"
+            link.symlink_to(original)
+            cmd=[sys.executable,"-m","packages.concept_custody.vault_preflight",
+                 "--mode","verify","--ciphertext",str(data),
+                 "--method-commit",METHOD,"--kind","sealed_source"]
+            for receipt in (link,):
+                result=subprocess.run(cmd+["--receipt",str(receipt)],cwd=ROOT,
+                                      text=True,capture_output=True,timeout=5,check=False)
+                self.assertNotEqual(result.returncode,0)
+            original.write_text(" " * 65537,encoding="utf-8")
+            over=subprocess.run(cmd+["--receipt",str(original)],cwd=ROOT,
+                                text=True,capture_output=True,timeout=5,check=False)
+            self.assertNotEqual(over.returncode,0)
+
     def test_cli_inspect_verify_never_decrypts_or_exposes_plaintext(self):
         with tempfile.TemporaryDirectory() as tmp:
             artifact=Path(tmp)/"test.gpg"
