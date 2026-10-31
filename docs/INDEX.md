@@ -289,3 +289,7 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | EXP-COEV-001 | Persistent cross-task L3 concept learning, typed G1, counterexample-guided Wake/Sleep | proposed; design_only; no scoring | [spec](specs/EXP-COEV-001.md) / [plan](../experiments/EXP-COEV-001/plan.md) / [ADR-0006](architecture/decisions/ADR-0006-coev-learned-concepts.md) / [run ledger](../experiments/EXP-COEV-001/runs/README.md) / [Issue #106](https://github.com/ryonakayama234/DekaSugi/issues/106) |
 
 New experiments do not inherit ACTIVE-001 E0 custody nor any source/seed freeze as a certified independent evaluator.
+
+
+## EXP-COEV-001 pre-TRAIN freeze requirement (v0.2)
+[Plan correction](../experiments/EXP-COEV-001/plan.md) / [Issue #106](https://github.com/ryonakayama234/DekaSugi/issues/106): public `simulate_train(20261031)` is engineering-only; new formal TRAIN requires prior approved source/method/population/secret-seed freeze and separate train-custodian. No formal class-disjoint scores or H1 evidence. Earlier PR1 milestone sequence superseded.
