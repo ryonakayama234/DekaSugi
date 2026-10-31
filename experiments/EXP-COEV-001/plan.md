@@ -59,3 +59,6 @@ Independent reviewer demonstrated a same-commitment tuple subclass whose overrid
 
 ## F0-B query frame denial preflight (not a scientific Oracle)
 Strict invented-only separate-process JSONL worker rejects non-whitelisted input IDs (including audit), duplicate/replayed/overcap questions, phase and extra-field violations, overlong payloads, and any scoring command. Two questions and public answers are the ONLY allowed label exchange. Worker is deliberately PUBLIC FIXTURE; no actual private seed, target secrecy, independent authentication, source/seed freeze or formal TRAIN/DEV/FINAL. See [receipt](runs/20261031-f0b-toy-ipc.md). A real independent authority must be separately designed and accepted under Gate F0 #110.
+
+## F0-B P2 duplicate-key preflight
+Adversarial review found JSON duplicate-key last-value-wins behavior; worker now rejects duplicate keys in every object before processing. Raw JSONL regression sends `score/open` and `audit/query` overwritten keys and checks denial plus unchanged quota. Local engineering only; independent Oracle and prospective scientific source freeze not yet present.
