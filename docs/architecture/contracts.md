@@ -1054,3 +1054,7 @@ New versioned frames (design-only): `concept-learning/1.0` PublicTaskView = opaq
 
 ## ARCH-002 F0-A synthetic preview contract
 `PoolPreview(schema, world_digest, train_class_ids, dev_class_ids, final_class_ids, commitment)` is a **fully public synthetic structural fixture**, not an evaluator-secret. `synthetic_pool_preview` accepts only the constant published preview salt, uses canonical G1 state and class-conditional strata, with deterministic hash sorting and 40/20/remainder integer allocation. `validate_preview` compares the entire canonical preview and forbids same-digest forged pool membership. `preflight_metrics` reports counts, per-stratum composition, hypothetical IID repeated class draws and bounded-Hoeffding task-level half-width; it NEVER reports an actual correctness metric or opens private outputs. A future `FormalClassAllocation` MUST be a separate independent custodian-controlled, secret-seed/commitment artifact after Gate F0 approval, not this API.
+
+
+## ARCH-002 F0-A P2 strict tuple subtype denial
+A `PoolPreview` class ID container MUST be the exact built-in `tuple` containing exact built-in `int` values. Subclasses with overridden iteration are forbidden even if underlying tuple compares equal and commitment is unchanged. `_validated_preview` also checks schema/world/digest/content equality against a canonical reconstruction and **returns the canonical object**; `preflight_metrics` must never iterate caller-owned containers after verification. One new synthetic negative test reproduces the same-digest subclass exploit.
