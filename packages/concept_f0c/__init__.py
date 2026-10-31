@@ -45,7 +45,9 @@ def approximate_joint_success_power(
     variance = discordance - true_lift * true_lift
     required = max(design.threshold, paired_hoeffding_radius(design))
     if variance == 0:
-        return float(true_lift >= required)
+        # CI lower>0 is STRICT; the effect threshold >=tau is non-strict.
+        return float(true_lift >= design.threshold and
+                     true_lift > paired_hoeffding_radius(design))
     standard_error = sqrt(variance * design_effect / design.tasks)
     return 0.5 * erfc((required - true_lift) / (sqrt(2) * standard_error))
 
