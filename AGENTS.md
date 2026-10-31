@@ -443,3 +443,8 @@ The approved design direction is a new independent, typed concept-learning resea
 
 ## EXP-COEV-001 binding method gate v0.2 (2026-10-31)
 Local PR3 TRAIN256 results are invented-only engineering; **not** the prospective scientific TRAIN population. Method, disjoint semantic-class pools, source and secret seed commitments, independent train-Oracle custody, power/CPU and historic workflow-disable checks MUST be independently reviewed and FROZEN before first formal TRAIN observation. Formal TRAIN then produces snapshot; real DEV/FINAL only later as separately gated. The earlier PR1 milestone ordering is superseded. [Corrected plan](experiments/EXP-COEV-001/plan.md).
+
+## EXP-COEV-001 PR2 — new G1 structural engineering only (2026-10-31)
+- Isolated `packages/concept_world` is a small, pure typed G1 interpreter; it does not inherit old scorers or import hidden evaluation truth. Only synthetic invented-world unittest may run in safe CI; `test_concept_world.py` is appended to the existing optional reviewed allowlist without changing YAML or historical source locks.
+- Structural result: 3741 syntax programs, 895 finite-domain semantic classes, 866 conditional representatives. FINAL2048 must be separately sampled **with replacement** from a disjoint sealed class pool. Do not misrepresent this as 2048 distinct unseen functions.
+- This PR does not train concepts, access official labels, open DEV/FINAL, authenticate an Oracle, or enable/merge anything. Review exact head, CI source guard and historical workflow disablement independently. [Run receipt](experiments/EXP-COEV-001/runs/20261031-pr2-g1-local-calibration.md).

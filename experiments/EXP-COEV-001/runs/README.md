@@ -21,3 +21,5 @@ Local invented-world structural probe: **3,741 syntax programs; 895 distinct 156
 
 ## Gate-order correction before scientific TRAIN (2026-10-31)
 Codex P1 on PR #107 identified the draft's invalid TRAIN-before-freeze ordering. Public PR3 256-task simulation is **engineering-only** and cannot become confirmatory TRAIN evidence. A separate pre-TRAIN method/source/seed/pool/Oracle custody freeze is mandatory before new real TRAIN; a post-TRAIN policy snapshot freeze follows. Current official new TRAIN/DEV/FINAL observation count remains **zero**.
+## PR2 stacked implementation candidate
+[PR2 G1 local calibration](20261031-pr2-g1-local-calibration.md): synthetic-only 6 local unittest tests; 895 class count; GitHub CI / exact-head review pending. No supervised TRAIN, paired evaluation or final result.

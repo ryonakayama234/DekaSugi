@@ -293,3 +293,6 @@ New experiments do not inherit ACTIVE-001 E0 custody nor any source/seed freeze 
 
 ## EXP-COEV-001 pre-TRAIN freeze requirement (v0.2)
 [Plan correction](../experiments/EXP-COEV-001/plan.md) / [Issue #106](https://github.com/ryonakayama234/DekaSugi/issues/106): public `simulate_train(20261031)` is engineering-only; new formal TRAIN requires prior approved source/method/population/secret-seed freeze and separate train-custodian. No formal class-disjoint scores or H1 evidence. Earlier PR1 milestone sequence superseded.
+
+## EXP-COEV-001 PR2 — isolated G1 engineering
+[Typed finite-world interpreter](../packages/concept_world/__init__.py) / [invented-only unit tests](../tests/test_concept_world.py) / [local calibration receipt](../experiments/EXP-COEV-001/runs/20261031-pr2-g1-local-calibration.md). 3,741 syntax candidates -> 895 finite-domain classes; no real learning or scientific score. Source of truth: [spec](specs/EXP-COEV-001.md) / [plan](../experiments/EXP-COEV-001/plan.md). Stage marked engineering-local only until exact-head safe CI independently verified.

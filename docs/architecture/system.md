@@ -992,3 +992,14 @@ flowchart TD
   H --> A[Independent recount + immutable evidence]
 ```
 PR3 invented TRAIN run precedes F only because it is explicitly **an unscored engineering calibration**, never the registered TRAIN dataset. Outcome-dependent population selection after F prohibited. See [v0.2 plan](../../experiments/EXP-COEV-001/plan.md).
+
+## ARCH-001 EXP-COEV-001 PR2 — implemented module boundary (non-scoring)
+```mermaid
+flowchart LR
+  Grammar["Approved G1 operations + predicates"] --> Enumerate["packages/concept_world enumerate_programs"]
+  Enumerate --> Execute["Pure typed execute over 156 synthetic inputs"]
+  Execute --> Catalog["895 equivalence-class representatives"]
+  Catalog --> Selection["Integer Gini / stable argmax"]
+  Selection -.-> Future["Future concept_learning and separate-process custodian NOT implemented"]
+```
+InputSplit can calculate a canonical 28/64/64 structural partition but is **not** a learner-facing authority or guarantee of sealed evaluator labels. The old source and scientific runs remain untouched. [Local engineering receipt](../../experiments/EXP-COEV-001/runs/20261031-pr2-g1-local-calibration.md).
