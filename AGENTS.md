@@ -474,3 +474,7 @@ The existing Drive owner-only encrypted archives belong to historical OPPORTUNIT
 
 ### F0-D P2 FIFO denial and workstation readiness (2026-10-31)
 Reviewer found a writerless named pipe `.gpg` could block forever during `os.open`. Ciphertext checker now opens with `O_NONBLOCK` (plus no-follow and close-on-exec where available), then rejects non-regular descriptors with `fstat`. Synthetic Linux regression covers both inspect and verify via timeout subprocess. Owner confirmed WSL GnuPG 2.4.4 availability only; no real key, source or independent Oracle created.
+
+
+## COEV F0-D owner WSL staging and second P2 read-path closure (2026-10-31)
+Owner confirmed Linux staging directory mode 700 after `umask 077`; this is owner-reported OS metadata, not real custody isolation. Reviewer second P2 found `--receipt` used blocking `open()` on a writerless FIFO. Now receipt is read with nonblocking no-follow (when supported), descriptor regular-file validation and a 64 KiB maximum; timeout tests cover FIFO receipt, symlink and oversize receipt. Neither step generates a key, secret, new target or real scoring.
