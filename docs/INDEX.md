@@ -304,3 +304,11 @@ New experiments do not inherit ACTIVE-001 E0 custody nor any source/seed freeze 
 
 ## F0-A P2 forged-iterator hardening
 [Structural preflight](../packages/concept_preflight/__init__.py) rejects same-commitment fake tuple subclasses; [regression test](../tests/test_concept_preflight.py) proves fail-closed and internal-canonical-only counting. Still public synthetic data, not real class partition.
+
+
+## EXP-COEV-001 F0-B — invented-only separate-process wire
+[Toy worker](../packages/concept_custody/toy_worker.py) / [subprocess negative tests](../tests/test_concept_custody_synthetic.py) / [source and result qualification](../experiments/EXP-COEV-001/runs/20261031-f0b-toy-ipc.md) / [Issue #113](https://github.com/ryonakayama234/DekaSugi/issues/113). Fixed public seed and disclosed target mean **not authenticated Oracle custody**; no new scientific evidence. Formal boundary remains [Gate F0 #110](https://github.com/ryonakayama234/DekaSugi/issues/110).
+
+
+## COEV F0-B duplicate JSON-key denial
+[Toy query worker](../packages/concept_custody/toy_worker.py) and [raw-frame regression](../tests/test_concept_custody_synthetic.py) now reject duplicate `op`/`input_id` keys during JSON decoding, before whitelist/query checks. Engineering-only trust boundary, no formal scoring.

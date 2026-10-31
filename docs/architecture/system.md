@@ -1026,3 +1026,26 @@ flowchart LR
   Canon --> Metrics[Metrics only from trusted internal tuples]
 ```
 The entire preview is synthetic/public, not an authenticated source of hidden targets.
+
+
+## ARCH-001 F0-B implemented toy process seam (NON-TRUSTED)
+```mermaid
+flowchart LR
+  Tester[Allowlisted synthetic unittest] -->|JSONL strict open/query/close| Child[Separate toy_worker process]
+  Fixture[Public known toy program and split] --> Child
+  Child -->|2 public labels and <=2 approved selected answers| Tester
+  Child -.->|DENY audit IDs / private fields / score / forged frames| Block[Fail closed]
+  Child -.-> Future[Real independent evaluator NOT BUILT]
+```
+The child process runs under same account and includes a published toy target, so the boundary establishes frame denial behavior but **not** confidential custody, attestation or pretraining source freeze. [Receipt](../../experiments/EXP-COEV-001/runs/20261031-f0b-toy-ipc.md).
+
+
+## ARCH-001 COEV F0-B P2 duplicate JSON-frame gate
+```mermaid
+flowchart LR
+  Raw[Raw UTF-8 JSONL] --> Decode[Duplicate key rejection via pairs hook]
+  Decode -->|valid| Schema[Strict fields and session state]
+  Decode -->|duplicated| Stop[REJECTED]
+  Schema --> Query[Whitelist + <=2 selected answers]
+```
+The worker remains public-fixture/same-account; no independent confidentiality claim.

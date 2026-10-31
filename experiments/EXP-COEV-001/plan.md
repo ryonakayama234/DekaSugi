@@ -56,3 +56,9 @@ Public, disclosed, fixed-salt split simulation allocates semantic classes 358/17
 
 ## F0-A P2 fix before study source freeze
 Independent reviewer demonstrated a same-commitment tuple subclass whose overridden iterator lied about stratum counts. Patched strict element/container type verification and canonical-only downstream computation; negative test reproduces it. This is a synthetic source-integrity control, not genuine custody or registered TRAIN/FINAL scoring.
+
+## F0-B query frame denial preflight (not a scientific Oracle)
+Strict invented-only separate-process JSONL worker rejects non-whitelisted input IDs (including audit), duplicate/replayed/overcap questions, phase and extra-field violations, overlong payloads, and any scoring command. Two questions and public answers are the ONLY allowed label exchange. Worker is deliberately PUBLIC FIXTURE; no actual private seed, target secrecy, independent authentication, source/seed freeze or formal TRAIN/DEV/FINAL. See [receipt](runs/20261031-f0b-toy-ipc.md). A real independent authority must be separately designed and accepted under Gate F0 #110.
+
+## F0-B P2 duplicate-key preflight
+Adversarial review found JSON duplicate-key last-value-wins behavior; worker now rejects duplicate keys in every object before processing. Raw JSONL regression sends `score/open` and `audit/query` overwritten keys and checks denial plus unchanged quota. Local engineering only; independent Oracle and prospective scientific source freeze not yet present.
