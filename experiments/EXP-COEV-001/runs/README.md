@@ -26,3 +26,6 @@ Codex P1 on PR #107 identified the draft's invalid TRAIN-before-freeze ordering.
 
 ## PR3 genuine TRAIN-only learning implementation (synthetic local)
 [2026-10-31 PR3 training receipt](20261031-pr3-local-train-only.md): 256 paired invented TRAIN tasks, random 105 solved vs active 231, eight learned templates each, 64-bucket policy snapshots and local SHA digests. This is real experience-conditioned candidate learning under a same-process TRAIN simulator, not independent DEV/FINAL evidence. No official scoring authority.
+
+## PR3 P2 reproducibility amendment (2026-10-31)
+Original PR3 digest strings refer only to the earlier publicly seeded engineering algorithm; after mandatory full-payload hashing they cannot be treated as matching current source. New CI synthetic negative tests bind concept body/support/policy; no independent custodian or registered TRAIN/FINAL result.
