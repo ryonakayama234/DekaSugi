@@ -1,6 +1,8 @@
 # EXP-REP-002 design decision receipt, 2026-11-01
 
 id: EXP-REP-002-DESIGN-20261101
+updated: 2026-11-01
+tags: experiment, design, review
 status: DESIGN_ONLY / NOT_RUN / NO_TRAIN / NO_USE / NO_SCORE / NO_FORMAL_DEV_FINAL
 parent_issue: https://github.com/ryonakayama234/DekaSugi/issues/130
 
