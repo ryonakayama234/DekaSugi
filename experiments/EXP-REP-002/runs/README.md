@@ -10,3 +10,5 @@ This index distinguishes documentation from measured work. The design-only recor
 Required per run: exact code source head, tests and independent reviewer, generator/grammar/arm/split versions and hashes, structural-family manifest, training Snapshot hashes, per-world/arm/budget results (32 audit transitions are one world outcome), costs including action setup, learner-versus-evaluator boundary, complete negative findings, reproducibility commands and scientific claim level.
 
 - `20261101-direct-preflight.md`: direct-only implemented calibration, recorded separately from design-only receipt; a new measured receipt follows exact-head CI.
+
+- [20261101-direct-preflight-measured.md](20261101-direct-preflight-measured.md) / [raw JSON](20261101-direct-preflight-measured.json): actual 150-test SUCCESS; 48 disclosed-world scores; negative concept-body attribution because LQ=FA exactly. Prior pre-score receipt remains immutable.
