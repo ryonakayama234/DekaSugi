@@ -1276,3 +1276,33 @@ Caveats: Query planner evaluates a learned categorical prior for LQ while LA que
 
 ### G5 correction to Snapshot and ablation meaning
 Persisted `Snapshot.library` entries are *descriptive labels*, checked against constants by `validate_snapshot()`, **not executable bindings consumed by USE**. Only `support` class frequencies alter `prior()`. The symbols DIRECT/GATE0/GATE1 and all runtime candidates come from researcher-fixed `MODELS`. BODY-OFF in this source is **prior off**, not a learned-body interpreter ablation; claim no more than category-prior learning. Current legacy `NOVEL` = GATE0 held-out instance from seen semantic family. [G5 review](../../experiments/EXP-REP-003/reviews/20261102-independent-g5-code-review.md).
+
+
+## EXP-REP-004 — typed executable concept and evidence flow (PROPOSED; NOT IMPLEMENTED)
+~~~mermaid
+flowchart LR
+   G["Private generator truth + seed"] --> S["Charged Session"]
+   S --> P["PublicObservationV1"]
+   P --> A["Wake: hypotheses"]
+   A --> B["Sleep: ConceptBodyV1 AST"]
+   B --> N["ConceptSnapshotV1 SHA+roles+receipts"]
+   N --> I["Typed body interpreter and binding"]
+   I --> Q["InquiryAction decision + cost"]
+   Q --> S
+   I --> C["PredictionCommitV1 before audit"]
+   C --> E["Independent exact-vector audit"]
+   G --> E
+   E --> T["TrialEvidenceV1 / immutable raw ledger"]
+   G -.->|"forbidden"| A
+   E -.->|"forbidden"| Q
+~~~
+
+**Mandatory contracts before score:**
+- PublicObservationV1: strict primitive types; unique opaque IDs; contiguous ordered paid before/action/after/cost/ordinal; no hidden graph/family/seed. Set effects independently validated. Every no-op set costs one, no free reset.
+- ConceptBodyV1: typed AST built from variable roles Pulse/GuardIs/Toggle/ParallelXor with **pre-action** simultaneous semantics; role constraints and binding witnesses; positive+negative public evidence receipt hashes; support measured by independent whole-world semantic families, canonical body SHA. Must fail closed for unknown AST/role/unsafe callbacks; never use Python eval or dynamic import.
+- ConceptSnapshotV1: schema, metagrammar version, algorithm/source lock, public TRAIN receipt digests, trained family counts, candidate body library, separately marked frequency prior, total TRAIN/SLEEP/DREAM costs and canonical content SHA. Upon load, body interpreter consumes AST, not descriptive label; mutation/disable changes predictions and query on fixed mechanism fixtures.
+- Inquiry/commit: inquiry policy sees only authorized Snapshot projection; LQ sees body; LA is body-masked for query only but shares prediction body; no leakage via cached priors, role hints or gold. PredictionCommitV1 includes paid transcript digest, body invocation/binding trace, prediction or explicit ABSTAIN, source/Snapshot hash and immutable commit hash before audit.
+- TrialEvidenceV1: world semantic-family key evaluator-side, every arm/budget action trace and status, exact 64 action-state full-vector audit after commit, coverage/abstention, 2-step query opportunity, model checks/expanded primitive calls, stage CPU/wall/RSS, raw/source/metric hashes, truthful null/error/missing states. No evaluator truth in public learner snapshot.
+- Validation separates syntax isomorphism, full finite semantic equality, ID permutation, reachable evidence ambiguity and capped UNKNOWN. A certified grammar mismatch requires complete finite search proof; an empty truncated search is UNKNOWN/RESOURCE_EXHAUSTED.
+- 8 arms: LQ, LA, LR, ER, FA, FX, BODY-OFF, STATIC-MACRO; all have the same legal charged actions/physical budgets and a defined comparable compute ceiling. Formally report estimand by **semantic family**, not renamed ID episodes, with coverage alongside zero-abstention AULC.
+- [Full scope and methods](../specs/EXP-REP-004-DECISION-V1.md) / [prospective plan](../../experiments/EXP-REP-004/plan-v1.md). Historic REP003 raw and sealed evaluation boundaries remain unchanged.
