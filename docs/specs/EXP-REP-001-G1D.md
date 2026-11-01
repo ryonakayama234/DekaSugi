@@ -1,6 +1,6 @@
 # EXP-REP-001 G1-D — Integrated Research System Design v1
 id: EXP-REP-001-G1D-DESIGN
-status: PROPOSED_FOR_USER_AGREEMENT; DESIGN_ONLY; NOT_IMPLEMENTED; NOT_SCORED
+status: ENGINEERING_IMPLEMENTED; DISCLOSED_TOY_ONLY; NO_FORMAL_SCORE
 updated: 2026-11-01
 tags: representation, counterexample, active-learning, wake-sleep, architecture, local-use
 parent_issue: https://github.com/ryonakayama234/DekaSugi/issues/128
@@ -88,3 +88,18 @@ Representation selection candidate = lexicographic (satisfies all TRAIN evidence
 - Every implementation PR must update `AGENTS.md`, `docs/INDEX.md`, ARCH-001 Mermaid, ARCH-002 contracts and data flow, plan and immutable dated run ledger *with* code and tests. Existing old datasets/workflows are not touched.
 
 See [method](../../experiments/EXP-REP-001/g1d-method-v1.md), [design-only receipt](../../experiments/EXP-REP-001/runs/20261101-g1d-design-only.md), and parent [EXP-REP-001](EXP-REP-001.md).
+
+## Engineering implementation result (2026-11-01, disclosed toy only)
+The architecture described above has a working engineering prototype in `packages/rep_lab`, CLI `python -m packages.rep_lab`, explicit synthetic tests `tests/test_rep001_g1d_engineering.py`, and an immutable dated pilot record at `experiments/EXP-REP-001/runs/20261101-g1d-engineering-pilot.md`. **No formal F0/DEV/FINAL was executed.** The original design text above is retained as historical intent.
+
+The implementation uses complete validated one-edge diagnosis and typed two-edge parity synthesis using XOR signatures with a maximum of 300,000 candidate pairs, retaining up to 128 candidates; overlarge ambiguity and incomplete search are not treated as proof of class mismatch. The learned body is a canonical role-based two-relation string used as a model preference, not an invented primitive semantic. `ToySession` charges state setup, pulse and reset and is a same-process host, NOT a trusted independent evaluation boundary. B1/B2/B3/B3x use identical passive evidence; B5 uses separately chosen metered evidence and cannot be compared as a concept-body causal contrast.
+
+TRAIN pilot uses 32 renamed versions of a direct-fork structure (not graph-disjoint), and six disclosed toy evaluation worlds, four same-family plus two gated-mixture. B3 learned one reusable structural body after three distinct named TRAIN worlds but its 368/384 correct predictions matched B1 fixed expressive, B2 rank-only, B3x ablated exactly. **No body-specific accuracy gain** is shown. B5, with at most four charged actions, reached 384/384 against passive 368/384; this is a disclosed toy *active-information* effect, not independent generalization or a concept-body effect. 140 whitelisted tests passed on the pilot commit in CI. See dated run ledger for hashes, costs, abstentions and limitations.
+
+Operational toy CLI (not formal evaluator):
+```bash
+python -m packages.rep_lab train --worlds 8 --snapshot .run/rep-g1d/snapshot.json
+python -m packages.rep_lab inspect --snapshot .run/rep-g1d/snapshot.json
+python -m packages.rep_lab use --snapshot .run/rep-g1d/snapshot.json
+python -m packages.rep_lab evaluate-toy
+```
