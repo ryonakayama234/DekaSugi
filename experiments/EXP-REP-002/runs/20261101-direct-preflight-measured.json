@@ -1,0 +1,120 @@
+{
+  "arms": [
+    "LQ",
+    "LA",
+    "LR",
+    "FA"
+  ],
+  "audits_per_world": 32,
+  "budgets": [
+    0,
+    2,
+    4,
+    8
+  ],
+  "composition_paired_effect": 0.027995,
+  "composition_world_differences": [
+    0.054688,
+    0.1875,
+    0.03125,
+    0,
+    0.078125,
+    0,
+    0,
+    -0.0625,
+    0,
+    0,
+    0.046875,
+    0
+  ],
+  "cpu_ms": 320.555,
+  "limitation": "direct-only four-edge grammar; pulse-only query; no H4 gated search; same-process evaluator",
+  "records_digest": "62e3109633419da4cd56eb3c7c33a59f5c8c66d52fd4ddd8265ea1d740937494",
+  "snapshot": {
+    "digest": "86216e36a28b22bf713e3c11be505216c51fa4f9d2c7fa6ce51ed6d044cf2ab0",
+    "distinct_structures": 3,
+    "grammar": "direct-xor/4",
+    "metered_train_actions": 320,
+    "motif": [
+      [
+        "hub",
+        "x"
+      ],
+      [
+        "hub",
+        "y"
+      ]
+    ],
+    "schema": "rep002-disclosed-direct-preflight/1",
+    "train_count": 64,
+    "training_receipts_hash": "8671d19e688fc5daf23488b82fe0c5dcd1eb06930db5964ba03fac2469e74d29"
+  },
+  "status": "DISCLOSED_PREFLIGHT_ONLY_NOT_FORMAL",
+  "strata": {
+    "COMPOSITION": {
+      "FA": 0.822266,
+      "LA": 0.794271,
+      "LQ": 0.822266,
+      "LR": 0.794271
+    },
+    "DISTRACTOR": {
+      "FA": 0.788411,
+      "LA": 0.808594,
+      "LQ": 0.788411,
+      "LR": 0.720703
+    },
+    "NOVEL": {
+      "FA": 0.665365,
+      "LA": 0.666016,
+      "LQ": 0.665365,
+      "LR": 0.664062
+    },
+    "RENAMED": {
+      "FA": 0.904948,
+      "LA": 0.903646,
+      "LQ": 0.904948,
+      "LR": 0.851562
+    }
+  },
+  "total_actions": 2112,
+  "total_expanded_nodes": 9363,
+  "train_curve": [
+    {
+      "concepts": 0,
+      "digest": "9aabb16bf4ebcc491091ac5077e74e6e3c1c70066ff14714b6a10b5ba008430e",
+      "n": 0,
+      "structures": 0
+    },
+    {
+      "concepts": 1,
+      "digest": "92ebc3007501f260d26143647be3f6f080406dd304b572612ba760985fe9c44d",
+      "n": 3,
+      "structures": 3
+    },
+    {
+      "concepts": 1,
+      "digest": "e0fe13a2c7637bf8107d50f42d1c152c450985f3efd13bdeef12edb63af078ff",
+      "n": 8,
+      "structures": 3
+    },
+    {
+      "concepts": 1,
+      "digest": "7b7bf4d115881574e99c76d02cac051045cf6d2b0399699a4eb6019ef1f2ff9f",
+      "n": 16,
+      "structures": 3
+    },
+    {
+      "concepts": 1,
+      "digest": "0fe2b87624b07f8f4d7d09776384051439628486af6d5603313bc5f47e849ddb",
+      "n": 32,
+      "structures": 3
+    },
+    {
+      "concepts": 1,
+      "digest": "86216e36a28b22bf713e3c11be505216c51fa4f9d2c7fa6ce51ed6d044cf2ab0",
+      "n": 64,
+      "structures": 3
+    }
+  ],
+  "worlds": 48
+}
