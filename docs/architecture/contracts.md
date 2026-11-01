@@ -1095,3 +1095,22 @@ Boolean gates; all Observation IDs, before/after exact bool tuples and
 action validity; ConceptCandidate provenance string tuples, exact str role
 patterns and exact int support counts. An invalid later observation must
 be rejected even after prior evidence exhausts all candidate models.
+
+## EXP-REP-001 G1-D — proposed typed evidence flow (DESIGN ONLY; NOT_RUN)
+```mermaid
+flowchart LR
+ W["Hidden environment + independent future evaluator"] --> A["Public metered IPC"]
+ A --> O["ObservationV1 + ActionCostV1"]
+ O --> D["DiagnosisV1"]
+ D --> R["RepairCandidateV1 typed AST"]
+ R --> S["RepairSnapshotV1"]
+ S --> U["Local inference or abstention"]
+ U --> E["EvalReportV1 / LearningCurveRecordV1"]
+```
+- `ActionCostV1`: action_kind, primitive_units, setup_units, reset_units, cpu_ns, wall_ns. Initial learner-visible state may not be chosen freely.
+- `DiagnosisV1`: evidence_digest, grammar_version, search_complete, surviving_count, candidate_count, reason/status and witness_ids. `MODEL_CLASS_MISMATCH` requires complete bounded-class enumeration; `SEARCH_EXHAUSTED` does not entail it.
+- `RepairCandidateV1`: typed relation AST (max two atoms, role-bound gates, parity composition), source evidence and counterexamples, complexity cost. No executable Python from data.
+- `RepairSnapshotV1`: canonical executable role-body AST and cross-world support, rank-only statistics, interpreter/grammar version, TRAIN digest and integrity hash. Digest is not independent proof of origin.
+- `LearningCurveRecordV1`: distinct training worlds, repeated passes, snapshot/body hashes, world-level paired outcomes, query/setup/reset counts, candidate and CPU/wall/RSS costs, failure statuses, source SHA.
+- `EvalReportV1`: per-world paired exact-vector accuracy and abstentions, independent scorer witness, source/seed/data/snapshot evidence, statistical plan and outcome claim level. The 32 audit transitions within a world are not independent statistical observations.
+Formal TRAIN/DEV/FINAL values remain UNFROZEN and behind F0 review. Disclosed development curves may be used to iterate and must NEVER be recycled as fresh independent FINAL evidence. [Full contracts](../specs/EXP-REP-001-G1D.md) / [method](../../experiments/EXP-REP-001/g1d-method-v1.md).
