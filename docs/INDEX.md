@@ -361,3 +361,12 @@ The original EXP-REP-001 plan is a proposal, not a frozen FINAL method. Do not i
 
 ### G5 independent review and correct scope
 [Codex P2 review/corrections](../experiments/EXP-REP-003/reviews/20261102-independent-g5-code-review.md): `NOVEL`はTRAIN64で既知のGATE0で、意味的新規性は未測定。 `Snapshot.library`のbodyは**記述用であり実行されていない**。実際の学習効果経路は固定文法上のカテゴリ頻度（事前分布）だけ。以前の「実行可能概念獲得」「概念本体アブレーション」の表現は本V1には適用しない。LQとLAの行動差0件、正式科学的能力向上は未実証。
+
+
+## EXP-REP-004 — executable concept activation (2026-11-02, decision candidate)
+| ID | Theme | Status | Documents |
+|---|---|---|---|
+| EXP-REP-004-DECISION-V1 | Paid experience → executable role-bound concept → query activation → disclosed 8-arm study | owner_review_pending / not_implemented / not_scored | [technical and scientific decision](specs/EXP-REP-004-DECISION-V1.md) / [Issue #136](https://github.com/ryonakayama234/DekaSugi/issues/136) |
+| EXP-REP-004-PLAN-V1 | G0–G5 experiment, family splits, metric/threshold and stop gates | proposed / not_run / not_frozen | [preregistration candidate](../experiments/EXP-REP-004/plan-v1.md) / [run ledger](../experiments/EXP-REP-004/runs/README.md) |
+| ADR-REP-004 | Why executable typed concepts precede neural epochs and release freeze | proposed | [decision record](architecture/decisions/ADR-REP-004.md) |
+| ARCH-001/ARCH-002-REP004 | Proposal architecture and data/trust path | proposed only | [Mermaid system](architecture/system.md) / [typed data flow](architecture/contracts.md) |
