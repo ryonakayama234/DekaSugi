@@ -272,8 +272,12 @@ def instantiate_template(body: str, objects: tuple[str, ...],
             (r[2] != -1 and r[2] in (r[0], r[1])) for r in rows)):
         raise ValueError("Unsafe typed template rows")
     used = {v for r in rows for v in r[:3] if v >= 0}
-    if used != set(range(len(used))) or not 2 <= len(used) <= len(objects):
-        raise ValueError("Noncanonical or overspecified roles")
+    if used != set(range(len(used))) or len(used) < 2:
+        raise ValueError("Noncanonical roles")
+    # A valid learned motif may require more distinct roles than this target
+    # world offers. It is inapplicable, NOT a binding-budget exhaustion.
+    if len(used) > len(objects):
+        return ()
     count = 1
     for k in range(len(used)):
         count *= len(objects) - k
