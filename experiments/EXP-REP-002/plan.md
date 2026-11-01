@@ -44,3 +44,7 @@ The first disclosed engineering pilot is direct-XOR-only, 5 objects, <=4 edges, 
 
 ## Measured direct-only execution outcome (engineering, not F0)
 On exact source 7f32b8b, CI 150 tests PASS; TRAIN64 contained 3 unique structures and 320 paid TRAIN pulses, learned fork motif from n3. All 48 disclosed worlds, four arms and four budgets scored. Primary COMPOSITION LQ-LA +0.027995 AULC, but FA=LQ exactly, and DISTRACTOR LQ-LA=-0.020183. The fixed public-role heuristic sufficiently explains concept-aware policy's selections; proposed concept-body unique advantage is NOT demonstrated. Raw measurements and status: [run](runs/20261101-direct-preflight-measured.md) / [JSON](runs/20261101-direct-preflight-measured.json). No formal power or independent custody.
+
+
+## Corrected actual engineering run after independent review (2026-11-01)
+The first measured result had four P1 defects. After repair, exact head 64f1d4d passed 152 tests, reproduced the LQ-LA +0.027995 on COMPOSITION and LQ=FA in all strata, now with a truly untrained fixed FA prior. Full 768 world-arm-budget records, charge traces and digest are preserved. This is a *negative concept-specific attribution* result, not a successful causal concept-learning test. Details: [corrected experiment](runs/20261101-direct-preflight-corrected.md) / [raw record](runs/20261101-direct-preflight-corrected-raw.json). Current-head independent review of the corrections remains pending.
