@@ -1,6 +1,8 @@
 # ADR-REP-003 — Opportunity before model expansion
 id: ADR-REP-003
 date: 2026-11-01
+updated: 2026-11-01
+tags: architecture, decision, active-learning
 status: PROPOSED / NOT_ACCEPTED
 context: EXP-REP-002 corrected LQ=FA in all four strata, public role hub shortcut and negative DISTRACTOR transfer.
 
