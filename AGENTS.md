@@ -494,3 +494,10 @@ New `packages/relational_world`, `world_model`, `representation`, and `rep_evalu
 
 ### EXP-REP-002 corrected 4-P1 review findings (2026-11-01)
 - The first measured pilot's FA comparison was confounded: FA copied learned motif for prediction. Independent Codex review also found TRAIN hidden-graph source leakage, missing raw per-world rows, and invalid source/cost acceptance. All four were corrected and tested on a new head. [Corrected immutable run](experiments/EXP-REP-002/runs/20261101-direct-preflight-corrected.md) / [complete 768-row data](experiments/EXP-REP-002/runs/20261101-direct-preflight-corrected-raw.json). After an actually untrained fixed public hub/x/y prior was substituted, LQ=FA still exactly, and no learned-body-specific causal advantage is supported. Previous measurement is historical/superseded, not silently overwritten. 152-test CI PASS on 64f1d4d; independent final reviewer outcome remains pending.
+
+## EXP-REP-003: role-blind conditional opportunity-first design (Issue #133)
+- 主担当は Inquiry / World Model（次の質問・到達可能な因果仮説）で、Representation/Snapshot と Evaluation/Provenance は補助。参照 [spec](docs/specs/EXP-REP-003.md)、[plan](experiments/EXP-REP-003/plan.md)、[ADR](docs/architecture/decisions/ADR-REP-003.md)、[design receipt](experiments/EXP-REP-003/runs/20261101-design-only.md)。
+- これは **PROPOSED / DESIGN_ONLY / NOT_RUN**。古いREP002結果や封印DEV/FINALを再採点しない。次は前登録された公開合成世界で、匿名化したrole、費用付き二段階介入の **機会の有無** を正確に識別する。機会の存在だけで概念の利益を主張しない。
+- FAは強い固定能動探索を許し、LQ−LA、LQ−FA、BODY-OFFの全てを区別して記録。role名、world seed、潜在グラフ、audit goldを学習器に流さない。全armで同じprimitive expansion / query simulation / charged action ceilingsを使用する。
+- 構造的に異なるTRAIN経験数と同一経験再生を区別し、後者を neural epochs と呼ばない。学習と科学的評価は別の門。ResearchPrototypeからFrozenReferenceBaselineへの昇格は独立監査・再現性・限定条件を経た明示採用時のみ。
+- 新しい実装変更時はAGENTS/INDEX/ARCH-001 Mermaid/ARCH-002 data flow/spec/plan/run receipt/negative testsを同じDraft PRで同期。今回の新規作業は設計のためテスト実行を主張しない。
