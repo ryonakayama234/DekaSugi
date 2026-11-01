@@ -1120,3 +1120,9 @@ Implemented in `packages/rep_lab`: `DiagnosisV1(status,search_complete,checked,s
 
 ### G1-D versioned template constructor execution contract
 `instantiate_template(body, objects, max_bindings=10000)` accepts a canonical JSON typed two-atom role body (role variables 0..5, direct/context-gated parity atoms), 4-8 exact public object IDs, and a bounded number of distinct role bindings; it returns stable, deduplicated `Relation`-tuple hypotheses. Each is checked against ALL valid public observations before a B3 prediction. The constructor never reads environment graph or evaluator answers. If no body explains the transcript, B3 falls back to bounded H2 search. The current pilot Snapshot is [here](../../experiments/EXP-REP-001/artifacts/g1d-toy-snapshot32.json) and its recorded comparative candidate/cpu metrics [here](../../experiments/EXP-REP-001/runs/20261101-g1d-template-constructor.md). A valid body is still human-typed grammar only; a Snapshot digest gives integrity but not authenticated origin.
+
+
+### G1-D post-review strict typed/budget contract (implemented)
+- `Observation.object_ids`: validate exact tuple and each exact builtin str before equality, hashing, pruning and transcript checking.
+- `RepairSnapshot.atom_rank`: validate every nested element as exact builtin tuple of length two before unpacking/digest or model rank selection.
+- `B3 pair_budget`: `attempted_templates + checked_fallback <= pair_budget`. Pass only positive remaining pair candidates to H2; fail closed when exhausted. These constraints are exercised in three new adversarial CI-safe unit tests; [run](../../experiments/EXP-REP-001/runs/20261101-g1d-p1-budget-repair.md).
