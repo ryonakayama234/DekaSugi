@@ -16,3 +16,5 @@ Never present invented synthetic toy runs as formal TRAIN/DEV/FINAL. Every execu
 
 
 - [20261101-invented-g1-smoke](20261101-invented-g1-smoke.md): 3 disclosed toy training worlds, 4 deliberately favorable toy evaluation worlds, 8 audit probes; **engineering-only, not a preregistered scientific estimate**. No formal TRAIN/DEV/FINAL.
+
+- [20261101 G1-C rank-only / evidence-integrity engineering](20261101-g1c-rank-only-engineering.md) — R2P policy-only control and fail-closed negative tests. No independent scientific scoring; exact CI-head evidence separately required.
