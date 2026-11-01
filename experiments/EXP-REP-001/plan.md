@@ -61,3 +61,6 @@ feature, equality with R3 indicates a *plausible ranking-only mechanism*;
 inequality by itself does not prove newly invented semantics. Toy R2P CPU cost
 is not yet normalized; equal candidate/primitive and actual CPU/wall/setup
 costs must be metered before any scientific claim.
+
+## G1-D toy execution addendum — NOT an F0 method freeze
+`packages/rep_lab` engineered and measured toy TRAIN0/1/2/3/4/8/16/32, body Snapshot, local train/inspect/use and publicly disclosed evaluation. Same TRAIN graph is repeated under renaming; six eval toy worlds include four same-topology forks and two gated mixtures. B3=368/384, B1=B2=B3x=368/384; body-specific transfer not established. B5 active 384/384 with at most four *paid* operations but a distinct public transcript; attribute only to toy query acquisition. Exact-run hashes and costs: [G1-D engineering ledger](runs/20261101-g1d-engineering-pilot.md). Original proposed TRAIN256/DEV64/FINAL1024 and effect thresholds remain NOT FROZEN; no formal DEV/FINAL, no unchanged historic sources rescored.
