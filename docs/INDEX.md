@@ -299,3 +299,11 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | ID | テーマ | 状態 | 文書 |
 |---|---|---|---|
 | EXP-REP-001-G1C | R2P方策のみ対照・表現効果の帰属・Observation/Snapshot型検証 | invented engineering, draft, no formal scoring | [Issue #126](https://github.com/ryonakayama234/DekaSugi/issues/126) / [spec](specs/EXP-REP-001.md) / [plan](../experiments/EXP-REP-001/plan.md) / [architecture](architecture/system.md) / [contracts](architecture/contracts.md) / [run](../experiments/EXP-REP-001/runs/20261101-g1c-rank-only-engineering.md) |
+
+## EXP-REP-001 G1-D — Integrated plan, preimplementation, NOT_RUN (2026-11-01)
+| ID | Purpose | Status | Authoritative document |
+|---|---|---|---|
+| EXP-REP-001-G1D-DESIGN | Diagnosis -> bounded representation repair -> Wake/Sleep -> freeze -> local use -> independent evaluation | proposed_for_user_agreement; design_only | [integrated specification](specs/EXP-REP-001-G1D.md) / [method](../experiments/EXP-REP-001/g1d-method-v1.md) / [Issue #128](https://github.com/ryonakayama234/DekaSugi/issues/128) |
+| EXP-REP-001-G1D-RECEIPT | Design-only registration without training/scoring | not_run | [dated ledger](../experiments/EXP-REP-001/runs/20261101-g1d-design-only.md) |
+
+The original EXP-REP-001 plan is a proposal, not a frozen FINAL method. Do not interpret this design document as authorization to merge Draft #124/#125/#127 or conduct formal DEV/FINAL. ARCH-001/002 maintain a compact current diagram/contract pointer; detailed normative proposal is in G1-D design/method documents.
