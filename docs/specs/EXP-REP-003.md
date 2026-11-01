@@ -2,6 +2,7 @@
 id: EXP-REP-003-SPEC-V1
 status: PROPOSED / DESIGN_ONLY / NOT_RUN
 updated: 2026-11-01
+tags: research, representation, inquiry, active-learning
 issue: https://github.com/ryonakayama234/DekaSugi/issues/133
 
 ## 目的と否定可能な問い
