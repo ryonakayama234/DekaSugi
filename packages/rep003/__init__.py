@@ -21,6 +21,13 @@ GRAMMAR = "anonymous-boolean/direct-or-gated-one-edge/xor-prestate/1"
 KINDS = ("EMPTY", "DIRECT", "GATE0", "GATE1")
 ARMS = ("LQ", "LA", "LR", "ER", "FA", "FX", "BODY-OFF")
 STRATA = ("RENAMED", "CONDITIONAL_TRANSFER", "NOVEL", "DISTRACTOR")
+# Historical generator keys: these ARE NOT claims of unseen semantic transfer.
+STRATUM_ACTUAL_MEANING = {
+    "RENAMED": "seen_DIRECT_or_GATE1_roleblind_ID_renaming",
+    "CONDITIONAL_TRANSFER": "seen_GATE1_heldout_ID_permutation_NOT_composition",
+    "NOVEL": "seen_GATE0_heldout_ID_permutation_NOT_novel_semantics",
+    "DISTRACTOR": "two_edges_out_of_one_edge_learner_grammar",
+}
 BUDGETS = (0, 1, 2, 4, 6, 8)
 TRAIN_SIZES = (0, 3, 8, 16, 32, 64)
 MAX_CHECKS = 200000
@@ -136,6 +143,8 @@ def make_world(index, stratum):
         pattern = "GATE0"
     else:
         pattern = "GATE1"
+    # In particular legacy key "NOVEL" maps to a TRAIN-SEEN GATE0 rule.
+    # It is NOT a semantically novel transfer test.
     model = {"EMPTY": None, "DIRECT": (i, j, -1, -1),
              "GATE0": (i, j, k, 0), "GATE1": (i, j, k, 1)}[pattern]
     rules = () if model is None else (model,)
@@ -358,6 +367,9 @@ def train(n):
         structures.add(kind(inferred))
         receipts.append(trace_hash)
         actions += paid
+    # REVIEW LIMITATION: these bodies are DESCRIPTIVE TYPED ANNOTATIONS ONLY.
+    # The inference/query engines read the learned support frequencies, NOT
+    # snapshot["library"]. This V1 does NOT execute or invent a learned body.
     library = [
         {"kind": k, "body": {"effect": "toggle_target_if_source_pulsed",
                              "guard": ("always" if k == "DIRECT" else
