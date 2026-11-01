@@ -1124,3 +1124,7 @@ flowchart TD
 
 ### EXP-REP-002 observed mechanism — fixed role shortcut
 The implemented LQ question planner selects a public hub role using a learned motif, but the FA fixed planner selects that SAME public hub without training. Their experimentally observed results match on all four disclosed world strata. Therefore the current architecture's concept-to-question edge is functional, but its **incremental causal value** is unproven. [Measured run](../../experiments/EXP-REP-002/runs/20261101-direct-preflight-measured.md). New work needs a less revealing public role interface and counterexample-targeted multi-step probes; do not claim these exist now.
+
+
+### EXP-REP-002 corrected source and policy boundary (implemented subset)
+- TRAIN support canonical graph is now computed strictly from reconstructed PUBLIC pulse edges, not host.hidden_edges; host-only hidden edges are read only by the simulator and evaluator. FA builds a **hardcoded fixed public-role prior** independent of trained Snapshot; LQ and LA both use a learned motif for prediction. The evaluator applies an already committed predictor with no learner feedback. Exactly 768 raw world-arm-budget rows are archived, not only their digest. [Corrected receipt](../../experiments/EXP-REP-002/runs/20261101-direct-preflight-corrected.md).
