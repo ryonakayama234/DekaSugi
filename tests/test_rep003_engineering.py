@@ -103,6 +103,25 @@ class Rep003EngineeringTests(unittest.TestCase):
                 self.assertEqual(c, use(s,w,arm,2))
                 self.assertGreaterEqual(audit(w,c),0)
 
+    def test_lossless_archived_pilot_recovery(self):
+        from scripts.read_rep003_archive import decode_archive
+        archive = Path(__file__).resolve().parents[1] / (
+            "experiments/EXP-REP-003/artifacts/"
+            "20261102-reduced-pilot-v1_1-raw.json.zlib.b64")
+        result = decode_archive(archive)
+        self.assertEqual(result["record_count"], 2016)
+        self.assertEqual(result["records_digest"],
+                         "6792a8cff8d3e69f4b4789da80309df4d11d602bf870a39537176d116ae5e1b9")
+        self.assertEqual(sum(
+            entry["LQ_vs_LA_different_action_sequences"]
+            for stratum in result["policy_switch"].values()
+            for entry in stratum.values()),0)
+        with tempfile.TemporaryDirectory() as root:
+            p=Path(root)/"corrupted.b64"
+            p.write_text("invalid contents")
+            with self.assertRaises(ValueError):
+                decode_archive(p)
+
     def test_real_cli_and_disclosed_raw_scoring(self):
         from packages.rep003.__main__ import main
         with tempfile.TemporaryDirectory() as root:
