@@ -11,7 +11,7 @@ from packages.rep_lab import (ToySession, canonical_body, canonical_hash,
     diagnose_one_edge, disclosed_training_worlds, disclosed_world, eval_audit,
     evaluate_disclosed, full_public_episode, learn_snapshot, load_snapshot,
     active_public_episode, choose_cost_aware_query, passive_public_episode,
-    predict, run_pilot, save_snapshot, search_two_edges,
+    instantiate_template, predict, run_pilot, save_snapshot, search_two_edges,
     validate_snapshot)
 
 
@@ -175,6 +175,32 @@ class G1DTests(unittest.TestCase):
                     main()
                 self.assertIn(status, output.getvalue())
                 self.assertTrue(path.is_file())
+
+    def test_executable_template_instantiates_novel_renamed_roles(self):
+        memory = disclosed_training_worlds(3)
+        snap = learn_snapshot(memory)
+        target = disclosed_world(100, "toy-eval")
+        instantiated = instantiate_template(snap.templates[0].body, target.object_ids)
+        self.assertGreater(len(instantiated), 0)
+        self.assertTrue(all(canonical_body(m) == snap.templates[0].body
+                            for m in instantiated))
+        obs, _ = passive_public_episode(target)
+        before = (True, False, True, False)
+        action = Action("pulse", target.object_ids[0])
+        fixed = predict(target.object_ids, obs, before, action, "B1", snap)
+        learned = predict(target.object_ids, obs, before, action, "B3", snap)
+        self.assertEqual(fixed.after, learned.after)
+        self.assertEqual(learned.status, "TEMPLATE_PRIOR_PREDICTION")
+        self.assertLess(learned.checked, fixed.checked)
+
+    def test_constructor_strict_and_bounded(self):
+        snap = learn_snapshot(disclosed_training_worlds(3))
+        with self.assertRaises(ValueError):
+            instantiate_template(snap.templates[0].body, self.ids, max_bindings=2)
+        with self.assertRaises(ValueError):
+            instantiate_template("[[0,0,-1,true],[0,2,-1,true]]", self.ids)
+        with self.assertRaises(ValueError):
+            instantiate_template(snap.templates[0].body, self.ids, max_bindings=True)
 
     def test_paired_disclosed_scoring_and_learning_curve(self):
         result = run_pilot()
