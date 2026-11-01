@@ -226,5 +226,38 @@ class G1DTests(unittest.TestCase):
         print("G1D_TOY_SNAPSHOT=" + json.dumps(asdict(snapshot32), sort_keys=True, separators=(",", ":")))
 
 
+    def test_p1_nested_snapshot_rank_exact_tuple(self):
+        s = learn_snapshot(disclosed_training_worlds(3))
+        bad = type(s)(s.schema, s.grammar, s.train_receipt, s.train_count,
+                      s.templates, tuple(list(item) for item in s.atom_rank), s.digest)
+        with self.assertRaises(ValueError):
+            validate_snapshot(bad)
+
+    def test_p1_evidence_object_ids_exact_before_any_comparison(self):
+        class DeceptiveStr(str):
+            pass
+        w = self._world((Relation("a", "b"), Relation("a", "c")))
+        obs, _ = full_public_episode(w)
+        o = obs[0]
+        forged = Observation(o.world_alias,
+                             (DeceptiveStr("a"),) + o.object_ids[1:],
+                             o.before, o.action, o.after)
+        self.assertEqual(diagnose_one_edge(self.ids, (forged,)).status,
+                         "INVALID_EVIDENCE")
+        with self.assertRaises(ValueError):
+            search_two_edges(self.ids, (forged,))
+
+    def test_p1_shared_template_fallback_budget_never_overruns(self):
+        snap = learn_snapshot(disclosed_training_worlds(3))
+        world = self._world((Relation("a", "b"), Relation("c", "d")))
+        obs, _ = full_public_episode(world)
+        diag = diagnose_one_edge(self.ids, obs)
+        self.assertEqual(diag.status, "MODEL_CLASS_MISMATCH")
+        for max_pairs in (1, 2, 10, 12, 20):
+            result = predict(self.ids, obs, (False,) * 4,
+                             Action("pulse", "a"), "B3", snap,
+                             pair_budget=max_pairs)
+            self.assertLessEqual(result.checked - diag.checked, max_pairs)
+
 if __name__ == "__main__":
     unittest.main()
