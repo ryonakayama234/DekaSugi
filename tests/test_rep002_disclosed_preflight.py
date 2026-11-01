@@ -56,6 +56,8 @@ class Rep002PreflightTests(unittest.TestCase):
         self.assertLessEqual(a["actions"], 2)
         self.assertLessEqual(b["actions"], 2)
         self.assertEqual(a["status"], "COMMITTED")
+        self.assertLessEqual(len(a["edges"]), 4)
+        self.assertLessEqual(len(b["edges"]), 4)
         self.assertGreaterEqual(audit(w, a["edges"], a["status"]), 0)
         self.assertNotIn("correct", a)
         self.assertNotIn("hidden_edges", a)
