@@ -1076,3 +1076,7 @@ flowchart LR
  R --> P
 ```
 The operative change is an executable typed *hypothesis constructor* after proven H1 mismatch, not only rank ordering. In the toy this saved checked candidates while accuracy stayed equal to fixed B1. See [measured run](../../experiments/EXP-REP-001/runs/20261101-g1d-template-constructor.md).
+
+
+### G1-D budget/validation remediation (implemented, CI verified)
+The B3 executable-body constructor and fixed H2 fallback now share the same `pair_budget` ledger. Before evidence comparison and pruning, the full object ID tuple is strict-type checked; before snapshot ranking, each rank entry is an exact two-element builtin tuple. The repaired comparison remains same-topology disclosed artificial engineering only. See [new P1 receipt](../../experiments/EXP-REP-001/runs/20261101-g1d-p1-budget-repair.md).
