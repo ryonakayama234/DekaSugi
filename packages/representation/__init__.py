@@ -45,16 +45,29 @@ def _snapshot_body(snapshot: ConceptSnapshot) -> dict[str, object]:
 
 
 def validate_snapshot(snapshot: ConceptSnapshot) -> None:
-    if type(snapshot) is not ConceptSnapshot or snapshot.schema != "rep-toy-snapshot/0.1":
+    if (type(snapshot) is not ConceptSnapshot or
+            type(snapshot.schema) is not str or
+            snapshot.schema != "rep-toy-snapshot/0.1"):
         raise ValueError("Wrong snapshot format")
     if (type(snapshot.world_receipt) is not str or len(snapshot.world_receipt) != 64 or
+            type(snapshot.snapshot_digest) is not str or len(snapshot.snapshot_digest) != 64 or
             type(snapshot.concepts) is not tuple or len(snapshot.concepts) > 3):
         raise ValueError("Invalid snapshot metadata")
+    # Validate nested builtin types before comparisons, sets, hashing, sorting
+    # or serialization: hostile str/int subclasses can change dictionary keys
+    # without changing their JSON text or a prior content digest.
+    for c in snapshot.concepts:
+        if (type(c) is not ConceptCandidate or
+                type(c.concept_id) is not str or
+                type(c.role_pattern) is not str or
+                type(c.support_count) is not int or
+                type(c.support_worlds) is not tuple or
+                any(type(w) is not str or not w for w in c.support_worlds)):
+            raise ValueError("Noncanonical concept primitive types")
     if tuple(sorted(snapshot.concepts, key=lambda c: c.role_pattern)) != snapshot.concepts:
         raise ValueError("Noncanonical ordering")
     for c in snapshot.concepts:
-        if (type(c) is not ConceptCandidate or
-                c.role_pattern not in ("direct", "gated_true", "gated_false") or
+        if (c.role_pattern not in ("direct", "gated_true", "gated_false") or
                 c.concept_id != digest({"type": c.role_pattern}) or
                 c.support_count != len(c.support_worlds) or c.support_count < 3 or
                 c.support_worlds != tuple(sorted(set(c.support_worlds)))):
@@ -69,6 +82,8 @@ def induce_train_snapshot(world_episodes: dict[str, tuple[Observation, ...]]) ->
         raise ValueError("Nonempty TRAIN episodes required")
     supports: dict[str, list[str]] = {}
     receipt: list[dict[str, object]] = []
+    if any(type(alias) is not str for alias in world_episodes):
+        raise ValueError("TRAIN aliases must be exact builtin strings")
     for world_alias, observations in sorted(world_episodes.items()):
         if type(world_alias) is not str or not world_alias or type(observations) is not tuple or not observations:
             raise ValueError("Invalid world/observations")
