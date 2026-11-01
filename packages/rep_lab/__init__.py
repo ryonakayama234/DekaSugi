@@ -249,6 +249,47 @@ def validate_snapshot(s: RepairSnapshotV1) -> None:
         raise ValueError("Tampered or noncanonical snapshot")
 
 
+
+def instantiate_template(body: str, objects: tuple[str, ...],
+                         max_bindings: int = 10000
+                         ) -> tuple[tuple[Relation, ...], ...]:
+    """Generate typed two-atom hypotheses from acquired role variables only."""
+    _validate_objects(objects)
+    if type(body) is not str or len(body) > 256 or type(max_bindings) is not int or not 1 <= max_bindings <= 10000:
+        raise ValueError("Unsafe template constructor input")
+    try:
+        rows = json.loads(body)
+    except json.JSONDecodeError as exc:
+        raise ValueError("Malformed template body") from exc
+    if (type(rows) is not list or len(rows) != 2 or
+        any(type(r) is not list or len(r) != 4 or
+            any(type(v) is not int or v < -1 or v > 5 for v in r[:3]) or
+            type(r[3]) is not bool or r[0] == r[1] or
+            (r[2] != -1 and r[2] in (r[0], r[1])) for r in rows)):
+        raise ValueError("Unsafe typed template rows")
+    used = {v for r in rows for v in r[:3] if v >= 0}
+    if used != set(range(len(used))) or not 2 <= len(used) <= len(objects):
+        raise ValueError("Noncanonical or overspecified roles")
+    count = 1
+    for k in range(len(used)):
+        count *= len(objects) - k
+    if count > max_bindings:
+        raise ValueError("Template binding budget exhausted")
+    models = set()
+    for roles in permutations(objects, len(used)):
+        edges = []
+        for src, tgt, ctx, enabled in rows:
+            edges.append(Relation(roles[src], roles[tgt],
+                                  roles[ctx] if ctx >= 0 else None, enabled))
+        model = tuple(sorted(edges, key=_key_edge))
+        if model[0] == model[1]:
+            continue
+        if canonical_body(model) != body:
+            raise ValueError("Noncanonical body construction")
+        models.add(model)
+    return tuple(sorted(models, key=lambda m: tuple(_key_edge(r) for r in m)))
+
+
 def _atom_kind(r: Relation) -> str:
     return "direct" if r.context is None else ("gated_true" if r.context_value else "gated_false")
 
@@ -450,12 +491,36 @@ def predict(objects: tuple[str, ...], evidence: tuple[Observation, ...],
         model = _model_pick(models, mode, snapshot)
         return PredictionV1("PREDICTED", predicted_next(objects, before, action, model),
                             diag.checked, diag.status, model)
+    # A B3 acquired body is an executable typed candidate constructor, not
+    # just a rank label. Check EVERY generated candidate against public facts.
+    attempted = 0
+    if mode == "B3" and snapshot is not None and snapshot.templates:
+        fitting: set[tuple[Relation, ...]] = set()
+        for template in snapshot.templates:
+            try:
+                generated = instantiate_template(template.body, objects)
+            except ValueError:
+                return PredictionV1("ABSTAIN", None, diag.checked + attempted, "TEMPLATE_BOUND_EXHAUSTED")
+            for model in generated:
+                attempted += 1
+                if attempted > pair_budget:
+                    return PredictionV1("ABSTAIN", None, diag.checked + attempted, "SEARCH_EXHAUSTED")
+                if all(predicted_next(objects, o.before, o.action, model) == o.after
+                       for o in evidence):
+                    fitting.add(model)
+        if fitting:
+            model = _model_pick(tuple(sorted(fitting,
+                key=lambda m: tuple(_key_edge(r) for r in m))), mode, snapshot)
+            return PredictionV1("TEMPLATE_PRIOR_PREDICTION",
+                                predicted_next(objects, before, action, model),
+                                diag.checked + attempted, diag.status, model)
+    # Unexplained evidence falls back to the same bounded full H2 search.
     result = search_two_edges(objects, evidence, pair_budget)
     if not result.search_complete or result.status in ("NO_TWO_EDGE_FIT", "CANDIDATE_LIMIT"):
-        return PredictionV1("ABSTAIN", None, diag.checked + result.checked, result.status)
+        return PredictionV1("ABSTAIN", None, diag.checked + attempted + result.checked, result.status)
     model = _model_pick(tuple(c.model for c in result.candidates), mode, snapshot)
     return PredictionV1("PREDICTED", predicted_next(objects, before, action, model),
-                        diag.checked + result.checked, diag.status, model)
+                        diag.checked + attempted + result.checked, diag.status, model)
 
 
 def disclosed_training_worlds(n: int = 32) -> dict[str, tuple[Observation, ...]]:
