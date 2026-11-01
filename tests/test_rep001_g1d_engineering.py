@@ -226,6 +226,28 @@ class G1DTests(unittest.TestCase):
         print("G1D_TOY_SNAPSHOT=" + json.dumps(asdict(snapshot32), sort_keys=True, separators=(",", ":")))
 
 
+
+    def test_p2_inapplicable_large_role_template_falls_back(self):
+        from packages.rep_lab import TemplateV1
+        snap = learn_snapshot(disclosed_training_worlds(3))
+        body = '[[0,1,2,true],[3,4,5,true]]'
+        self.assertEqual(instantiate_template(body, self.ids), ())
+        tpl = TemplateV1(body, canonical_hash(body), snap.templates[0].support_worlds)
+        unsig = type(snap)(snap.schema, snap.grammar, snap.train_receipt,
+                           snap.train_count, (tpl,), snap.atom_rank, "")
+        digest = canonical_hash({k: v for k, v in asdict(unsig).items() if k != "digest"})
+        signed = type(snap)(snap.schema, snap.grammar, snap.train_receipt,
+                            snap.train_count, (tpl,), snap.atom_rank, digest)
+        validate_snapshot(signed)
+        world = self._world((Relation("a", "b"), Relation("a", "c")))
+        obs, _ = full_public_episode(world)
+        before = (False,) * 4
+        action = Action("pulse", "a")
+        learned = predict(self.ids, obs, before, action, "B3", signed)
+        fixed = predict(self.ids, obs, before, action, "B1")
+        self.assertEqual(learned.after, fixed.after)
+        self.assertEqual(learned.status, "PREDICTED")
+
     def test_p1_nested_snapshot_rank_exact_tuple(self):
         s = learn_snapshot(disclosed_training_worlds(3))
         bad = type(s)(s.schema, s.grammar, s.train_receipt, s.train_count,
