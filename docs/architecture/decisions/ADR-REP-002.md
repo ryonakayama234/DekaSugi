@@ -1,6 +1,7 @@
 # ADR-REP-002 — Concept-conditioned cost-aware inquiry
 
 id: ADR-REP-002
+tags: architecture, decision, active-learning, representation
 status: proposed_for_review; design_only
 updated: 2026-11-01
 parent: Issue #130
