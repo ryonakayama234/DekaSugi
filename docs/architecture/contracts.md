@@ -1273,3 +1273,6 @@ flowchart LR
 | `evaluate` | full 48 world × 7 arm × 6 budget score rows, all pairwise descriptive deltas, per-budget and policy-switch diagnostics; NOT formal |
 
 Caveats: Query planner evaluates a learned categorical prior for LQ while LA query uses uniform; this is NOT sufficient to prove executable concept-body effect against rank-only controls. The raw archival artifact contains rows and their SHA-equivalent deterministic canonical `records_digest`; no individual DEV/FINAL data touched. Decision V2 full conditional composition and automated representational invention remain proposals.
+
+### G5 correction to Snapshot and ablation meaning
+Persisted `Snapshot.library` entries are *descriptive labels*, checked against constants by `validate_snapshot()`, **not executable bindings consumed by USE**. Only `support` class frequencies alter `prior()`. The symbols DIRECT/GATE0/GATE1 and all runtime candidates come from researcher-fixed `MODELS`. BODY-OFF in this source is **prior off**, not a learned-body interpreter ablation; claim no more than category-prior learning. Current legacy `NOVEL` = GATE0 held-out instance from seen semantic family. [G5 review](../../experiments/EXP-REP-003/reviews/20261102-independent-g5-code-review.md).
