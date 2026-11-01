@@ -33,3 +33,11 @@ Compare LQ learned class-conditioned query prior vs LA uniform query prior but s
 - Plan horizon is 2, actual operation budget includes paid conditioning history, and all learner model candidate checks capped at 200000 per episode.
 - TRAIN costs and planner checks are separate ledgers; CPU/wall/RSS (and cross-platform performance) are not uniformly measured yet. Cost parity is **partially implemented**; not formal matched lifetime compute.
 - No new neural weights, gradient epochs, language-world transfer, self-invented grammar, formal custody or model promotion.
+
+## Measured G0–G5 result
+The first public artificial experiment is now [archived as a dated run](../../experiments/EXP-REP-003/runs/20261102-g0g5-reduced-engineering-measured.md). In 2016 rows LQ/LA/FA/ER/LR/BODY-OFF match exactly; **all 288 LQ-vs-LA paired action sequences are equal**; model-specific active gain was not exercised. At B=8 all 12 two-edge OOD distractor worlds trigger ABSTAIN in all strong arms; FX's score advantage does not prove stronger causal understanding. The `NOVEL` named stratum is held-out GATE0 semantics already present in TRAIN/grammar, NOT genuinely novel. A reviewer requested; no independent method acceptance, formal F0 or model promotion.
+
+Recover full scored raw rows losslessly:
+```bash
+python scripts/read_rep003_archive.py --archive experiments/EXP-REP-003/artifacts/20261102-reduced-pilot-v1_1-raw.json.zlib.b64 --output .run/rep003/recovered.json
+```
