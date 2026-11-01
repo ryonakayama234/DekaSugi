@@ -997,3 +997,27 @@ flowchart LR
     F --> E["Toy R3 vs R1/R2 smoke (not independent scoring)"]
 ```
 **Implemented** on PR-B branch: one-edge 4-object fixture, strict action/boolean interpreter, hypothesis diagnostics, 3-world concept snapshot, local smoke tests. **Not implemented**: confidential source/evaluator separation, balanced multi-edge family, reset-cost accounting, fair matched episodic R2, full concept AST induction or G2/G3. Preserve original architecture experiments and hidden evaluation gate.
+
+## EXP-REP-001 G1-C — attribution and typed-evidence boundary (engineering only)
+```mermaid
+flowchart TB
+    T["Invented TRAIN observations"] --> C["Sleep: ConceptSnapshot (R3)"]
+    T --> P["Count-only: RankOnlySnapshot (R2P)"]
+    T --> M["Raw episodes (R2)"]
+    E["Same new-world public observation transcript"] --> V["Exact-type / shape validation"]
+    V --> H["Fixed expressive hypothesis candidates"]
+    H --> R2P["R2P: rank by fixed family frequency"]
+    H --> R3["R3: rank by learned concept support"]
+    M --> R2["R2: exact episodic retrieval placeholder"]
+    P --> R2P
+    C --> R3
+    V --> R2
+    R2 --> A["Same disclosed toy audit transitions"]
+    R2P --> A
+    R3 --> A
+    A --> I["Engineering-only mechanism comparison"]
+```
+The same-process toy host is **not** an independent evaluator. R2P is a
+methodological falsifier for the current *ranking-prior* explanation, not
+evidence that R3 acquired an unavailable primitive. No official dataset,
+source/seed lock, or FINAL path is present in this G1-C slice.
