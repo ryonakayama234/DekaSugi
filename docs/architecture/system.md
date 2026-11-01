@@ -1076,3 +1076,31 @@ flowchart LR
  R --> P
 ```
 The operative change is an executable typed *hypothesis constructor* after proven H1 mismatch, not only rank ordering. In the toy this saved checked candidates while accuracy stayed equal to fixed B1. See [measured run](../../experiments/EXP-REP-001/runs/20261101-g1d-template-constructor.md).
+
+
+## EXP-REP-002 proposal — concept-conditioned active experiment planning (NOT IMPLEMENTED)
+status: DESIGN_FINAL_CANDIDATE / NOT_RUN / F0_NOT_FROZEN
+
+The following is the **target design**, not an inventory of code. Planned primary package is packages/rep002. It depends on independently repaired G1-D contracts and **does not execute or alter historical sealed experiments**.
+
+~~~mermaid
+flowchart TD
+  ENV["Hidden world source: authority/evaluator-only"] -->|"charged reachable actions"| OBS["Public Observation + action cost"]
+  OBS --> VAL["Exact type validation + consistency"]
+  VAL --> H["Version space + class-limit diagnosis"]
+  H --> Q["2-step active query planner / explicit resource ledger"]
+  Q -->|"set_state / pulse / reset"| ENV
+  H --> W["Wake: public experiences and counterexamples"]
+  W --> S["Sleep: typed role motif discovery, >=3 distinct structural TRAIN worlds"]
+  S --> SNAP[("ConceptSnapshotV2: external, versioned")]
+  SNAP --> Q
+  SNAP --> INF["Bounded inference / fall back / abstain"]
+  INF --> EVA["Evaluator-only 32-transition audit per world"]
+  EVA --> RUN["Immutable run record + decision"]
+~~~
+
+**Experimental controls:** LQ and LA receive exactly the same Snapshot and inference semantics; only the **question policy's** access to executable body/applicability differs. LR has learned rank-only without body, FA has optimised fixed H4 search/active queries, ER has role-neutral episodic retrieval and fallback, LP is passive. All arms get the same **types of allowed actions and limits**, but active observations may differ as the intended treatment.
+
+**Transfer strata:** ID-renamed same graph (engineering invariance), new full-graph compositions of TRAIN-local motifs (primary), genuinely unseen motif (negative transfer), irrelevant-object distractors (robustness). Full-graph disjointness alone does not mean zero motif overlap. All world/audit secret data remains private to evaluator in formal phase, while disclosed synthetic pilot is labelled not independent custody.
+
+**Life cycle:** Gate 0 repairs and rechecks G1-D three P1 findings; next engineer module G1–G4 trains, persists Snapshot, reloads/uses and scores **disclosed synthetic** worlds; F0 independent methodology/custody freeze and future one-shot FINAL remain separate. See [spec](../specs/EXP-REP-002.md), [protocol](../../experiments/EXP-REP-002/plan.md) and [data contracts](contracts.md). Every code task must update ARCH-001 and ARCH-002, AGENTS, INDEX and immutable experiment run in one Draft PR.
