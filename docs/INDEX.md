@@ -325,3 +325,8 @@ The original EXP-REP-001 plan is a proposal, not a frozen FINAL method. Do not i
 - **Dependency:** G1-D Draft PR #129 P1 review problems must be fixed and remeasured before its outputs are used as a trusted reference. The original scores remain historical.
 - Proposed engineering scope explicitly includes real disclosed TRAIN, Snapshot save/load, local use and toy scoring, but none have been executed for EXP-REP-002. Independent F0 / DEV / FINAL are separate and unauthorized.
 - The [architecture](architecture/system.md) and [data contracts](architecture/contracts.md) carry matching Mermaid and typed-flow proposal sections.
+
+
+## EXP-REP-002 isolated direct-grammar engineering pilot (code staged; scientific NOT_RUN)
+- [Module](../packages/rep002/__init__.py) / [CLI](../packages/rep002/__main__.py) / [allowlisted test](../tests/test_rep002_disclosed_preflight.py) / [spec](specs/EXP-REP-002.md) / [plan](../experiments/EXP-REP-002/plan.md) / [runs](../experiments/EXP-REP-002/runs/README.md).
+- New pilot has TRAIN/Snapshot/local use/disclosed 48-world evaluator in code, but is **direct-XOR only** and uses a same-process host. It must not be promoted as independent structural transfer or the fully specified H4 multi-relation system. The FA fixed public-role query heuristic is mandatory negative attribution control. CI and exact-head independent review required.
