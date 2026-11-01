@@ -1021,3 +1021,23 @@ The same-process toy host is **not** an independent evaluator. R2P is a
 methodological falsifier for the current *ranking-prior* explanation, not
 evidence that R3 acquired an unavailable primitive. No official dataset,
 source/seed lock, or FINAL path is present in this G1-C slice.
+
+## EXP-REP-001 G1-D — proposed integrated representation-repair loop (DESIGN ONLY; NOT_RUN)
+```mermaid
+flowchart TD
+ A["Stateful-world public observation & metered action"] --> V["Validate complete transcript"]
+ V --> H["WorldModel one-edge complete bounded search"]
+ H --> D{"Diagnosis"}
+ D -->|ambiguous| Q["ActiveLearning: charged discriminating intervention"]
+ Q --> A
+ D -->|exhaustive mismatch| R["RepresentationRepair: typed bounded two-edge meta-grammar"]
+ D -->|invalid / budget / unsupported| X["Abstain and record"]
+ R --> P["Candidate AST, counterexamples, cost"]
+ P --> W["Wake: append-only episodes"]
+ W --> S["Sleep: cross-world role templates"]
+ S --> F[("Frozen RepairSnapshot")]
+ F --> U["Local unknown-world use"]
+ F --> E["Independent paired evaluator"]
+ E --> L["Evidence, attribution, promote-or-reject review"]
+```
+The learner-facing stateful interface forbids free arbitrary `before` probes; `reset`/`set_state`/`pulse` are metered. R2P ranking-only and strong fixed two-edge controls use identical passive public transcripts as body-enabled R3. This architecture is a proposed expansion of the G1-C toy, not a deployed model or FINAL authorization. [Design](../specs/EXP-REP-001-G1D.md) / [method](../../experiments/EXP-REP-001/g1d-method-v1.md).
