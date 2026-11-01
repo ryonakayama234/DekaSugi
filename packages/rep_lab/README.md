@@ -1,5 +1,10 @@
 # DekaSugi G1-D toy research lab
 
+id: REP-LAB-G1D-README
+status: synthetic_engineering_only; no_formal_score
+updated: 2026-11-01
+tags: representation, experiment, active-learning, synthetic
+
 **Disclosed, invented, deterministic engineering only. Not a formally scored intelligence model.**
 No previous experiment's frozen TRAIN/DEV/FINAL inputs are loaded, changed or scored.
 
