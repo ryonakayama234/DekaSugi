@@ -1120,3 +1120,34 @@ Implemented in `packages/rep_lab`: `DiagnosisV1(status,search_complete,checked,s
 
 ### G1-D versioned template constructor execution contract
 `instantiate_template(body, objects, max_bindings=10000)` accepts a canonical JSON typed two-atom role body (role variables 0..5, direct/context-gated parity atoms), 4-8 exact public object IDs, and a bounded number of distinct role bindings; it returns stable, deduplicated `Relation`-tuple hypotheses. Each is checked against ALL valid public observations before a B3 prediction. The constructor never reads environment graph or evaluator answers. If no body explains the transcript, B3 falls back to bounded H2 search. The current pilot Snapshot is [here](../../experiments/EXP-REP-001/artifacts/g1d-toy-snapshot32.json) and its recorded comparative candidate/cpu metrics [here](../../experiments/EXP-REP-001/runs/20261101-g1d-template-constructor.md). A valid body is still human-typed grammar only; a Snapshot digest gives integrity but not authenticated origin.
+
+
+## EXP-REP-002 proposed data contracts (DESIGN ONLY / NOT_RUN)
+
+~~~mermaid
+flowchart TD
+ O["Public ObservationV2 + ActionCost"] --> H["Validated HypothesisSetV2"]
+ H --> Q["QueryDecisionV1: reachable 2-step costed plan"]
+ Q --> O
+ H --> C["ConceptCandidateV2: role motif, witnesses"]
+ C --> S["ConceptSnapshotV2: applicability + provenance"]
+ S --> Q
+ S --> I["InferenceTraceV1: prediction/abstention"]
+ I --> R["RunRecordV1: world-level score + full costs"]
+~~~
+
+| Contract | Required fields |
+|---|---|
+| ObservationV2 | exact builtin world/object/state/action/result types, sequence, public provenance, charged setup/pulse/reset |
+| HypothesisSetV2 | grammar hash, survivor count, consumed candidate budget, completeness, uncertainty/diagnostic status |
+| QueryDecisionV1 | state hash, proposed legal operation, lookahead, predicted answer partitions, frozen prior, selection rationale and compute meter |
+| ConceptCandidateV2 | typed executable relation body, canonical roles, applicability conditions, positive/negative evidence, independent topology supports |
+| ConceptSnapshotV2 | grammar/interpreter versions, body hashes, provenance, support in >=3 structurally distinct TRAIN worlds, counterexamples, canonical digest |
+| InferenceTraceV1 | arm, Snapshot, observations, model candidates, template-plus-fallback budget, selected question, prediction or abstention |
+| RunRecordV1 | source and dataset hashes, world/stratum/arm/budget, exact full-vector matches /32, charged interventions, total CPU/wall/RSS, review |
+
+RENAMED, COMPOSITION, NOVEL and DISTRACTOR are different evaluation strata. COMPOSITION has new complete graph topology but intentionally contains reusable TRAIN local motifs. AULC averages world accuracy over budgets 0,2,4,8. The primary LQ/LA pair uses identical learned concept for prediction; only the query policy's concept access differs.
+
+Exact type checks must precede all comparisons, pruning and digests. The action and candidate metering covers initial state setup, query planning and all fallbacks. Learner cannot read generator rules or evaluator-owned gold. Synthetic DREAM examples are simulations, not independent evidence; formal evaluation requires independently controlled source and separately authorized one-shot FINAL.
+
+Full definitions: [spec](../specs/EXP-REP-002.md), [protocol](../../experiments/EXP-REP-002/plan.md), [architecture](system.md).
