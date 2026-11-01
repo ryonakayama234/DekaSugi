@@ -47,3 +47,6 @@ python -m packages.rep003 use --snapshot .run/rep003/snapshot-v3.json --world-in
 python -m packages.rep003 evaluate-disclosed --output .run/rep003/pilot.json
 ```
 No old DEV/FINAL invoked. Draft branches not merged automatically. See the V2 spec for full typed contracts, operational logic, risks and trust boundaries.
+
+## Current execution status / scope divergence (2026-11-02)
+[Reviewer-corrected **engineering subset**](../../docs/specs/EXP-REP-003-ENGINEERING-V1.md) has implemented an <=1-edge finite grammar, not this plan's full two-edge compositions or body-specific causal attribution. Paid history consumes 4 pulses and two-stage witness a further 2 operations (total 6). To observe effects past conditioning, disclosed engineering budgets are **0,1,2,4,6,8** (a pre-existing V2 budget 0/1/2/4 is not treated as enough to prove two-stage necessity). Full G0–G5 only completes at *reduced disclosed engineering* fidelity; full V2 and F0 remain distinct unfinished research. No publication-level mechanism claim even after synthetic CI success.
