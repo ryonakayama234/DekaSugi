@@ -338,3 +338,9 @@ The original EXP-REP-001 plan is a proposal, not a frozen FINAL method. Do not i
 
 ### EXP-REP-002 current corrected engineering result (supersedes preliminary arm-attribution record)
 - [Corrected 4-P1 review-run](../experiments/EXP-REP-002/runs/20261101-direct-preflight-corrected.md) / [768 raw paired rows](../experiments/EXP-REP-002/runs/20261101-direct-preflight-corrected-raw.json) / [exact-head 152-test CI](https://github.com/ryonakayama234/DekaSugi/actions/runs/41315397816). TRAIN public observation only, genuinely untrained fixed FA, strict public types, raw rows preserved. LQ=FA remains true under corrected conditions. No concept-specific benefit demonstrated; formal study untouched.
+
+## EXP-REP-003 — 匿名化された条件付き探索と識別機会の監査（新研究案・未実行）
+- 主モジュール: **Inquiry / World Model**、支援: Representation / Evaluation。Issue [#133](https://github.com/ryonakayama234/DekaSugi/issues/133)。
+- [新研究仕様](specs/EXP-REP-003.md) / [実験計画](../experiments/EXP-REP-003/plan.md) / [設計判断](architecture/decisions/ADR-REP-003.md) / [NOT_RUN設計記録](../experiments/EXP-REP-003/runs/20261101-design-only.md)。
+- [システム構造](architecture/system.md) / [データ契約・フロー](architecture/contracts.md) のEXP-REP-003節が対になる。役割ラベルで正解が透けるREP002の問題を受け、匿名化・状態準備→pulse・独立の識別可能性witness・強い固定FA・同一資源制限の比較を先行させる。
+- **ENGINEERING NOT RUN / CI NOT RUN / FORMAL F0 NOT AUTHORIZED**。新しい学習・採点・成果は一切発生していない。旧Draft PR #129/#131/#132と独立した新規提案であり、研究設計のPRを統合しても自動的にSnapshotを昇格しない。
