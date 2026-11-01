@@ -1080,3 +1080,7 @@ The operative change is an executable typed *hypothesis constructor* after prove
 
 ### G1-D budget/validation remediation (implemented, CI verified)
 The B3 executable-body constructor and fixed H2 fallback now share the same `pair_budget` ledger. Before evidence comparison and pruning, the full object ID tuple is strict-type checked; before snapshot ranking, each rank entry is an exact two-element builtin tuple. The repaired comparison remains same-topology disclosed artificial engineering only. See [new P1 receipt](../../experiments/EXP-REP-001/runs/20261101-g1d-p1-budget-repair.md).
+
+
+### G1-D role feasibility under target graph size
+Executable learned template -> first check canonical shape -> if required distinct roles > target object count, mark INAPPLICABLE and skip to the next model-template or remaining H2 search. Resource exhaustion and evidence mismatch remain distinct. See [P2 repaired run](../../experiments/EXP-REP-001/runs/20261101-g1d-p2-template-applicability.md).
