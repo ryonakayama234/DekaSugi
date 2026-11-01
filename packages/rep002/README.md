@@ -21,3 +21,7 @@ TRAIN uses n = 0/3/8/16/32/64 named worlds, but requires 3 structurally differen
 The evaluator receives committed typed direct-edge predictor output and tests its predictions against 32 evaluator-only state/action pairs per world; it never asks learner to select a model using private gold. Results are per-world AULC with budgets 0/2/4/8, not 32 independent worlds. Strong fixed FA is mandatory for interpretation. No formal pre-registration/power/independent custody. Keep design proposal docs separate from the actually implemented direct-only slice.
 
 CI-safe tests: \`tests/test_rep002_disclosed_preflight.py\` is explicit in \`scripts/run_research_ci_v2_tests.py\`. Do not launch broad legacy test discovery.
+
+
+## Observed direct-only pilot result
+The exact-head 150-test CI [run](https://github.com/ryonakayama234/DekaSugi/actions/runs/41314971904) measured COMPOSITION AULC LQ=82.23%, LA=79.43%, and FA=82.23%. Public hub-first FA duplicates the learned-concept question policy, so there is NO demonstrated unique benefit from learned motif inference in the questions. DISTRACTOR LQ was worse than LA. Three distinct TRAIN structures (renamed to 64 worlds) were observed; stronger structural variation and true conditional two-step questioning remain open. [Raw record](../../experiments/EXP-REP-002/runs/20261101-direct-preflight-measured.json).
