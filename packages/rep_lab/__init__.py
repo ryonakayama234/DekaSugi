@@ -469,6 +469,72 @@ def disclosed_training_worlds(n: int = 32) -> dict[str, tuple[Observation, ...]]
     return result
 
 
+
+def choose_cost_aware_query(objects: tuple[str, ...], current: tuple[bool, ...],
+                            evidence: tuple[Observation, ...], remaining: int
+                            ) -> tuple[tuple[bool, ...], str, int] | None:
+    """Public-only cost-aware disagreement query; never looks at hidden rules.
+
+    Charges every required set_state and the pulse. Search budget is a limit
+    on the public hypothesis space; abstain rather than infer from exhaustion.
+    """
+    _validate_evidence(objects, evidence)
+    validate_state(objects, current)
+    if type(remaining) is not int or remaining < 0:
+        raise ValueError("Invalid remaining charged budget")
+    diag = diagnose_one_edge(objects, evidence)
+    if diag.status == "MODEL_CLASS_MISMATCH":
+        repairs = search_two_edges(objects, evidence)
+        if not repairs.search_complete or repairs.status == "CANDIDATE_LIMIT":
+            return None
+        models = tuple(c.model for c in repairs.candidates)
+    elif diag.status in ("UNDERIDENTIFIED", "IDENTIFIED"):
+        models = consistent_models(objects, evidence)
+    else:
+        return None
+    if len(models) < 2:
+        return None
+    # Rational score (distinct outcomes - 1) / paid action cost, no priors.
+    best = None
+    numerator, denominator = 0, 1
+    for desired in product((False, True), repeat=len(objects)):
+        desired = tuple(desired)
+        moves = sum(x != y for x, y in zip(current, desired))
+        cost = 1 + moves
+        if cost > remaining:
+            continue
+        for source in objects:
+            act = Action("pulse", source)
+            distinct = len({predicted_next(objects, desired, act, model)
+                            for model in models})
+            gain = distinct - 1
+            if (gain and (best is None or gain * denominator > numerator * cost
+                          or (gain * denominator == numerator * cost
+                              and cost < denominator))):
+                best = (desired, source, cost)
+                numerator, denominator = gain, cost
+    return best
+
+
+def active_public_episode(world: InventedWorld, budget: int = 4
+                          ) -> tuple[tuple[Observation, ...], int]:
+    """Disclosed comparator only: query selector receives public state/history."""
+    if type(budget) is not int or not 1 <= budget <= 12:
+        raise ValueError("Only bounded toy active budget supported")
+    session = ToySession(world)
+    while session.actions_charged < budget:
+        choice = choose_cost_aware_query(session.object_ids, session.state,
+                                         tuple(session.observations),
+                                         budget - session.actions_charged)
+        if choice is None:
+            break
+        desired, source, charged = choice
+        previous = session.actions_charged
+        session.pulse_from(desired, source)
+        assert session.actions_charged == previous + charged
+    return tuple(session.observations), session.actions_charged
+
+
 def eval_audit(world: InventedWorld) -> tuple[tuple[bool, ...], Action, tuple[bool, ...]]:
     ids = world.object_ids
     for bit in product((False, True), repeat=4):
@@ -483,23 +549,31 @@ def evaluate_disclosed(snapshot: RepairSnapshotV1,
                        memory: dict[str, tuple[Observation, ...]],
                        eval_worlds: int = 6) -> dict[str, object]:
     validate_snapshot(snapshot)
-    counts = {arm: 0 for arm in ("B0", "B1", "B2", "B3", "B3x", "B4")}
+    counts = {arm: 0 for arm in ("B0", "B1", "B2", "B3", "B3x", "B4", "B5")}
     abstentions = {arm: 0 for arm in counts}
     checks = {arm: 0 for arm in counts}
+    inference_cpu_ns = {arm: 0 for arm in counts}
     total = 0
     diagnostic = {}
     for i in range(eval_worlds):
         world = disclosed_world(100+i, "toy-eval", "fork" if i < eval_worlds-2 else "gated")
         transcript, charged = passive_public_episode(world)
+        active_transcript, active_charged = active_public_episode(world, budget=charged)
         diag = diagnose_one_edge(world.object_ids, transcript)
-        diagnostic[world._alias] = {"status": diag.status, "public_actions": charged}
+        diagnostic[world._alias] = {"status": diag.status, "public_actions": charged,
+                                   "active_actions": active_charged,
+                                   "active_diagnosis": diagnose_one_edge(
+                                        world.object_ids, active_transcript).status}
         # Freeze a single inferred world model per arm. Auditor-only queries
         # never update the model and are not part of the public transcript.
         audits = tuple(eval_audit(world))
         for arm in counts:
+            started = process_time_ns()
             first_before, first_act, _ = audits[0]
-            selected = predict(world.object_ids, transcript, first_before, first_act,
-                               arm, snapshot, memory)
+            arm_evidence = active_transcript if arm == "B5" else transcript
+            arm_mode = "B3" if arm == "B5" else arm
+            selected = predict(world.object_ids, arm_evidence, first_before, first_act,
+                               arm_mode, snapshot, memory)
             checks[arm] += selected.checked
             for before, act, answer in audits:
                 total += (arm == "B0")
@@ -515,10 +589,12 @@ def evaluate_disclosed(snapshot: RepairSnapshotV1,
                     abstentions[arm] += 1
                 elif after == answer:
                     counts[arm] += 1
+            inference_cpu_ns[arm] += process_time_ns() - started
     return {"status": "DISCLOSED_ENGINEERING_ONLY", "worlds": eval_worlds,
             "audits_per_world": len(tuple(eval_audit(disclosed_world(100, "toy-eval")))),
             "total_per_arm": total, "correct": counts, "abstain": abstentions,
-            "candidate_checks": checks, "diagnoses": diagnostic}
+            "candidate_checks": checks, "inference_cpu_ns": inference_cpu_ns,
+            "diagnoses": diagnostic}
 
 
 def run_pilot() -> dict[str, object]:
@@ -541,8 +617,10 @@ def run_pilot() -> dict[str, object]:
         snapshot = learn_snapshot(train)
         repeated[str(passes)] = snapshot.digest
     final = learn_snapshot(train)
+    charged_train_actions = sum(len(obs) for obs in train.values())
     return {"status": "DISCLOSED_ENGINEERING_ONLY_NOT_FORMAL",
-            "train_worlds": len(train), "curve": curve,
+            "train_worlds": len(train), "train_actions_charged": charged_train_actions,
+            "curve": curve,
             "replay_digests": repeated,
             "replay_idempotent": len(set(repeated.values())) == 1,
             "final": evaluate_disclosed(final, train),
