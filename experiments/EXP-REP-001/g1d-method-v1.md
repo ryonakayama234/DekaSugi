@@ -74,3 +74,6 @@ python -m packages.rep_lab inspect --snapshot .run/rep-g1d/snapshot.json
 python -m packages.rep_lab use --snapshot .run/rep-g1d/snapshot.json
 python -m packages.rep_lab evaluate-toy
 ```
+
+## G1-D measured constructor ablation amendment, disclosed only
+The source-controlled `RepairSnapshotV1` now supplies a typed role-body **constructor**, not only family ranking. On the six disclosed eval worlds, B3 with constructor counted 414 model candidate checks vs B1 fixed H2 / B2 rank-only / B3x disabled 7,446, with identical passive observations and B3/B1/B2/B3x accuracy 368/384. B3 fallback to complete bounded H2 remains part of the protocol if no template-generated candidate fits. One-run measured inference CPU: B3 8.31ms vs B1 11.62ms; setup, training costs, cross-hardware repeatability and stronger fixed heuristics are not normalized. Distinct TRAIN world count 0,1,2 has no reusable template; n>=3 uses one structural body and sharply reduces counted candidates but does not raise accuracy. The unchanged same-family toy cannot be interpreted as independent structural transfer. Separate B5 active query =384/384 on distinct charged evidence. See [versioned experiment](runs/20261101-g1d-template-constructor.md) and [disclosed Snapshot](../EXP-REP-001/artifacts/g1d-toy-snapshot32.json).
