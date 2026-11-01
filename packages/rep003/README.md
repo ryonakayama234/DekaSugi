@@ -41,3 +41,7 @@ Recover full scored raw rows losslessly:
 ```bash
 python scripts/read_rep003_archive.py --archive experiments/EXP-REP-003/artifacts/20261102-reduced-pilot-v1_1-raw.json.zlib.b64 --output .run/rep003/recovered.json
 ```
+
+## G5 reviewer correction (2026-11-02, overrides earlier shorthand)
+[Independent review receipt](../../experiments/EXP-REP-003/reviews/20261102-independent-g5-code-review.md): `Snapshot.library` rule bodies are **DESCRIPTIVE ONLY AND NEVER EXECUTED** by the current `use`/planner. The only learned input used during inference is `Snapshot.support` (learned class frequencies) as a categorical prior over the **predeclared fixed interpreter grammar**. Earlier references above to "executable templates", "concept-body ablation", or newly learned executable causality must be read as NOT_IMPLEMENTED. This is a learned class-prior and finite conditional world ACTIVE QUERY engineering test, not symbol/body invention.
+Legacy `NOVEL` code key means **GATE0_HELDOUT_SEEN_IN_TRAIN**. `CONDITIONAL_TRANSFER` means **GATE1_HELDOUT_SEEN_IN_TRAIN**. See `STRATUM_ACTUAL_MEANING` in source. Preserve scored archives unchanged.
