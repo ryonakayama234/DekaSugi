@@ -1,7 +1,8 @@
 # EXP-REP-002 — Final-candidate integrated research design
 id: EXP-REP-002-SPEC-V1
 status: DESIGN_FINAL_CANDIDATE; NOT_IMPLEMENTED; NOT_SCORED; NOT_F0_FROZEN
-date: 2026-11-01
+updated: 2026-11-01
+tags: experiment, active-learning, wake-sleep, representation, evaluation
 owner: Issue #130
 lineage: EXP-REP-001 G1-D Draft PR #129, head 719439fccd50e2d03c3b39319c86cbd43394887d
 primary_module: new isolated packages/rep002 (reusing audited rep_lab interfaces)
