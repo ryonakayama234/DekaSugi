@@ -507,7 +507,9 @@ def evaluate():
                                  "actions": c["meter"]["actions"],
                                  "model_checks": c["meter"]["model_checks"],
                                  "plans": c["meter"]["plans"],
-                                 "commit_digest": c["commit_digest"]})
+                                 "commit_digest": c["commit_digest"],
+                                 "action_sequence": [row["action"] for row in c["trace"]],
+                                 "predicted_model": c["prediction"]["model"]})
     summary = {}
     for st in STRATA:
         summary[st] = {}
@@ -522,6 +524,39 @@ def evaluate():
         st: {other: round(summary[st]["LQ"]-summary[st][other], 6)
              for other in ARMS if other!="LQ"} for st in STRATA
     }
+    # Post-review descriptive diagnostics, NOT preregistered positive thresholds:
+    # did the learned-query body/prior actually change paid actions or commits?
+    by_budget = {}
+    switch = {}
+    for st in STRATA:
+        by_budget[st] = {}
+        switch[st] = {}
+        for b in BUDGETS:
+            group = [r for r in rows if r["stratum"] == st and r["budget"] == b]
+            by_budget[st][str(b)] = {
+                arm: {"score": round(sum(r["correct"]/32 for r in group
+                                           if r["arm"] == arm)/12, 6),
+                      "abstentions": sum(r["status"] == "ABSTAIN" for r in group
+                                           if r["arm"] == arm),
+                      "mean_actions": round(sum(r["actions"] for r in group
+                                                if r["arm"] == arm)/12, 3),
+                      "mean_model_checks": round(sum(r["model_checks"] for r in group
+                                                     if r["arm"] == arm)/12, 3)}
+                for arm in ARMS
+            }
+            arm_rows = {arm: {r["world_index"]: r for r in group
+                             if r["arm"] == arm} for arm in ARMS}
+            switch[st][str(b)] = {
+                "LQ_vs_LA_different_action_sequences": sum(
+                    arm_rows["LQ"][i]["action_sequence"] != arm_rows["LA"][i]["action_sequence"]
+                    for i in range(12)),
+                "LQ_vs_FA_different_action_sequences": sum(
+                    arm_rows["LQ"][i]["action_sequence"] != arm_rows["FA"][i]["action_sequence"]
+                    for i in range(12)),
+                "LQ_vs_LA_different_committed_models": sum(
+                    arm_rows["LQ"][i]["predicted_model"] != arm_rows["LA"][i]["predicted_model"]
+                    for i in range(12)),
+            }
     result = {"status": "DISCLOSED_REDUCED_GRAMMAR_ENGINEERING_ONLY",
               "limitations": "one learned edge, 4 structural semantic families, same-process scorer, 2-edge OOD distractors, family pseudoreplication, no F0",
               "train_curve": [{"n":n,"snapshot":train(n)["digest"],
@@ -532,5 +567,6 @@ def evaluate():
               "snapshot_digest": snap["digest"], "rows": rows,
               "records_digest": digest(rows),
               "record_count": len(rows),
-              "summary": summary, "deltas": deltas}
+              "summary": summary, "deltas": deltas,
+              "by_budget": by_budget, "policy_switch": switch}
     return result
