@@ -1,6 +1,8 @@
 # EXP-REP-001 — Preregistration candidate / integrated workflow
 id: EXP-REP-001-PLAN-V1
 status: PROPOSED_NOT_FROZEN; NO_TRAIN; NO_DEV; NO_FINAL
+updated: 2026-11-01
+tags: preregistration, experiment, representation, evaluation
 approved_direction: 2026-11-01
 owner_issue: https://github.com/ryonakayama234/DekaSugi/issues/123
 
@@ -31,3 +33,12 @@ Graph signatures, generator functions, hidden target patterns and holdout seeds 
 
 ## Invariance
 Historical EXP-0001/EXP-0002B/EXP-0003A/OPPORTUNITY-001/ACTIVE-001/EXP-COEV-001 sources and sealed old evaluation records remain unchanged. Frozen datasets are not rescored. The project does not promise an automatic merge, automatic scoring or research success.
+
+## Hypothesis
+Primary H1 is **R3−R2**: learned cross-world typed relation concepts improve paired per-world heldout transition accuracy beyond exact episodic retrieval, with identical training evidence and passive test-time observations. M1/M2/M3 concern cross-world support, concept ablation and active-query information efficiency. The human-supplied typed meta-language is not autonomous unlimited primitive invention. Negative results are retained.
+
+## Metrics
+For each unseen, structurally disjoint world, 32 next-state vector audits form **one** world score. Paired difference `accuracy_world(R3)-accuracy_world(R2)`, average and frozen inference interval are the primary estimand; secondary concept ablation, concept errors, intervention counts, candidates, primitive operations, total CPU/wall/RSS and graph-family sensitivity. Candidate N, inference interval, protocol and budgets require independent F0 freeze.
+
+## Acceptance
+**Not yet formally accepted or frozen.** Candidate primary criterion is mean paired world effect >=+0.10 and predeclared 95% interval lower endpoint >0, plus valid source separation, graph-disjointness, provenance, matched action budgets, bounded CPU and independent review. Otherwise REJECTED / UNDERIDENTIFIED / NOT_ESTIMABLE as appropriate. One-shot FINAL cannot execute without separate explicit permission.
