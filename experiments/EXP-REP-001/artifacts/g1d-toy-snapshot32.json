@@ -1,0 +1,53 @@
+{
+  "atom_rank": [
+    [
+      "direct",
+      64
+    ]
+  ],
+  "digest": "783fb01764e7ea5e4dd3055eaaa7c3a2dd304e613495f0035fcbea6caaca4858",
+  "grammar": "two-relations-parity/1",
+  "schema": "rep-g1d-toy-snapshot/1",
+  "templates": [
+    {
+      "body": "[[0,1,-1,true],[0,2,-1,true]]",
+      "body_hash": "8b3b347a347076ce3e7971f46674971eb217b05e94b41c1cd234b2e7c28815d8",
+      "support_worlds": [
+        "train0",
+        "train1",
+        "train10",
+        "train11",
+        "train12",
+        "train13",
+        "train14",
+        "train15",
+        "train16",
+        "train17",
+        "train18",
+        "train19",
+        "train2",
+        "train20",
+        "train21",
+        "train22",
+        "train23",
+        "train24",
+        "train25",
+        "train26",
+        "train27",
+        "train28",
+        "train29",
+        "train3",
+        "train30",
+        "train31",
+        "train4",
+        "train5",
+        "train6",
+        "train7",
+        "train8",
+        "train9"
+      ]
+    }
+  ],
+  "train_count": 32,
+  "train_receipt": "14b272085712568e703289cdab0fe66cb37edc7489c78642055b0b1b8d4f03b3"
+}
