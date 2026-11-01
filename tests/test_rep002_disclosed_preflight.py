@@ -88,6 +88,33 @@ class Rep002PreflightTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 reveal_outgoing(forged)
 
+    def test_real_cli_train_inspect_use_evaluate(self):
+        import contextlib
+        from io import StringIO
+        from unittest.mock import patch
+        from packages.rep002.__main__ import main
+        with tempfile.TemporaryDirectory() as root:
+            snapshot = str(Path(root) / "model.json")
+            scored = str(Path(root) / "score.json")
+            cases = (
+                (["rep002", "train", "--worlds", "3", "--snapshot", snapshot],
+                 "DISCLOSED_TRAIN"),
+                (["rep002", "inspect", "--snapshot", snapshot],
+                 "DISCLOSED_INSPECT"),
+                (["rep002", "use", "--snapshot", snapshot,
+                  "--world-index", "301", "--stratum", "COMPOSITION", "--budget", "4"],
+                 "DISCLOSED_LOCAL_USE"),
+                (["rep002", "evaluate-disclosed", "--output", scored],
+                 "DISCLOSED_PREFLIGHT_ONLY_NOT_FORMAL"),
+            )
+            for args, expected in cases:
+                with patch("sys.argv", args), contextlib.redirect_stdout(StringIO()) as captured:
+                    main()
+                response = json.loads(captured.getvalue())
+                self.assertEqual(response["status"], expected)
+            self.assertTrue(Path(snapshot).is_file())
+            self.assertEqual(json.loads(Path(scored).read_text())["worlds"], 48)
+
     def test_disclosed_end_to_end_scoring(self):
         result = evaluate()
         self.assertEqual(result["status"], "DISCLOSED_PREFLIGHT_ONLY_NOT_FORMAL")
