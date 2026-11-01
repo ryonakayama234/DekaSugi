@@ -202,6 +202,15 @@ class G1DTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             instantiate_template(snap.templates[0].body, self.ids, max_bindings=True)
 
+    def test_versioned_artifact_matches_public_retraining(self):
+        root = Path(__file__).resolve().parents[1]
+        archive = root / "experiments/EXP-REP-001/artifacts/g1d-toy-snapshot32.json"
+        stored = load_snapshot(archive)
+        reconstructed = learn_snapshot(disclosed_training_worlds(32))
+        self.assertEqual(stored, reconstructed)
+        self.assertEqual(stored.digest,
+                         "783fb01764e7ea5e4dd3055eaaa7c3a2dd304e613495f0035fcbea6caaca4858")
+
     def test_paired_disclosed_scoring_and_learning_curve(self):
         result = run_pilot()
         self.assertEqual(result["status"], "DISCLOSED_ENGINEERING_ONLY_NOT_FORMAL")
