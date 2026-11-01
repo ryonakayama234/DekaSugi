@@ -96,8 +96,9 @@ def _validate_evidence(objects: tuple[str, ...], evidence: tuple[Observation, ..
     alias = None
     for o in evidence:
         if (type(o) is not Observation or type(o.world_alias) is not str
-                or not o.world_alias or o.object_ids != objects
-                or type(o.object_ids) is not tuple):
+                or not o.world_alias or type(o.object_ids) is not tuple
+                or any(type(object_id) is not str for object_id in o.object_ids)
+                or o.object_ids != objects):
             raise ValueError("Malformed or cross-world public evidence")
         validate_state(objects, o.before)
         validate_state(objects, o.after)
@@ -239,7 +240,10 @@ def validate_snapshot(s: RepairSnapshotV1) -> None:
                     or (r[2] != -1 and r[2] in (r[0], r[1])) for r in rows)):
             raise ValueError("Unsafe template body")
         prev = t.body
-    for name, count in s.atom_rank:
+    for entry in s.atom_rank:
+        if type(entry) is not tuple or len(entry) != 2:
+            raise ValueError("Invalid rank pair shape or type")
+        name, count = entry
         if (type(name) is not str or name not in ("direct", "gated_true", "gated_false")
                 or type(count) is not int or count < 1):
             raise ValueError("Invalid rank statistics")
@@ -502,9 +506,9 @@ def predict(objects: tuple[str, ...], evidence: tuple[Observation, ...],
             except ValueError:
                 return PredictionV1("ABSTAIN", None, diag.checked + attempted, "TEMPLATE_BOUND_EXHAUSTED")
             for model in generated:
-                attempted += 1
-                if attempted > pair_budget:
+                if attempted >= pair_budget:
                     return PredictionV1("ABSTAIN", None, diag.checked + attempted, "SEARCH_EXHAUSTED")
+                attempted += 1
                 if all(predicted_next(objects, o.before, o.action, model) == o.after
                        for o in evidence):
                     fitting.add(model)
@@ -515,7 +519,10 @@ def predict(objects: tuple[str, ...], evidence: tuple[Observation, ...],
                                 predicted_next(objects, before, action, model),
                                 diag.checked + attempted, diag.status, model)
     # Unexplained evidence falls back to the same bounded full H2 search.
-    result = search_two_edges(objects, evidence, pair_budget)
+    remaining = pair_budget - attempted
+    if remaining <= 0:
+        return PredictionV1("ABSTAIN", None, diag.checked + attempted, "SEARCH_EXHAUSTED")
+    result = search_two_edges(objects, evidence, remaining)
     if not result.search_complete or result.status in ("NO_TWO_EDGE_FIT", "CANDIDATE_LIMIT"):
         return PredictionV1("ABSTAIN", None, diag.checked + attempted + result.checked, result.status)
     model = _model_pick(tuple(c.model for c in result.candidates), mode, snapshot)
