@@ -1218,3 +1218,31 @@ The preflight opportunity oracle **never** influences the learner's selected que
 
 ### G5 explicit operational correction
 In the above reduced-pilot diagram, the arrow from `SLEEP` / `Snapshot` to `Query` transports **only the learned support-frequency prior**, not an executable concept body; `Snapshot.library` body descriptions are only validated and never interpreted at runtime. `MODELS` and `step()` are fixed researcher-specified grammar. `CONDITIONAL_TRANSFER` and `NOVEL` are seen GATE1 and GATE0 held-out-ID families. [G5 independent P2 findings](../../experiments/EXP-REP-003/reviews/20261102-independent-g5-code-review.md).
+
+
+## EXP-REP-004 — executable concept activation / proposed architecture, NOT IMPLEMENTED (2026-11-02)
+**Primary: new packages/rep004** (typed ConceptBody construction, role binding, pure interpreter, Snapshot validator). Secondary: a restricted world/active inquiry interface and a separate truth-holding evaluation and provenance boundary. Historical packages/rep003 remains an immutable comparator, not edited by this design.
+~~~mermaid
+flowchart TD
+    H["Evaluator-held hidden world semantics (not learner-facing)"] --> S["Charged Session: set/pulse"]
+    S --> O["Public contiguous observation + costs"]
+    O --> W["WAKE: infer world hypotheses"]
+    W --> L["SLEEP: role-neutral anti-unification / negative witnesses"]
+    L --> C["ConceptBody typed AST + evidence provenance"]
+    C --> P["Validated Snapshot: saved + reloaded"]
+    P --> I["Concept Interpreter: variable binding + actual body execution"]
+    I --> Q["Adaptive cost-aware 2-step Inquiry Planner"]
+    Q -->|"chosen paid action"| S
+    I --> D["DREAM: simulated counterfactuals, NOT fresh evidence"]
+    D --> Q
+    Q --> K["Pre-audit immutable PredictionCommit"]
+    K --> E["Independent evaluator: exact 16 states x 4 pulse checks"]
+    H --> E
+    E --> R["Immutable per-arm result + lifetime cost ledger"]
+    R -.->|"NO audit truth may train/query"| X["Evidence isolation boundary"]
+~~~
+- G1: feasibility semantics, lawful two-step opportunities and null/UNKNOWN witnesses before learner implementation.
+- G2: Wake/Sleep and actual captured Snapshot are not a generated label lookup; the runtime invokes loaded body bytes.
+- G3: deterministic body intervention and body-on vs body-masked **first paid action** divergence at identical legal public history and cost; a mechanism check, NOT evidence of performance.
+- G4: 8-arm matched disclosed scoring only after source/split/method freeze, with strong fixed full-grammar FA and STATIC-MACRO controls. Private F0/DEV/FINAL remain disconnected.
+- All submodule changes must update ARCH-001 diagram, ARCH-002 contract, AGENTS, INDEX, spec and append-only run in the same PR. [Decision](../specs/EXP-REP-004-DECISION-V1.md) / [Plan](../../experiments/EXP-REP-004/plan-v1.md).
