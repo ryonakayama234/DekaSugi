@@ -12,3 +12,5 @@ Required per run: exact code source head, tests and independent reviewer, genera
 - `20261101-direct-preflight.md`: direct-only implemented calibration, recorded separately from design-only receipt; a new measured receipt follows exact-head CI.
 
 - [20261101-direct-preflight-measured.md](20261101-direct-preflight-measured.md) / [raw JSON](20261101-direct-preflight-measured.json): actual 150-test SUCCESS; 48 disclosed-world scores; negative concept-body attribution because LQ=FA exactly. Prior pre-score receipt remains immutable.
+
+- [20261101-direct-preflight-corrected.md](20261101-direct-preflight-corrected.md) / [corrected raw 768 rows](20261101-direct-preflight-corrected-raw.json) / [152-test CI](https://github.com/ryonakayama234/DekaSugi/actions/runs/41315397816). SUPERCEDES the earlier first-scored pilot arm attribution, which had 4 P1 findings. FA is now fully untrained and LQ=FA still; independent code re-review pending.
