@@ -1191,3 +1191,27 @@ flowchart TD
 ~~~
 
 Primary research contrasts: LQ (body-aware question) vs LA (identical learned Snapshot for inference, blind question); **attribution co-gates** optimized untrained FA, matched TRAIN episodic ER, rank-only LR, BODY-OFF. FX diagnostic. True action observations may differ; arm budgets and computational caps do not. The independent opportunity oracle is NOT a learner adviser. Engineering pilot n4, <=2 typed direct/gated XOR edges, paid set/pulse; intended disclosed 0/1/2/4 horizons and 48 worlds ×7 arms, private evaluator 32 transition checks per arm-world-budget, all unexecuted. F0 protected evaluation remains separate.
+
+## EXP-REP-003 G0–G5 reduced synthetic engineering implementation (separate from full proposed V2)
+[Current implemented source](../../packages/rep003/README.md), [scope/controls](../specs/EXP-REP-003-ENGINEERING-V1.md), [data contracts](contracts.md). No independent F0/custody or full two-edge composed concept invention.
+
+~~~mermaid
+flowchart TD
+  W["Hidden <=1 edge TRAIN / <=2 edge OOD World"] --> S["Session paid set / pulse"]
+  S --> PUB["Public strict typed observations"]
+  PUB --> H["61 one-edge finite model candidates"]
+  H --> Q["Two-step plan: expected Gini gain per cost"]
+  Q --> S
+  PUB --> WA["WAKE: 100 paid operations per TRAIN world"]
+  WA --> SL["SLEEP: public-inferred guarded-toggle template"]
+  SL --> SNAP[("Versioned and hashed SnapshotV3")]
+  SNAP --> Q
+  H --> CM["Committed predictive model or ABSTAIN"]
+  SNAP --> CM
+  CM --> EVAL["Evaluator-only 32 transition audits"]
+  EVAL --> RAW["2016 complete raw score rows, AULC"]
+  P0["Preflight-only oracle"] --> WT["4 paid conditioning + 2-step witnessed; NOT learner hints"]
+  W -.-> P0
+~~~
+
+The preflight opportunity oracle **never** influences the learner's selected query; no gold score routes back into predictor selection. Query-prior influence on LQ is distinct from body-specific benefit, and all seven arms use the same grammar and model-check cap. G0–G5 is a disclosed engineering cycle only. CI tests are not independent scientific custody.
