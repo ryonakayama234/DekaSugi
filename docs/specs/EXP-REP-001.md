@@ -101,3 +101,6 @@ ConceptSnapshot as exact built-in types **before** comparison, hashing,
 candidate elimination or ranking. Invalid evidence is a data-contract error,
 not `model_class_mismatch` or a hypothesis falsifier. This is an invented-only
 hardening slice: no new independent scorer or official test is installed.
+
+## G1-D publicly disclosed engineering execution (2026-11-01)
+Working implementation: [G1-D lab](../../packages/rep_lab/__init__.py), [CLI](../../packages/rep_lab/__main__.py), [synthetic tests](../../tests/test_rep001_g1d_engineering.py), [integrated spec](EXP-REP-001-G1D.md), [method](../../experiments/EXP-REP-001/g1d-method-v1.md), and [measured engineering run](../../experiments/EXP-REP-001/runs/20261101-g1d-engineering-pilot.md). The reported toy B3=368/384 matches B1/B2/B3x and cannot establish body-specific transfer; B5 active-observation=384/384 under a distinct charged public transcript is a toy information-efficiency effect only. No formal F0/DEV/FINAL source or score changed.
