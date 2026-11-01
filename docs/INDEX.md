@@ -318,3 +318,7 @@ The original EXP-REP-001 plan is a proposal, not a frozen FINAL method. Do not i
 
 ### G1-D P1 remediation and repeated disclosed pilot (2026-11-01)
 - [Repaired source and 146-test CI receipt](../experiments/EXP-REP-001/runs/20261101-g1d-p1-budget-repair.md) / [CI](https://github.com/ryonakayama234/DekaSugi/actions/runs/41313876335). Same disclosed accuracy and candidate counts reproduced; independent current-head review still pending, no formal model promotion.
+
+
+### G1-D P2 role-template inapplicability correction
+- [147-test confirmed fallback](../experiments/EXP-REP-001/runs/20261101-g1d-p2-template-applicability.md) / [CI](https://github.com/ryonakayama234/DekaSugi/actions/runs/41315724074). A valid large-role learned template is skipped in smaller target worlds instead of blocking a correct fixed H2 fallback. Old historical runs preserved.
