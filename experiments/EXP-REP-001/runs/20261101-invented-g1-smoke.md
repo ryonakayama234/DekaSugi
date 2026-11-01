@@ -1,5 +1,8 @@
 # EXP-REP-001 — Invented G1 smoke / 2026-11-01
 status: ENGINEERING_ONLY; NOT_FROZEN; NOT_FORMAL_TRAIN; NOT_DEV; NOT_FINAL
+id: EXP-REP-001-RUN-G1-20261101
+updated: 2026-11-01
+tags: experiment, engineering, synthetic-run, representation
 issue: https://github.com/ryonakayama234/DekaSugi/issues/123
 design_pr: https://github.com/ryonakayama234/DekaSugi/pull/124
 code_commit: 1e25c08ace31be2b8725e915c04dc22e5d86bb73

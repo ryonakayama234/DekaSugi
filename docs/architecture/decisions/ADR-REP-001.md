@@ -1,6 +1,8 @@
 # ADR-REP-001 — Choose typed, counterexample-driven relational representation learning
 id: ADR-REP-001
 status: accepted_as_research_direction; scientific_evidence_pending
+updated: 2026-11-01
+tags: architecture, adr, representation, research
 date: 2026-11-01
 issue: https://github.com/ryonakayama234/DekaSugi/issues/123
 

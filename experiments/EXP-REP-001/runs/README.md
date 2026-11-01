@@ -2,6 +2,7 @@
 id: EXP-REP-001-RUNS
 status: planned_no_evidence
 updated: 2026-11-01
+tags: experiment, run-index, representation
 
 | Run | Scope | State | Evidence |
 |---|---|---|---|

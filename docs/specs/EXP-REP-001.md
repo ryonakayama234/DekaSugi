@@ -2,6 +2,7 @@
 id: EXP-REP-001
 status: design_approved; preregistration_not_frozen; implementation_not_verified; no_formal_score
 updated: 2026-11-01
+tags: representation, causal-learning, active-learning, experiment
 parent_issue: https://github.com/ryonakayama234/DekaSugi/issues/123
 
 ## Purpose and precise nonclaims

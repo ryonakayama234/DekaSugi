@@ -1,5 +1,7 @@
 # EXP-REP-001 — Independent reviews
 status: not_reviewed
+id: EXP-REP-001-REVIEWS
+tags: review, evidence, preregistration
 updated: 2026-11-01
 Parent: https://github.com/ryonakayama234/DekaSugi/issues/123
 
