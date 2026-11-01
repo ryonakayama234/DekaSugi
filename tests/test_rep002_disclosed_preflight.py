@@ -72,6 +72,22 @@ class Rep002PreflightTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             reveal_outgoing(invalid)
 
+    def test_fixed_fa_predictor_is_snapshot_independent(self):
+        w = world(301, "COMPOSITION")
+        # An untrained FA has the same fixed role-rule and same inquiry
+        # selection as FA given a learned motif. This must hold at budget=0.
+        for budget in (0, 2, 4, 8):
+            self.assertEqual(use(train(0), w, "FA", budget),
+                             use(train(3), w, "FA", budget))
+
+    def test_public_pulse_strict_source_and_cost(self):
+        w = world(3, "TRAIN")
+        row = Session(w).pulse(0)
+        for forged in (dict(row, source=-1), dict(row, source=5),
+                       dict(row, cost=True), dict(row, cost=1.0)):
+            with self.assertRaises(ValueError):
+                reveal_outgoing(forged)
+
     def test_disclosed_end_to_end_scoring(self):
         result = evaluate()
         self.assertEqual(result["status"], "DISCLOSED_PREFLIGHT_ONLY_NOT_FORMAL")
@@ -81,7 +97,13 @@ class Rep002PreflightTests(unittest.TestCase):
         self.assertEqual(set(result["strata"]), set(STRATA))
         self.assertEqual(set(result["strata"]["COMPOSITION"]), set(ARMS))
         self.assertGreater(result["total_actions"], 0)
-        print("REP002_DISCLOSED_RESULT=" + json.dumps(result, sort_keys=True, separators=(",", ":")))
+        self.assertEqual(len(result["records"]), 48 * 4 * 4)
+        self.assertEqual(result["records_digest"], digest(result["records"]))
+        summary = {k: v for k, v in result.items() if k != "records"}
+        print("REP002_DISCLOSED_RESULT=" + json.dumps(summary, sort_keys=True, separators=(",", ":")))
+        for start in range(0, len(result["records"]), 32):
+            print("REP002_RECORD_PART=" + str(start // 32) + ":" +
+                  json.dumps(result["records"][start:start+32], sort_keys=True, separators=(",", ":")))
 
 
 if __name__ == "__main__":
