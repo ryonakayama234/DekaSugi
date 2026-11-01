@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from packages.relational_world import Action, InventedWorld, Observation, Relation
 from packages.world_model import consistent_models, predicted_next
 from packages.representation import (ConceptSnapshot, induce_train_snapshot,
+                                     induce_rank_only_snapshot, rank_only_prediction,
                                      episodic_prediction, relational_prediction)
 
 
@@ -16,6 +17,7 @@ class ToyResult:
     concept_names: tuple[str, ...]
     r1_correct: int
     r2_correct: int
+    r2p_correct: int
     r3_correct: int
     audit_count: int
 
@@ -42,7 +44,9 @@ def run_toy() -> ToyResult:
     """Check the entire toy adapter on deliberately favorable, non-blinded worlds."""
     memory = training_fixture()
     snapshot: ConceptSnapshot = induce_train_snapshot(memory)
-    r1 = r2 = r3 = count = 0
+    rank_only = induce_rank_only_snapshot(memory)
+    assert snapshot.world_receipt == rank_only.world_receipt, "TRAIN transcript mismatch"
+    r1 = r2 = r2p = r3 = count = 0
     for i in range(4):
         ids = tuple(f"eval{i}-novel{j}" for j in range(4))
         src, ctx, tgt = (ids[2], ids[0], ids[1]) if i % 2 == 0 else (ids[1], ids[3], ids[0])
@@ -62,7 +66,8 @@ def run_toy() -> ToyResult:
             truth = world.probe(before, action).after
             r1 += predicted_next(ids, before, action, fixed_model) == truth
             r2 += episodic_prediction(memory, ids, before, action) == truth
+            r2p += rank_only_prediction(rank_only, ids, evidence, before, action) == truth
             r3 += relational_prediction(snapshot, ids, evidence, before, action) == truth
             count += 1
     return ToyResult("INVENTED_TOY_ENGINEERING_ONLY", len(memory), 4, 1,
-                     tuple(c.role_pattern for c in snapshot.concepts), r1, r2, r3, count)
+                     tuple(c.role_pattern for c in snapshot.concepts), r1, r2, r2p, r3, count)

@@ -2,7 +2,8 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from itertools import product
-from packages.relational_world import Action, Observation, Relation, step, _validate_objects
+from packages.relational_world import (Action, Observation, Relation, step, _validate_objects,
+                                       validate_action, validate_state)
 
 
 @dataclass(frozen=True, slots=True)
@@ -30,10 +31,22 @@ def candidates(objects: tuple[str, ...], expressive: bool = True) -> tuple[tuple
 
 def consistent_models(objects: tuple[str, ...], observations: tuple[Observation, ...],
                       expressive: bool = True) -> tuple[tuple[Relation, ...], ...]:
+    _validate_objects(objects)
+    if type(observations) is not tuple:
+        raise ValueError("Observations must be an exact tuple")
+    # Validate the ENTIRE record before model search. Even an empty surviving
+    # candidate set must not mask malformed later observations.
+    for obs in observations:
+        if (type(obs) is not Observation or type(obs.world_alias) is not str or
+                not obs.world_alias or type(obs.object_ids) is not tuple or
+                any(type(x) is not str for x in obs.object_ids) or
+                obs.object_ids != objects):
+            raise ValueError("Malformed public observation or object mismatch")
+        validate_state(objects, obs.before)
+        validate_state(objects, obs.after)
+        validate_action(objects, obs.action)
     models = candidates(objects, expressive)
     for obs in observations:
-        if type(obs) is not Observation or obs.object_ids != objects:
-            raise ValueError("Malformed public observation or object mismatch")
         models = tuple(model for model in models if
                        step(objects, obs.before, obs.action, model) == obs.after)
     return models

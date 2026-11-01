@@ -42,3 +42,22 @@ For each unseen, structurally disjoint world, 32 next-state vector audits form *
 
 ## Acceptance
 **Not yet formally accepted or frozen.** Candidate primary criterion is mean paired world effect >=+0.10 and predeclared 95% interval lower endpoint >0, plus valid source separation, graph-disjointness, provenance, matched action budgets, bounded CPU and independent review. Otherwise REJECTED / UNDERIDENTIFIED / NOT_ESTIMABLE as appropriate. One-shot FINAL cannot execute without separate explicit permission.
+
+## G1-C preregistration amendment candidate: policy/representation separation
+**NOT_FROZEN / NO FORMAL SCORING.** Independent review of PR #124 found that
+R3 learns a family-ranking prior while R2 does not, confounding concept
+acquisition with search policy. G1-C introduces an additional **R2P** control.
+The original proposed R3−R2 primary contrast is retained as an *overall-system*
+comparison candidate; a **representation-specific** interpretation additionally
+requires R3−R2P, body-specific ablation and fixed-budget matched retrieval.
+The exact numerical threshold, statistical unit, sampling distribution and
+multiplicity rules for R3−R2P are **not set**, and must be preregistered in F0
+with independent review, not inferred after reading a formal holdout.
+
+R2P runs on the same TRAIN episodes and test-time public query transcript as
+R3. It learns only fixed-grammar relation-family counts, with no persistent
+`ConceptCandidate` object. Because those counts are already an abstract
+feature, equality with R3 indicates a *plausible ranking-only mechanism*;
+inequality by itself does not prove newly invented semantics. Toy R2P CPU cost
+is not yet normalized; equal candidate/primitive and actual CPU/wall/setup
+costs must be metered before any scientific claim.

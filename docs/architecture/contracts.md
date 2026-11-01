@@ -1065,3 +1065,33 @@ Invariant: no private graph fields in public types; no grader-to-trainer imports
 
 ### EXP-REP-001 implemented toy data contracts (PR-B, not formal)
 Public dataclasses `Action(kind,object_id,value)`, `Relation(source,target,context,context_value)`, `Observation(world_alias,object_ids,before,action,after)`; strict typed bool and pulse/set_state allowlist. `step` applies simultaneous pulse-target toggle parity and direct set_state. `InventedWorld.probe` returns Observation without a rule field, but its Python host `_rules` is **not a private boundary**. `world_model.candidates` enumerates empty/direct/one gated relation; `diagnose` distinguishes direct insufficiency from ambiguous data; `choose_discriminating_probe` is a counterfactual max-diversity toy selector. `representation.induce_train_snapshot` persists role-pattern concepts only for >=3 separately named, uniquely diagnosed toy worlds, protected by digest **without independent authentication**. `rep_evaluation.run_toy` explicitly labels every outcome `INVENTED_TOY_ENGINEERING_ONLY`; the CLI does not accept a FINAL mode or private source.
+
+## EXP-REP-001 G1-C — observed-evidence and ranking-only controls
+```mermaid
+flowchart LR
+ T["TRAIN: tuple[Observation] per world"] --> C["ConceptSnapshot v0.1 (R3)"]
+ T --> P["RankOnlySnapshot v0.1 (R2P)"]
+ E["Public test tuple[Observation]"] --> V["validate before any hypothesis pruning"]
+ V --> H["Common fixed-grammar candidate list"]
+ C --> D["Common deterministic ranking + predicted next state"]
+ P --> D
+ H --> D
+ D --> O["Toy audit exact vector comparison (NOT formal)"]
+```
+`RankOnlySnapshot(schema, world_receipt, preferences, snapshot_digest)`
+is immutable. `preferences: tuple[tuple[str, int], ...]` has canonical
+sorted relation-family keys, each count is **exact builtin int >=3**, exact
+builtin str keys, no duplicates; the digest binds the canonical body and
+must be rechecked before use. `world_receipt` must match the concept
+snapshot's receipt on the same training data. Family statistics are
+abstract features but are **not** persisted executable concept bodies.
+R2P and R3 must use exactly the same public test observations, hypothesis
+enumeration, deterministic tie-break and audit actions. The current toy
+does **not** meter CPU, wall time, reset cost or independent custody.
+
+Fail-closed validation precedes **all** model elimination: exact Action
+kind/object_id strings and allowed value; exact Relation identifiers and
+Boolean gates; all Observation IDs, before/after exact bool tuples and
+action validity; ConceptCandidate provenance string tuples, exact str role
+patterns and exact int support counts. An invalid later observation must
+be rejected even after prior evidence exhausts all candidate models.

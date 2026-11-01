@@ -39,7 +39,8 @@ def validate_state(objects: tuple[str, ...], state: tuple[bool, ...]) -> None:
 
 
 def validate_action(objects: tuple[str, ...], action: Action) -> None:
-    if type(action) is not Action or action.object_id not in objects:
+    if (type(action) is not Action or type(action.kind) is not str or
+            type(action.object_id) is not str or action.object_id not in objects):
         raise ValueError("Unknown action or object")
     if action.kind == "pulse" and action.value is None:
         return
@@ -58,7 +59,9 @@ def step(objects: tuple[str, ...], state: tuple[bool, ...], action: Action,
     lookup = {name: idx for idx, name in enumerate(objects)}
     toggles = [False] * len(objects)
     for rule in rules:
-        if (rule.source not in lookup or rule.target not in lookup or
+        if (type(rule.source) is not str or type(rule.target) is not str or
+                (rule.context is not None and type(rule.context) is not str) or
+                rule.source not in lookup or rule.target not in lookup or
                 rule.source == rule.target or
                 (rule.context is not None and (rule.context not in lookup or
                  rule.context in (rule.source, rule.target))) or
