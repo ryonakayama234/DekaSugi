@@ -1,6 +1,6 @@
 # EXP-REP-001 G1-D — Full-path experimental protocol candidate v1
 id: EXP-REP-001-G1D-METHOD
-status: DESIGN_CANDIDATE; NOT_PREREGISTERED_FOR_FINAL; NOT_RUN
+status: ENGINEERING_TOY_EXECUTED; F0_NOT_FROZEN; NO_FORMAL_DEV_OR_FINAL
 updated: 2026-11-01
 tags: preregistration, learning-curves, experiment, controlled-comparison
 parent_issue: https://github.com/ryonakayama234/DekaSugi/issues/128
@@ -61,3 +61,16 @@ If B3=B2 on heldout worlds: cannot claim body-specific transfer; prioritize lear
 
 ## Preflight review checklist
 Hypothesis, world distribution and classes, stateful action costs, arm information parity, independent evaluation privilege, one primary estimand, multiplicity correction if needed, power/resource upper bounds, secrets and hashes, frozen dataset separation, source identity and regression checks, explicit user final authorization and automatic one-shot trigger retirement.
+
+## Executed disclosed toy calibration (not F0 pre-registration)
+Engineering implementation now exists in `packages/rep_lab`. Synthetic CI ran 140 tests including TRAIN, Snapshot round trip, use CLI, bounded repair, validation, active 4-action budget and the full disclosed toy pilot. Pilot TRAIN world counts are 0/1/2/3/4/8/16/32, but all named TRAIN worlds share a two-direct-edge fork topology under renaming; this violates formal structural-disjoint independence requirements. The disclosed evaluation has 4 fork + 2 gated-mixture worlds and 64 auditor-only transitions/world. Passive B0/B1/B2/B3/B3x/B4 receive identical 4 public pulse observations/world. B5 chooses at most 4 paid operations under its own public transcript. Same-process host is NOT a formally sealed evaluator. B4 remains weak strict exact-instance retrieval, NOT a strong memory baseline.
+
+Results and negative attribution verdict: B1=B2=B3=B3x 368/384, B0 112/384 with 256 abstentions, B4 0/384 with 384 abstentions, B5 384/384 under its different transcript. One role-body is learned at n=3 without changing B3 scores. Pass repetitions are a snapshot idempotence control, not SGD epochs. For exact artifact SHA, resource timings and interpretation see [dated engineering run](runs/20261101-g1d-engineering-pilot.md). User authorization of engineering work does not waive separate explicit approval for future formal FINAL.
+
+Implemented CLI:
+```bash
+python -m packages.rep_lab train --worlds 8 --snapshot .run/rep-g1d/snapshot.json
+python -m packages.rep_lab inspect --snapshot .run/rep-g1d/snapshot.json
+python -m packages.rep_lab use --snapshot .run/rep-g1d/snapshot.json
+python -m packages.rep_lab evaluate-toy
+```
