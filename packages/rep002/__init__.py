@@ -214,14 +214,19 @@ def load(path: Path) -> dict[str, object]:
 
 def committed_edges(snapshot: dict[str, object], roles: tuple[str, ...],
                     observed: dict[int, tuple[int, ...]], arm: str) -> tuple[tuple[int, int], ...]:
-    edges = set()
+    # Publicly observed edges are facts. Unconfirmed motif edges are only
+    # priors and must NEVER force a committed model past the declared H4 cap.
+    confirmed = {(src, tgt) for src, targets in observed.items() for tgt in targets}
+    if len(confirmed) > 4:
+        raise ValueError("Observed world exceeds declared direct grammar")
+    guessed = set()
     if arm != "LR":
         for src_role, tgt_role in snapshot["motif"]:
-            edges.add((roles.index(src_role), roles.index(tgt_role)))
-    for src, targets in observed.items():
-        edges = {e for e in edges if e[0] != src}
-        edges.update((src, tgt) for tgt in targets)
-    return tuple(sorted(edges))
+            src = roles.index(src_role)
+            if src not in observed:
+                guessed.add((src, roles.index(tgt_role)))
+    room = 4 - len(confirmed)
+    return tuple(sorted(confirmed | set(sorted(guessed)[:room])))
 
 
 def choose(roles: tuple[str, ...], known: frozenset[int],
