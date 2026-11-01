@@ -3,6 +3,7 @@
 id: ADR-REP-004
 status: PROPOSED / OWNER_REVIEW_PENDING
 updated: 2026-11-02
+tags: representation, experiment, active-learning, executable-concept, research
 related: ../system.md, ../contracts.md, ../../specs/EXP-REP-004-DECISION-V1.md
 
 ## Context
