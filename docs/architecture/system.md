@@ -983,3 +983,17 @@ flowchart TD
     O --> T
 ```
 **Trust boundary**: Evaluator/World owns the private graph and audit observations; the trainer only sees allowed query outputs. R2 and R3 must receive the same query transcript. R4 independently chooses queries within budget. Frozen snapshots cannot be changed by evaluation. Formal FINAL is not an ordinary CI target. Research issue [#123](https://github.com/ryonakayama234/DekaSugi/issues/123).
+
+
+### EXP-REP-001 first implemented slice (PR-B; invented-only)
+```mermaid
+flowchart LR
+    W["InventedWorld: same-process hidden single relation"] --> O["Observation: public action/state"]
+    O --> H["world_model: direct vs gated consistent hypotheses"]
+    H --> D["diagnose: contradiction / ambiguity"]
+    H --> Q["choose_discriminating_probe: max diversity"]
+    O --> S["representation: Sleep supported role templates"]
+    S --> F["ConceptSnapshot digest"]
+    F --> E["Toy R3 vs R1/R2 smoke (not independent scoring)"]
+```
+**Implemented** on PR-B branch: one-edge 4-object fixture, strict action/boolean interpreter, hypothesis diagnostics, 3-world concept snapshot, local smoke tests. **Not implemented**: confidential source/evaluator separation, balanced multi-edge family, reset-cost accounting, fair matched episodic R2, full concept AST induction or G2/G3. Preserve original architecture experiments and hidden evaluation gate.

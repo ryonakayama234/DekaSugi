@@ -291,3 +291,6 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 - [ADR-REP-001](architecture/decisions/ADR-REP-001.md): choice of typed relational representation learning over fixed DSL/neural alternatives.
 - [Run index](../experiments/EXP-REP-001/runs/README.md): all initial runs NOT_RUN; [review index](../experiments/EXP-REP-001/reviews/README.md).
 - [Parent Issue #123](https://github.com/ryonakayama234/DekaSugi/issues/123). Separate from EXP-COEV-001 and existing main baseline.
+
+
+- EXP-REP-001 initial invented-only toy engineering: [relational_world](../packages/relational_world/__init__.py), [world_model](../packages/world_model/__init__.py), [representation](../packages/representation/__init__.py), [toy eval](../packages/rep_evaluation/__init__.py), [8 test cases](../tests/test_rep001_toy_engineering.py); [G1 toy run evidence](../experiments/EXP-REP-001/runs/20261101-invented-g1-smoke.md). Status: ENGINEERING_ONLY / NO FORMAL SCORE. Parent [Issue #123](https://github.com/ryonakayama234/DekaSugi/issues/123).

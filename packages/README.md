@@ -122,3 +122,13 @@ The implementation checks canonical same-task/4-100-budget search status/program
 ## OPPORTUNITY-001 Issue #74 private original capture preflight (no scored experiments)
 - New read-only verified preflight + private output CLI: [capture_opportunity_private_original.py](../scripts/capture_opportunity_private_original.py), [synthetic-only negatives](../tests/test_opportunity_private_original_capture.py), [data flow and scope](../docs/specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md).
 - The CLI never runs search, an old DEV/FINAL generator, real OFF/ON scorer or policy chooser. Capturing future evaluator-only third-audit originals and making two local SHA-verified copies is not independent offsite custody proof; actual new TRAIN64 scoring and skill promotion remain forbidden.
+
+
+## EXP-REP-001 first toy-only modules (draft, no science claim)
+| Module | Public API | Limitation |
+|---|---|---|
+| `relational_world` | `InventedWorld, Action, Relation, Observation, step` | 4-object hand-built 1-rule worlds; same-process source |
+| `world_model` | `candidates, consistent_models, diagnose, choose_discriminating_probe` | no combined multi-edge learning or budgeted active loop |
+| `representation` | `induce_train_snapshot, validate_snapshot, learned_model_preference` | learned relation *family ranking* only, not arbitrary invention |
+| `rep_evaluation` | `python -m packages.rep_evaluation` | deliberately favorable synthetic fixture; no evaluator isolation |
+Use `python -m unittest discover -s tests -p 'test_rep001_toy_engineering.py' -v`; [run log](../experiments/EXP-REP-001/runs/20261101-invented-g1-smoke.md). This is not official TRAIN/DEV/FINAL.
