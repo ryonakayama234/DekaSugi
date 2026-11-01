@@ -1166,3 +1166,9 @@ Full definitions: [spec](../specs/EXP-REP-002.md), [protocol](../../experiments/
 - The 32 evaluator-owned transition checks are privately generated in the same Python process; they are aggregated into one world score per arm-budget. No independent custody.
 - AULC is the arithmetic average at budgets 0,2,4,8. LQ and LA commit their selected direct-edge predictor before private-in-code scoring, and FA duplicates the hub-first query choice without reading Snapshot motif. For this engineering run LQ=FA in every stratum, so no learned-motif question specificity can be claimed.
 - Exact code and numbers in [run record](../../experiments/EXP-REP-002/runs/20261101-direct-preflight-measured.md). Expanded node accounting is a limited direct-pilot counter, NOT full H4 AST execution metering.
+
+
+### EXP-REP-002 correction: actual evidence and fixed-arm independence
+- `TRAIN topology_id` must derive from decoded `Observation` records using public_roles, never from `World.hidden_edges`. `reveal_outgoing` rejects out-of-range source IDs and non-exact int action cost (including bool) before reading state indices.
+- `FA` applies a static public-role relation prior hub->x,hub->y even when its Snapshot contains zero motifs. Therefore FA's predictor does not depend on learned Snapshot: tested for n0/n3 and all budgets. LQ/LA both still use learned motifs; only LQ's question selection uses the motif.
+- `RunRecord` includes all 768 actual raw world×arm×budget rows, with exact status, actions, expanded nodes, 32-audit exact-match total, trace hash; reported digest must equal the canonical serialization of these rows. [Repaired raw JSON](../../experiments/EXP-REP-002/runs/20261101-direct-preflight-corrected-raw.json).
