@@ -334,3 +334,7 @@ The original EXP-REP-001 plan is a proposal, not a frozen FINAL method. Do not i
 
 ### EXP-REP-002 direct-only measured evidence (2026-11-01)
 - [Measured run and negative attribution](../experiments/EXP-REP-002/runs/20261101-direct-preflight-measured.md) / [raw result](../experiments/EXP-REP-002/runs/20261101-direct-preflight-measured.json) / [150-test CI](https://github.com/ryonakayama234/DekaSugi/actions/runs/41314971904). Primary engineering LQ-LA +0.027995, but fixed FA=LQ exactly, so no unique concept-body benefit. This direct-pulse public-role pilot is neither full H4 nor independent science.
+
+
+### EXP-REP-002 current corrected engineering result (supersedes preliminary arm-attribution record)
+- [Corrected 4-P1 review-run](../experiments/EXP-REP-002/runs/20261101-direct-preflight-corrected.md) / [768 raw paired rows](../experiments/EXP-REP-002/runs/20261101-direct-preflight-corrected-raw.json) / [exact-head 152-test CI](https://github.com/ryonakayama234/DekaSugi/actions/runs/41315397816). TRAIN public observation only, genuinely untrained fixed FA, strict public types, raw rows preserved. LQ=FA remains true under corrected conditions. No concept-specific benefit demonstrated; formal study untouched.
