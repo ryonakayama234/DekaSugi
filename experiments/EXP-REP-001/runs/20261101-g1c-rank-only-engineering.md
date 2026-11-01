@@ -1,6 +1,6 @@
 # EXP-REP-001 G1-C — synthetic engineering receipt
 id: EXP-REP-001-G1C-20261101
-status: IMPLEMENTED_UNVERIFIED; NO_FORMAL_TRAIN; NO_DEV; NO_FINAL
+status: ENGINEERING_CI_VERIFIED; NO_FORMAL_TRAIN; NO_DEV; NO_FINAL
 updated: 2026-11-01
 tags: experiment, synthetic, rank-control, security
 parent_issue: https://github.com/ryonakayama234/DekaSugi/issues/126
@@ -37,21 +37,27 @@ python scripts/check_docs.py
 ```
 
 ## Metrics / observed evidence
-**No fresh execution evidence recorded at document creation**. Expected
-qualitative invariant in the intentionally favorable fixture:
-R2P is equivalent to R3 because R3's stored `gated_true` support frequency
-is fully reproducible from TRAIN episodes without persisted concept bodies.
-The committed test asserts this. Do NOT report 8/8 until exact-head CI or
-independent local execution actually confirms it. The previous R2=4/8 and
-R3=8/8 numbers remain historical toy plumbing evidence, not H1 support.
+GitHub Actions [safe-successor workflow run #41290327154](https://github.com/ryonakayama234/DekaSugi/actions/runs/41290327154)
+on exact source HEAD `346d2a9e1e6cdca6fc97d4b54de30c87d135eb9f` returned
+**SUCCESS**: safe historical source-byte gate, docs/link checker, and
+**124 explicitly allowlisted synthetic tests PASS** (112 prior + 12 toy
+tests). The four new regression methods passed, including the asserted
+R2P=R3=8/8 invariant on hand-selected invented toy worlds.
+The toy's previously disclosed R1=4/8, weak exact-episode R2=4/8 and
+R3=8/8 are NOT independent research outcomes. R2P matching R3 is evidence
+that a **ranking-prior explanation is sufficient in this specific toy**;
+it does not refute the long-term concept-acquisition hypothesis.
+This documentation-only update is committed after the verified code HEAD;
+the post-update HEAD must be rechecked separately.
 
 No resource matching or intervention reset/setup metering was added. No
 secret source, no graph-isomorphism split, no independent custodian,
-no quantitative power, no formal scientific outcome. The effect estimate
-R3−R2P remains **NOT_ESTIMATED**.
+no quantitative power, no formal scientific outcome. A formal
+R3−R2P population effect estimate remains **NOT_ESTIMATED**.
 
 ## Acceptance
-Pending exact-head safe CI, technical review, and explicit scientific-method
-review of the attribution rule. Any unexpected difference or failure is
+Safe CI passed for the code HEAD above; final documentation HEAD requires
+reverification. Technical and independent scientific-method review of the
+attribution rule remain pending. Any unexpected difference or failure is
 recorded, not tuned using a sealed holdout. Previous frozen projects remain
 unchanged. PR remains Draft; no automatic merge and no FINAL trigger.
