@@ -1215,3 +1215,6 @@ flowchart TD
 ~~~
 
 The preflight opportunity oracle **never** influences the learner's selected query; no gold score routes back into predictor selection. Query-prior influence on LQ is distinct from body-specific benefit, and all seven arms use the same grammar and model-check cap. G0–G5 is a disclosed engineering cycle only. CI tests are not independent scientific custody.
+
+### G5 explicit operational correction
+In the above reduced-pilot diagram, the arrow from `SLEEP` / `Snapshot` to `Query` transports **only the learned support-frequency prior**, not an executable concept body; `Snapshot.library` body descriptions are only validated and never interpreted at runtime. `MODELS` and `step()` are fixed researcher-specified grammar. `CONDITIONAL_TRANSFER` and `NOVEL` are seen GATE1 and GATE0 held-out-ID families. [G5 independent P2 findings](../../experiments/EXP-REP-003/reviews/20261102-independent-g5-code-review.md).
