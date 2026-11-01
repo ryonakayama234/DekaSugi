@@ -1104,3 +1104,19 @@ flowchart TD
 **Transfer strata:** ID-renamed same graph (engineering invariance), new full-graph compositions of TRAIN-local motifs (primary), genuinely unseen motif (negative transfer), irrelevant-object distractors (robustness). Full-graph disjointness alone does not mean zero motif overlap. All world/audit secret data remains private to evaluator in formal phase, while disclosed synthetic pilot is labelled not independent custody.
 
 **Life cycle:** Gate 0 repairs and rechecks G1-D three P1 findings; next engineer module G1–G4 trains, persists Snapshot, reloads/uses and scores **disclosed synthetic** worlds; F0 independent methodology/custody freeze and future one-shot FINAL remain separate. See [spec](../specs/EXP-REP-002.md), [protocol](../../experiments/EXP-REP-002/plan.md) and [data contracts](contracts.md). Every code task must update ARCH-001 and ARCH-002, AGENTS, INDEX and immutable experiment run in one Draft PR.
+
+
+## EXP-REP-002 isolated direct pilot — implemented subset, NOT full proposal
+~~~mermaid
+flowchart TD
+ G["Disclosed deterministic five-object direct graphs"] --> S["Metered pulse-only Session"]
+ S --> O["Validated public pulse record"]
+ O --> L["TRAIN: canonical structure supports and common public-role edges"]
+ L --> F["Saved versioned direct-motif Snapshot"]
+ F --> Q["LQ: motif-assisted source choice; LA: index; FA: hub heuristic; LR: rank-free"]
+ Q --> S
+ F --> I["Committed predictor: learned role edges overridden by observations"]
+ I --> V["Auditor only: 32 fixed-budget next-state checks / world"]
+ V --> R["Disclosed 48-world paired AULC report"]
+~~~
+- Implemented direct-only experimental path is separate from proposed gated H4 two-step planning. Public role tokens may themselves offer an untrained shortcut. FA provides the key control; no general intelligent transfer claim is allowed. Only disclosed synthetic scores, and no formal independent custody.
