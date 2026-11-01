@@ -283,3 +283,11 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | Evidence ID | Question | Engineering receipt |
 |---|---|---|
 | ACTIVE-001-PR2-CONTAINERS | Can equality-preserving tuple/str/int subclasses launder forged semantic votes, answers or proposal fields through replay? Exact builtin types required before any learner calculation. | [Synthetic check](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md) / [Architecture](architecture/system.md) / [Contracts](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+
+## EXP-REP-001 (2026-11-01; agreed direction, no empirical scoring)
+- [Spec — EXP-REP-001](specs/EXP-REP-001.md): falsifiable L0–L4 hypotheses, comparator arms, architecture and safety.
+- [Preregistration candidate](../experiments/EXP-REP-001/plan.md): integrated engineering→TRAIN→DEV→one-time authorized FINAL, NOT_FROZEN.
+- [ADR-REP-001](architecture/decisions/ADR-REP-001.md): choice of typed relational representation learning over fixed DSL/neural alternatives.
+- [Run index](../experiments/EXP-REP-001/runs/README.md): all initial runs NOT_RUN; [review index](../experiments/EXP-REP-001/reviews/README.md).
+- [Parent Issue #123](https://github.com/ryonakayama234/DekaSugi/issues/123). Separate from EXP-COEV-001 and existing main baseline.

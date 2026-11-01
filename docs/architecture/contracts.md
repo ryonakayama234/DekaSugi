@@ -1039,3 +1039,25 @@ flowchart LR
   HOLDOUT["Evaluator-only answers"] -.->|"Never exposed"| RECON
 ~~~
 **Canonical storage contract:** `QuerySession.class_ids` is exactly `tuple` whose entries are exactly `str`, never a tuple or string subclass, because equality can differ from iteration. The compact `answers` tuple contains exact 3-tuples of (int ID, str output, str local receipt). The `trace` container is exactly tuple; each ordered entry is an exact tuple of typed `QueryProposal` and `QueryAnswer`. Session status, pool/world/split digest fields, and proposal and answer primitive fields must have exact builtin types; bool is rejected when int is required. Exact types are checked at the public boundary **before** Gini, random policy, history revalidation, or final-program selection. Per-prefix policy/receipt semantics and the active-query/2 schema remain unchanged. Hashes remain local consistency checks, NOT independent Oracle authentication. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## EXP-REP-001 proposed data contracts — not yet implemented (2026-11-01)
+```mermaid
+flowchart LR
+    A["ActionSpec: set_state / pulse"] --> O["Observer"]
+    B["PublicState: Bool per object"] --> O
+    O --> T["TransitionEpisode: before, action, after, prediction, costs"]
+    T --> R["RelationConcept: typed role AST, counterexamples, support"]
+    R --> S["ConceptSnapshot: content hash + training receipt"]
+    S --> E["Evaluation: sealed world IDs and per-world paired score"]
+    E --> L["Run ledger + independent recount"]
+```
+| Contract | Required fields / invariants |
+|---|---|
+| `PublicState v1` | world-local opaque object IDs; bool vector; no graph, generator seed, or family label; strict schema |
+| `ActionSpec v1` | `kind=set_state\|pulse`, object identifier, optional bool value; strict allowlist and action budget |
+| `TransitionEpisode v1` | public world alias, before/action/after, predicted after and candidate-set trace, counters; append-only training provenance |
+| `RelationConcept v1` | typed relational AST / role variables / applicability / independent supporting TRAIN world IDs / negative evidence / body digest; cannot execute Python callback |
+| `ConceptSnapshot v1` | schema, concept library, hyperparameters, training receipt SHA, interpreter semantics digest, snapshot SHA, approved resource envelope; frozen before DEV |
+| `EvalReport v1` | per-world 32-audit score in 0..1, R2/R3 paired world ID, action trace digest, resource counters, source and policy version, no hidden target disclosure |
+Invariant: no private graph fields in public types; no grader-to-trainer imports; class-disjoint graph-isomorphism split, independent custodian preflight and explicit one-time FINAL activation; old frozen scores unchanged. All quantities in this section are **proposed** until F0 freeze. See [EXP-REP-001](../specs/EXP-REP-001.md).
