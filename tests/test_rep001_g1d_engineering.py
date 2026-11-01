@@ -212,6 +212,9 @@ class G1DTests(unittest.TestCase):
         self.assertEqual(set(result["final"]["correct"]),
                          {"B0", "B1", "B2", "B3", "B3x", "B4", "B5"})
         print("G1D_TOY_RESULT=" + json.dumps(result, sort_keys=True, separators=(",", ":")))
+        snapshot32 = learn_snapshot(disclosed_training_worlds(32))
+        self.assertEqual(snapshot32.digest, result["final_snapshot"])
+        print("G1D_TOY_SNAPSHOT=" + json.dumps(asdict(snapshot32), sort_keys=True, separators=(",", ":")))
 
 
 if __name__ == "__main__":
