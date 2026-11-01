@@ -1061,3 +1061,18 @@ flowchart TD
  Eval --> Ledger["Versioned negative/positive evidence"]
 ```
 The current implementation is `packages/rep_lab`. It does NOT replace G1-C's one-edge `packages/world_model`; instead, the G1-D repair engine is a parallel research prototype. Source and data custody are same-process toy only. Formal sealed process/user/account separation is absent. [Measured run](../../experiments/EXP-REP-001/runs/20261101-g1d-engineering-pilot.md).
+
+### G1-D refinement: learned structural model generator
+```mermaid
+flowchart LR
+ T["TRAIN episodes"] --> Sl["Sleep role-body canonicalization"]
+ Sl --> F[("Frozen Snapshot / typed body")]
+ F --> I["instantiate_template with new public object IDs"]
+ I --> H["Bounded typed H2 model proposals"]
+ O["Full public evidence"] --> V["Consistency filter"]
+ H --> V
+ V -->|fit| P["Predict / disclose template-prior status"]
+ V -->|no fit| R["Fallback complete budgeted H2 search"]
+ R --> P
+```
+The operative change is an executable typed *hypothesis constructor* after proven H1 mismatch, not only rank ordering. In the toy this saved checked candidates while accuracy stayed equal to fixed B1. See [measured run](../../experiments/EXP-REP-001/runs/20261101-g1d-template-constructor.md).
