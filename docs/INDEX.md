@@ -311,3 +311,6 @@ The original EXP-REP-001 plan is a proposal, not a frozen FINAL method. Do not i
 ## G1-D executed public engineering prototype (2026-11-01)
 - [Code and learning/snapshot/active evaluation](../packages/rep_lab/__init__.py), [CLI entrypoint](../packages/rep_lab/__main__.py), [explicitly whitelisted synthetic tests](../tests/test_rep001_g1d_engineering.py), [measured 140-test engineering ledger](../experiments/EXP-REP-001/runs/20261101-g1d-engineering-pilot.md).
 - **Scientific verdict:** body-enabled B3 and fixed-expressive/rank-only/body-ablated controls all 368/384 on a disclosed toy. B5 active 384/384 uses separate paid observation sequence. F0 still not frozen; no historical or formal FINAL scoring.
+
+### G1-D latest validated technical reference and toy artifact
+- [TRAIN32 reproducible learned Snapshot](../experiments/EXP-REP-001/artifacts/g1d-toy-snapshot32.json) / [latest body-constructor experiment and caveats](../experiments/EXP-REP-001/runs/20261101-g1d-template-constructor.md) / [CLI usage](../packages/rep_lab/README.md). Prior G1-D pilot is retained separately for historical provenance; the new template constructor is not only rank-only policy.
