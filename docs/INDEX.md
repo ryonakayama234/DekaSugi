@@ -314,3 +314,14 @@ The original EXP-REP-001 plan is a proposal, not a frozen FINAL method. Do not i
 
 ### G1-D latest validated technical reference and toy artifact
 - [TRAIN32 reproducible learned Snapshot](../experiments/EXP-REP-001/artifacts/g1d-toy-snapshot32.json) / [latest body-constructor experiment and caveats](../experiments/EXP-REP-001/runs/20261101-g1d-template-constructor.md) / [CLI usage](../packages/rep_lab/README.md). Prior G1-D pilot is retained separately for historical provenance; the new template constructor is not only rank-only policy.
+
+
+## EXP-REP-002 — structurally novel compositional active concept transfer (DESIGN ONLY, 2026-11-01)
+| ID | Theme | Status | Research record |
+|---|---|---|---|
+| EXP-REP-002 | Learned executable motifs as a source of **better questions** under charged experiments | DESIGN_FINAL_CANDIDATE; NOT_IMPLEMENTED; NOT_SCORED; F0_NOT_FROZEN | [spec](specs/EXP-REP-002.md) / [protocol](../experiments/EXP-REP-002/plan.md) / [ADR](architecture/decisions/ADR-REP-002.md) / [run index](../experiments/EXP-REP-002/runs/README.md) / [Issue #130](https://github.com/ryonakayama234/DekaSugi/issues/130) |
+
+- Primary planned module: independent packages/rep002 (not implemented). Mechanism contrast LQ vs LA uses same learned body for inference, but only LQ exposes it to question selection. Full-graph non-isomorphism must be accompanied by documented *local motif overlap*, and novelty-only worlds are negative-transfer controls.
+- **Dependency:** G1-D Draft PR #129 P1 review problems must be fixed and remeasured before its outputs are used as a trusted reference. The original scores remain historical.
+- Proposed engineering scope explicitly includes real disclosed TRAIN, Snapshot save/load, local use and toy scoring, but none have been executed for EXP-REP-002. Independent F0 / DEV / FINAL are separate and unauthorized.
+- The [architecture](architecture/system.md) and [data contracts](architecture/contracts.md) carry matching Mermaid and typed-flow proposal sections.
