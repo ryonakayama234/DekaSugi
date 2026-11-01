@@ -34,6 +34,7 @@ OPTIONAL = (
     "test_rep001_toy_engineering.py",  # invented-only G1; no old data or scorer
     "test_rep001_g1d_engineering.py",  # bounded G1-D: toy-only, no private sources
     "test_rep002_disclosed_preflight.py",  # invented direct-relation pilot, no sealed sources
+    "test_rep003_engineering.py",  # new disclosed finite-causal lab, no sealed sources
 )
 
 

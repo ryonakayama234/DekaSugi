@@ -1240,3 +1240,39 @@ flowchart LR
 | `AuditRowV2` / `EvaluationSummaryV2` | world/semantic-family/arm/budget exact-vector scores (32 auditor-only transitions), abstentions, paired LQ−LA/FA/ER/LR/BODY-OFF and full lifetime cost; no pseudoreplication |
 
 Observe that the opportunity oracle MUST NOT flow into the learner's query planner. Scorer applies a committed model to its own gold inputs without model choice or additional learning. All seven arms share grammar/allowable action/expanded AST cap; FA has no TRAIN by definition while ER/LR see same TRAIN as LQ/LA. Same-data replay is idempotence control, not SGD epochs. All numeric caps and family sampling are engineering proposals until nonscoring preflight lock; formal F0 is distinct.
+
+## EXP-REP-003 engineering subset V1: typed real data flow and audit boundary
+[Implementation and scope](../specs/EXP-REP-003-ENGINEERING-V1.md), [CLI](../../packages/rep003/README.md). This supplements, but does NOT implement the complete conceptual V2 contracts.
+
+~~~mermaid
+flowchart LR
+  W["World.secret_rules: HOST ONLY"] --> I["Session interpreter"]
+  I --> O["Public trace: strict before/action/after/cost/step"]
+  O --> VS["consistent: version space 61 semantic models"]
+  VS --> P["choose_action: Gini/cost within 2 steps"]
+  P --> I
+  O --> TR["TRAIN: paid exhaustive state preparation"]
+  TR --> R["Inferred one-edge model, no host truth"]
+  R --> SNAP["Snapshot: class supports+typed template+SHA256"]
+  SNAP --> U["USE: LQ/LA/LR/ER/FA/FX/BODY-OFF"]
+  U --> PC["Predictor commit: public trace,model,meter,digest"]
+  PC --> AU["Auditor only: private transitions"]
+  AU --> RAW["Lossless raw rows + summary and hashes"]
+~~~
+
+| Data | Exact implemented contract |
+|---|---|
+| `World` | Host-only frozen dataclass: secret_rules, opaque ids, seed, stratum; same-process test fixture |
+| `Session.public/apply` | only anonymous ids/state/cost and exact strictly typed before/action/after + monotonic paid step |
+| `MODELS` | 61 finite unique behavior hypotheses (1 empty +12 direct +48 gated), n4 single-edge grammar |
+| `opportunity()` | auditor preflight complete enumeration at horizon ≤2; WITNESS / NO_OPPORTUNITY / UNKNOWN |
+| `conditioned_opportunity()` | actual four paid public pulses, all legal one-step actions exhaustively non-discriminating, two-step witness; total budget SIX |
+| `train/save/load` | public-only 100 charged operations/world, inferred structural class supports, typed declarative relation template, canonical digest |
+| `use` | immutable committed model/ABSTAIN, public trace, cost meter, prediction and Snapshot hashes |
+| `audit` | only accept intact committed predictor and evaluator-only hidden transition ground truth |
+| `evaluate` | full 48 world × 7 arm × 6 budget score rows, all pairwise descriptive deltas, per-budget and policy-switch diagnostics; NOT formal |
+
+Caveats: Query planner evaluates a learned categorical prior for LQ while LA query uses uniform; this is NOT sufficient to prove executable concept-body effect against rank-only controls. The raw archival artifact contains rows and their SHA-equivalent deterministic canonical `records_digest`; no individual DEV/FINAL data touched. Decision V2 full conditional composition and automated representational invention remain proposals.
+
+### G5 correction to Snapshot and ablation meaning
+Persisted `Snapshot.library` entries are *descriptive labels*, checked against constants by `validate_snapshot()`, **not executable bindings consumed by USE**. Only `support` class frequencies alter `prior()`. The symbols DIRECT/GATE0/GATE1 and all runtime candidates come from researcher-fixed `MODELS`. BODY-OFF in this source is **prior off**, not a learned-body interpreter ablation; claim no more than category-prior learning. Current legacy `NOVEL` = GATE0 held-out instance from seen semantic family. [G5 review](../../experiments/EXP-REP-003/reviews/20261102-independent-g5-code-review.md).

@@ -1,0 +1,178 @@
+{
+  "deltas": {
+    "CONDITIONAL_TRANSFER": {
+      "BODY-OFF": 0,
+      "ER": 0,
+      "FA": 0,
+      "FX": 0.013889,
+      "LA": 0,
+      "LR": 0
+    },
+    "DISTRACTOR": {
+      "BODY-OFF": 0,
+      "ER": 0,
+      "FA": 0,
+      "FX": -0.307726,
+      "LA": 0,
+      "LR": 0
+    },
+    "NOVEL": {
+      "BODY-OFF": 0,
+      "ER": 0,
+      "FA": 0,
+      "FX": 0.050347,
+      "LA": 0,
+      "LR": 0
+    },
+    "RENAMED": {
+      "BODY-OFF": 0,
+      "ER": 0,
+      "FA": 0,
+      "FX": 0.001736,
+      "LA": 0,
+      "LR": 0
+    }
+  },
+  "limitations": "one learned edge, 4 structural semantic families, same-process scorer, 2-edge OOD distractors, family pseudoreplication, no F0",
+  "opportunity": {
+    "one_step": {
+      "complete": true,
+      "cost": null,
+      "examined": 12,
+      "status": "NO_OPPORTUNITY"
+    },
+    "paid_conditioning": 4,
+    "surviving": 25,
+    "total_witness_cost": 6,
+    "two_step": {
+      "complete": true,
+      "cost": 2,
+      "examined": 74,
+      "plan": [
+        [
+          "set",
+          0,
+          1
+        ],
+        [
+          "pulse",
+          1,
+          null
+        ]
+      ],
+      "predicted_traces": [
+        [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            1,
+            0
+          ]
+        ]
+      ],
+      "status": "WITNESS"
+    }
+  },
+  "record_count": 2016,
+  "records_digest": "b9e2eb9fce1c5cfd083619292519e377383ba59a9555b95cd65b843fb00978d1",
+  "snapshot_digest": "110dbfdb1f7b81ae16c6c86ae1c8e77a8a426eb641bb4a684343c2dab48bbede",
+  "status": "DISCLOSED_REDUCED_GRAMMAR_ENGINEERING_ONLY",
+  "summary": {
+    "CONDITIONAL_TRANSFER": {
+      "BODY-OFF": 0.899306,
+      "ER": 0.899306,
+      "FA": 0.899306,
+      "FX": 0.885417,
+      "LA": 0.899306,
+      "LQ": 0.899306,
+      "LR": 0.899306
+    },
+    "DISTRACTOR": {
+      "BODY-OFF": 0.498698,
+      "ER": 0.498698,
+      "FA": 0.498698,
+      "FX": 0.806424,
+      "LA": 0.498698,
+      "LQ": 0.498698,
+      "LR": 0.498698
+    },
+    "NOVEL": {
+      "BODY-OFF": 0.924479,
+      "ER": 0.924479,
+      "FA": 0.924479,
+      "FX": 0.874132,
+      "LA": 0.924479,
+      "LQ": 0.924479,
+      "LR": 0.924479
+    },
+    "RENAMED": {
+      "BODY-OFF": 0.907118,
+      "ER": 0.907118,
+      "FA": 0.907118,
+      "FX": 0.905382,
+      "LA": 0.907118,
+      "LQ": 0.907118,
+      "LR": 0.907118
+    }
+  },
+  "train_curve": [
+    {
+      "actions": 0,
+      "families": 0,
+      "n": 0,
+      "snapshot": "0db24778d61a5329f51e546df01eccde14786318439c8fbb7f48e4e7570788c0"
+    },
+    {
+      "actions": 300,
+      "families": 1,
+      "n": 3,
+      "snapshot": "00ce16fe1a9e8b9e8a3ce0b443e089f580394da44b0a0451235ea2491aef6127"
+    },
+    {
+      "actions": 800,
+      "families": 4,
+      "n": 8,
+      "snapshot": "a7a4529c69ed4f2e68b27e530a024f2dc940c7ef0c744bd8433a0b7bb7d209b7"
+    },
+    {
+      "actions": 1600,
+      "families": 4,
+      "n": 16,
+      "snapshot": "5679f38fdc179e53ba6da5c3d0e13d8f551550c6f4758e8348fdd478358b2a2a"
+    },
+    {
+      "actions": 3200,
+      "families": 4,
+      "n": 32,
+      "snapshot": "000dad7f2407c53843063e0ef773737081786486be049c3d168cd5b065bb4e77"
+    },
+    {
+      "actions": 6400,
+      "families": 4,
+      "n": 64,
+      "snapshot": "110dbfdb1f7b81ae16c6c86ae1c8e77a8a426eb641bb4a684343c2dab48bbede"
+    }
+  ],
+  "source_ci": "https://github.com/ryonakayama234/DekaSugi/actions/runs/41327088853",
+  "compressed_archive": "experiments/EXP-REP-003/artifacts/20261102-reduced-pilot-raw.json.zlib.b64"
+}
