@@ -1172,3 +1172,37 @@ Full definitions: [spec](../specs/EXP-REP-002.md), [protocol](../../experiments/
 - `TRAIN topology_id` must derive from decoded `Observation` records using public_roles, never from `World.hidden_edges`. `reveal_outgoing` rejects out-of-range source IDs and non-exact int action cost (including bool) before reading state indices.
 - `FA` applies a static public-role relation prior hub->x,hub->y even when its Snapshot contains zero motifs. Therefore FA's predictor does not depend on learned Snapshot: tested for n0/n3 and all budgets. LQ/LA both still use learned motifs; only LQ's question selection uses the motif.
 - `RunRecord` includes all 768 actual raw world×arm×budget rows, with exact status, actions, expanded nodes, 32-audit exact-match total, trace hash; reported digest must equal the canonical serialization of these rows. [Repaired raw JSON](../../experiments/EXP-REP-002/runs/20261101-direct-preflight-corrected-raw.json).
+
+## EXP-REP-003 — typed data flow draft (PROPOSED / NOT_IMPLEMENTED)
+Intended primary: Inquiry / World Model. Design only; no module or scorer behavior is asserted.
+
+~~~mermaid
+flowchart LR
+    A["AnonymousWorldPublicV1"] --> B["ActionRequestV2: setup/pulse/reset"]
+    B --> C["CostedObservationV2: before/action/after/cost"]
+    C --> D["VersionSpaceV2: hypotheses + contradictions"]
+    D --> E["OpportunityWitnessV1: WITNESS / NO_OPPORTUNITY / UNKNOWN"]
+    D --> F["QueryPlanV2 + common ResourceLedgerV2"]
+    F --> C
+    C --> G["WakeExperienceV2"]
+    G --> H["LearnedCausalConceptV1: body, scope, witnesses"]
+    H --> I["ConceptSnapshotV3 + canonical digest"]
+    I --> F
+    I --> J["PredictionCommitV2 frozen before gold"]
+    J --> K["ScoredRunV2: private audit / world-family AULC"]
+~~~
+
+### Proposed contracts and trust
+| Data | Fields / obligation | Custody |
+|---|---|---|
+| AnonymousWorldPublicV1 | exact typed n, opaque/permuted object IDs, initial Boolean state, legal operations; **no role/hidden graph/seed** | learner-readable |
+| CostedObservationV2 | exact typed before/action/after, returned Boolean state, charged setup/pulse/reset, monotonic public transcript hash | learner-readable after paid intervention |
+| VersionSpaceV2 | interpreter/grammar digest, evidence hash, surviving models/uncertainty, exhausted/UNKNOWN flags | learner-internal |
+| OpportunityWitnessV1 | pair of candidate models, shortest legal discriminating action trace, reachability, total charged cost; NO_OPPORTUNITY only on exhaustive finite domain, otherwise UNKNOWN | evaluator-side preflight; no gold leakage |
+| LearnedCausalConceptV1 | executable candidate body, argument binding, applicability, positive and negative witnesses, independent structural supports | learning state |
+| ConceptSnapshotV3 | semantic body hash, schema/interpreter/grammar versions, provenance, diversity support, immutable canonical digest | external local store |
+| QueryPlanV2 + ResourceLedgerV2 | exact public hypothesis reference, bounded rollout, expanded primitive nodes, model checks, training/sleep/dream/fallback, charged actions, CPU/wall/RSS, exhaustion/abstain | common bounds for all arms |
+| PredictionCommitV2 | immutable chosen model or ABSTAIN, public trace digest, source/model versions, complete cost ledger; committed before evaluator inputs | learner→evaluator one-way |
+| ScoredRunV2 | independent family/world/arm/budget, exact matches / private audits, abstentions, costs, paired LQ−LA, LQ−FA, LQ−BODY-OFF; no per-transition pseudo-replication | evaluator authority |
+
+No identical observed-data claim between active arms when interventions differ. TRAIN world count and structural semantic diversity are both mandatory; exact replay 1/2/5/10 is *idempotence*, not neural epoch. Scope is finite fully disclosed engineering first; F0/DEV/FINAL source custody and preregistered statistical evidence are separate gates. See [spec](../specs/EXP-REP-003.md), [plan](../../experiments/EXP-REP-003/plan.md), [run](../../experiments/EXP-REP-003/runs/20261101-design-only.md).
