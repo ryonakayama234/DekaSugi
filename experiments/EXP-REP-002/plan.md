@@ -36,3 +36,7 @@ Per-world AULC over 0,2,4,8 paid operations, exact transition accuracy, abstenti
 
 ## Acceptance
 Engineering PASS requires safe deterministic train/save/use/score, validated costs and negative tests, exact-head code review and full receipts. Scientific promotion requires separate independent F0 and untouched FINAL authorization.
+
+
+## Executed-code scope amendment (source staged; score pending CI)
+The first disclosed engineering pilot is direct-XOR-only, 5 objects, <=4 edges, PUBLIC roles hub/x/y/z/q; no gated actions, no paid setup/reset and no two-step question lookahead. This reduction makes the finite direct grammar tractable, and does NOT fulfill the complete planned H4 study. TRAIN nested 0/3/8/16/32/64; test 48 worlds (12/stratum), arms LQ/LA/LR/FA and budgets 0/2/4/8. Query policy's public role shortcuts are explicitly checked by fixed FA. Use typed fixed predictor commitment before evaluator-only audit. Scores and real CI state go in a new dated immutable run receipt, not the old design receipt.
