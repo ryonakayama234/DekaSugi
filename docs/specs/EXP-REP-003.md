@@ -57,3 +57,6 @@ G0–G1の公開人工検証は設計・工学段階。F0正式事前登録、�
 知能を正答の静的蓄積でなく、目的→介入→予測→反例→表現改訂→外部化→次の介入という動的な知的過程として操作的に定義する。これは一般知能の普遍的定義を宣言するものではない。
 対話（エージェントと環境、将来は別の知的主体との相互作用）は、相手の変化を受けて問いと表現を更新する能動的学習の場として研究可能。ただし両者が学んだことを同じ評価器で混同しない。
 参考: DreamCoder (Ellis et al. PLDI 2021) のWake–Sleep/ライブラリ学習、interventional causal representation learningのidentifiability議論。先行研究の成功は本企画の達成証拠ではない。
+
+## V2 decision source (2026-11-02)
+This V1 research proposal is preserved as earlier thinking. The current [science and technical decision V2](EXP-REP-003-DECISION-V2.md), [V2 G0–G5 plan](../../experiments/EXP-REP-003/plan-v2.md), and [dated NOT_RUN design receipt](../../experiments/EXP-REP-003/runs/20261102-design-v2.md) are the normative **owner-approval-pending** design set. No training, implementation or scoring follows from this documentation amendment alone; formal F0 remains separate.
