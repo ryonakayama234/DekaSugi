@@ -1126,3 +1126,7 @@ Implemented in `packages/rep_lab`: `DiagnosisV1(status,search_complete,checked,s
 - `Observation.object_ids`: validate exact tuple and each exact builtin str before equality, hashing, pruning and transcript checking.
 - `RepairSnapshot.atom_rank`: validate every nested element as exact builtin tuple of length two before unpacking/digest or model rank selection.
 - `B3 pair_budget`: `attempted_templates + checked_fallback <= pair_budget`. Pass only positive remaining pair candidates to H2; fail closed when exhausted. These constraints are exercised in three new adversarial CI-safe unit tests; [run](../../experiments/EXP-REP-001/runs/20261101-g1d-p1-budget-repair.md).
+
+
+### G1-D template-to-world binding contract revision
+If a valid canonical template needs more distinct role variables than the target world has objects, instantiate_template returns an empty tuple, not TEMPLATE_BOUND_EXHAUSTED. Invalid canonical role shape is still an error; genuine binding explosion beyond max_bindings is still exhaustion. B3's H2 fallback must consume only unspent pair budget. Source proof: [147-test run](../../experiments/EXP-REP-001/runs/20261101-g1d-p2-template-applicability.md).
