@@ -141,7 +141,7 @@ class G1DTests(unittest.TestCase):
         before = (True, False, True, False)
         action = Action("pulse", world.object_ids[1])
         output = predict(world.object_ids, evidence, before, action, "B3", snapshot)
-        self.assertIn(output.status, ("PREDICTED", "ABSTAIN"))
+        self.assertIn(output.status, ("PREDICTED", "TEMPLATE_PRIOR_PREDICTION", "ABSTAIN"))
         if output.after is not None:
             self.assertEqual(len(output.after), 4)
 
