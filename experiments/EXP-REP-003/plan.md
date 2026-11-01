@@ -2,6 +2,7 @@
 id: EXP-REP-003-PLAN-V1
 status: PROPOSED / NOT_RUN / F0_NOT_FROZEN
 updated: 2026-11-01
+tags: experiment, preregistration, active-learning
 issue: https://github.com/ryonakayama234/DekaSugi/issues/133
 
 ## Primary question
@@ -23,3 +24,12 @@ ResearchPrototype remains non-released. A checksum of saved Snapshot proves inte
 
 ## Prohibitions
 No changes to historical DEV/FINAL; do not use or upload the private Google Drive scored-ledger; no automatic merge; no manipulation of researcher-held audit gold through the learner. This plan records NO training/experiment/CI.
+
+## Hypothesis
+In anonymous conditional worlds where costed setup→pulse can distinguish observationally equivalent candidates, learning *executable causal concepts* may improve active inquiry beyond a strong fixed policy. Null is plausible and acceptable.
+
+## Metrics
+The pre-scoring opportunity detector reports WITNESS / NO_OPPORTUNITY / UNKNOWN, minimum charged discriminating trace length, and exhaustive coverage. After a separately frozen scoring protocol, per-world AULC(LQ−LA), AULC(LQ−FA), AULC(LQ−BODY-OFF), negative transfer, abstention and fully expanded lifetime cost are reported. Repeated transitions in one world are not independent samples.
+
+## Acceptance
+This DESIGN_ONLY task is complete when the synchronized specification, plan, run receipt, AGENTS/INDEX, architecture and data contracts are reviewable, contain no ungrounded result claim, and pass link/metadata checks. It does not authorize code, scoring or release. Later engineering must include false-positive/negative witness tests, identical bounds, independently checked predictive commitments, and honest null-result recording before any scientific promotion.
