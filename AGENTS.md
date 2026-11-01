@@ -447,3 +447,8 @@
 
 ### EXP-REP-001 PR-B: toy-only engineering slice (2026-11-01)
 New `packages/relational_world`, `world_model`, `representation`, and `rep_evaluation` are **invented-only, one-hidden-rule prototypes**, not an implementation of the independent evaluator or the formal study. The world and learner share a Python process; probing arbitrary starting states has unmetered setup cost; R2 is exact episode lookup without within-world inference. Thus toy results **R1=4/8, R2=4/8, R3=8/8** are *engineered plumbing checks* and do NOT support the scientific H1. Block official work pending source custody, structural split, matched R2, intervention budgets, multi-edge dynamics, power/cost preflight and independent review. The `rep_evaluation` CLI has no FINAL mode.
+
+## EXP-REP-001 G1-C — additional review constraints (Issue #126)
+- A favorable R3−R2 toy result is not evidence for newly representable concepts. Require an explicit **R2P policy-only** mechanism control, concept-body ablation, and a stronger matched R2 before attribution or formal preregistration.
+- Strict exact-builtin Action/Relation/Observation/Snapshot validation must execute before dictionary comparisons, evidence-pruning, digesting or learned model selection. Invalid observations fail closed even if hypothesis candidates are already empty.
+- G1-C artifacts are INVENTED_ENGINEERING_ONLY; preserve Draft PR stack and old frozen data, and never activate DEV/FINAL without separate gates.
