@@ -294,3 +294,8 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 
 
 - EXP-REP-001 initial invented-only toy engineering: [relational_world](../packages/relational_world/__init__.py), [world_model](../packages/world_model/__init__.py), [representation](../packages/representation/__init__.py), [toy eval](../packages/rep_evaluation/__init__.py), [8 test cases](../tests/test_rep001_toy_engineering.py); [G1 toy run evidence](../experiments/EXP-REP-001/runs/20261101-invented-g1-smoke.md). Status: ENGINEERING_ONLY / NO FORMAL SCORE. Parent [Issue #123](https://github.com/ryonakayama234/DekaSugi/issues/123).
+
+## EXP-REP-001 G1-C — ranking/control and fail-closed engineering (2026-11-01)
+| ID | テーマ | 状態 | 文書 |
+|---|---|---|---|
+| EXP-REP-001-G1C | R2P方策のみ対照・表現効果の帰属・Observation/Snapshot型検証 | invented engineering, draft, no formal scoring | [Issue #126](https://github.com/ryonakayama234/DekaSugi/issues/126) / [spec](specs/EXP-REP-001.md) / [plan](../experiments/EXP-REP-001/plan.md) / [architecture](architecture/system.md) / [contracts](architecture/contracts.md) / [run](../experiments/EXP-REP-001/runs/20261101-g1c-rank-only-engineering.md) |
