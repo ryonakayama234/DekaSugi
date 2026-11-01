@@ -349,3 +349,9 @@ The original EXP-REP-001 plan is a proposal, not a frozen FINAL method. Do not i
 - **最初に読む正本**: [EXP-REP-003 DECISION V2](specs/EXP-REP-003-DECISION-V2.md)。[学習・保存・使用・採点を含むG0–G5計画](../experiments/EXP-REP-003/plan-v2.md)、[設計判断ADR](architecture/decisions/ADR-REP-003.md)、[設計変更・未実行記録](../experiments/EXP-REP-003/runs/20261102-design-v2.md)、[Issue #133](https://github.com/ryonakayama234/DekaSugi/issues/133)、[Draft PR #134](https://github.com/ryonakayama234/DekaSugi/pull/134)。
 - 主対象モジュールは Inquiry/World Model。Wake→Sleep→Dream→Snapshot→Useと独立採点までを一つの工学研究プログラムとするが、現在は **DESIGN_ONLY / NOT_RUN / APPROVAL_PENDING**。4変数2辺の条件付き有限XOR世界、匿名ID、費用付き2段階介入、WITNESS/NO_OPPORTUNITY/UNKNOWN、固定FA等7 arm、候補評価予算0/1/2/4を採用案とする。
 - [同期システム構成図](architecture/system.md) と [データフロー・型契約](architecture/contracts.md) の「V2」節を参照。以前のV1は歴史的な構想、旧REP002の数字は新実験結果ではない。正式F0/DEV/FINAL、初期モデルの正式採用は別ゲート。
+
+## EXP-REP-003 実装・人工実験（2026-11-02）
+- [実装仕様・縮小範囲](specs/EXP-REP-003-ENGINEERING-V1.md)、[REP003 CLI・技術上の限界](../packages/rep003/README.md)、[Draft PR #135](https://github.com/ryonakayama234/DekaSugi/pull/135)、[実行元のV2決定稿候補](specs/EXP-REP-003-DECISION-V2.md)、[実行計画V2](../experiments/EXP-REP-003/plan-v2.md)。
+- 独立レビューが指摘したP2事項（条件付け履歴4操作+識別質問2操作の**合計6操作**、学習済み事前分布とLA質問経路の分離）を修正。実装V1は61候補（空・DIRECT・GATE0・GATE1）の**最大1辺**のみで、V2の複数辺合成は未実装。
+- 実行CLIは `preflight/train/inspect/use/evaluate-disclosed`。48世界×7 arm×予算0/1/2/4/6/8＝2016原記録、TRAIN数0/3/8/16/32/64、4種類の構造クラス。結果は[公開人工run集計](../experiments/EXP-REP-003/artifacts/20261102-reduced-pilot-summary.json)および[全行の可逆圧縮アーカイブ](../experiments/EXP-REP-003/artifacts/20261102-reduced-pilot-raw.json.zlib.b64)。実験中のコード変更・新版スコアは別run記録を残す。
+- 現段階は形式科学評価ではない。4種類の構造クラスしかなく、同一プロセス採点・未計測の一部計算費用あり。学習概念固有利益を宣言しない。
