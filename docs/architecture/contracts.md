@@ -1151,3 +1151,24 @@ RENAMED, COMPOSITION, NOVEL and DISTRACTOR are different evaluation strata. COMP
 Exact type checks must precede all comparisons, pruning and digests. The action and candidate metering covers initial state setup, query planning and all fallbacks. Learner cannot read generator rules or evaluator-owned gold. Synthetic DREAM examples are simulations, not independent evidence; formal evaluation requires independently controlled source and separately authorized one-shot FINAL.
 
 Full definitions: [spec](../specs/EXP-REP-002.md), [protocol](../../experiments/EXP-REP-002/plan.md), [architecture](system.md).
+
+
+## EXP-REP-002 initial direct-XOR engineering contracts (IMPLEMENTED subset)
+- `World`: five exact Boolean state positions, public role labels hub/x/y/z/q, private fixed up to four DIRECT edges, role permutation and deterministic synthetic structure stratum. Only the host may read hidden_edges; same Python process is **not a formal trust boundary**.
+- `Session.pulse(source)`: learner-facing charged action cost one; returns immutable-by-convention public record source/before/after/cost. This first pilot does NOT yet model paid set_state/reset and gated two-step questions; it MUST NOT be used to validate those proposed contracts.
+- `Snapshot`: schema `rep002-disclosed-direct-preflight/1`, train_count, independent full-graph structure count, role motif and canonical digest. Saves/loads canonical JSON. Supports distinct topology >=3; direct grammar only. `digest` does not imply external authenticity.
+- `PredictionCommit`: `use` emits fixed selected direct edges, trace hash, charged operation count and expanded node meter **before** evaluator-only audit. Scorer never chooses the model or passes gold to learner. For this reduced pilot, 4096 expanded-node budget is an engineering guard, not full shared H4 resource analysis.
+- `RunRecord`: 48 disclosed worlds, RENAMED/COMPOSITION/NOVEL/DISTRACTOR × 12, arms LQ/LA/LR/FA, 4 independent budget sessions at 0/2/4/8 pulses, exactly 32 private-in-code state/action audits per world, aggregated AULC. FA knows the *public* hub marker and is a strong shortcut control. Graph nonisomorphism and finite direct behavior signatures are separate support checks; no gated equivalences tested.
+- No formal DEV/FINAL, no independent evaluator source custody, no arbitrary Python graph execution.
+
+
+### EXP-REP-002 measurement/status clarification
+- The 32 evaluator-owned transition checks are privately generated in the same Python process; they are aggregated into one world score per arm-budget. No independent custody.
+- AULC is the arithmetic average at budgets 0,2,4,8. LQ and LA commit their selected direct-edge predictor before private-in-code scoring, and FA duplicates the hub-first query choice without reading Snapshot motif. For this engineering run LQ=FA in every stratum, so no learned-motif question specificity can be claimed.
+- Exact code and numbers in [run record](../../experiments/EXP-REP-002/runs/20261101-direct-preflight-measured.md). Expanded node accounting is a limited direct-pilot counter, NOT full H4 AST execution metering.
+
+
+### EXP-REP-002 correction: actual evidence and fixed-arm independence
+- `TRAIN topology_id` must derive from decoded `Observation` records using public_roles, never from `World.hidden_edges`. `reveal_outgoing` rejects out-of-range source IDs and non-exact int action cost (including bool) before reading state indices.
+- `FA` applies a static public-role relation prior hub->x,hub->y even when its Snapshot contains zero motifs. Therefore FA's predictor does not depend on learned Snapshot: tested for n0/n3 and all budgets. LQ/LA both still use learned motifs; only LQ's question selection uses the motif.
+- `RunRecord` includes all 768 actual raw world×arm×budget rows, with exact status, actions, expanded nodes, 32-audit exact-match total, trace hash; reported digest must equal the canonical serialization of these rows. [Repaired raw JSON](../../experiments/EXP-REP-002/runs/20261101-direct-preflight-corrected-raw.json).

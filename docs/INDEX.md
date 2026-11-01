@@ -325,3 +325,16 @@ The original EXP-REP-001 plan is a proposal, not a frozen FINAL method. Do not i
 - **Dependency:** G1-D Draft PR #129 P1 review problems must be fixed and remeasured before its outputs are used as a trusted reference. The original scores remain historical.
 - Proposed engineering scope explicitly includes real disclosed TRAIN, Snapshot save/load, local use and toy scoring, but none have been executed for EXP-REP-002. Independent F0 / DEV / FINAL are separate and unauthorized.
 - The [architecture](architecture/system.md) and [data contracts](architecture/contracts.md) carry matching Mermaid and typed-flow proposal sections.
+
+
+## EXP-REP-002 isolated direct-grammar engineering pilot (code staged; scientific NOT_RUN)
+- [Module](../packages/rep002/__init__.py) / [CLI](../packages/rep002/__main__.py) / [allowlisted test](../tests/test_rep002_disclosed_preflight.py) / [spec](specs/EXP-REP-002.md) / [plan](../experiments/EXP-REP-002/plan.md) / [runs](../experiments/EXP-REP-002/runs/README.md).
+- New pilot has TRAIN/Snapshot/local use/disclosed 48-world evaluator in code, but is **direct-XOR only** and uses a same-process host. It must not be promoted as independent structural transfer or the fully specified H4 multi-relation system. The FA fixed public-role query heuristic is mandatory negative attribution control. CI and exact-head independent review required.
+
+
+### EXP-REP-002 direct-only measured evidence (2026-11-01)
+- [Measured run and negative attribution](../experiments/EXP-REP-002/runs/20261101-direct-preflight-measured.md) / [raw result](../experiments/EXP-REP-002/runs/20261101-direct-preflight-measured.json) / [150-test CI](https://github.com/ryonakayama234/DekaSugi/actions/runs/41314971904). Primary engineering LQ-LA +0.027995, but fixed FA=LQ exactly, so no unique concept-body benefit. This direct-pulse public-role pilot is neither full H4 nor independent science.
+
+
+### EXP-REP-002 current corrected engineering result (supersedes preliminary arm-attribution record)
+- [Corrected 4-P1 review-run](../experiments/EXP-REP-002/runs/20261101-direct-preflight-corrected.md) / [768 raw paired rows](../experiments/EXP-REP-002/runs/20261101-direct-preflight-corrected-raw.json) / [exact-head 152-test CI](https://github.com/ryonakayama234/DekaSugi/actions/runs/41315397816). TRAIN public observation only, genuinely untrained fixed FA, strict public types, raw rows preserved. LQ=FA remains true under corrected conditions. No concept-specific benefit demonstrated; formal study untouched.
