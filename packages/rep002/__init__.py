@@ -134,7 +134,10 @@ def reveal_outgoing(public_record: dict[str, object]) -> tuple[int, ...]:
     before = public_record["before"]
     after = public_record["after"]
     src = public_record["source"]
-    if type(src) is not int or type(before) is not tuple or type(after) is not tuple:
+    if (type(src) is not int or not 0 <= src < 5
+            or type(public_record.get("cost")) is not int
+            or public_record["cost"] != 1
+            or type(before) is not tuple or type(after) is not tuple):
         raise ValueError("Invalid public record")
     if len(before) != 5 or len(after) != 5 or any(type(x) is not bool for x in before + after):
         raise ValueError("Invalid public states")
@@ -158,8 +161,13 @@ def train(n: int) -> dict[str, object]:
             obs = session.pulse(src)
             for tgt in reveal_outgoing(obs):
                 typed_edges.add((w.public_roles[src], w.public_roles[tgt]))
-        topology.add(structure_signature(w.hidden_edges))
-        observed.setdefault(structure_signature(w.hidden_edges), []).append(typed_edges)
+        # Infer the training topology ONLY from paid public observations.
+        public_index_edges = tuple(sorted((w.public_roles.index(a),
+                                           w.public_roles.index(b))
+                                          for a, b in typed_edges))
+        topology_id = structure_signature(public_index_edges)
+        topology.add(topology_id)
+        observed.setdefault(topology_id, []).append(typed_edges)
         receipts.append(digest(session.trace))
         total_actions += session.actions
     # Each structure counts once; repeated renamed objects do not increase
@@ -220,11 +228,14 @@ def committed_edges(snapshot: dict[str, object], roles: tuple[str, ...],
     if len(confirmed) > 4:
         raise ValueError("Observed world exceeds declared direct grammar")
     guessed = set()
-    if arm != "LR":
-        for src_role, tgt_role in snapshot["motif"]:
-            src = roles.index(src_role)
-            if src not in observed:
-                guessed.add((src, roles.index(tgt_role)))
+    # FA is a genuinely untrained fixed role hypothesis, independent of
+    # Snapshot contents even at zero TRAIN worlds. LQ/LA consume learned body.
+    prior = (("hub", "x"), ("hub", "y")) if arm == "FA" else (
+        () if arm == "LR" else snapshot["motif"])
+    for src_role, tgt_role in prior:
+        src = roles.index(src_role)
+        if src not in observed:
+            guessed.add((src, roles.index(tgt_role)))
     room = 4 - len(confirmed)
     return tuple(sorted(confirmed | set(sorted(guessed)[:room])))
 
@@ -328,4 +339,4 @@ def evaluate() -> dict[str, object]:
             "total_actions": sum(r["actions"] for r in rows),
             "total_expanded_nodes": sum(r["expanded_nodes"] for r in rows),
             "cpu_ms": round((process_time_ns() - t0) / 1e6, 3),
-            "records_digest": digest(rows)}
+            "records_digest": digest(rows), "records": rows}
