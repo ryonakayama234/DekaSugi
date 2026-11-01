@@ -474,3 +474,7 @@ New `packages/relational_world`, `world_model`, `representation`, and `rep_evalu
 
 ### G1-D P1 repair receipt (2026-11-01)
 - The earlier exact-head review detected three P1 errors: B3 consumed separate template and H2 pair budgets; snapshot atom_rank nested entries lacked exact tuple shape validation; observation object_ids were compared before strict ID type checks. Repairs and three adversarial regression tests were committed; 146 explicit safe CI tests passed on a440b27. [Immutable remeasurement](experiments/EXP-REP-001/runs/20261101-g1d-p1-budget-repair.md). This is CI evidence, not independent final reviewer signoff or formal world transfer. Old dated measurement and Snapshot remain unchanged.
+
+
+### G1-D review P2 role-template applicability correction
+A valid learned role-body requiring more distinct object roles than the target offers is INAPPLICABLE, not budget exhaustion. B3 skips this body and performs remaining bounded H2 fallback. Corrected with 147 allowlisted source/synthetic tests in [dated receipt](experiments/EXP-REP-001/runs/20261101-g1d-p2-template-applicability.md). No independent current head signoff or formal promotion.
