@@ -10,7 +10,8 @@ from packages.relational_world import Action, InventedWorld, Observation, Relati
 from packages.rep_lab import (ToySession, canonical_body, canonical_hash,
     diagnose_one_edge, disclosed_training_worlds, disclosed_world, eval_audit,
     evaluate_disclosed, full_public_episode, learn_snapshot, load_snapshot,
-    passive_public_episode, predict, run_pilot, save_snapshot, search_two_edges,
+    active_public_episode, choose_cost_aware_query, passive_public_episode,
+    predict, run_pilot, save_snapshot, search_two_edges,
     validate_snapshot)
 
 
@@ -144,6 +145,37 @@ class G1DTests(unittest.TestCase):
         if output.after is not None:
             self.assertEqual(len(output.after), 4)
 
+    def test_b5_active_actions_reachable_and_costed(self):
+        w = self._world((Relation("a", "b", "d", True), Relation("a", "c")))
+        transcript, cost = active_public_episode(w, budget=4)
+        self.assertLessEqual(cost, 4)
+        self.assertEqual(cost, len(transcript))
+        self.assertGreater(cost, 0)
+        self.assertEqual(transcript[0].before, (False,)*4)
+        self.assertTrue(all(x.action.kind in ("pulse", "set_state") for x in transcript))
+        self.assertIsNone(choose_cost_aware_query(self.ids, (False,)*4, (), remaining=0))
+
+    def test_cli_train_inspect_use_with_snapshot(self):
+        import contextlib
+        from io import StringIO
+        from unittest.mock import patch
+        from packages.rep_lab.__main__ import main
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "trained.json"
+            for args, status in (
+                (["rep_lab", "train", "--worlds", "3", "--snapshot", str(path)],
+                 "DISCLOSED_TOY_TRAIN"),
+                (["rep_lab", "inspect", "--snapshot", str(path)],
+                 "rep-g1d-toy-snapshot/1"),
+                (["rep_lab", "use", "--snapshot", str(path)],
+                 "DISCLOSED_TOY_USE_NOT_FORMAL"),
+            ):
+                output = StringIO()
+                with patch("sys.argv", args), contextlib.redirect_stdout(output):
+                    main()
+                self.assertIn(status, output.getvalue())
+                self.assertTrue(path.is_file())
+
     def test_paired_disclosed_scoring_and_learning_curve(self):
         result = run_pilot()
         self.assertEqual(result["status"], "DISCLOSED_ENGINEERING_ONLY_NOT_FORMAL")
@@ -152,7 +184,7 @@ class G1DTests(unittest.TestCase):
         self.assertTrue(result["replay_idempotent"])
         self.assertEqual(result["final"]["total_per_arm"], 6 * 64)
         self.assertEqual(set(result["final"]["correct"]),
-                         {"B0", "B1", "B2", "B3", "B3x", "B4"})
+                         {"B0", "B1", "B2", "B3", "B3x", "B4", "B5"})
         print("G1D_TOY_RESULT=" + json.dumps(result, sort_keys=True, separators=(",", ":")))
 
 
