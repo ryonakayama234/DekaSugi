@@ -127,3 +127,24 @@ Review-driven [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) uses 
 
 ## ACTIVE-001 PR2 — exact-state types and replay (2026-10-30)
 [Draft PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) now checks that externally reconstructed semantic-class ID tuples and proposal/answer fields contain exact Python primitive types, preventing equality-preserving subclass operations from changing question scores. [System map](docs/architecture/system.md), [data contract](docs/architecture/contracts.md), [synthetic run](experiments/ACTIVE-001/runs/20261030-pr2-container-types.md). No historical scoring, independent source custody or measured intelligence gain is claimed.
+
+## EXP-REP-001 — 2026-11-01 experimental interpretation (G1-C stacked draft)
+Draft [PR #124](https://github.com/ryonakayama234/DekaSugi/pull/124)
+designs EXP-REP-001; Draft [PR #125](https://github.com/ryonakayama234/DekaSugi/pull/125)
+contains the invented one-relation toy. Its hand-selected R3=8/8 vs weak R2=4/8
+is **engineering smoke only**, not evidence for a new expressible concept.
+
+[Issue #126](https://github.com/ryonakayama234/DekaSugi/issues/126)
+and stacked Draft [PR #127](https://github.com/ryonakayama234/DekaSugi/pull/127)
+introduce R2P (TRAIN-derived rank-only control), malformed-data fail-closed
+guards, synthetic tests and synchronized architecture/data/experiment documents.
+R2P retains the fixed model grammar and frequency generalization but no
+persisted `ConceptCandidate` body: it probes whether R3 gains amount to a
+learned **search prior**, rather than a newly expressible representation.
+
+No newly authorized formal TRAIN/DEV/FINAL, no independent evaluator, no
+accepted concept promotion and no original frozen dataset changes. See
+[architecture](docs/architecture/system.md),
+[contracts](docs/architecture/contracts.md),
+[candidate preregistration](experiments/EXP-REP-001/plan.md), and
+[G1-C evidence](experiments/EXP-REP-001/runs/20261101-g1c-rank-only-engineering.md).
