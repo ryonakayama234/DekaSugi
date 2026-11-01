@@ -39,6 +39,7 @@ def consistent_models(objects: tuple[str, ...], observations: tuple[Observation,
     for obs in observations:
         if (type(obs) is not Observation or type(obs.world_alias) is not str or
                 not obs.world_alias or type(obs.object_ids) is not tuple or
+                any(type(x) is not str for x in obs.object_ids) or
                 obs.object_ids != objects):
             raise ValueError("Malformed public observation or object mismatch")
         validate_state(objects, obs.before)
