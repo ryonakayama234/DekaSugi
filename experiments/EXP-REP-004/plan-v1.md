@@ -3,6 +3,7 @@
 id: EXP-REP-004-PLAN-V1
 status: PROPOSED / NOT_RUN / NOT_FROZEN / NO_FORMAL_FINAL
 updated: 2026-11-02
+tags: representation, experiment, active-learning, executable-concept, research
 parent: ../../docs/specs/EXP-REP-004-DECISION-V1.md
 issue: https://github.com/ryonakayama234/DekaSugi/issues/136
 
