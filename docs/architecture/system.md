@@ -1041,3 +1041,23 @@ flowchart TD
  E --> L["Evidence, attribution, promote-or-reject review"]
 ```
 The learner-facing stateful interface forbids free arbitrary `before` probes; `reset`/`set_state`/`pulse` are metered. R2P ranking-only and strong fixed two-edge controls use identical passive public transcripts as body-enabled R3. This architecture is a proposed expansion of the G1-C toy, not a deployed model or FINAL authorization. [Design](../specs/EXP-REP-001-G1D.md) / [method](../../experiments/EXP-REP-001/g1d-method-v1.md).
+
+### G1-D actual disclosed engineering path (2026-11-01; formal custody NOT implemented)
+```mermaid
+flowchart TD
+ Host["Host: InventedWorld, toy only"] --> S["ToySession: charged state/action/reset"]
+ S --> O["Public typed Observation"]
+ O --> H["H1 one-edge complete search"]
+ H --> D{"Diagnosis"}
+ D -->|certified mismatch| R["Typed H2 pair XOR signature search"]
+ D -->|underdetermined| Q["B5 cost-aware public query"]
+ Q --> S
+ R --> W["Wake: independently named TRAIN episodes"]
+ W --> L["Sleep: canonical two-edge role bodies"]
+ L --> Snapshot[("Versioned RepairSnapshotV1 JSON")]
+ Snapshot --> Eval["B1/B2/B3/B3x passive versus B5 active"]
+ Host --> Audit["Disclosed toy audit truth, not learner input"]
+ Audit --> Eval
+ Eval --> Ledger["Versioned negative/positive evidence"]
+```
+The current implementation is `packages/rep_lab`. It does NOT replace G1-C's one-edge `packages/world_model`; instead, the G1-D repair engine is a parallel research prototype. Source and data custody are same-process toy only. Formal sealed process/user/account separation is absent. [Measured run](../../experiments/EXP-REP-001/runs/20261101-g1d-engineering-pilot.md).
