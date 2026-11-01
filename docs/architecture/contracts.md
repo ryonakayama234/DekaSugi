@@ -1160,3 +1160,9 @@ Full definitions: [spec](../specs/EXP-REP-002.md), [protocol](../../experiments/
 - `PredictionCommit`: `use` emits fixed selected direct edges, trace hash, charged operation count and expanded node meter **before** evaluator-only audit. Scorer never chooses the model or passes gold to learner. For this reduced pilot, 4096 expanded-node budget is an engineering guard, not full shared H4 resource analysis.
 - `RunRecord`: 48 disclosed worlds, RENAMED/COMPOSITION/NOVEL/DISTRACTOR × 12, arms LQ/LA/LR/FA, 4 independent budget sessions at 0/2/4/8 pulses, exactly 32 private-in-code state/action audits per world, aggregated AULC. FA knows the *public* hub marker and is a strong shortcut control. Graph nonisomorphism and finite direct behavior signatures are separate support checks; no gated equivalences tested.
 - No formal DEV/FINAL, no independent evaluator source custody, no arbitrary Python graph execution.
+
+
+### EXP-REP-002 measurement/status clarification
+- The 32 evaluator-owned transition checks are privately generated in the same Python process; they are aggregated into one world score per arm-budget. No independent custody.
+- AULC is the arithmetic average at budgets 0,2,4,8. LQ and LA commit their selected direct-edge predictor before private-in-code scoring, and FA duplicates the hub-first query choice without reading Snapshot motif. For this engineering run LQ=FA in every stratum, so no learned-motif question specificity can be claimed.
+- Exact code and numbers in [run record](../../experiments/EXP-REP-002/runs/20261101-direct-preflight-measured.md). Expanded node accounting is a limited direct-pilot counter, NOT full H4 AST execution metering.
