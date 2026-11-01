@@ -307,3 +307,7 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | EXP-REP-001-G1D-RECEIPT | Design-only registration without training/scoring | not_run | [dated ledger](../experiments/EXP-REP-001/runs/20261101-g1d-design-only.md) |
 
 The original EXP-REP-001 plan is a proposal, not a frozen FINAL method. Do not interpret this design document as authorization to merge Draft #124/#125/#127 or conduct formal DEV/FINAL. ARCH-001/002 maintain a compact current diagram/contract pointer; detailed normative proposal is in G1-D design/method documents.
+
+## G1-D executed public engineering prototype (2026-11-01)
+- [Code and learning/snapshot/active evaluation](../packages/rep_lab/__init__.py), [CLI entrypoint](../packages/rep_lab/__main__.py), [explicitly whitelisted synthetic tests](../tests/test_rep001_g1d_engineering.py), [measured 140-test engineering ledger](../experiments/EXP-REP-001/runs/20261101-g1d-engineering-pilot.md).
+- **Scientific verdict:** body-enabled B3 and fixed-expressive/rank-only/body-ablated controls all 368/384 on a disclosed toy. B5 active 384/384 uses separate paid observation sequence. F0 still not frozen; no historical or formal FINAL scoring.
