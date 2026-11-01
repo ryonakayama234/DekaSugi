@@ -344,3 +344,8 @@ The original EXP-REP-001 plan is a proposal, not a frozen FINAL method. Do not i
 - [新研究仕様](specs/EXP-REP-003.md) / [実験計画](../experiments/EXP-REP-003/plan.md) / [設計判断](architecture/decisions/ADR-REP-003.md) / [NOT_RUN設計記録](../experiments/EXP-REP-003/runs/20261101-design-only.md)。
 - [システム構造](architecture/system.md) / [データ契約・フロー](architecture/contracts.md) のEXP-REP-003節が対になる。役割ラベルで正解が透けるREP002の問題を受け、匿名化・状態準備→pulse・独立の識別可能性witness・強い固定FA・同一資源制限の比較を先行させる。
 - **ENGINEERING NOT RUN / CI NOT RUN / FORMAL F0 NOT AUTHORIZED**。新しい学習・採点・成果は一切発生していない。旧Draft PR #129/#131/#132と独立した新規提案であり、研究設計のPRを統合しても自動的にSnapshotを昇格しない。
+
+## EXP-REP-003 V2 — 設計決定稿候補と大規模実行計画（2026-11-02、実験未実行）
+- **最初に読む正本**: [EXP-REP-003 DECISION V2](specs/EXP-REP-003-DECISION-V2.md)。[学習・保存・使用・採点を含むG0–G5計画](../experiments/EXP-REP-003/plan-v2.md)、[設計判断ADR](architecture/decisions/ADR-REP-003.md)、[設計変更・未実行記録](../experiments/EXP-REP-003/runs/20261102-design-v2.md)、[Issue #133](https://github.com/ryonakayama234/DekaSugi/issues/133)、[Draft PR #134](https://github.com/ryonakayama234/DekaSugi/pull/134)。
+- 主対象モジュールは Inquiry/World Model。Wake→Sleep→Dream→Snapshot→Useと独立採点までを一つの工学研究プログラムとするが、現在は **DESIGN_ONLY / NOT_RUN / APPROVAL_PENDING**。4変数2辺の条件付き有限XOR世界、匿名ID、費用付き2段階介入、WITNESS/NO_OPPORTUNITY/UNKNOWN、固定FA等7 arm、候補評価予算0/1/2/4を採用案とする。
+- [同期システム構成図](architecture/system.md) と [データフロー・型契約](architecture/contracts.md) の「V2」節を参照。以前のV1は歴史的な構想、旧REP002の数字は新実験結果ではない。正式F0/DEV/FINAL、初期モデルの正式採用は別ゲート。
