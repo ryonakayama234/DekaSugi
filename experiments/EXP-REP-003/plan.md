@@ -33,3 +33,6 @@ The pre-scoring opportunity detector reports WITNESS / NO_OPPORTUNITY / UNKNOWN,
 
 ## Acceptance
 This DESIGN_ONLY task is complete when the synchronized specification, plan, run receipt, AGENTS/INDEX, architecture and data contracts are reviewable, contain no ungrounded result claim, and pass link/metadata checks. It does not authorize code, scoring or release. Later engineering must include false-positive/negative witness tests, identical bounds, independently checked predictive commitments, and honest null-result recording before any scientific promotion.
+
+## V2 supersession notice (2026-11-02)
+This V1 plan is historical design context. The current **decision candidate** is [V2 detailed protocol](plan-v2.md) with [V2 method/architecture](../../docs/specs/EXP-REP-003-DECISION-V2.md) and [design-only receipt](runs/20261102-design-v2.md). Proposed budget checkpoints move from 0/2/4/8 to 0/1/2/4 *for this new study*, prior to any EXP-REP-003 score, to identify the paid two-step enabling mechanism. Still NOT_RUN; not yet independently reviewed or F0-frozen.
