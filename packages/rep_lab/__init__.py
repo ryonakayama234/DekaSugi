@@ -675,7 +675,9 @@ def run_pilot() -> dict[str, object]:
         curve.append({"unique_train_worlds": n, "snapshot_digest": snapshot.digest,
                       "template_bodies": [t.body for t in snapshot.templates],
                       "support_counts": [len(t.support_worlds) for t in snapshot.templates],
-                      "correct": result["correct"], "abstain": result["abstain"]})
+                      "correct": result["correct"], "abstain": result["abstain"],
+                      "candidate_checks": result["candidate_checks"],
+                      "inference_cpu_ns": result["inference_cpu_ns"]})
     repeated = {}
     for passes in PASSES:
         # Immutable evidence does not duplicate independent-world support.
