@@ -74,3 +74,30 @@ Exactly one party owns hidden ground truth: world generator/evaluator. The learn
 
 ## Execution and research status
 G0 spec/methodology review -> G1 invented-only engineering prototype, tests, total-cost preflight -> F0 independent power, source/seed/custodian and snapshot freeze -> G2 actual TRAIN and diagnostic DEV -> **separately explicitly approved** one-time independent FINAL -> recount/ablation/adoption decision. See [plan](../../experiments/EXP-REP-001/plan.md). No official training or scoring authorized by this document.
+
+## G1-C mechanistic attribution refinement (invented engineering; Issue #126)
+The original R3−R2 contrast is a **combined** comparison: a preenumerated expressive
+grammar and a TRAIN-derived family-ranking preference can explain observed toy gains
+without any newly representable predicate. Before a formal F0 method freeze,
+treat **R2P (policy-only)** as a mandatory attribution control in addition to R2.
+R2P is computed independently from the same TRAIN episodes as R3, keeps only
+fixed-grammar family frequencies with the same support threshold and uses the
+same public-world observation transcript, candidate grammar, model selector,
+deterministic tie-break and audit inputs. It stores no `ConceptCandidate` bodies.
+**Important**: family frequencies already abstract over object names; R2P does
+not represent concept-free intelligence and is NOT a valid replacement for a
+strong episodic-memory R2. It tests whether R3 provides *anything beyond a
+learned ranking prior* in this toy.
+
+Attribution rule for G1: if R3≈R2P or ablation of concept bodies leaves the gain
+unchanged, record **POLICY_ONLY_EXPLANATION_NOT_EXCLUDED**, not demonstrated
+L3 representation acquisition—even if R3−R2 is positive. If a genuine
+representation-specific gain eventually emerges, preregister its definition,
+a matched policy-only baseline, a body-specific ablation, and equivalent
+resource budgets **before** any confidential DEV/FINAL sampling.
+
+G1-C also validates all primitive fields of Action, Relation, Observation and
+ConceptSnapshot as exact built-in types **before** comparison, hashing,
+candidate elimination or ranking. Invalid evidence is a data-contract error,
+not `model_class_mismatch` or a hypothesis falsifier. This is an invented-only
+hardening slice: no new independent scorer or official test is installed.
