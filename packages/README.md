@@ -132,3 +132,12 @@ The implementation checks canonical same-task/4-100-budget search status/program
 | `representation` | `induce_train_snapshot, validate_snapshot, learned_model_preference` | learned relation *family ranking* only, not arbitrary invention |
 | `rep_evaluation` | `python -m packages.rep_evaluation` | deliberately favorable synthetic fixture; no evaluator isolation |
 Use `python -m unittest discover -s tests -p 'test_rep001_toy_engineering.py' -v`; [run log](../experiments/EXP-REP-001/runs/20261101-invented-g1-smoke.md). This is not official TRAIN/DEV/FINAL.
+
+## EXP-REP-001 G1-C toy attribution control
+`packages/representation` adds `RankOnlySnapshot` and
+`rank_only_prediction` as a no-ConceptCandidate **ranking-prior**
+control (R2P) constructed from the same invented TRAIN episodes as R3.
+`packages/rep_evaluation` reports R2P alongside existing R1/R2/R3;
+R2P is not an independent evaluator, and family-frequency features are
+themselves abstract. See [EXP-REP-001 spec](../docs/specs/EXP-REP-001.md)
+and [synthetic run ledger](../experiments/EXP-REP-001/runs/20261101-g1c-rank-only-engineering.md).
