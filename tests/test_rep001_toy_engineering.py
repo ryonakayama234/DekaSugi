@@ -5,6 +5,7 @@ from packages.relational_world import Action, InventedWorld, Observation, Relati
 from packages.world_model import candidates, consistent_models, choose_discriminating_probe, diagnose
 from packages.rep_evaluation import run_toy
 from packages.representation import (induce_train_snapshot, validate_snapshot,
+                                     induce_rank_only_snapshot, rank_only_prediction,
                                      learned_model_preference, digest, relational_prediction)
 
 
@@ -101,6 +102,79 @@ class RelationalWorldToyTests(unittest.TestCase):
             models = consistent_models(ids, trials, True)
             self.assertEqual(models, (rule,))
 
+
+    def test_behavioral_string_fields_rejected_before_action_or_rule_comparison(self):
+        class BehavioralStr(str):
+            def __eq__(self, other):
+                return other in ("pulse", "set_state", "a", "b", "c", "d")
+            __hash__ = str.__hash__
+
+        zeros = (False,) * 4
+        bad_actions = (Action(BehavioralStr("run_shell"), "a", True),
+                       Action("pulse", BehavioralStr("a")),
+                       Action("set_state", "a", True))
+        for action in bad_actions[:2]:
+            with self.subTest(action=action), self.assertRaises(ValueError):
+                step(self.objects, zeros, action, ())
+        for rule in (Relation(BehavioralStr("a"), "c"),
+                     Relation("a", BehavioralStr("c")),
+                     Relation("a", "c", BehavioralStr("b"))):
+            with self.subTest(rule=rule), self.assertRaises(ValueError):
+                step(self.objects, zeros, Action("pulse", "a"), (rule,))
+
+    def test_all_observations_rejected_if_malformed_even_after_no_survivors(self):
+        zero = (False,) * 4
+        act = Action("pulse", "a")
+        # No candidate can produce this changed state from this action.
+        impossible = Observation("w", self.objects, zero, act,
+                                 (True, True, True, True))
+        bad_after = Observation("w", self.objects, zero, act,
+                                (False, False, 1, False))
+        bad_short = Observation("w", self.objects, zero, act,
+                                (False, False, False))
+        bad_action = Observation("w", self.objects, zero, Action("pulse", "bad"), zero)
+        for bad in (bad_after, bad_short, bad_action):
+            with self.subTest(bad=bad), self.assertRaises(ValueError):
+                consistent_models(self.objects, (impossible, bad), True)
+            with self.subTest(bad=bad), self.assertRaises(ValueError):
+                diagnose(self.objects, (bad,))
+
+    def test_snapshot_rejects_behavioral_keys_and_bool_counts(self):
+        class BehavioralStr(str):
+            def __eq__(self, other):
+                return other in ("gated_true", "direct")
+            __hash__ = str.__hash__
+
+        from packages.rep_evaluation import training_fixture
+        snapshot = induce_train_snapshot(training_fixture())
+        original = snapshot.concepts[0]
+        for malformed in (
+            replace(original, role_pattern=BehavioralStr("gated_true")),
+            replace(original, support_count=True),
+            replace(original, support_worlds=tuple([BehavioralStr(original.support_worlds[0]),
+                                                      *original.support_worlds[1:]])),
+        ):
+            with self.subTest(malformed=malformed), self.assertRaises(ValueError):
+                validate_snapshot(replace(snapshot, concepts=(malformed,)))
+
+    def test_rank_only_control_shows_policy_confound_in_favorable_toy(self):
+        from packages.rep_evaluation import training_fixture
+        memory = training_fixture()
+        concepts = induce_train_snapshot(memory)
+        rank = induce_rank_only_snapshot(memory)
+        self.assertEqual(concepts.world_receipt, rank.world_receipt)
+        self.assertEqual(rank.preferences, (("gated_true", 3),))
+        world = InventedWorld("new", self.objects, (Relation("a", "c", "b", True),))
+        evidence = (world.probe((False, True, False, False), Action("pulse", "a")),)
+        test_state, test_action = ((False, False, True, False), Action("pulse", "a"))
+        self.assertEqual(rank_only_prediction(rank, self.objects, evidence, test_state, test_action),
+                         relational_prediction(concepts, self.objects, evidence, test_state, test_action))
+        with self.assertRaises(ValueError):
+            rank_only_prediction(replace(rank, snapshot_digest="0" * 64),
+                                 self.objects, evidence, test_state, test_action)
+        toy = run_toy()
+        self.assertEqual(toy.r2p_correct, toy.r3_correct)
+        self.assertEqual(toy.r2p_correct, toy.audit_count)
 
 if __name__ == "__main__":
     unittest.main()
