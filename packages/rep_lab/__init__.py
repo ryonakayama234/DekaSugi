@@ -416,6 +416,7 @@ class PredictionV1:
     after: tuple[bool, ...] | None
     checked: int
     diagnosis: str
+    selected_model: tuple[Relation, ...] | None = None
 
 
 def predict(objects: tuple[str, ...], evidence: tuple[Observation, ...],
@@ -448,13 +449,13 @@ def predict(objects: tuple[str, ...], evidence: tuple[Observation, ...],
             return PredictionV1("ABSTAIN", None, diag.checked, diag.status)
         model = _model_pick(models, mode, snapshot)
         return PredictionV1("PREDICTED", predicted_next(objects, before, action, model),
-                            diag.checked, diag.status)
+                            diag.checked, diag.status, model)
     result = search_two_edges(objects, evidence, pair_budget)
     if not result.search_complete or result.status in ("NO_TWO_EDGE_FIT", "CANDIDATE_LIMIT"):
         return PredictionV1("ABSTAIN", None, diag.checked + result.checked, result.status)
     model = _model_pick(tuple(c.model for c in result.candidates), mode, snapshot)
     return PredictionV1("PREDICTED", predicted_next(objects, before, action, model),
-                        diag.checked + result.checked, diag.status)
+                        diag.checked + result.checked, diag.status, model)
 
 
 def disclosed_training_worlds(n: int = 32) -> dict[str, tuple[Observation, ...]]:
@@ -492,18 +493,27 @@ def evaluate_disclosed(snapshot: RepairSnapshotV1,
         transcript, charged = passive_public_episode(world)
         diag = diagnose_one_edge(world.object_ids, transcript)
         diagnostic[world._alias] = {"status": diag.status, "public_actions": charged}
-        # One inference per arm per world, same transcript and search budget.
+        # Freeze a single inferred world model per arm. Auditor-only queries
+        # never update the model and are not part of the public transcript.
         audits = tuple(eval_audit(world))
         for arm in counts:
-            # Cache predictions by distinct audit state/action in a transparent loop.
+            first_before, first_act, _ = audits[0]
+            selected = predict(world.object_ids, transcript, first_before, first_act,
+                               arm, snapshot, memory)
+            checks[arm] += selected.checked
             for before, act, answer in audits:
-                prediction = predict(world.object_ids, transcript, before, act, arm,
-                                     snapshot, memory)
                 total += (arm == "B0")
-                checks[arm] += prediction.checked
-                if prediction.after is None:
+                if arm == "B4":
+                    prediction = predict(world.object_ids, transcript, before, act,
+                                         arm, snapshot, memory)
+                    after = prediction.after
+                elif selected.selected_model is not None:
+                    after = predicted_next(world.object_ids, before, act, selected.selected_model)
+                else:
+                    after = None
+                if after is None:
                     abstentions[arm] += 1
-                elif prediction.after == answer:
+                elif after == answer:
                     counts[arm] += 1
     return {"status": "DISCLOSED_ENGINEERING_ONLY", "worlds": eval_worlds,
             "audits_per_world": len(tuple(eval_audit(disclosed_world(100, "toy-eval")))),
