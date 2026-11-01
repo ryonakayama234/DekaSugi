@@ -135,3 +135,8 @@ After the final paid learner action, the learner emits a validated, immutable `P
 
 ### Pilot feasibility hierarchy
 Start with publicly known low-capacity 4-object H2 and small diverse graph families to validate accounting, query parity and semantic signatures. Escalate to 5–6 objects/H3-H4 only after a *separate, pre-scoring* resource-bounded method revision. Never silently reduce one arm's grammar or interpret preliminary engineering artifacts as independently validated transfer.
+
+
+## 14. Explicitly reduced disclosed engineering pilot (implemented subset, not full H4)
+A resource-feasibility decision limits the FIRST executable calibration to five Boolean objects, up to four **direct only** edges with XOR pulse dynamics. Roles hub/x/y/z/q are public typed features. Training full-graph structures (fork+disjoint, fork+chain, three-star) are distinct under graph isomorphism but expose a shared two-edge hub fork; a 4-edge test composition cannot be identical to 3-edge TRAIN graphs. This is partially an engineered shortcut, not an independent generalization demonstration. Fixed FA policy uses the *public hub role* without learned concepts to check this shortcut.
+The implemented question step is a single paid pulse (no state setup, no gated two-step lookahead yet); 4096 expanded nodes is a pilot guard. No claim that the full proposed H4 query/inference shared ledger is implemented. A frozen fixed direct-edge prediction graph is committed before pure evaluator-only gold audits. All reported synthetic scores are calibration, not independent science. Upgrade to gated/conditional and full shared-budget contracts is a separate next research gate.
