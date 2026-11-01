@@ -1,6 +1,8 @@
 # EXP-REP-003 2026-11-01 — design-only decision receipt
 id: EXP-REP-003-DESIGN-20261101
 status: PROPOSED / NOT_RUN
+updated: 2026-11-01
+tags: experiment, receipt, design-only
 scope: documentation only
 
 ## Observed source baseline
