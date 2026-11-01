@@ -1156,3 +1156,38 @@ flowchart TD
 
 The opportunity witness is a **pre-scoring audit of distinguishability**, not learned competence. Formal evaluator and private source custody are aspirational, NOT implemented in this design PR. FA (strong fixed active), LA (same Snapshot but blind query), LR (rank-only), ER (episodic), BODY-OFF and LQ all share the allowed grammar, intervention types and deterministic bounds. FA is not artificially weakened. The learner may not see hidden graph, role shortcut, source seed or audit transitions.
 [Design](../specs/EXP-REP-003.md) / [Plan](../../experiments/EXP-REP-003/plan.md) / [ADR](decisions/ADR-REP-003.md) / [NOT_RUN](../../experiments/EXP-REP-003/runs/20261101-design-only.md).
+
+## EXP-REP-003 V2 architecture — approved direction candidate, NOT IMPLEMENTED
+Reference: [Decision V2](../specs/EXP-REP-003-DECISION-V2.md), [G0–G5 plan](../../experiments/EXP-REP-003/plan-v2.md), [typed flow](contracts.md), [design receipt](../../experiments/EXP-REP-003/runs/20261102-design-v2.md).
+
+~~~mermaid
+flowchart TD
+  subgraph HIDDEN["Authority-only: private semantics and score"]
+    WR["World source: hidden causal transitions"]
+    WO["Finite legal-reachability / semantic witness oracle"]
+    EV["AuditOnly: apply frozen committed predictor"]
+  end
+  subgraph AGENT["Learner-facing: all operations charged"]
+    A["Legal set(i,v), pulse(i)"]
+    O["Exact typed PublicObservation"]
+    VS["VersionSpace: role-blind hypothesis dynamics"]
+    Q["Inquiry: costed two-step experiment policy"]
+    WA["WAKE: paid experiences"]
+    SL["SLEEP: conditional concept + applicability"]
+    DR["DREAM: synthetic falsification plans"]
+    SNAP[("ConceptSnapshotV3, versioned")]
+    PC["PredictionCommitV2 before audit"]
+    LED["Shared ResourceLedger: expanded nodes and actions"]
+  end
+  WR --> A --> O --> VS --> Q --> A
+  O --> WA --> SL --> SNAP --> Q
+  VS --> DR --> Q
+  Q --> LED
+  SL --> LED
+  DR --> LED
+  SNAP --> PC
+  VS --> PC --> EV --> RUN["Per-world and per-family raw metrics / verdict"]
+  WR --> WO --> PRE["Pre-scoring opportunity feasibility ONLY"]
+~~~
+
+Primary research contrasts: LQ (body-aware question) vs LA (identical learned Snapshot for inference, blind question); **attribution co-gates** optimized untrained FA, matched TRAIN episodic ER, rank-only LR, BODY-OFF. FX diagnostic. True action observations may differ; arm budgets and computational caps do not. The independent opportunity oracle is NOT a learner adviser. Engineering pilot n4, <=2 typed direct/gated XOR edges, paid set/pulse; intended disclosed 0/1/2/4 horizons and 48 worlds ×7 arms, private evaluator 32 transition checks per arm-world-budget, all unexecuted. F0 protected evaluation remains separate.
