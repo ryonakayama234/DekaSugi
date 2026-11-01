@@ -1151,3 +1151,12 @@ RENAMED, COMPOSITION, NOVEL and DISTRACTOR are different evaluation strata. COMP
 Exact type checks must precede all comparisons, pruning and digests. The action and candidate metering covers initial state setup, query planning and all fallbacks. Learner cannot read generator rules or evaluator-owned gold. Synthetic DREAM examples are simulations, not independent evidence; formal evaluation requires independently controlled source and separately authorized one-shot FINAL.
 
 Full definitions: [spec](../specs/EXP-REP-002.md), [protocol](../../experiments/EXP-REP-002/plan.md), [architecture](system.md).
+
+
+## EXP-REP-002 initial direct-XOR engineering contracts (IMPLEMENTED subset)
+- `World`: five exact Boolean state positions, public role labels hub/x/y/z/q, private fixed up to four DIRECT edges, role permutation and deterministic synthetic structure stratum. Only the host may read hidden_edges; same Python process is **not a formal trust boundary**.
+- `Session.pulse(source)`: learner-facing charged action cost one; returns immutable-by-convention public record source/before/after/cost. This first pilot does NOT yet model paid set_state/reset and gated two-step questions; it MUST NOT be used to validate those proposed contracts.
+- `Snapshot`: schema `rep002-disclosed-direct-preflight/1`, train_count, independent full-graph structure count, role motif and canonical digest. Saves/loads canonical JSON. Supports distinct topology >=3; direct grammar only. `digest` does not imply external authenticity.
+- `PredictionCommit`: `use` emits fixed selected direct edges, trace hash, charged operation count and expanded node meter **before** evaluator-only audit. Scorer never chooses the model or passes gold to learner. For this reduced pilot, 4096 expanded-node budget is an engineering guard, not full shared H4 resource analysis.
+- `RunRecord`: 48 disclosed worlds, RENAMED/COMPOSITION/NOVEL/DISTRACTOR × 12, arms LQ/LA/LR/FA, 4 independent budget sessions at 0/2/4/8 pulses, exactly 32 private-in-code state/action audits per world, aggregated AULC. FA knows the *public* hub marker and is a strong shortcut control. Graph nonisomorphism and finite direct behavior signatures are separate support checks; no gated equivalences tested.
+- No formal DEV/FINAL, no independent evaluator source custody, no arbitrary Python graph execution.
