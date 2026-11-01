@@ -299,3 +299,26 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | ID | テーマ | 状態 | 文書 |
 |---|---|---|---|
 | EXP-REP-001-G1C | R2P方策のみ対照・表現効果の帰属・Observation/Snapshot型検証 | invented engineering, draft, no formal scoring | [Issue #126](https://github.com/ryonakayama234/DekaSugi/issues/126) / [spec](specs/EXP-REP-001.md) / [plan](../experiments/EXP-REP-001/plan.md) / [architecture](architecture/system.md) / [contracts](architecture/contracts.md) / [run](../experiments/EXP-REP-001/runs/20261101-g1c-rank-only-engineering.md) |
+
+## EXP-REP-001 G1-D — Integrated plan, preimplementation, NOT_RUN (2026-11-01)
+| ID | Purpose | Status | Authoritative document |
+|---|---|---|---|
+| EXP-REP-001-G1D-DESIGN | Diagnosis -> bounded representation repair -> Wake/Sleep -> freeze -> local use -> independent evaluation | proposed_for_user_agreement; design_only | [integrated specification](specs/EXP-REP-001-G1D.md) / [method](../experiments/EXP-REP-001/g1d-method-v1.md) / [Issue #128](https://github.com/ryonakayama234/DekaSugi/issues/128) |
+| EXP-REP-001-G1D-RECEIPT | Design-only registration without training/scoring | not_run | [dated ledger](../experiments/EXP-REP-001/runs/20261101-g1d-design-only.md) |
+
+The original EXP-REP-001 plan is a proposal, not a frozen FINAL method. Do not interpret this design document as authorization to merge Draft #124/#125/#127 or conduct formal DEV/FINAL. ARCH-001/002 maintain a compact current diagram/contract pointer; detailed normative proposal is in G1-D design/method documents.
+
+## G1-D executed public engineering prototype (2026-11-01)
+- [Code and learning/snapshot/active evaluation](../packages/rep_lab/__init__.py), [CLI entrypoint](../packages/rep_lab/__main__.py), [explicitly whitelisted synthetic tests](../tests/test_rep001_g1d_engineering.py), [measured 140-test engineering ledger](../experiments/EXP-REP-001/runs/20261101-g1d-engineering-pilot.md).
+- **Scientific verdict:** body-enabled B3 and fixed-expressive/rank-only/body-ablated controls all 368/384 on a disclosed toy. B5 active 384/384 uses separate paid observation sequence. F0 still not frozen; no historical or formal FINAL scoring.
+
+### G1-D latest validated technical reference and toy artifact
+- [TRAIN32 reproducible learned Snapshot](../experiments/EXP-REP-001/artifacts/g1d-toy-snapshot32.json) / [latest body-constructor experiment and caveats](../experiments/EXP-REP-001/runs/20261101-g1d-template-constructor.md) / [CLI usage](../packages/rep_lab/README.md). Prior G1-D pilot is retained separately for historical provenance; the new template constructor is not only rank-only policy.
+
+
+### G1-D P1 remediation and repeated disclosed pilot (2026-11-01)
+- [Repaired source and 146-test CI receipt](../experiments/EXP-REP-001/runs/20261101-g1d-p1-budget-repair.md) / [CI](https://github.com/ryonakayama234/DekaSugi/actions/runs/41313876335). Same disclosed accuracy and candidate counts reproduced; independent current-head review still pending, no formal model promotion.
+
+
+### G1-D P2 role-template inapplicability correction
+- [147-test confirmed fallback](../experiments/EXP-REP-001/runs/20261101-g1d-p2-template-applicability.md) / [CI](https://github.com/ryonakayama234/DekaSugi/actions/runs/41315724074). A valid large-role learned template is skipped in smaller target worlds instead of blocking a correct fixed H2 fallback. Old historical runs preserved.

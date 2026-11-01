@@ -452,3 +452,29 @@ New `packages/relational_world`, `world_model`, `representation`, and `rep_evalu
 - A favorable R3−R2 toy result is not evidence for newly representable concepts. Require an explicit **R2P policy-only** mechanism control, concept-body ablation, and a stronger matched R2 before attribution or formal preregistration.
 - Strict exact-builtin Action/Relation/Observation/Snapshot validation must execute before dictionary comparisons, evidence-pruning, digesting or learned model selection. Invalid observations fail closed even if hypothesis candidates are already empty.
 - G1-C artifacts are INVENTED_ENGINEERING_ONLY; preserve Draft PR stack and old frozen data, and never activate DEV/FINAL without separate gates.
+
+## EXP-REP-001 G1-D: integrated end-to-end research design (proposal, 2026-11-01)
+- Parent [Issue #128](https://github.com/ryonakayama234/DekaSugi/issues/128). Read [G1-D integrated design](docs/specs/EXP-REP-001-G1D.md) and [full-path method](experiments/EXP-REP-001/g1d-method-v1.md) after the EXP-REP-001 inherited plan/ARCH-001/ARCH-002.
+- G1-D is currently DESIGN_ONLY, not an implemented repair system. Its future engineering scope explicitly includes **disclosed toy TRAIN, snapshot, local usage and toy scoring**; these do NOT imply scientific FINAL, formal promotion or separate-source custody.
+- Reject a model-class mismatch diagnosis unless all in-class candidates were completely checked against fully validated, internally consistent evidence; budget exhaustion and nonidentifiability must remain distinct. Never inspect the simulator's hidden rule fields to construct repairs.
+- Stateful learner-facing queries must charge setup, pulse, set_state and reset; audit-only arbitrary state probes are a different interface. Keep policy-only, body ablation, strong fixed expressive, and episode controls matched on public observations and resources.
+- After each implementation slice update AGENTS, INDEX, ARCH-001 system Mermaid, ARCH-002 typed contracts/data-flow, spec/method and dated run ledger together; preserve historical FINAL source and evidence. F0 source/preregistration freeze and any one-shot FINAL remain separately gated by independent review and explicit owner authorization.
+
+### G1-D implementation and honest scientific attribution (2026-11-01)
+- The parallel `packages/rep_lab` engineer-only lab is now implemented; design-only receipt remains intact. `tests/test_rep001_g1d_engineering.py` is explicitly permitted only by `scripts/run_research_ci_v2_tests.py`, which does not use unbounded unittest discovery.
+- **Actual disclosed toy**: 32 TRAIN worlds share a fork topology with renamed objects, so cross-topology generalization was NOT validated. B1=B2=B3=B3x (368/384); therefore no concept-body advantage. B5=384/384 under a DIFFERENT active transcript and at most 4 charged actions: information-acquisition effect on disclosed worlds, not concept transfer.
+- Do not equate toy `ToySession._world` same-process object with formal independent custody. Never execute old or new sealed DEV/FINAL, merge draft stack automatically, or promote snapshot without frozen F0 and explicit owner FINAL authorization.
+- Keep the [G1-D ledger](experiments/EXP-REP-001/runs/20261101-g1d-engineering-pilot.md), [spec](docs/specs/EXP-REP-001-G1D.md) and [method](experiments/EXP-REP-001/g1d-method-v1.md) in sync with future code changes.
+
+### G1-D executable-body refinement and reproducibility (2026-11-01)
+- The current implementation `instantiate_template` *constructs* bounded new-world models from learned role variables, then checks the FULL public transcript; it may fall back to full fixed H2 search. It is not unrestricted semantics synthesis. Preserve this distinction from earlier G1-D rank-only pilot logs.
+- Persisted disclosed artifact: [TRAIN32 Snapshot](experiments/EXP-REP-001/artifacts/g1d-toy-snapshot32.json) digest `783fb01764e7ea5e4dd3055eaaa7c3a2dd304e613495f0035fcbea6caaca4858`; synthetic CI reconstructs and validates exact equality from public TRAIN. Do not use this same-topology toy Snapshot as a formal pretrained model for heldouts.
+- Current *engineering* measured record [template-constructor run](experiments/EXP-REP-001/runs/20261101-g1d-template-constructor.md) shows B3 candidate checks 414 vs fixed B1 7446 with equal 368/384 scores; B5 active 384/384 uses different evidence. No official FINAL or automatic release.
+
+
+### G1-D P1 repair receipt (2026-11-01)
+- The earlier exact-head review detected three P1 errors: B3 consumed separate template and H2 pair budgets; snapshot atom_rank nested entries lacked exact tuple shape validation; observation object_ids were compared before strict ID type checks. Repairs and three adversarial regression tests were committed; 146 explicit safe CI tests passed on a440b27. [Immutable remeasurement](experiments/EXP-REP-001/runs/20261101-g1d-p1-budget-repair.md). This is CI evidence, not independent final reviewer signoff or formal world transfer. Old dated measurement and Snapshot remain unchanged.
+
+
+### G1-D review P2 role-template applicability correction
+A valid learned role-body requiring more distinct object roles than the target offers is INAPPLICABLE, not budget exhaustion. B3 skips this body and performs remaining bounded H2 fallback. Corrected with 147 allowlisted source/synthetic tests in [dated receipt](experiments/EXP-REP-001/runs/20261101-g1d-p2-template-applicability.md). No independent current head signoff or formal promotion.

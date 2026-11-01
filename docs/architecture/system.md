@@ -1021,3 +1021,66 @@ The same-process toy host is **not** an independent evaluator. R2P is a
 methodological falsifier for the current *ranking-prior* explanation, not
 evidence that R3 acquired an unavailable primitive. No official dataset,
 source/seed lock, or FINAL path is present in this G1-C slice.
+
+## EXP-REP-001 G1-D — proposed integrated representation-repair loop (DESIGN ONLY; NOT_RUN)
+```mermaid
+flowchart TD
+ A["Stateful-world public observation & metered action"] --> V["Validate complete transcript"]
+ V --> H["WorldModel one-edge complete bounded search"]
+ H --> D{"Diagnosis"}
+ D -->|ambiguous| Q["ActiveLearning: charged discriminating intervention"]
+ Q --> A
+ D -->|exhaustive mismatch| R["RepresentationRepair: typed bounded two-edge meta-grammar"]
+ D -->|invalid / budget / unsupported| X["Abstain and record"]
+ R --> P["Candidate AST, counterexamples, cost"]
+ P --> W["Wake: append-only episodes"]
+ W --> S["Sleep: cross-world role templates"]
+ S --> F[("Frozen RepairSnapshot")]
+ F --> U["Local unknown-world use"]
+ F --> E["Independent paired evaluator"]
+ E --> L["Evidence, attribution, promote-or-reject review"]
+```
+The learner-facing stateful interface forbids free arbitrary `before` probes; `reset`/`set_state`/`pulse` are metered. R2P ranking-only and strong fixed two-edge controls use identical passive public transcripts as body-enabled R3. This architecture is a proposed expansion of the G1-C toy, not a deployed model or FINAL authorization. [Design](../specs/EXP-REP-001-G1D.md) / [method](../../experiments/EXP-REP-001/g1d-method-v1.md).
+
+### G1-D actual disclosed engineering path (2026-11-01; formal custody NOT implemented)
+```mermaid
+flowchart TD
+ Host["Host: InventedWorld, toy only"] --> S["ToySession: charged state/action/reset"]
+ S --> O["Public typed Observation"]
+ O --> H["H1 one-edge complete search"]
+ H --> D{"Diagnosis"}
+ D -->|certified mismatch| R["Typed H2 pair XOR signature search"]
+ D -->|underdetermined| Q["B5 cost-aware public query"]
+ Q --> S
+ R --> W["Wake: independently named TRAIN episodes"]
+ W --> L["Sleep: canonical two-edge role bodies"]
+ L --> Snapshot[("Versioned RepairSnapshotV1 JSON")]
+ Snapshot --> Eval["B1/B2/B3/B3x passive versus B5 active"]
+ Host --> Audit["Disclosed toy audit truth, not learner input"]
+ Audit --> Eval
+ Eval --> Ledger["Versioned negative/positive evidence"]
+```
+The current implementation is `packages/rep_lab`. It does NOT replace G1-C's one-edge `packages/world_model`; instead, the G1-D repair engine is a parallel research prototype. Source and data custody are same-process toy only. Formal sealed process/user/account separation is absent. [Measured run](../../experiments/EXP-REP-001/runs/20261101-g1d-engineering-pilot.md).
+
+### G1-D refinement: learned structural model generator
+```mermaid
+flowchart LR
+ T["TRAIN episodes"] --> Sl["Sleep role-body canonicalization"]
+ Sl --> F[("Frozen Snapshot / typed body")]
+ F --> I["instantiate_template with new public object IDs"]
+ I --> H["Bounded typed H2 model proposals"]
+ O["Full public evidence"] --> V["Consistency filter"]
+ H --> V
+ V -->|fit| P["Predict / disclose template-prior status"]
+ V -->|no fit| R["Fallback complete budgeted H2 search"]
+ R --> P
+```
+The operative change is an executable typed *hypothesis constructor* after proven H1 mismatch, not only rank ordering. In the toy this saved checked candidates while accuracy stayed equal to fixed B1. See [measured run](../../experiments/EXP-REP-001/runs/20261101-g1d-template-constructor.md).
+
+
+### G1-D budget/validation remediation (implemented, CI verified)
+The B3 executable-body constructor and fixed H2 fallback now share the same `pair_budget` ledger. Before evidence comparison and pruning, the full object ID tuple is strict-type checked; before snapshot ranking, each rank entry is an exact two-element builtin tuple. The repaired comparison remains same-topology disclosed artificial engineering only. See [new P1 receipt](../../experiments/EXP-REP-001/runs/20261101-g1d-p1-budget-repair.md).
+
+
+### G1-D role feasibility under target graph size
+Executable learned template -> first check canonical shape -> if required distinct roles > target object count, mark INAPPLICABLE and skip to the next model-template or remaining H2 search. Resource exhaustion and evidence mismatch remain distinct. See [P2 repaired run](../../experiments/EXP-REP-001/runs/20261101-g1d-p2-template-applicability.md).
