@@ -1,4 +1,8 @@
 # EXP-REP-002 engineering protocol
+id: EXP-REP-002-PLAN-V1
+status: DESIGN_ONLY; NOT_RUN
+updated: 2026-11-01
+tags: experiment, preregistration, active-learning, research
 
 Status: DESIGN_ONLY / NOT_RUN / F0_NOT_FROZEN. Source: docs/specs/EXP-REP-002.md, Issue #130.
 
@@ -23,3 +27,12 @@ F0 and later: a new independent study requires separate source custody, pre-regi
 LQ and LA use identical learned Snapshot for inference but only LQ may consult the executable body to choose questions. Y(world,arm,budget) is the fraction of 32 exact full-vector matches, abstentions counted zero. AULC per world = average Y at budgets 0,2,4,8. Primary descriptive contrast is paired mean AULC(LQ)-AULC(LA) on structurally new compositions. Fixed active and role-neutral retrieval are strong controls. Candidate practical difference >=0.05 is an engineering target only, not a frozen formal hypothesis test.
 
 Each code task updates AGENTS.md, docs/INDEX.md, ARCH-001 Mermaid, ARCH-002 contracts/flow, plan, specs, and dated run ledger together. Preserve old records and no automatic merge.
+
+## Hypothesis
+Concept-aware question selection LQ improves world-mean costed AULC against same-Snapshot query-blind LA, with identical prediction mechanisms.
+
+## Metrics
+Per-world AULC over 0,2,4,8 paid operations, exact transition accuracy, abstention, candidate and expanded primitive budgets, CPU and full training cost.
+
+## Acceptance
+Engineering PASS requires safe deterministic train/save/use/score, validated costs and negative tests, exact-head code review and full receipts. Scientific promotion requires separate independent F0 and untouched FINAL authorization.
