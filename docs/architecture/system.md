@@ -962,3 +962,24 @@ flowchart TB
   OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
 ~~~
 `tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## EXP-REP-001 proposed target architecture — NOT IMPLEMENTED / NOT SCORED (2026-11-01)
+This is a separated Research Track. Do **not** present the target diagram as already implemented or merge it with the EXP-COEV-001 experimental source/evaluator. See [EXP-REP-001](../specs/EXP-REP-001.md).
+```mermaid
+flowchart TD
+    W["Isolated RelationalWorld: hidden transition graph"] --> O["Observer: public action/outcome validation"]
+    O --> M["WorldModel: hypotheses and predictions"]
+    M --> D{"FailureDiagnosis: missing data, search or representation?"}
+    D --> A["ActiveLearning: maximize hypothesis disagreement"]
+    A --> W
+    D --> R["RepresentationLearner: typed bounded candidate AST"]
+    R --> S["Sleep: graph-isomorphic role normalization"]
+    S --> L["Candidate ConceptLibrary + negative evidence"]
+    L --> M
+    L --> F["Frozen ConceptSnapshot: provenance and digest"]
+    F --> E["External independent heldout evaluator"]
+    E --> T["Paired R0/R1/R2/R3/R4 evidence & decision"]
+    O --> T
+```
+**Trust boundary**: Evaluator/World owns the private graph and audit observations; the trainer only sees allowed query outputs. R2 and R3 must receive the same query transcript. R4 independently chooses queries within budget. Frozen snapshots cannot be changed by evaluation. Formal FINAL is not an ordinary CI target. Research issue [#123](https://github.com/ryonakayama234/DekaSugi/issues/123).
