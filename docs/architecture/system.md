@@ -1014,3 +1014,18 @@ flowchart LR
 ~~~
 
 The generator-private Law is NOT an allowed learner field. Public projection is not independent process isolation. Eight disclosed synthetic laws, 13 source-only tests and an analytic 100M syntactic candidate count do not establish causal family independence. [Engine](../../packages/rep005_g0b/__init__.py) / [evidence](../../experiments/EXP-REP-005-G0B/runs/20261103-g0b-a-synthetic.md).
+
+## ARCH-001 — G0b-A code review P1/P2 resource/semantic boundaries (2026-11-03)
+~~~mermaid
+flowchart LR
+  PRIVATE["Evaluator-only Law manifest"] --> CAN["24-permutation full semantic canonicalizer"]
+  CAN --> SPLIT["Private TRAIN/DEV/EVAL overlap audit"]
+  PRIVATE --> LIMIT["<=64 candidates: check before signatures"]
+  LIMIT --> SIG["Streaming signature validation"]
+  SIG --> PROOF["<=250k-node adaptive proof"]
+  PROOF --> CERT["ID / UNID / achievable opportunity"]
+  LIMIT --> STOP["NOT_CERTIFIED + reason/counters"]
+  SIG --> STOP
+  PROOF --> STOP
+~~~
+The learner never reads this private certification data. Wall/RSS checks are cooperative, not a substitute for OS-level limits. Complete Hplus grammar and independence remain NOT_CERTIFIED. [Contracts](contracts.md) / [receipt](../../experiments/EXP-REP-005-G0B/runs/20261103-g0b-review-hardening.md).
