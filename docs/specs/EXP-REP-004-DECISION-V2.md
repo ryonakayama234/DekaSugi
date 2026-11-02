@@ -1,4 +1,5 @@
 # EXP-REP-004 — Executable Concept Learning: implemented engineering decision V2
+tags: research, experimental, executable-concept, active-learning, synthetic
 
 id: EXP-REP-004-DECISION-V2
 status: IMPLEMENTED_DISCLOSED_ENGINEERING / POSITIVE_MECHANISM / NEGATIVE_QUERY_VALUE / NOT_FORMAL
