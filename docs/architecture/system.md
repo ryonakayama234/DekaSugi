@@ -986,3 +986,21 @@ flowchart TD
 ```
 
 この図のrepresentation_repairと統合サイクルは未実装であり、既存歴史的実験を変更しない。
+
+
+## REP005 G0a implementation status — two-axis diagnostic (2026-11-02)
+
+The proposed Representation Repair learning module is still **NOT IMPLEMENTED**. The separately versioned artificial G0 source-only method consists of [g0_witness.py](../../experiments/EXP-REP-005/g0_witness.py) and [g0_axes.py](../../experiments/EXP-REP-005/g0_axes.py). The eight-action adaptive certificate is for a declared *closed* finite set of deterministic fixtures, not a learned inquiry policy.
+
+```mermaid
+flowchart TD
+    W["Evaluator-private finite hypothesis set"] --> M["Complete method-only representation diagnostics"]
+    W --> Q["Finite-horizon public-action outcome tree"]
+    M --> A["M0 H0 / M1 Hplus-only / M2 outside / M3 stochastic-invalid"]
+    Q --> B["ID / UNID / NOT_CERTIFIED"]
+    A --> C["Orthogonal research strata and out-of-distribution controls"]
+    B --> C
+    C --> G{"G0b: independent structural families and scientific source review?"}
+    G -->|insufficient 14-orbit pilot| STOP["STOP: no TRAIN or EVAL"]
+    G -->|only if future certified| NEXT["Future representation_repair and paired research"]
+```
