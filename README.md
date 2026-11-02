@@ -1,5 +1,8 @@
 # DekaSugi
 
+> **Latest status note (2026-11-02):** [Research capability dashboard](docs/research/CURRENT-STATE.md) and [32 original open PRs](docs/research/20261102-research-pr-registry.md) are proposed on [Draft PR #147](https://github.com/ryonakayama234/DekaSugi/pull/147). The historic dated sections below remain archival context. A small REP005 G0 method checker is staged on Draft #147, but the current restricted fixture provides **at most 14 role orbits**, not the required 80 independent families. No REP005 learner, real training, score, independent G0b approval or stable model is claimed. Do not merge old stacked Drafts in bulk.
+
+
 **小さな中枢が、外部の知識・技能・道具を再利用し、自ら新しい操作体系を獲得できるかを検証する研究プロジェクト。**
 
 - 事前学習済みの巨大LLMは初期実験で使わない。
