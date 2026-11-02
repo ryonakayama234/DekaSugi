@@ -309,3 +309,6 @@ Primary planned module: packages/representation_repair. ARCH-001 (Mermaid) and A
 | EXP-REP-005-INTEGRATED-DECISION-V1 | Measurands, hypotheses, typed repair algorithm, paired-policy attribution, 0/8/16/32/64 TRAIN → Sleep → Snapshot → fresh USE → independent engineering score → stop/adoption gates | proposed_for_owner_agreement_not_frozen_not_run | [decision v1](specs/EXP-REP-005-INTEGRATED-DECISION-V1.md) / [diagnostic spec](specs/EXP-REP-005-DIAG.md) / [plan](../experiments/EXP-REP-005/plan-diag-v0.md) / [run ledger](../experiments/EXP-REP-005/runs/README.md) |
 
 The proposed decision **does not** report any new learned model, train use or score. New G0 independent review and owner agreement are prerequisites to implementation. Previous EXP-REP-004R failed H-ACT and 11,520 NOT_RUN remain preserved.
+
+## EXP-REP-005 G0 feasibility subresult (2026-11-02)
+[Auditable three-paid-action witness precheck](research/EXP-REP-005-G0-witness-feasibility-20261102.md) and [synthetic source](../experiments/EXP-REP-005/g0_witness.py) / [allowlisted tests](../tests/test_rep005_g0_witness.py). Status: G0_METHOD_PRECHECK (not independent approval); minimal witnessed horizon=3 (not 4), 24 permutations test; 80 structural semantic families and G0 approval outstanding. All TRAIN/Sleep/Snapshot/USE/scoring are NOT_RUN.
