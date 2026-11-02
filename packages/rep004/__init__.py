@@ -52,6 +52,7 @@ def step(state, action, edges):
     return out
 
 
+@lru_cache(maxsize=8192)
 def sig(edges):
     return bytes(step(s, ('pulse',i,None),edges) for s in range(16) for i in range(N))
 
@@ -60,6 +61,7 @@ def relabel(edges,perm):
     return tuple(sorted((perm[s],perm[t],-1 if g<0 else perm[g],b) for s,t,g,b in edges))
 
 
+@lru_cache(maxsize=8192)
 def family(edges):
     return min(sig(relabel(edges,p)) for p in PERMS).hex()
 
@@ -273,13 +275,18 @@ def execute_composition(body,state,action,edges):
     return out
 
 
-def learn(train_worlds=64):
-    if type(train_worlds) is not int or train_worlds not in (0,3,8,16,32,64):raise ValueError('unsupported TRAIN size')
-    manifest=study_manifest(); families=manifest['train_families']
+def sleep_from_public_traces(traces):
+    """No World, generator family, seed or secret rule is accepted here."""
+    if type(traces) is not list:raise ValueError('public traces required')
+    manifest=study_manifest()
+    train_worlds=len(traces)
+    if train_worlds not in (0,3,8,16,32,64):raise ValueError('unsupported TRAIN size')
     observations={}; episodes=[]; receipts=[]
-    for i in range(train_worlds):
-        fam=families[i%32]
-        edges,trace=paid_train(world_for(fam,i))
+    for trace in traces:
+        survivors=consistent(trace)
+        if len({sig(e) for e in survivors})!=1:raise ValueError('unidentified TRAIN semantics')
+        edges=survivors[0]
+        fam=family(edges)  # Inferred from public trace, not source manifest.
         receipt=digest(trace); receipts.append(receipt)
         episodes.append({'family':family(edges),'receipt':receipt,'edges':[list(e) for e in edges]})
         # Positive: a witnessed pulse toggled this target when guard held.
@@ -310,8 +317,25 @@ def learn(train_worlds=64):
     raw={'schema':VERSION,'manifest_digest':manifest['digest'],'train_worlds':train_worlds,
          'paid_actions':train_worlds*100,'receipt_digest':digest(receipts),
          'library':library,'episodes':episodes,
-         'distinct_train_families':len(set(families[i%32] for i in range(train_worlds)))}
+         'distinct_train_families':len({e['family'] for e in episodes})}
     return {**raw,'digest':digest(raw)}
+
+
+def learn(train_worlds=64):
+    """Trusted outer host captures observations, then discards World objects."""
+    if type(train_worlds) is not int or train_worlds not in (0,3,8,16,32,64):
+        raise ValueError('unsupported TRAIN size')
+    families=study_manifest()['train_families']
+    traces=[]
+    for i in range(train_worlds):
+        world=world_for(families[i%32],i)
+        session=Session(world)
+        for state in (0,1,2,4,8):
+            for source in range(4):
+                for k in range(4):session.apply(('set',k,(state>>k)&1))
+                session.apply(('pulse',source,None))
+        traces.append(session.trace)
+    return sleep_from_public_traces(traces)
 
 
 def validate_snapshot(s):
@@ -350,6 +374,15 @@ def _edge_execution_matches(guard_op,guard_value,edge_guard,edge_value):
                step(state,('pulse',0,None),(e,)) for state in range(16))
 
 
+@lru_cache(maxsize=8192)
+def _composition_equivalent(shape,edges):
+    ast=compose_ast(shape)
+    body={'ast':ast,'body_hash':digest(ast),'support':3,
+          'positive':['trusted-schema-check'],'negative':[],'status':'candidate'}
+    return all(execute_composition(body,s,('pulse',i,None),edges)==step(s,('pulse',i,None),edges)
+               for s in (0,1,3,7,15) for i in range(4))
+
+
 def concept_matches(snapshot,edges,metrics=None):
     """Pure executed AST semantics -> prior weight. No fixed MODELS alias.
     The full composition motif is also executed as an ordered concurrent XOR.
@@ -367,10 +400,17 @@ def concept_matches(snapshot,edges,metrics=None):
         for b in snapshot['library']:
             if b['ast']['op']=='parallel_xor' and b['ast']['shape']==motif(edges):
                 if metrics is not None:metrics['body_invocations']+=1
-                if all(execute_composition(b,s,('pulse',i,None),edges)==step(s,('pulse',i,None),edges)
-                       for s in (0,1,3,7,15) for i in range(4)):
+                if _composition_equivalent(b['ast']['shape'],edges):
                     covered+=2;break
     return covered
+
+
+@lru_cache(maxsize=1)
+def static_macro_library():
+    asts=[concept_ast((0,1,-1,-1)),concept_ast((0,1,2,0)),concept_ast((0,1,2,1))]
+    asts.extend(compose_ast(shape) for shape in ('CHAIN','FANIN','FANOUT','OTHER'))
+    return [{'ast':a,'body_hash':digest(a),'support':3,'positive':['preinstalled-static'],
+             'negative':[],'status':'candidate'} for a in asts]
 
 
 def weights_for(models,snapshot,arm,metrics):
@@ -385,7 +425,8 @@ def weights_for(models,snapshot,arm,metrics):
         ep={e['family'] for e in snapshot['episodes']}
         return [2.0 if family(x) in ep else 1.0 for x in models]
     if arm=='STATIC-MACRO':
-        return [1.0+0.5*sum(e[2]>=0 for e in x) for x in models]
+        fixed={'library':static_macro_library()}
+        return [1.0+3.0*concept_matches(fixed,x,metrics) for x in models]
     return [1.0+3.0*concept_matches(snapshot,x,metrics) for x in models]
 
 
@@ -444,12 +485,12 @@ def committed_use(snapshot,world,arm,budget):
     pred=h[max(range(len(h)),key=lambda i:(p[i],-i))] if h else None
     commit={'schema':VERSION,'arm':arm,'budget':budget,'public_ids':list(world.public_ids),
             'trace':session.trace,'status':status,'predicted_edges':[list(e) for e in pred] if pred is not None else None,
-            'snapshot_digest':snapshot['digest'],'meter':meter,'cpu_seconds':round(time.process_time()-t0,6)}
-    return {**commit,'commit_digest':digest(commit)}
+            'snapshot_digest':snapshot['digest'],'meter':meter}
+    return {**commit,'commit_digest':digest(commit),'cpu_seconds':round(time.process_time()-t0,6)}
 
 
 def audit(world,commit):
-    if type(commit) is not dict or commit.get('commit_digest')!=digest({k:v for k,v in commit.items() if k!='commit_digest'}):
+    if type(commit) is not dict or commit.get('commit_digest')!=digest({k:v for k,v in commit.items() if k not in ('commit_digest','cpu_seconds')}):
         raise ValueError('prediction not committed')
     if commit['status']!='COMMITTED':return 0
     predicted=tuple(tuple(e) for e in commit['predicted_edges'])
