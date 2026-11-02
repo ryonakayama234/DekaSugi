@@ -70,13 +70,33 @@ class OrthogonalG0Test(unittest.TestCase):
         self.assertIs(m.identify_finite_class(yes, 1).status,
                       m.Identification.IDENTIFIABLE)
         self.assertIs(m.identify_finite_class(no, 8).status,
+                      m.Identification.UNCERTIFIED)
+        self.assertEqual(m.identify_finite_class(no, 8).reason, "SEMANTIC_ALIASES")
+        short = (m.w.PrivateFixture(mode="guard"),
+                 m.w.PrivateFixture(mode="never"))
+        self.assertIs(m.identify_finite_class(short, 1).status,
                       m.Identification.UNIDENTIFIABLE)
+        self.assertIs(m.identify_finite_class(short, 2).status,
+                      m.Identification.IDENTIFIABLE)
 
     def test_search_ceiling_not_misreported_as_unidentifiable(self):
         yes = (m.w.PrivateFixture(mode="always"), m.w.PrivateFixture(mode="never"))
         result = m.identify_finite_class(yes, 8, max_nodes=1)
         self.assertIs(result.status, m.Identification.UNCERTIFIED)
         self.assertFalse(result.complete)
+
+    def test_exact_semantic_aliases_not_confused_with_budget_limit(self):
+        same1 = m.w.PrivateFixture(source=0, target=1, mode="never")
+        same2 = m.w.PrivateFixture(source=1, target=0, mode="never")
+        different = m.w.PrivateFixture(source=0, target=1, mode="guard")
+        sig1 = m.restricted_semantic_signature(same1)
+        self.assertEqual(len(sig1), 30144)
+        self.assertEqual(sig1, m.restricted_semantic_signature(same2))
+        self.assertNotEqual(sig1, m.restricted_semantic_signature(different))
+        self.assertEqual(m.identify_finite_class((same1, same2), 8).reason,
+                         "SEMANTIC_ALIASES")
+        with self.assertRaises(ValueError):
+            m.restricted_semantic_signature(m.w.PrivateFixture(lag=3))
 
     def test_declared_hypothesis_contract(self):
         with self.assertRaises(ValueError):
@@ -93,6 +113,8 @@ class OrthogonalG0Test(unittest.TestCase):
         self.assertEqual(d["inherited_witness_length"], 3)
         self.assertFalse(d["pilot_can_supply_80_independent_families"])
         self.assertFalse(d["80_independent_families_certified"])
+        self.assertEqual(d["aliased_pair"], "SEMANTIC_ALIASES")
+        self.assertEqual(d["restricted_signature_outcomes"], 30144)
         self.assertFalse(d["learning_performed"])
         self.assertFalse(d["scoring_performed"])
 
