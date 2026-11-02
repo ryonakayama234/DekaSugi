@@ -18,3 +18,6 @@ Each future engineering run records source commit, exact test/CI head, legal gra
 
 ## V3.1 design amendment
 Following independent PR #147's 80/160 counting review, the proposed G0b pilot also now explicitly specifies total typed 30,144-cell domain, deterministic set-first/XOR-second effect algebra, 0/1/2 action-lag history, four-bit state and 12 legal actions, exact guard grammar, H0_G subgrammar, and engineering budget STOP ceilings in the V3.1 appendix. **All are proposed contracts, NOT tested outcomes**. This doc update does not change any previous G0a run receipt. No G0b code or new metric executed.
+
+## Independent-review methodological amendments (still not run)
+Early Codex review of PR #149 first head identified P1 representation-membership misclassification and P2 unsound positive-opportunity upper bound. Design-only V3.1 corrected: M1 = Hplus_G minus H0_G regardless of true memorylessness; M2 = outside Hplus_G; H0_all contradiction separate. Positive opportunity requires verified achievable utility or a valid candidate lower bound above comparator upper bound, not loose optimal upper bounds. New unit negative fixtures are planned; NOT_IMPLEMENTED / NOT_RUN. Historic scores and earlier negative runs remain unchanged.
