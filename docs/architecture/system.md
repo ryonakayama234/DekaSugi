@@ -962,3 +962,20 @@ flowchart TB
   OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
 ~~~
 `tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+## ARCH-001 — EXP-REP-005 G2 public-only representation repair (2026-11-03; synthetic Draft)
+
+~~~mermaid
+flowchart LR
+  TEST["Invented public episodes (test-only generator)"] --> P["Strict PublicStep chronology"]
+  P --> K["Memoryless predictor: identify contradictory successor"]
+  K --> R["RepresentationRepair: 24 bounded typed HistoryEquals candidates"]
+  R --> V["Public-evidence consistency check"]
+  V --> SNAP["Canonical digest-bound Concept Snapshot"]
+  SNAP --> FRESH["Fresh process loader + executable predicate"]
+  FRESH --> USE["Public prediction or ABSTAIN"]
+  K --> NULL["NO_REPAIR_NEEDED when no contradiction"]
+  V --> STOP["NOT_CERTIFIED when no candidate fits"]
+~~~
+
+No source Law/generator or private certifier is imported by `packages/representation_repair`. Test-only toy lagged environment is not a scientific world distribution. This standalone G2 smoke is independent of the unmerged G0b Draft and does not bypass #148 STOP. [Data contract](contracts.md) / [spec](../specs/EXP-REP-005-G2-SYNTHETIC.md).
