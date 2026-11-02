@@ -569,17 +569,40 @@ def evaluate(snapshot):
 
 
 def activation_fixture(snapshot):
-    """Development-only paid-history gate, never a scored study world."""
+    """Disclosed development-only mechanism gate, not a scored efficacy proof.
+
+    The old [pulse(0), pulse(1)] fixture was specific to a BROKEN guard prior.
+    Deterministically search a bounded predeclared family/order grid instead
+    of retaining the invalid fixture or silently weakening the pass condition.
+    """
     validate_snapshot(snapshot)
-    w=world_for(study_manifest()['composition'][0],508)
-    session=Session(w)
-    for a in [('pulse',0,None),('pulse',1,None)]:session.apply(a)
-    h=consistent(session.trace)
-    ma={'actions':len(session.trace),'model_checks':0,'body_invocations':0}
-    mb={'actions':len(session.trace),'model_checks':0,'body_invocations':0}
-    a=choose(session.state,h,weights_for(h,snapshot,'LQ',ma),2,ma,'LQ')
-    b=choose(session.state,h,weights_for(h,snapshot,'LA',mb),2,mb,'LA')
-    return {'type':'development-only-mechanism-gate','paid_conditioning':len(session.trace),
-            'remaining_candidates':len(h),'LQ_first_action':list(a),'LA_first_action':list(b),
-            'differs':a!=b,'body_invocations':ma['body_invocations'],
-            'transcript_digest':digest(session.trace)}
+    candidates=0
+    original=None
+    for family_index,f in enumerate(study_manifest()['composition']):
+        w=world_for(f,508+family_index)
+        for first in range(N):
+            for second in range(N):
+                session=Session(w)
+                for source in (first,second):
+                    session.apply(('pulse',source,None))
+                h=consistent(session.trace)
+                if not h:continue
+                ma={'actions':2,'model_checks':0,'body_invocations':0}
+                mb={'actions':2,'model_checks':0,'body_invocations':0}
+                a=choose(session.state,h,weights_for(h,snapshot,'LQ',ma),2,ma,'LQ')
+                b=choose(session.state,h,weights_for(h,snapshot,'LA',mb),2,mb,'LA')
+                candidates+=1
+                result={'type':'development-only-mechanism-gate',
+                        'searched_paid_histories':candidates,
+                        'family_index':family_index,
+                        'conditioning_pulses':[first,second],
+                        'paid_conditioning':len(session.trace),
+                        'remaining_candidates':len(h),
+                        'LQ_first_action':list(a) if a else None,
+                        'LA_first_action':list(b) if b else None,
+                        'differs':a!=b,'body_invocations':ma['body_invocations'],
+                        'transcript_digest':digest(session.trace)}
+                if original is None:original=result
+                if a!=b:return result
+    return {**original,'differs':False,'searched_paid_histories':candidates,
+            'mechanism_status':'NOT_FOUND_IN_BOUNDED_GRID'}
