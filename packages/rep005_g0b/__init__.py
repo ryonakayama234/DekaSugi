@@ -10,12 +10,22 @@ from dataclasses import dataclass
 from hashlib import sha256
 from itertools import combinations, permutations, product
 from functools import lru_cache
+from time import monotonic
 import json
+import sys
+
+try:
+    import resource  # POSIX peak RSS, diagnostic only; hard limits enforced by CI/OS
+except ImportError:  # pragma: no cover
+    resource = None
 
 SCHEMA = "rep005-g0b-pilot/1"
 OBJECTS = range(4)
 FULL_CELLS = 16 * 157 * 12
 DEFAULT_MAX_NODES = 250_000
+MAX_CANDIDATES = 64
+MAX_WALL_SECONDS = 120.0
+MAX_RSS_MIB = 2048
 
 
 def digest(x: object) -> str:
@@ -178,6 +188,18 @@ def role_key(model: Law) -> tuple:
     return min(permute_law(model, p).key() for p in permutations(OBJECTS))
 
 
+@lru_cache(maxsize=128)
+def canonical_role_semantic_signature(model: Law) -> bytes:
+    """Full 24-permutation semantic orbit, not a syntax-only role orbit.
+
+    This is private evaluator-only data; never export it to the learner.
+    Compare full bytes for equality, and hash only for report commitments.
+    """
+    if type(model) is not Law:
+        raise ValueError("untrusted law type")
+    return min(full_signature(permute_law(model, p)) for p in permutations(OBJECTS))
+
+
 def reachable_domain(model: Law, depth: int = 8) -> dict[tuple, int]:
     if type(depth) is not int or not 0 <= depth <= 8:
         raise ValueError("depth outside preregistered pilot")
@@ -228,16 +250,66 @@ def memoryless_contradiction(model: Law, max_depth: int = 3) -> dict | None:
 
 
 class ProofLimit(Exception):
-    pass
+    """Proof resource exhaustion: never interpret as a negative proof."""
+
+    def __init__(self, reason: str, checked_candidates: int = 0):
+        super().__init__(reason)
+        self.reason = reason
+        self.checked_candidates = checked_candidates
 
 
-def _candidate_set(models: tuple[Law, ...]) -> tuple[str, ...]:
-    if type(models) is not tuple or not models or any(type(w) is not Law for w in models):
+def _peak_rss_mib() -> float | None:
+    if resource is None:
+        return None
+    value = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    return value / (1024 if sys.platform.startswith("linux") else 1024 * 1024)
+
+
+def _check_resources(started: float, checked: int) -> None:
+    if monotonic() - started >= MAX_WALL_SECONDS:
+        raise ProofLimit("WALL_CAP", checked)
+    rss = _peak_rss_mib()
+    if rss is not None and rss >= MAX_RSS_MIB:
+        raise ProofLimit("RSS_CAP", checked)
+
+
+def _candidate_set(models: tuple[Law, ...], started: float, max_nodes: int) -> tuple[str, ...]:
+    """Bound preflight BEFORE producing signatures; compare one at a time."""
+    if type(models) is not tuple or not models:
         raise ValueError("bad finite hypothesis class")
-    signatures = [full_signature(w) for w in models]
-    if len(set(signatures)) != len(models):
-        raise ValueError("semantic alias in closed hypothesis class")
-    return tuple(sha256(sig).hexdigest() for sig in signatures)
+    if len(models) > MAX_CANDIDATES:
+        raise ProofLimit("CANDIDATE_CAP", 0)
+    if max_nodes == 0:
+        raise ProofLimit("NODE_CAP", 0)
+    seen: set[bytes] = set()
+    ids = []
+    for i, model in enumerate(models):
+        _check_resources(started, i)
+        if type(model) is not Law:
+            raise ValueError("bad finite hypothesis class")
+        signature = full_signature(model)
+        if signature in seen:
+            raise ValueError("semantic alias in closed hypothesis class")
+        seen.add(signature)
+        ids.append(sha256(signature).hexdigest())
+        _check_resources(started, i + 1)
+    return tuple(ids)
+
+
+def _proof_stopped(models: tuple[Law, ...], budget: int, nodes: int,
+                   max_nodes: int, started: float, reason: str,
+                   checked_candidates: int, ids: tuple[str, ...] | None,
+                   baseline: Action | None = None) -> dict:
+    out = {"schema": SCHEMA, "status": "NOT_CERTIFIED", "reason": reason,
+           "candidate_digest": digest(ids) if ids is not None else None,
+           "candidate_count": len(models), "checked_candidates": checked_candidates,
+           "budget": budget, "nodes": nodes, "max_nodes": max_nodes,
+           "max_candidates": MAX_CANDIDATES, "elapsed_seconds": monotonic() - started,
+           "peak_rss_mib": _peak_rss_mib(),
+           "resource_guard": "cooperative plus bounded signature/node allocations; OS hard cap external"}
+    if baseline is not None:
+        out["baseline_action"] = baseline.key()
+    return out
 
 
 def adaptive_identification(models: tuple[Law, ...], budget: int = 8,
@@ -247,10 +319,17 @@ def adaptive_identification(models: tuple[Law, ...], budget: int = 8,
     A node includes the shared *observed* state, common public action history,
     remaining semantic candidate indices and remaining paid budget.
     """
-    ids = _candidate_set(models)
-    if type(budget) is not int or not 0 <= budget <= 8 or type(max_nodes) is not int or max_nodes < 0:
+    if (type(budget) is not int or not 0 <= budget <= 8
+        or type(max_nodes) is not int or not 0 <= max_nodes <= DEFAULT_MAX_NODES):
         raise ValueError("invalid proof bound")
+    started = monotonic()
     nodes = 0
+    ids = None
+    try:
+        ids = _candidate_set(models, started, max_nodes)
+    except ProofLimit as exc:
+        return _proof_stopped(models, budget, nodes, max_nodes, started,
+                              exc.reason, exc.checked_candidates, ids)
     memo: dict[tuple, tuple[bool, tuple | None]] = {}
 
     def solve(remaining: tuple[int, ...], state: int, hist: tuple[Action, ...], left: int):
@@ -260,7 +339,9 @@ def adaptive_identification(models: tuple[Law, ...], budget: int = 8,
             return memo[k]
         nodes += 1
         if nodes > max_nodes:
-            raise ProofLimit
+            raise ProofLimit("NODE_CAP", len(models))
+        if nodes % 128 == 0:
+            _check_resources(started, len(models))
         if len(remaining) <= 1:
             memo[k] = (True, None)
             return memo[k]
@@ -290,10 +371,14 @@ def adaptive_identification(models: tuple[Law, ...], budget: int = 8,
     try:
         ok, tree = solve(tuple(range(len(models))), 0, (), budget)
         status = "ID" if ok else "UNID"
-    except ProofLimit:
-        tree, status = None, "NOT_CERTIFIED"
+    except ProofLimit as exc:
+        return _proof_stopped(models, budget, nodes, max_nodes, started,
+                              exc.reason, exc.checked_candidates, ids)
+    _check_resources(started, len(models))
     return {"schema": SCHEMA, "status": status, "candidate_digest": digest(ids),
             "budget": budget, "nodes": nodes, "max_nodes": max_nodes,
+            "checked_candidates": len(models), "elapsed_seconds": monotonic() - started,
+            "peak_rss_mib": _peak_rss_mib(),
             "witness_tree": tree if status == "ID" else None}
 
 
@@ -304,11 +389,18 @@ def action_opportunity(models: tuple[Law, ...], budget: int = 1,
     Uniform prior, terminal MAP hypothesis accuracy = #nonempty leaves / N.
     The returned full tree is a FEASIBLE policy witness; not a relaxed upper bound.
     """
-    ids = _candidate_set(models)
     if (type(budget) is not int or not 0 <= budget <= 8
-        or type(max_nodes) is not int or max_nodes < 0 or type(baseline) is not Action):
+        or type(max_nodes) is not int or not 0 <= max_nodes <= DEFAULT_MAX_NODES
+        or type(baseline) is not Action):
         raise ValueError("invalid opportunity input")
+    started = monotonic()
     nodes = 0
+    ids = None
+    try:
+        ids = _candidate_set(models, started, max_nodes)
+    except ProofLimit as exc:
+        return _proof_stopped(models, budget, nodes, max_nodes, started,
+                              exc.reason, exc.checked_candidates, ids, baseline)
     memo: dict[tuple, tuple[int, tuple | None]] = {}
 
     def split(remaining: tuple[int, ...], state: int, hist: tuple[Action, ...], a: Action):
@@ -326,7 +418,9 @@ def action_opportunity(models: tuple[Law, ...], budget: int = 1,
             return memo[k]
         nodes += 1
         if nodes > max_nodes:
-            raise ProofLimit
+            raise ProofLimit("NODE_CAP", len(models))
+        if nodes % 128 == 0:
+            _check_resources(started, len(models))
         if len(remaining) == 1 or left == 0:
             memo[k] = (1, None)
             return memo[k]
@@ -347,6 +441,7 @@ def action_opportunity(models: tuple[Law, ...], budget: int = 1,
         return current
 
     def fixed(remaining: tuple[int, ...], state: int, hist: tuple[Action, ...], left: int):
+        _check_resources(started, len(models))
         if len(remaining) <= 1 or left == 0:
             return 1
         return sum(fixed(grp, obs, (hist + (baseline,))[-2:], left - 1)
@@ -356,16 +451,18 @@ def action_opportunity(models: tuple[Law, ...], budget: int = 1,
         leaves, tree = best(tuple(range(len(models))), 0, (), budget)
         fixed_leaves = fixed(tuple(range(len(models))), 0, (), budget)
         status = "POSITIVE" if leaves > fixed_leaves else "NO_OPPORTUNITY"
+        _check_resources(started, len(models))
         return {"schema": SCHEMA, "status": status, "candidate_digest": digest(ids),
                 "budget": budget, "nodes": nodes, "max_nodes": max_nodes,
+                "checked_candidates": len(models), "elapsed_seconds": monotonic() - started,
+                "peak_rss_mib": _peak_rss_mib(),
                 "baseline_action": baseline.key(), "optimal_value": leaves / len(models),
                 "baseline_value": fixed_leaves / len(models),
                 "feasible_policy_tree": tree, "prior": "uniform",
                 "utility": "terminal-MAP-identification-accuracy"}
-    except ProofLimit:
-        return {"schema": SCHEMA, "status": "NOT_CERTIFIED",
-                "candidate_digest": digest(ids), "budget": budget, "nodes": nodes,
-                "max_nodes": max_nodes, "baseline_action": baseline.key()}
+    except ProofLimit as exc:
+        return _proof_stopped(models, budget, nodes, max_nodes, started,
+                              exc.reason, exc.checked_candidates, ids, baseline)
 
 
 def witness_pilot_worlds() -> tuple[tuple[str, Law], ...]:
@@ -427,7 +524,8 @@ def audit_family_split(records: tuple[tuple[str, Law, str], ...]) -> dict:
     if type(records) is not tuple:
         raise ValueError("invalid source manifest")
     by_ancestor: dict[str, str] = {}
-    by_semantics: dict[str, str] = {}
+    by_semantics: dict[bytes, str] = {}
+    by_role_semantics: dict[bytes, str] = {}
     by_roles: dict[tuple, str] = {}
     entries = []
     for rec in records:
@@ -437,13 +535,17 @@ def audit_family_split(records: tuple[tuple[str, Law, str], ...]) -> dict:
             or type(rec[2]) is not str or rec[2] not in ("TRAIN", "DEV", "EVAL")):
             raise ValueError("invalid private manifest record")
         root, model, split = rec
-        sem = sha256(full_signature(model)).hexdigest()
+        sem_bytes = full_signature(model)
+        sem = sha256(sem_bytes).hexdigest()
+        role_sem_bytes = canonical_role_semantic_signature(model)
+        role_sem = sha256(role_sem_bytes).hexdigest()
         orbit = role_key(model)
-        for lookup, key in ((by_ancestor, root), (by_semantics, sem), (by_roles, orbit)):
+        for lookup, key in ((by_ancestor, root), (by_semantics, sem_bytes),
+                            (by_role_semantics, role_sem_bytes), (by_roles, orbit)):
             if key in lookup and lookup[key] != split:
                 raise ValueError("source/semantic/role family overlaps across splits")
             lookup[key] = split
-        entries.append((root, sem, str(orbit), split))
+        entries.append((root, sem, role_sem, str(orbit), split))
     return {"schema": SCHEMA, "status": "NO_OVERLAP_IN_SUPPLIED_RECORDS",
             "records": len(records), "private_manifest_digest": digest(sorted(entries)),
             "custody_scope": "supplied source roots only; external ancestry review needed"}
