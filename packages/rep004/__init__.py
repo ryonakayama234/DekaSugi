@@ -578,39 +578,49 @@ def evaluate(snapshot):
 
 
 def activation_fixture(snapshot):
-    """Development-only, outcome-blind causal question activation witness.
+    """Outcome-blind charged shared-history question-activation witness.
 
-    The former fixed two-pulse witness vanished after correcting role binding.
-    Search legal, charged ADAPTIVE question paths, selecting the first divergent
-    action at an otherwise identical shared public history. No audit scores read.
-    Finite search grid: 12 composition + 12 other + 12 reference families,
-    budgets 2/4/8, one fixed dev instance per family. Never final/heldout.
+    After correcting the original role bug, the previously fixed 2-pulse
+    fixture no longer exhibits an action switch. Inspect ONLY a finite
+    declared grid of public development world families, budgets and their
+    adaptive, legal *shared* action prefix. If LQ/LA diverge, this is the
+    first intervention difference at an identical public history, not a
+    scored efficacy observation. Otherwise fail closed, do not score.
     """
     validate_snapshot(snapshot)
-    manifest=study_manifest()
     checked=0
+    manifest=study_manifest()
     for group in ('composition','unseen','seen'):
         for idx,f in enumerate(manifest[group]):
-            w=world_for(f,508+idx)
+            world=world_for(f,508+idx)
             for budget in (2,4,8):
-                lq=committed_use(snapshot,w,'LQ',budget)
-                la=committed_use(snapshot,w,'LA',budget)
+                session=Session(world)
+                meter_lq={'actions':0,'model_checks':0,'body_invocations':0}
+                meter_la={'actions':0,'model_checks':0,'body_invocations':0}
                 checked+=1
-                t1=lq['trace'];t2=la['trace']
-                for prefix,(a,b) in enumerate(zip(t1,t2)):
-                    if a['action']!=b['action']:
-                        assert t1[:prefix]==t2[:prefix], 'changed public history before first action switch'
+                while len(session.trace)<budget:
+                    h=consistent(session.trace)
+                    if not h:break
+                    remaining=budget-len(session.trace)
+                    lq=choose(session.state,h,weights_for(h,snapshot,'LQ',meter_lq),
+                              remaining,meter_lq,'LQ')
+                    la=choose(session.state,h,weights_for(h,snapshot,'LA',meter_la),
+                              remaining,meter_la,'LA')
+                    if lq!=la:
                         return {'type':'development-only-mechanism-gate',
                                 'scope':'3x12 public semantic families, budgets (2,4,8)',
-                                'paths_checked':checked,'group':group,
-                                'family_index':idx,'budget':budget,
-                                'paid_conditioning':prefix,
-                                'remaining_candidates':len(consistent(t1[:prefix])),
-                                'LQ_first_action':a['action'],
-                                'LA_first_action':b['action'],
+                                'paths_checked':checked,
+                                'group':group,'family_index':idx,'budget':budget,
+                                'paid_conditioning':len(session.trace),
+                                'remaining_candidates':len(h),
+                                'LQ_first_action':list(lq) if lq else None,
+                                'LA_first_action':list(la) if la else None,
                                 'differs':True,
-                                'body_invocations':lq['meter']['body_invocations'],
-                                'transcript_digest':digest(t1[:prefix])}
+                                'body_invocations':meter_lq['body_invocations'],
+                                'transcript_digest':digest(session.trace)}
+                    if lq is None:break
+                    session.apply(lq)
+                    meter_lq['actions']+=1;meter_la['actions']+=1
     return {'type':'development-only-mechanism-gate',
             'scope':'3x12 public semantic families, budgets (2,4,8)',
             'paths_checked':checked,'paid_conditioning':None,'differs':False,
