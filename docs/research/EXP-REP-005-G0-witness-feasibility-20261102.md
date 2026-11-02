@@ -45,7 +45,7 @@ Consequently, **do not claim a horizon-3 negative opportunity control** for this
 ## Reproduction (new synthetic method-only test)
 
 ```bash
-python -m unittest tests/test_rep005_g0_witness.py -v
+python -m unittest discover -s tests -p test_rep005_g0_witness.py -v
 python scripts/run_research_ci_v2_tests.py
 python scripts/check_docs.py
 ```
@@ -55,3 +55,9 @@ These commands are source/method and non-scoring synthetic tests only; the CI al
 ## Provenance / review
 
 User approved delegation to continue a full conditional research workflow in the conversation on 2026-11-02. This is not a waiver of the agreed scientific gates. This precheck is authored on stacked Draft PR #145; independent exact-head Codex review has been requested. Engineering CI result, reviewer findings and source SHA must be recorded separately when available. No merge and no model promotion.
+
+## Engineering CI chronology (historical failures preserved)
+
+- [CI #41451824758](https://github.com/ryonakayama234/DekaSugi/actions/runs/41451824758): **FAIL**; a newly inserted Python test had literal escaped newline sequences and accidentally commented out the assignment of `shortest`, resulting in `NameError`. The G0 test code was corrected; this was an engineering error, not a failed H0/Hplus proof.
+- [CI #41452266862](https://github.com/ryonakayama234/DekaSugi/actions/runs/41452266862): **SUCCESS** on the corrected test head `7ba4a2bd27f521f26d5c3cf97ebc6f0e13f0289a` (safe source verification, doc validation, whitelisted tests). A later source refactor requires its own exact-head CI check.
+- Neither CI run is independent scientific G0 approval, training, or scoring.
