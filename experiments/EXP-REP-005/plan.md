@@ -53,3 +53,7 @@ G0b required future measurements: independently certified semantic signatures ov
 - [Evidence ledger](runs/20261102-v2-design-not-run.md), [prior Draft #145](https://github.com/ryonakayama234/DekaSugi/pull/145).
 
 Synthetic-only reproduction: python -m unittest discover -s tests -p test_rep005_g0_witness.py -v ; python -m unittest discover -s tests -p test_rep005_g0_axes.py -v ; python scripts/run_research_ci_v2_tests.py ; python scripts/check_docs.py. None invokes sealed scoring.
+
+## G0a実施結果と次のSTOP（2026-11-02）
+
+[G0a CI evidence](runs/20261102-g0a-synthetic-calibration.md): exact restricted finite semantics 16×157×12 = 30,144 outcomes; two candidate laws with identical complete bytes are SEMANTIC_ALIASES and MUST NOT be counted as genuine U/UNID task families. Two genuinely distinct candidates can remain indistinguishable under one action yet become identifiable in two actions, establishing a valid budget-sensitive negative control. This is not a proof that a meaningful 8-action-unidentifiable family exists. Current pilot has at most 14 role orbits, therefore 80 target FAILS. Follow-up [G0b redesign #148](https://github.com/ryonakayama234/DekaSugi/issues/148) requires a new independently reviewed generator and full semantics before any TRAIN or scored EVAL.
