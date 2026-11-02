@@ -296,3 +296,6 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 - [G0 method/research plan](../experiments/EXP-REP-005/plan.md) / [witness source](../experiments/EXP-REP-005/g0_witness.py) / [orthogonal class and adaptive-identification source](../experiments/EXP-REP-005/g0_axes.py).
 - [G0a negative tests](../tests/test_rep005_g0_witness.py) / [G0b axes adversarial tests](../tests/test_rep005_g0_axes.py) / [implementation and STOP ledger](../experiments/EXP-REP-005/runs/20261102-v2-design-not-run.md).
 - Earlier exclusive P/R/U/N grouping was **incorrect**; M0/M1/M2/M3 representation and ID/UNID identification are orthogonal. G2 correctly classifies M2/M3 rather than forcing an Hplus fit. This limited fixture has only up to **14 role orbits**, below 80 required independent families. Formal G0b STOP; no paid learner, new scored result or stable model.
+
+## 現在の実装・研究能力・32 PR個別台帳（2026-11-02）
+- [main採用とDraftの相違・学習モデルの成熟度](research/CURRENT-STATE.md) / [元32件のhead/base/暫定分類](research/20261102-research-pr-registry.md) / [G0計画](../experiments/EXP-REP-005/plan.md)。
