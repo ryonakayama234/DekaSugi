@@ -302,3 +302,7 @@ V3 supersedes ONLY the proposed future study design; it does not rewrite Draft #
 | EXP-REP-005-G0B-FULL-FEASIBILITY | STOP: 100,090,027 syntactic Law candidates exceed 200,000 direct census cap; full semantics/ancestry/power NOT_CERTIFIED | [V3.1 decision](specs/EXP-REP-005-G0B-DECISION-V3.md) / [plan](../experiments/EXP-REP-005-G0B/plan.md) / [Issue #148](https://github.com/ryonakayama234/DekaSugi/issues/148) |
 
 This later engineering checkpoint supersedes the earlier 2026-11-02 design-only status solely for G0b-A source code on Draft. No scientific acceptance, no direct main integration or new learning result.
+
+## EXP-REP-005 G0b-A independent review remediation (2026-11-03; Draft #149)
+- [P1/P2 hardening receipt](../experiments/EXP-REP-005-G0B/runs/20261103-g0b-review-hardening.md) / [engine](../packages/rep005_g0b/__init__.py) / [adversarial tests](../tests/test_rep005_g0b_synthetic.py).
+- Role-normalized complete semantic aliases are split-rejected; oversized finite proof candidates are rejected before signatures. These source-only changes do not lift G0b full-family STOP, do not implement representation repair and do not authorize paid training.
