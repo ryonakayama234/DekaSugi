@@ -449,3 +449,9 @@
 - A two-history witness with equal visible current state/action and different next states can invalidate a deterministic *visible-state-only* H0, but cannot establish autonomous predicate invention. Explicitly record all charged `set/pulse` actions and the observable previous-action boundary; no free reset, hidden truth or family access.
 - Verify a legal public transcript and all role permutations before moving from G0 proposal to any G2 proof, then compare learned extension against *preinstalled capacity-matched* Hplus and augmented-state alternatives. Keep G1/G2 code and scores blocked pending review/authorization; this PR adds no executable new model.
 - Diagram/contract/spec/plan/run ledger must change together. [G0 example](docs/specs/EXP-REP-005-DIAG.md).
+
+
+## EXP-REP-005 G0 — adaptive-inquiry identification guard (proposed; 2026-11-02)
+- When comparing adaptive inquiry policies, match hidden world, initial public prefix, legality and charged/computational budgets **not** the complete question sequences; changing legal questions is the effect under test. A common prefix is allowed only for fixed-history mechanism checks.
+- Keep paired-world and structural-family identifiers evaluator-only. No inter-arm observation sharing; keep learned representation utility separate from Hplus capacity effects and report abstention and learning cost.
+- This is a proposed research quality clarification, not an approval of G1/G2/learning or a scientific result. [G0 method audit](docs/research/EXP-REP-005-G0-identification-audit.md).
