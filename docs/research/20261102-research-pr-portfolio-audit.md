@@ -37,3 +37,7 @@ tags: github, governance, source, research, audit
 32件を ACTIVE_DESIGN / REUSABLE_SOURCE / HISTORICAL_NULL_NEGATIVE / SUPERSEDED_DOC / BLOCKED_CONFLICT に分類する追跡Issueを作る。対象の実験生ファイル、源SHA、CIの封印済みrunを壊さないことを受け入れ基準とする。今回の監査そのものではPRを閉鎖、再ベース、改名、強制push、マージしない。
 
 [V2研究設計](../specs/EXP-REP-005-DECISION-V2.md)。
+
+## 32 PR全件のhead・base・区分を取得した個別台帳
+
+[2026-11-02 PR registry](20261102-research-pr-registry.md)に元32件の各12桁head、ベースブランチ、暫定評価・根拠を記録した。研究成果の科学的な再レビューや生データのhash検証はまだ完了していない。[現在能力ダッシュボード](CURRENT-STATE.md)でmainとDraftの差異を明示する。
