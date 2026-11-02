@@ -1074,3 +1074,35 @@ flowchart LR
 **Invariants (proposed):** (1) total defined-domain semantic equality is not the same as reachable paid-observation equivalence; (2) same ancestry, role permutation, equal semantics or merely renaming do not constitute independent families; (3) all proof states include public state, legal history, remaining candidates and budget, and partial proof is NOT_CERTIFIED, never UNID; (4) positive opportunity needs an executed/certified **feasible** public policy outperforming a matched baseline; (5) complete source signature/provenance is evaluator-only; (6) a hashed Snapshot protects local integrity, not independent source custody; (7) no G0b-B TRAIN, score or accepted model exists as of this addendum.
 
 Proposed contracts and classification: [decision](../specs/EXP-REP-005-G0B-B-CONSTRUCTIVE.md) / [plan](../../experiments/EXP-REP-005-G0B-B/plan.md) / [design receipt](../../experiments/EXP-REP-005-G0B-B/runs/20261103-design-not-run.md).
+
+
+## EXP-REP-005 G0b-B V4 — typed data/source trust contract (2026-11-03; DESIGN ONLY)
+
+V4-C1 proposes five visible Boolean objects, 15 legal typed paid actions, lag<=2, B=8. The declared full typed-domain signature per candidate law is 115,680 state/history/action transitions, and all 120 role permutations must be evaluated to canonicalize a law claimed distinct. This does **not** certify the historic full Hplus_G universe. No G0b-B V4 source/learner/data record is implemented or scored in this design PR.
+
+| Boundary record | Creator | Fields / invariant | Learner access |
+|---|---|---|---|
+| ConstructiveSourceCandidate v4 | source | grammar, motif AST, source ancestor DAG, object-binding and Law hash | NEVER |
+| FamilyCertificate v4 | independent certifier | exact signature + 120-role semantic orbit evidence, ancestry/root cluster, reachable legal-prefix evidence, ID/UNID/NOT_CERTIFIED proof nodes/resource | NEVER |
+| InquiryOpportunity v4 | private certifier | closed C and prior, legal common prefix, achievable policy tree, baseline, verified expected terminal utility and cost, status | NEVER: diagnostic |
+| PublicStep v4 | WorldInterface | opaque session, before 5-bit state, typed <=2 public history actions, action, after 5-bit state, paid cost=1, validated chronology | YES |
+| ConceptSnapshot v4 | learner | typed executable body, inferred public role bindings, public evidence hashes, MDL, ambiguity/abstention, serialization SHA | YES |
+| UseTrial v4 | recorder | chosen legal action/prediction before oracle result, body dispatch, actual public result, paid and compute receipts | public own trial only |
+| StudyFreeze v4 | independent custodian | code/grammar/plan/source group/cohort/snapshot/comparator/probe-schedule/analysis digests | NEVER |
+| EvaluationReport v4 | independent scorer | family cluster signed paired utility/95% uncertainty, probe coverage, actions, compute/amortization, negative/stopped outcome | post-score only |
+
+```mermaid
+flowchart LR
+   PRIVATE["Private Law, source ancestry, family/split labels"] --> CERT["Reference semantics + role/proof certificates"]
+   CERT --> PROJ["Strict public paid-step projection"]
+   PROJ --> WAKE["Wake: observe/predict/query"]
+   WAKE --> BODY["Sleep: typed concept + public witnesses"]
+   BODY --> SNAP["Hash-bound executable Snapshot"]
+   SNAP --> FRESH["Fresh process USE / fixed public budget"]
+   FRESH --> EVAL["Independent 16-probe paired scoring"]
+   PRIVATE -.->|"evaluator-only, not learner-visible"| EVAL
+   CERT --> STOP["Source G0 STOP/uncertainty ledger"]
+   EVAL --> STOP
+```
+
+Data invariants: no private Law/ancestor/role/oracle/probe labels into learner process; same-world chronology before contradiction; exact semantic equality separate from reachable observation and source ancestry; all proof exhaustion returns NOT_CERTIFIED; H0_all contradiction not equivalent to finite H0_C membership; no fixed-language expressive advantage credited as learned. Evaluator reference probes are selected before USE and common to all arms (but must record any accidental paid-action overlaps); one family, not its 16 probes, is the independent statistical unit. Primary proposed U=(correct-wrong)/16, abstain=0, with 8 paid questions and mandatory separate CPU/coverage/lifetime cost. G3 source/analysis freeze and separate approval are mandatory. See [V4 decision](../specs/EXP-REP-005-G0B-B-INTEGRATED-DECISION-V4.md) / [plan](../../experiments/EXP-REP-005-G0B-B/plan-v4.md).
