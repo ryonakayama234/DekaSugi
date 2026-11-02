@@ -299,3 +299,6 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 
 ## 現在の実装・研究能力・32 PR個別台帳（2026-11-02）
 - [main採用とDraftの相違・学習モデルの成熟度](research/CURRENT-STATE.md) / [元32件のhead/base/暫定分類](research/20261102-research-pr-registry.md) / [G0計画](../experiments/EXP-REP-005/plan.md)。
+
+## EXP-REP-005 G0a実施済み工学校正（2026-11-02）
+- [G0a結果・科学的STOPとGitHub CI 129テスト](../experiments/EXP-REP-005/runs/20261102-g0a-synthetic-calibration.md) / [G0b新Issue #148](https://github.com/ryonakayama234/DekaSugi/issues/148)。限定世界では意味署名30,144結果を直接比較し、同義候補を区別不能ファミリーとして誤計上しない。80独立構造ファミリーは未成立。正式学習・採点なし。
