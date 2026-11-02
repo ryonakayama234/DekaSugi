@@ -1337,3 +1337,22 @@ flowchart LR
 **Raw score:** Each row contains stratum and evaluator-only family key, index, arm, budget, committed digest, score out of 64 exact transitions, status, actual action sequence and cost ledger. The 64 audit transitions per trial do not constitute independent families. All 1,920 distinct arm/world/budget combinations must be present; scripts/read_rep004_archive.py rejects missing or forged row sets, invalid score arithmetic and archive raw SHA mismatch. The raw archive is a synthetic score, not a certified independent F0 holdout.
 
 **Trust/limitations:** Query caches are keyed by pure model/AST semantics, not secret truth; logical body-invocation meter counts cache hits as attempts, therefore is NOT physical interpreter invocation count. The current CPU times are descriptive, not a matched full lifecycle accounting. OOD three-edge worlds are outside hypothesis grammar and exhibited zero abstention; do not claim calibrated anomaly detection.
+
+
+## EXP-REP-004R — role-invariant executable concept contracts (PROPOSED)
+~~~mermaid
+flowchart LR
+    T["ObservationTrace"] --> B["ConceptAST"]
+    B --> S["Snapshot digest"]
+    S --> R["RoleBinding"]
+    R --> M["ConceptMatchWitness"]
+    M --> Q["ComparatorConfig + QueryDecision"]
+    Q --> P["PredictionCommit"]
+    P --> V["ScoreReceipt + RunProvenance"]
+~~~
+- RoleBinding/1: source/target/optional guard are object indices **not fixed role slots**, all valid roles are injective; guard=None for an unconditional edge.
+- ConceptMatchWitness/1: body SHA, candidate semantic SHA, role map, 24-permutation equivalence certificate, interpreted trace, boolean verdict. A concept name match is not proof of meaning equivalence.
+- ComparatorConfig/1: arm, fixed library SHA, learned-library access flags (query vs prediction), shared paid budget and baseline-policy SHA. STATIC-MACRO must be invariant under TRAIN0/64.
+- ScoreReceipt/1: preaudit prediction digest, family, seen_in_train, budget, exact/64, abstention, charged actions, actual/logical body calls, model checks, cache, CPU, provenance and source/data/manifest hashes. OOD 12 renamed examples are not 12 independent topology families. Missing cost remains not_observed.
+- RunProvenance/1: historical_original vs post_review_corrected; original 1,920 raw rows/hash are immutable; new corrected records are append-only.
+[完全な形式・境界](../specs/EXP-REP-004R.md)。状態 DESIGN_ONLY / NOT_IMPLEMENTED / NOT_SCORED。独立形式の新F0/FINAL承認ではない。

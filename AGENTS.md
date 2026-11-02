@@ -541,3 +541,11 @@ New `packages/relational_world`, `world_model`, `representation`, and `rep_evalu
 - Preserve all 1,920 disclosed synthetic trial rows and raw SHA-256. Past scored REP003 and sealed F0/DEV/FINAL sources must not be accessed, repaired, relabeled or replayed as fresh validation.
 - In future experiments, separate host-only generated truth from Sleep (public traces only), require full predictive model-commit digest before audit, distinct-family accounting, source/method/policy freeze BEFORE a new formal score, and independent exact-head review. A successful test or a drafted PR is not reviewer acceptance.
 - Current OOD detection/calibration is NOT demonstrated (zero abstentions in three-edge OOD); confidence and representation-limit claims must not be inferred from mere fixed-grammar prediction accuracy.
+
+
+## EXP-REP-004R — 次の修正研究の設計候補（2026-11-02）
+- [設計決定稿](docs/specs/EXP-REP-004R.md) / [実験計画](experiments/EXP-REP-004R/plan.md) / [未実行ledger](experiments/EXP-REP-004R/runs/README.md)。この文書追加だけではコード・学習・採点・研究昇格を許可したことにならない。
+- G1: 全24変数置換×16状態×4 pulseの役割意味不変性、ガード条件、prestate同時XOR、過去のP1/P2再現を先にテスト。失敗したらスコア停止。
+- STATIC-MACRO固定比較はTRAIN0/64で学習ライブラリに依存しない。全armの予測側・質問側の情報アクセスを独立レビューし、同予算を用いる。
+- 修正後に実際の6水準TRAIN→Sleep→Snapshot保存→fresh USE→公開人工世界採点を設計するが、scoreは新しい原本・新しいhashへ追記し旧REP004 rawに触れない。TRAIN64は32意味ファミリー、OOD12は同一三段連鎖の変数名違い、低nの「SEEN」群は必ずしも既知でない。
+- 既知のdisclosed集合による工学測定を正式独立F0/FINALと偽称しない。学習モデルの正式昇格、sealed datasets、main統合は別判定。
