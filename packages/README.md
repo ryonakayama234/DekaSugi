@@ -122,3 +122,9 @@ The implementation checks canonical same-task/4-100-budget search status/program
 ## OPPORTUNITY-001 Issue #74 private original capture preflight (no scored experiments)
 - New read-only verified preflight + private output CLI: [capture_opportunity_private_original.py](../scripts/capture_opportunity_private_original.py), [synthetic-only negatives](../tests/test_opportunity_private_original_capture.py), [data flow and scope](../docs/specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md).
 - The CLI never runs search, an old DEV/FINAL generator, real OFF/ON scorer or policy chooser. Capturing future evaluator-only third-audit originals and making two local SHA-verified copies is not independent offsite custody proof; actual new TRAIN64 scoring and skill promotion remain forbidden.
+
+## EXP-REP-005 G0b-A — source-only causal-world laboratory (Draft PR #149)
+
+The isolated [rep005_g0b module](rep005_g0b/__init__.py) implements the typed four-bit / twelve paid actions / lag<=2 state machine, complete finite semantics 30,144 cells/law, reachable-prefix BFS, 24 object-role renamings, public-only step projection, semantic-alias/supplied-source split audit, worst-case candidate-class ID/UNID/NOT_CERTIFIED, and feasible-policy action opportunity. Tests use a separately written reference for all 241,152 disclosed fixture cells and never invoke historical scorers. [Engineering run](../experiments/EXP-REP-005-G0B/runs/20261103-g0b-a-synthetic.md).
+
+The complete normal-form syntax space has 100,090,027 candidates; 200,000 raw cap makes full direct enumeration infeasible. Eight artificial world laws are not independent science families. NO learned model, no sealed evaluation, no main integration and no G0b scientific freeze.
