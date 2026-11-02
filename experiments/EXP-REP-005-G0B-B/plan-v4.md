@@ -44,3 +44,7 @@ Observed independent family count, feasible source strata, final N/power, prospe
 
 ## Current execution status
 INTEGRATED DESIGN CANDIDATE ONLY / ALL NEW EXPERIMENT STAGES NOT_RUN. See [design-only V4 receipt](runs/20261103-v4-integrated-not-run.md). This document supersedes the older plan.md as the intended new methodology **for review only**; historical plan.md is retained unchanged.
+
+
+## Executable learner-contract refinement
+The [V4 effect-synthesis and public query logic](../../docs/specs/EXP-REP-005-G0B-B-V4-EXECUTABLE-LOGIC.md) is a dependency of G1/G2: synthesize a typed transition-effect Body (not only a history predicate or memorized row table), publicly infer role bindings, verify held-out reachable transition prediction and controlled body-only query/prediction ablation. Finalize an exact two-part MDL bit encoder *before* exposed G2 results. The source-only private closed catalog remains evaluator-only; fixed F0 and learned L2 are given the same generic public meta-language.
