@@ -2,7 +2,7 @@
 
 id: ARCH-002
 status: proposed
-updated: 2026-10-28
+updated: 2026-11-03
 tags: contracts, schema, task, ast, evaluation
 
 EXP-0001は**型付きの小さなDSL**を実装し、自由なPythonコードを生成・実行しない。以下のTaskSpec/ASTのJSON例は実装スキーマ `0.1` に対応する。
@@ -1039,3 +1039,38 @@ flowchart LR
   HOLDOUT["Evaluator-only answers"] -.->|"Never exposed"| RECON
 ~~~
 **Canonical storage contract:** `QuerySession.class_ids` is exactly `tuple` whose entries are exactly `str`, never a tuple or string subclass, because equality can differ from iteration. The compact `answers` tuple contains exact 3-tuples of (int ID, str output, str local receipt). The `trace` container is exactly tuple; each ordered entry is an exact tuple of typed `QueryProposal` and `QueryAnswer`. Session status, pool/world/split digest fields, and proposal and answer primitive fields must have exact builtin types; bool is rejected when int is required. Exact types are checked at the public boundary **before** Gini, random policy, history revalidation, or final-program selection. Per-prefix policy/receipt semantics and the active-query/2 schema remain unchanged. Hashes remain local consistency checks, NOT independent Oracle authentication. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## EXP-REP-005 G0b-B — proposed typed source/public/certificate data flow (2026-11-03; NOT IMPLEMENTED)
+
+Do not confuse this proposal with the existing EXP-0001 TaskSpec schema or G0b-A V3.1 frozen pilot. Every contract below is a **candidate**, subject to independent methods review and explicit version freeze before code/score.
+
+| Proposed record | Owner | Required semantics | Visibility |
+|---|---|---|---|
+| ConstructiveSourceCandidate v0 | rep005_g0b generator | grammar_version, typed motif_dag, parent_sources, source_root, construction_seed, bounds | private source |
+| FamilyCertificate v0 | independent verifier | full_semantic_signature, role_orbit, ancestry_group, reachable_public_digest, exact_equality_evidence, status and stop_reason | evaluator-only |
+| InquiryOpportunity v0 | source-only bounded prover | closed_class_id, public_prefix, legal_action_tree, baseline_policy, prior, paid_budget, expected_utility, proof_nodes, status | evaluator-only diagnostics |
+| PublicStep vG2 | WorldInterface | visible_state, canonical action/history, paid_cost, public transition | **learner-visible** |
+| ConceptSnapshot vG2 | representation_repair | typed executable body, public_support_ids, version, sha256, abstention condition | reloaded learner |
+| FreshUseOutcome v0 | later independent evaluator | source cohort, blinded paired arm, family-unit utility, charged cost, dispatches and compute | evaluator-only |
+
+~~~mermaid
+flowchart LR
+  SRC["Private motifs, Law and source ancestry"] --> CERT["Exact semantics, S4 orbit, source/split check"]
+  CERT --> ID["Closed-class ID/UNID or NOT_CERTIFIED"]
+  CERT --> OP["Reachable legal-query opportunity or NOT_CERTIFIED"]
+  CERT --> AD["Public projection: WorldInterface"]
+  AD --> PS["Paid PublicStep: state, action, public history"]
+  PS --> WAKE["Public-only prediction + counterexample"]
+  WAKE --> SNAP["Typed concept, Sleep + hash Snapshot"]
+  SNAP --> USE["Fresh process USE"]
+  USE --> EVAL["Later paired capacity-matched evaluation"]
+  CERT -.->|"evaluator-only; prohibited learner access"| EVAL
+  ID --> REC["Feasibility ledger"]
+  OP --> REC
+  EVAL --> REC
+~~~
+
+**Invariants (proposed):** (1) total defined-domain semantic equality is not the same as reachable paid-observation equivalence; (2) same ancestry, role permutation, equal semantics or merely renaming do not constitute independent families; (3) all proof states include public state, legal history, remaining candidates and budget, and partial proof is NOT_CERTIFIED, never UNID; (4) positive opportunity needs an executed/certified **feasible** public policy outperforming a matched baseline; (5) complete source signature/provenance is evaluator-only; (6) a hashed Snapshot protects local integrity, not independent source custody; (7) no G0b-B TRAIN, score or accepted model exists as of this addendum.
+
+Proposed contracts and classification: [decision](../specs/EXP-REP-005-G0B-B-CONSTRUCTIVE.md) / [plan](../../experiments/EXP-REP-005-G0B-B/plan.md) / [design receipt](../../experiments/EXP-REP-005-G0B-B/runs/20261103-design-not-run.md).
