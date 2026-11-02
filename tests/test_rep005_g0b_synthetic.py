@@ -7,7 +7,7 @@ from packages.rep005_g0b import (
     transition, full_signature, role_key, permute_action, permute_law,
     permute_state, reachable_domain, memoryless_contradiction,
     adaptive_identification, action_opportunity, witness_pilot_worlds,
-    pilot_census,
+    pilot_census, pilot_grammar_size, public_step, audit_family_split,
 )
 
 
@@ -169,6 +169,46 @@ class CausalWorldSyntheticTests(unittest.TestCase):
         self.assertEqual(report["sample_identification"]["status"], "ID")
         self.assertEqual(report["sample_action_opportunity"]["status"], "POSITIVE")
 
+
+    def test_analytic_grammar_count_and_census_stop(self):
+        size = pilot_grammar_size()
+        self.assertEqual(size["literal_options"], 32)
+        self.assertEqual(size["guard_pairs"], 360)
+        self.assertEqual(size["guards_per_edge"], 393)
+        self.assertEqual(size["edge_syntax_count"], 14148)
+        self.assertEqual(size["law_syntax_count"], 100090027)
+        self.assertFalse(size["fully_enumerable_under_cap"])
+        self.assertGreater(size["law_syntax_count"], size["raw_census_cap"])
+        self.assertEqual(pilot_census()["syntax_space"], size)
+
+    def test_public_projection_never_serializes_law_or_ancestry(self):
+        model = law(Edge(0, 1, 1))
+        result = public_step(model, 0, (Action("pulse", 0),), Action("set", 1, 0))
+        self.assertEqual(result["visible_state"], 2)
+        self.assertEqual(result["paid_cost"], 1)
+        self.assertEqual(set(result), {"schema", "visible_state", "public_history",
+                                       "last_action", "paid_cost"})
+        self.assertNotIn("law", str(result))
+        self.assertNotIn("ancestry", str(result))
+
+    def test_private_split_rejects_shared_ancestor_semantic_alias_and_roles(self):
+        a = law(Edge(0, 1))
+        b = law(Edge(2, 3))
+        c = law(Edge(0, 1, 1))
+        self.assertEqual(audit_family_split((("same", a, "TRAIN"), ("same", a, "TRAIN")))["records"], 2)
+        for recs in (
+            (("same", a, "TRAIN"), ("same", c, "EVAL")),
+            (("different", a, "TRAIN"), ("different2", a, "DEV")),
+            (("different", a, "TRAIN"), ("different2", b, "EVAL")),
+        ):
+            with self.assertRaises(ValueError):
+                audit_family_split(recs)
+        receipt = audit_family_split((("root1", a, "TRAIN"), ("root2", c, "EVAL")))
+        self.assertEqual(receipt["status"], "NO_OVERLAP_IN_SUPPLIED_RECORDS")
+        with self.assertRaises(ValueError):
+            audit_family_split((("root", a, "TEST"),))
+        with self.assertRaises(ValueError):
+            audit_family_split((("root", a, "TRAIN"),) + (("root2", a, "EVAL"),))
 
 if __name__ == "__main__":
     unittest.main()
