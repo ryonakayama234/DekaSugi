@@ -137,7 +137,7 @@ Separate outcome labels: G0_ENGINEERING_PASS, G0_STOP, L1_ID, L1_UNID, NOT_CERTI
 | StudyFreeze v4 | independent custodian | method/source/cohort/Snapshot/comparator/analysis SHA and predeclared budgets | evaluation-only |
 | EvaluationReport v4 | independent scorer | signed family paired utility; intervals; coverage; action/CPU cost; stops; provenance | reported post-score |
 
-~~~mermaid
+```mermaid
 flowchart TD
     SRC["PRIVATE causal motif constructors & Law"] --> CERT["Semantic, role, ancestry, reachable / proof certifier"]
     CERT --> SPLIT["Private family-disjoint split manifest"]
@@ -150,7 +150,7 @@ flowchart TD
     USE --> EVAL["Evaluator: common 16 legal probes + fixed comparators"]
     SPLIT -.->|"evaluator-only truth"| EVAL
     EVAL --> DEC["Signed evidence, positive/negative/STOP"]
-~~~
+```
 
 **Security:** strictly separate source-custodian and learner processes/filesystem permissions, typed message schema allowlist, cap messages/time/memory, reject forged PublicStep, immutable SHA receipts and no private truth imports. Source SHA/digest demonstrates local integrity, NOT independently authenticated causal truth or operating-system isolation by itself.
 
