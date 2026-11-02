@@ -122,3 +122,6 @@ The implementation checks canonical same-task/4-100-budget search status/program
 ## OPPORTUNITY-001 Issue #74 private original capture preflight (no scored experiments)
 - New read-only verified preflight + private output CLI: [capture_opportunity_private_original.py](../scripts/capture_opportunity_private_original.py), [synthetic-only negatives](../tests/test_opportunity_private_original_capture.py), [data flow and scope](../docs/specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md).
 - The CLI never runs search, an old DEV/FINAL generator, real OFF/ON scorer or policy chooser. Capturing future evaluator-only third-audit originals and making two local SHA-verified copies is not independent offsite custody proof; actual new TRAIN64 scoring and skill promotion remain forbidden.
+
+## EXP-REP-005 G2 synthetic representation repair (2026-11-03; Draft only)
+- `representation_repair`: public-only typed episodic evidence, same-world memoryless contradiction detection, bounded lagged-action feature search, canonical hashed executable Snapshot and fresh-process replay. [Method](../docs/specs/EXP-REP-005-G2-SYNTHETIC.md) / [invented tests](../tests/test_rep005_representation_repair_synthetic.py) / [engineering receipt](../experiments/EXP-REP-005-G2/runs/20261103-public-repair-synthetic.md). Scientific G0b census and G3–G6 remain blocked/not run.
