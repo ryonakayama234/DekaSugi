@@ -1,0 +1,91 @@
+{
+  "LQ_better_pairs": 8,
+  "LQ_body_logical_invocations": 3974007,
+  "LQ_worse_pairs": 16,
+  "abstentions": {
+    "OUT_OF_GRAMMAR": {
+      "FA": 0,
+      "LA": 0,
+      "LQ": 0
+    },
+    "SEEN_ROLEBLIND": {
+      "FA": 0,
+      "LA": 0,
+      "LQ": 0
+    },
+    "UNSEEN_COMPOSITION": {
+      "FA": 0,
+      "LA": 0,
+      "LQ": 0
+    },
+    "UNSEEN_IN_GRAMMAR": {
+      "FA": 0,
+      "LA": 0,
+      "LQ": 0
+    }
+  },
+  "active_query_differences": 78,
+  "cpu_seconds_total": 38.581072,
+  "paid_eval_actions": 5702,
+  "primary_family_diffs": [
+    0.0,
+    0.0,
+    -0.05,
+    0.0,
+    0.0,
+    0.0375,
+    0.0,
+    -0.0125,
+    0.0125,
+    0.0,
+    0.0,
+    -0.05
+  ],
+  "result": "MECHANISM_PASS_QUERY_VALUE_NEGATIVE",
+  "summary": {
+    "OUT_OF_GRAMMAR": {
+      "BODY-OFF": 0.452083,
+      "ER": 0.445833,
+      "FA": 0.452083,
+      "FX": 0.210417,
+      "LA": 0.5,
+      "LQ": 0.495833,
+      "LR": 0.404167,
+      "STATIC-MACRO": 0.495833
+    },
+    "SEEN_ROLEBLIND": {
+      "BODY-OFF": 0.772917,
+      "ER": 0.692708,
+      "FA": 0.772917,
+      "FX": 0.760417,
+      "LA": 0.720833,
+      "LQ": 0.717708,
+      "LR": 0.696875,
+      "STATIC-MACRO": 0.717708
+    },
+    "UNSEEN_COMPOSITION": {
+      "BODY-OFF": 0.760417,
+      "ER": 0.725,
+      "FA": 0.760417,
+      "FX": 0.74375,
+      "LA": 0.705208,
+      "LQ": 0.7,
+      "LR": 0.713542,
+      "STATIC-MACRO": 0.7
+    },
+    "UNSEEN_IN_GRAMMAR": {
+      "BODY-OFF": 0.847917,
+      "ER": 0.813542,
+      "FA": 0.847917,
+      "FX": 0.826042,
+      "LA": 0.790625,
+      "LQ": 0.78125,
+      "LR": 0.808333,
+      "STATIC-MACRO": 0.78125
+    }
+  },
+  "train_worlds": 64,
+  "transition_audits": 122880,
+  "trials": 1920,
+  "version": "rep004/disclosed-score/1"
+}

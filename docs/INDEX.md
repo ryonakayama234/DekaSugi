@@ -370,3 +370,16 @@ The original EXP-REP-001 plan is a proposal, not a frozen FINAL method. Do not i
 | EXP-REP-004-PLAN-V1 | G0–G5 experiment, family splits, metric/threshold and stop gates | proposed / not_run / not_frozen | [preregistration candidate](../experiments/EXP-REP-004/plan-v1.md) / [run ledger](../experiments/EXP-REP-004/runs/README.md) |
 | ADR-REP-004 | Why executable typed concepts precede neural epochs and release freeze | proposed | [decision record](architecture/decisions/ADR-REP-004.md) |
 | ARCH-001/ARCH-002-REP004 | Proposal architecture and data/trust path | proposed only | [Mermaid system](architecture/system.md) / [typed data flow](architecture/contracts.md) |
+
+
+## EXP-REP-004 — latest disclosed executable-concept research (2026-11-02)
+| ID | Meaning | Status | Link |
+|---|---|---|---|
+| REP004-V2 | Measured architecture, finite family split and controlled concept execution | implemented synthetic, formal scientific validation NOT done | [Decision V2](specs/EXP-REP-004-DECISION-V2.md) |
+| REP004-METHOD-V2 | True executed method, post-score disclosure of changes from proposal | retrospective, not preregistered | [Plan V2](../experiments/EXP-REP-004/plan-v2.md) |
+| REP004-PKG | Paid Wake, public-only Sleep, executable 1/2-edge AST, query, use and scorer | implemented engineering prototype | [Package](../packages/rep004/README.md) |
+| REP004-RUN | All 1,920 synthetic trials, primary negative results and technical limitations | **MEASURED NEGATIVE** | [Dated run](../experiments/EXP-REP-004/runs/20261102-disclosed-engineering.md) / [summary JSON](../experiments/EXP-REP-004/runs/20261102-scored-summary.json) |
+| REP004-ARTIFACTS | Reproducible trained Snapshot, manifest, public use and compressed complete raw score | available, NOT formal holdout | [Snapshot](../experiments/EXP-REP-004/artifacts/20261102-learned-snapshot.json) / [complete raw](../experiments/EXP-REP-004/artifacts/20261102-disclosed-1920-raw.json.zlib.b64) / [archive verifier](../scripts/read_rep004_archive.py) |
+| REP004-ADR | Why constrained executable concepts were chosen before neural epochs, and what the negative result means | engineering decision | [ADR](architecture/decisions/ADR-REP-004.md) |
+
+**Current authoritative status:** Actual TRAIN=64 worlds (32 distinct families), 7 typed executable bodies, 78/240 matched question-switch episodes, new-composition LQ=0.700000 vs LA=0.705208 vs FA=0.760417; STATIC-MACRO equals LQ. No independent external scientific approval, no formal F0/DEV/FINAL or release-model promotion. Past stages are historical snapshots, not current authority.

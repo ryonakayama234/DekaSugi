@@ -7,6 +7,13 @@
 - Python / Linux (WSL2) / ローカルCPUから始める。
 - プロジェクト名は **DekaSugi**。旧構想の仮称「ATELIER」は文献・議論上の呼称であり、リポジトリ名ではない。
 
+
+
+## Latest disclosed research outcome — EXP-REP-004 (2026-11-02)
+
+The latest **unmerged Draft research work** is the executable concept induction and active inquiry experiment linked from [Issue #136](https://github.com/ryonakayama234/DekaSugi/issues/136). In the new isolated packages/rep004 engineering prototype, paid TRAIN64 yielded 7 typed executable bodies (32 distinct semantic families), then a loaded Snapshot was used in fresh-world questions and predictions. 1,920 synthetic scored trials showed **78/240 LQ-vs-LA action-sequence changes but NEGATIVE query benefit** on unseen compositions: LQ 0.700000, LA 0.705208, strong FA 0.760417; a human-preinstalled STATIC-MACRO control exactly equaled LQ. This is neither a scientifically validated skill/model nor formal independent F0/DEV/FINAL. [Decision V2](docs/specs/EXP-REP-004-DECISION-V2.md) / [dated result](experiments/EXP-REP-004/runs/20261102-disclosed-engineering.md) / [module](packages/rep004/README.md). Older chronological sections below describe earlier stages and should not be mistaken for the latest evidence.
+
+
 ## Entry points
 
 | 読者 | 最初に読むもの |

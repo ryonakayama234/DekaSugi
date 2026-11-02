@@ -1,0 +1,32 @@
+name: rep004-disclosed-synthetic
+on:
+  pull_request:
+    paths:
+      - 'packages/rep004/**'
+      - 'tests/test_rep004_engineering.py'
+      - 'scripts/read_rep004_archive.py'
+      - 'experiments/EXP-REP-004/**'
+      - '.github/workflows/rep004-disclosed-synthetic.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  disclosed-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate public-only learner and canonical Snapshot mechanics
+        run: python -m unittest tests.test_rep004_engineering -v
+      - name: Verify every archived synthetic score row, hash and average
+        run: |
+          python scripts/read_rep004_archive.py \
+            --archive experiments/EXP-REP-004/artifacts/20261102-disclosed-1920-raw.json.zlib.b64 \
+            --output /tmp/rep004-recovered.json
+      - name: Validate documentation index and links
+        run: python scripts/check_docs.py

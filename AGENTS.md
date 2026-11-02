@@ -533,3 +533,11 @@ New `packages/relational_world`, `world_model`, `representation`, and `rep_evalu
 - An acquired ConceptBody must be executed from serialized typed AST and public variable binding. Labels, support tables, fixed MODEL aliases or prediction-only changes are insufficient. Body-off vs on must change a legal paid first question on an explicit mechanism fixture; fixture score is not outcome evidence.
 - Keep training families semantically non-isomorphic, no role/seed leakage, equally strong fixed/episodic/rank controls, abstention/coverage separate, real charged set+pulse and full training/sleep/dream/inference cost. Repetition of identical evidence is idempotence, NOT SGD epochs.
 - A pilot can execute TRAIN, Snapshot, USE and **disclosed artificial scoring**, but historical/private F0/DEV/FINAL, automatic Release/Local Learning Model promotion, independent formal-scientific claims and automatic merge remain outside authorization.
+
+
+## EXP-REP-004 — measured executable-concept boundary (2026-11-02)
+- Read docs/specs/EXP-REP-004-DECISION-V2.md and experiments/EXP-REP-004/runs/20261102-disclosed-engineering.md before future concept-learning work. Earlier Decision V1/plan-v1 remain historical and were not fully implementable under their original family assumptions.
+- No claimed new primitive semantics or general intelligence: seven typed templates are induced from public paid observations, executed, saved and restored; the mechanism changed paid questions, but the discovered query policy scored BELOW LA and strong FA, and exactly tied preinstalled STATIC-MACRO.
+- Preserve all 1,920 disclosed synthetic trial rows and raw SHA-256. Past scored REP003 and sealed F0/DEV/FINAL sources must not be accessed, repaired, relabeled or replayed as fresh validation.
+- In future experiments, separate host-only generated truth from Sleep (public traces only), require full predictive model-commit digest before audit, distinct-family accounting, source/method/policy freeze BEFORE a new formal score, and independent exact-head review. A successful test or a drafted PR is not reviewer acceptance.
+- Current OOD detection/calibration is NOT demonstrated (zero abstentions in three-edge OOD); confidence and representation-limit claims must not be inferred from mere fixed-grammar prediction accuracy.
