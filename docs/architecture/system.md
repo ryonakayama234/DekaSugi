@@ -1006,3 +1006,22 @@ flowchart TD
   SECRET["Host law + heldout families"] -.->|"No learner access"| EV
 ~~~
 An observed pair with the same `(visible_state, action)` and different next states is inconsistent with a deterministic H0 using only visible current state. A one-step public-action-history predicate is a *human-specified Hplus candidate* for diagnosis, not an installed new module or a learned result. All actions, including `set`, cost 1. The independent checker, strict role binding, state augmentation comparator, and future matched-capacity evaluation are required before claims of concept invention. [Spec](../specs/EXP-REP-005-DIAG.md) / [proposed plan](../../experiments/EXP-REP-005/plan-diag-v0.md) / [ledger](../../experiments/EXP-REP-005/runs/README.md).
+
+
+## ARCH-001 EXP-REP-005 G0 — paired inquiry comparison correction (PROPOSED, NOT RUN)
+
+```mermaid
+flowchart TD
+  W["Same evaluator-only hidden world"] --> I["Same public prefix, horizons and budgets"]
+  I --> F["P0 fixed inquiry; independent arm"]
+  I --> C["Pctx adaptive inquiry; independent arm"]
+  F --> TF["Arm-local charged questions and answers"]
+  C --> TC["Arm-local charged questions and answers"]
+  TF --> V["Independent evaluator"]
+  TC --> V
+  V --> P["Paired world/family outcomes and cost"]
+  I -.-> O["Shared-prefix mechanism replay ONLY"]
+  O -.-> H["H0 vs Hplus expressibility witness"]
+```
+
+Policy arms must be allowed to **diverge in selected legal questions**; otherwise the policy effect is structurally blocked. Match world, initial public information, action/compute budgets and split rather than entire query trace. H0/Hplus shared-prefix inference is a different diagnostic. All world/family hidden identities remain evaluator-only. See [proposed G0 audit](../research/EXP-REP-005-G0-identification-audit.md); no implementation, scoring or independent approval.
