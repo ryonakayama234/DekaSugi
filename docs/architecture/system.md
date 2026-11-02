@@ -991,3 +991,25 @@ flowchart TB
 ```
 
 The dashed paths are **future research contracts**, not integrated code. The diagram depicts public intervention, Wake–Sleep externalization and prospective matched learning evaluation while preserving the private evaluator. G0b-A's large syntax count is a feasibility STOP, not proof of 80 independent families. This D0 decision is [proposed](../specs/EXP-REP-005-G0B-B-CONSTRUCTIVE.md), with [NOT_RUN evidence](../../experiments/EXP-REP-005-G0B-B/runs/20261103-design-not-run.md).
+
+
+## EXP-REP-005 G0b-B V4 — integrated architecture (2026-11-03; DESIGN ONLY)
+The proposed primary source module is packages/rep005_g0b successor; proposed isolating orchestrator is packages/rep005_study, with independently imported reviewed public-only representation_repair and active_learning. No unified V4 executable system exists yet. Public paid interaction and private source/evaluator truth must be separated at a process boundary. The G0/G1/G2/G3 graph is a **single conditional work program**, not observed science.
+
+```mermaid
+flowchart TB
+  CON["PRIVATE constructive motif grammar / source DAG"] --> CERT["rep005_g0b: full semantic, 120-role, ancestry and reachable certificates"]
+  CERT --> M["Private source/split manifest and legal opportunity"]
+  M --> PUB["Paid public WorldInterface: observations only"]
+  PUB --> K["active_learning: next legal query / belief"]
+  K --> PUB
+  PUB --> W["representation_repair: predict, counterexample, typed candidate"]
+  W --> S["Sleep: public support + bounded MDL"]
+  S --> P["Persisted executable ConceptSnapshot"]
+  P --> U["Fresh isolated process USE: frozen concept"]
+  U --> E["Independent evaluator: 16 probes / fixed Hplus / body-off"]
+  M -.->|"evaluator-only source, NEVER learner input"| E
+  E --> O["Signed family-level results / NULL / NEGATIVE / STOP"]
+```
+
+Mandatory gates: G0 source feasibility and proof -> G1 truth isolation and reviewer -> G2 genuine public TRAIN/Sleep/Snapshot/USE and **disclosed** development score, subject to body-action switch mechanism -> G3 fresh powered independently custodied evaluation only under a new explicit approval. See [V4 decision](../specs/EXP-REP-005-G0B-B-INTEGRATED-DECISION-V4.md), [plan](../../experiments/EXP-REP-005-G0B-B/plan-v4.md) and [NOT_RUN receipt](../../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-integrated-not-run.md).
