@@ -2,7 +2,7 @@
 
 id: DOC-INDEX
 status: active
-updated: 2026-10-28
+updated: 2026-11-02
 tags: navigation, architecture, research, experiments
 
 **探す → 該当する小さな文書を読む → 必要な依存文書だけを辿る。**
@@ -283,3 +283,22 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | Evidence ID | Question | Engineering receipt |
 |---|---|---|
 | ACTIVE-001-PR2-CONTAINERS | Can equality-preserving tuple/str/int subclasses launder forged semantic votes, answers or proposal fields through replay? Exact builtin types required before any learner calculation. | [Synthetic check](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md) / [Architecture](architecture/system.md) / [Contracts](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+
+## 2026-11-02 — REP005 V2研究決定稿・GitHub整理（設計のみ）
+- [測定対象・仮説・技術選定・G0〜G6を統合したV2決定稿](specs/EXP-REP-005-DECISION-V2.md)：未凍結、未学習、未採点。
+- [32件のopen PRの整理監査と段階的統合方針](research/20261102-research-pr-portfolio-audit.md)：mainと研究Draftの能力を区別する。
+- [ARCH-001 システム図](architecture/system.md) / [ARCH-002 データ構造・流れ](architecture/contracts.md) / [V2設計run台帳](../experiments/EXP-REP-005/runs/20261102-v2-design-not-run.md)。
+- 従来の[Draft PR #145](https://github.com/ryonakayama234/DekaSugi/pull/145)の3操作反例は方法プレチェックであり、80独立ファミリー、学習モデル、正式評価の成立を意味しない。
+
+
+## EXP-REP-005 G0a — restricted-world synthetic implementation and independent-review corrections (2026-11-02)
+- [G0 method/research plan](../experiments/EXP-REP-005/plan.md) / [witness source](../experiments/EXP-REP-005/g0_witness.py) / [orthogonal class and adaptive-identification source](../experiments/EXP-REP-005/g0_axes.py).
+- [G0a negative tests](../tests/test_rep005_g0_witness.py) / [G0b axes adversarial tests](../tests/test_rep005_g0_axes.py) / [implementation and STOP ledger](../experiments/EXP-REP-005/runs/20261102-v2-design-not-run.md).
+- Earlier exclusive P/R/U/N grouping was **incorrect**; M0/M1/M2/M3 representation and ID/UNID identification are orthogonal. G2 correctly classifies M2/M3 rather than forcing an Hplus fit. This limited fixture has only up to **14 role orbits**, below 80 required independent families. Formal G0b STOP; no paid learner, new scored result or stable model.
+
+## 現在の実装・研究能力・32 PR個別台帳（2026-11-02）
+- [main採用とDraftの相違・学習モデルの成熟度](research/CURRENT-STATE.md) / [元32件のhead/base/暫定分類](research/20261102-research-pr-registry.md) / [G0計画](../experiments/EXP-REP-005/plan.md)。
+
+## EXP-REP-005 G0a実施済み工学校正（2026-11-02）
+- [G0a結果・科学的STOPとGitHub CI 129テスト](../experiments/EXP-REP-005/runs/20261102-g0a-synthetic-calibration.md) / [G0b新Issue #148](https://github.com/ryonakayama234/DekaSugi/issues/148)。限定世界では意味署名30,144結果を直接比較し、同義候補を区別不能ファミリーとして誤計上しない。80独立構造ファミリーは未成立。正式学習・採点なし。

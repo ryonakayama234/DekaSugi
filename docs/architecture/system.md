@@ -2,7 +2,7 @@
 
 id: ARCH-001
 status: proposed
-updated: 2026-10-28
+updated: 2026-11-02
 tags: diagram, architecture, components, wake-sleep
 
 > 目標全体図は**提案**。EXP-0001に限定した型付き探索・実行・検証は実装済み（採否は実験runを参照）。各モジュールは [packages目録](../../packages/README.md) で管理。
@@ -962,3 +962,45 @@ flowchart TB
   OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
 ~~~
 `tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## EXP-REP-005 V2 — 表現修復の提案アーキテクチャ（未実装、2026-11-02）
+
+[判断根拠・停止条件](../specs/EXP-REP-005-DECISION-V2.md)。現行mainの実装済みシステムとは区別する。
+
+```mermaid
+flowchart TD
+    WORLD["評価者だけが持つWorldSpec・正解"] --> ENV["有料操作を実行する環境"]
+    ENV --> PUB["公開された行動・状態・結果"]
+    PUB --> REP["representation_repair: H0/Hplus"]
+    REP -->|情報不足| Q["active_learning: 次の合法質問"]
+    Q --> ENV
+    REP -->|表現不足の反例| C["型付き概念候補の合成"]
+    C --> S["Sleep: 反例・支持・適用条件"]
+    S --> SNAP["保存されたSnapshot"]
+    SNAP --> USE["新プロセスで未知世界に使用"]
+    USE --> PRE["採点前の予測確定"]
+    PRE --> EVAL["独立した採点器"]
+    WORLD --> EVAL
+    EVAL --> LOG["追記型の実験証拠"]
+```
+
+この図のrepresentation_repairと統合サイクルは未実装であり、既存歴史的実験を変更しない。
+
+
+## REP005 G0a implementation status — two-axis diagnostic (2026-11-02)
+
+The proposed Representation Repair learning module is still **NOT IMPLEMENTED**. The separately versioned artificial G0 source-only method consists of [g0_witness.py](../../experiments/EXP-REP-005/g0_witness.py) and [g0_axes.py](../../experiments/EXP-REP-005/g0_axes.py). The eight-action adaptive certificate is for a declared *closed* finite set of deterministic fixtures, not a learned inquiry policy.
+
+```mermaid
+flowchart TD
+    W["Evaluator-private finite hypothesis set"] --> M["Complete method-only representation diagnostics"]
+    W --> Q["Finite-horizon public-action outcome tree"]
+    M --> A["M0 H0 / M1 Hplus-only / M2 outside / M3 stochastic-invalid"]
+    Q --> B["ID / UNID / NOT_CERTIFIED"]
+    A --> C["Orthogonal research strata and out-of-distribution controls"]
+    B --> C
+    C --> G{"G0b: independent structural families and scientific source review?"}
+    G -->|insufficient 14-orbit pilot| STOP["STOP: no TRAIN or EVAL"]
+    G -->|only if future certified| NEXT["Future representation_repair and paired research"]
+```
