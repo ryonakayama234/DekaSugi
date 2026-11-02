@@ -297,3 +297,8 @@ Primary planned module: packages/representation_repair. ARCH-001 (Mermaid) and A
 | ID | Theme | Status | Document |
 |---|---|---|---|
 | EXP-REP-005-G0-TEMPORAL | A paid same-state/same-action divergent-outcome witness; H0 memoryless versus Hplus typed single-step history; controls for augmented-state and preinstalled equal-capacity Hplus | proposed_not_implemented_not_run | [G0 witness](specs/EXP-REP-005-DIAG.md#g0-illustrative-discriminating-world-temporal-aliasing-proposal-not-executed) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) / [plan](../experiments/EXP-REP-005/plan-diag-v0.md) / [ledger](../experiments/EXP-REP-005/runs/README.md) / [Issue #142](https://github.com/ryonakayama234/DekaSugi/issues/142) |
+
+
+## EXP-REP-005 — G0 identification-method audit (2026-11-02; proposed, not run)
+- [G0 audit: shared-prefix diagnostic vs independently adaptive paired-world policy evaluation](research/EXP-REP-005-G0-identification-audit.md) — main module future `representation_repair`; supporting `active_learning`, `evaluation`, `protocol`. Compare H0/Hplus × P0/Pctx without forcing identical chosen questions; preserve source- and family-leakage boundaries.
+- [Design specification](specs/EXP-REP-005-DIAG.md) / [plan](../experiments/EXP-REP-005/plan-diag-v0.md) / [run ledger](../experiments/EXP-REP-005/runs/README.md). No code or score; latest primary proposal remains Draft PR #143, audit is stacked and not a methods approval.
