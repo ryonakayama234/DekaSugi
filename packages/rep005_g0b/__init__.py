@@ -383,6 +383,71 @@ def witness_pilot_worlds() -> tuple[tuple[str, Law], ...]:
     )
 
 
+def pilot_grammar_size() -> dict:
+    """Exact SYNTACTIC normal-form size, NOT a semantic family upper bound."""
+    literals = (
+        tuple(Literal("bit", i, v) for i in OBJECTS for v in (0, 1))
+        + tuple(Literal("prev_set", i, v, lag)
+                for lag in (1, 2) for i in OBJECTS for v in (0, 1))
+        + tuple(Literal("prev_pulse", i, -1, lag)
+                for lag in (1, 2) for i in OBJECTS)
+    )
+    assert len(literals) == 32
+    valid_pairs = 0
+    for pair in combinations(literals, 2):
+        try:
+            Edge(0, 1, 0, tuple(sorted(pair, key=lambda x: x.key())))
+        except ValueError:
+            continue
+        valid_pairs += 1
+    guards = 1 + len(literals) + valid_pairs
+    edges = 4 * 3 * 3 * guards   # 4 source, 3 target != source, 3 trigger lags
+    raw_laws = 1 + edges + edges * (edges - 1) // 2
+    return {"literal_options": len(literals), "guard_pairs": valid_pairs,
+            "guards_per_edge": guards, "edge_syntax_count": edges,
+            "law_syntax_count": raw_laws, "raw_census_cap": 200_000,
+            "fully_enumerable_under_cap": raw_laws <= 200_000,
+            "scope": "syntactic normal forms only; semantic aliases remain"}
+
+
+def public_step(model: Law, state: int, history: tuple[Action, ...], action: Action) -> dict:
+    """Source engine boundary returns ONLY paid public observations, never Law."""
+    new_state, new_hist = transition(model, state, history, action)
+    return {"schema": SCHEMA, "visible_state": new_state,
+            "public_history": tuple(a.key() for a in new_hist),
+            "last_action": action.key(), "paid_cost": 1}
+
+
+def audit_family_split(records: tuple[tuple[str, Law, str], ...]) -> dict:
+    """Source-only fail-closed check for supplied ancestry/semantic/role overlaps.
+
+    Each source_id must denote a declared common ancestor, NOT a world instance.
+    It cannot infer missing ancestry and does not establish causal independence.
+    """
+    if type(records) is not tuple:
+        raise ValueError("invalid source manifest")
+    by_ancestor: dict[str, str] = {}
+    by_semantics: dict[str, str] = {}
+    by_roles: dict[tuple, str] = {}
+    entries = []
+    for rec in records:
+        if (type(rec) is not tuple or len(rec) != 3
+            or type(rec[0]) is not str or not rec[0]
+            or type(rec[1]) is not Law
+            or type(rec[2]) is not str or rec[2] not in ("TRAIN", "DEV", "EVAL")):
+            raise ValueError("invalid private manifest record")
+        root, model, split = rec
+        sem = sha256(full_signature(model)).hexdigest()
+        orbit = role_key(model)
+        for lookup, key in ((by_ancestor, root), (by_semantics, sem), (by_roles, orbit)):
+            if key in lookup and lookup[key] != split:
+                raise ValueError("source/semantic/role family overlaps across splits")
+            lookup[key] = split
+        entries.append((root, sem, str(orbit), split))
+    return {"schema": SCHEMA, "status": "NO_OVERLAP_IN_SUPPLIED_RECORDS",
+            "records": len(records), "private_manifest_digest": digest(sorted(entries)),
+            "custody_scope": "supplied source roots only; external ancestry review needed"}
+
 def pilot_census() -> dict:
     """Attained CERTIFIED fixture counts; DO NOT extrapolate to full Hplus_G."""
     fixtures = witness_pilot_worlds()
@@ -404,6 +469,7 @@ def pilot_census() -> dict:
     proof_id = adaptive_identification(pair, 8)
     proof_op = action_opportunity(pair, 1)
     return {"schema": SCHEMA, "status": "G0B_STOP_FULL_GRAMMAR_NOT_ENUMERATED",
+            "syntax_space": pilot_grammar_size(),
             "fixture_instances": len(fixtures),
             "distinct_full_semantics": len(total_semantics),
             "typed_role_orbits": len(structural),
