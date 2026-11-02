@@ -1039,3 +1039,28 @@ flowchart LR
   HOLDOUT["Evaluator-only answers"] -.->|"Never exposed"| RECON
 ~~~
 **Canonical storage contract:** `QuerySession.class_ids` is exactly `tuple` whose entries are exactly `str`, never a tuple or string subclass, because equality can differ from iteration. The compact `answers` tuple contains exact 3-tuples of (int ID, str output, str local receipt). The `trace` container is exactly tuple; each ordered entry is an exact tuple of typed `QueryProposal` and `QueryAnswer`. Session status, pool/world/split digest fields, and proposal and answer primitive fields must have exact builtin types; bool is rejected when int is required. Exact types are checked at the public boundary **before** Gini, random policy, history revalidation, or final-program selection. Per-prefix policy/receipt semantics and the active-query/2 schema remain unchanged. Hashes remain local consistency checks, NOT independent Oracle authentication. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## ARCH-002 EXP-REP-005-DIAG — proposed event and Snapshot data flow (NOT IMPLEMENTED)
+
+~~~mermaid
+flowchart LR
+  PUB["Public action/response"] --> EV["InquiryEvent: action, answer, cost, order, source digest"]
+  EV --> VS["VersionSpaceCheck: H0/Hplus, witness, observability"]
+  VS --> C["RepairCandidate: typed AST, roles, preconditions, evidence IDs"]
+  C --> VALID["Independent semantic & counterexample tests"]
+  VALID --> SNAP["CandidateSnapshot: digest, grammar/interpreter versions, scope"]
+  SNAP --> USE["Fresh-process candidate USE"]
+  USE --> EVAL["Independent evaluator, paired metrics"]
+  SECRET["Hidden target / heldout truth / family & seed"] -.->|"forbidden to learner, Snapshot"| EV
+  SECRET --> EVAL
+~~~
+
+Prospective contracts (must be versioned and implemented/tested only in a later PR):
+- InquiryEvent: run_id; monotonically ordered step; explicit state/action/result; public_observation_digest; actual paid_action_count; validity; environment/schema version. No secret target or evaluator answer.
+- VersionSpaceCheck: canonical H0/Hplus semantic signatures, finite universe digest, consistent counts, legal witness IDs; mismatch = H0 empty AND Hplus nonempty on paid public observations. Distinguish UNIDENTIFIABLE, INVALID, OUTSIDE_HPLUS and NOT_OBSERVED.
+- RepairCandidate: typed executable AST, exact role binding and preconditions, original grammar boundary, supporting evidence IDs, contradictory evidence IDs, source/interpreter version, independent validation status.
+- CandidateSnapshot: stable schema + content hash, canonical AST, training exposure count, versioned type semantics, provenance and chronology, family disjointness claims limited to checked scope. Data bytes never contain hidden evaluator labels/family/seed.
+- EvaluationReport (separate trust boundary): paired baseline IDs; public/hidden partition provenance; per-family outcomes, paid actions, interpreter dispatch, wall/CPU/RSS if measured; coverage/abstention/missingness; training-cost amortization; status of all gates.
+
+The old-grammar expressibility proof is scoped to an explicitly finite state/action/sequence universe. Hash equality is not independent custody. [Spec](../specs/EXP-REP-005-DIAG.md) / [plan](../../experiments/EXP-REP-005/plan-diag-v0.md).
