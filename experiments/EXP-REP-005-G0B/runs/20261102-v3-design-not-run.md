@@ -15,3 +15,6 @@ Only written method, system/data diagrams, hypothesis/metrics/acceptance, ADR, r
 Each future engineering run records source commit, exact test/CI head, legal grammar and universe versions, dataset split and secret custodian, full counts including rejection reasons, proof limits, independent checker hash, raw artifact SHA256, reproducible command and environment. Fail and timeouts are records, never silently discarded.
 
 [Design](../../../docs/specs/EXP-REP-005-G0B-DECISION-V3.md) / [Plan](../plan.md) / [Issue #148](https://github.com/ryonakayama234/DekaSugi/issues/148).
+
+## V3.1 design amendment
+Following independent PR #147's 80/160 counting review, the proposed G0b pilot also now explicitly specifies total typed 30,144-cell domain, deterministic set-first/XOR-second effect algebra, 0/1/2 action-lag history, four-bit state and 12 legal actions, exact guard grammar, H0_G subgrammar, and engineering budget STOP ceilings in the V3.1 appendix. **All are proposed contracts, NOT tested outcomes**. This doc update does not change any previous G0a run receipt. No G0b code or new metric executed.
