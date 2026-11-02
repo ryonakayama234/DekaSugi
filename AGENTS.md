@@ -435,3 +435,10 @@
 - All learner public APIs must reject caller-supplied mutable/behavioral subtypes masquerading as canonical state: QuerySession.class_ids is an **exact builtin tuple** of **exact builtin str** semantic IDs. An equality-preserving tuple subclass with overridden __iter__ must never reach Gini partition scoring or any read of the hypothesis votes.
 - Exact primitive storage contracts extend to compact answers, status/commitment digest fields, full historic proposal/answer trace fields, and newly supplied QueryProposal/QueryAnswer records. Reject bool-as-int and str subclasses even if ordinary equality would pass; preserve actual history replay and canonical internal Catalog usage.
 - Only explicit synthetic-only state-container tests are added to the safe CI whitelist; no broad discovery, old workflows, locked original scored data or DEV/FINAL may run. [Run](experiments/ACTIVE-001/runs/20261030-pr2-container-types.md), [ARCH-001](docs/architecture/system.md), [ARCH-002](docs/architecture/contracts.md). Independent exact-head review is required before PR acceptance.
+
+
+## EXP-REP-005 V2 と研究PR整理（2026-11-02、設計案）
+- [V2研究設計](docs/specs/EXP-REP-005-DECISION-V2.md) と [32 PR整理監査](docs/research/20261102-research-pr-portfolio-audit.md) は未凍結・未採点の提案であり、作業承認・学術的なG0承認ではない。
+- P/R/U/N各20以上の独立した構造的意味ファミリー、役割置換と生成元依存を除去した分割、合法な有料反例、独立方法レビューが成立するまで実TRAIN・採点を停止する。数合わせを禁止。
+- 研究DraftのNULL/NEGATIVEをmainの正の能力として扱わず、積み上げPRの一括マージ・強制push・閉鎖をしない。移植時は既存評価ワークフロー・source-lockを個別に監査する。
+- 以降の実装PRではAGENTS、INDEX、ARCH-001 Mermaid、ARCH-002契約、実験計画、追記型run記録、テストを同時に更新する。
