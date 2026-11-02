@@ -435,3 +435,17 @@
 - All learner public APIs must reject caller-supplied mutable/behavioral subtypes masquerading as canonical state: QuerySession.class_ids is an **exact builtin tuple** of **exact builtin str** semantic IDs. An equality-preserving tuple subclass with overridden __iter__ must never reach Gini partition scoring or any read of the hypothesis votes.
 - Exact primitive storage contracts extend to compact answers, status/commitment digest fields, full historic proposal/answer trace fields, and newly supplied QueryProposal/QueryAnswer records. Reject bool-as-int and str subclasses even if ordinary equality would pass; preserve actual history replay and canonical internal Catalog usage.
 - Only explicit synthetic-only state-container tests are added to the safe CI whitelist; no broad discovery, old workflows, locked original scored data or DEV/FINAL may run. [Run](experiments/ACTIVE-001/runs/20261030-pr2-container-types.md), [ARCH-001](docs/architecture/system.md), [ARCH-002](docs/architecture/contracts.md). Independent exact-head review is required before PR acceptance.
+
+
+## EXP-REP-005-DIAG — new-representation research guardrail (2026-11-02; proposed)
+- The research primary module is FUTURE packages/representation_repair; diagnosis of inadequate observation/policy must precede any claim that a new predicate is needed.
+- First use a finite semantic expressibility witness distinguishing old H0 from typed extension Hplus, with an actually legal paid public counterexample path. A new name, a query switch or a higher-capacity comparator alone does not establish learning.
+- Compare H0/Hplus crossed with fixed/context inquiry; capacity-match a static Hplus to learned Hplus. Keep learner Snapshot and hidden evaluation provenance strictly separate.
+- No fresh model freeze, training, score, reuse of sealed historical splits, or automatic main merge is authorized by the docs-only candidate. Update ARCH-001/002, docs/INDEX, experimental ledger and acceptance gates in the same later implementation PR.
+- Source: [EXP-REP-005-DIAG spec](docs/specs/EXP-REP-005-DIAG.md), [plan](experiments/EXP-REP-005/plan-diag-v0.md), [runs](experiments/EXP-REP-005/runs/README.md), [Issue #142](https://github.com/ryonakayama234/DekaSugi/issues/142).
+
+
+## EXP-REP-005 G0 temporal aliasing witness guard (2026-11-02; PROPOSAL only)
+- A two-history witness with equal visible current state/action and different next states can invalidate a deterministic *visible-state-only* H0, but cannot establish autonomous predicate invention. Explicitly record all charged `set/pulse` actions and the observable previous-action boundary; no free reset, hidden truth or family access.
+- Verify a legal public transcript and all role permutations before moving from G0 proposal to any G2 proof, then compare learned extension against *preinstalled capacity-matched* Hplus and augmented-state alternatives. Keep G1/G2 code and scores blocked pending review/authorization; this PR adds no executable new model.
+- Diagram/contract/spec/plan/run ledger must change together. [G0 example](docs/specs/EXP-REP-005-DIAG.md).

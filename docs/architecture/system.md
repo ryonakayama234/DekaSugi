@@ -962,3 +962,47 @@ flowchart TB
   OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
 ~~~
 `tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## ARCH-001 EXP-REP-005-DIAG — representation-vs-inquiry identification (PROPOSED; NOT IMPLEMENTED)
+Primary new module: future packages/representation_repair. This is a design-only candidate under Issue #142, not a change to the existing executable system or a model promotion.
+
+~~~mermaid
+flowchart TD
+  O["Paid public observations O(t)"] --> D["Diagnostic: old grammar H0 version space"]
+  D --> C{"H0 still consistent?"}
+  C -->|"yes"| Q["Question-policy comparison: fixed P0 vs context Pctx"]
+  C -->|"no"| G["Check Hplus typed repair grammar"]
+  G --> R{"Hplus has a consistent candidate?"}
+  R -->|"yes"| E["Counterexample-directed candidate repair"]
+  R -->|"no"| X["Abstain / outside the model / integrity STOP"]
+  Q --> K["Paid inquiry and new evidence"]
+  K --> O
+  E --> V["Independent counterexample verification"]
+  V -->|"candidate valid"| S["Sleep: canonicalize + Snapshot"]
+  V -->|"invalid"| X
+  S --> U["Fresh-process USE"]
+  U --> M["Independent capacity-matched comparison"]
+  M --> A["Accepted? only after separate evidence gates"]
+  H["Private target and sealed evaluation"] -.->|"never to learner"| M
+~~~
+
+The static Hplus comparator has equal expressive capacity to any learned Hplus candidate. The four-cell design H0/Hplus x P0/Pctx isolates language capacity from query policy. This diagram is a FUTURE responsibility map. [Spec](../specs/EXP-REP-005-DIAG.md) / [plan](../../experiments/EXP-REP-005/plan-diag-v0.md) / [runs](../../experiments/EXP-REP-005/runs/README.md).
+
+
+## ARCH-001 EXP-REP-005 — temporal aliasing diagnostic fixture (G0 candidate, NOT IMPLEMENTED)
+~~~mermaid
+flowchart TD
+  W["Synthetic host: hidden transition law"] --> OR["Charged set/pulse runtime"]
+  OR --> EV["Ordered public events: state/action/next state"]
+  EV --> PAIR["Find same visible state + action under different histories"]
+  PAIR --> H0["Check old H0 finite deterministic signatures"]
+  PAIR --> HP["Check typed history-aware Hplus signatures"]
+  H0 --> G{"H0 empty AND Hplus nonempty?"}
+  HP --> G
+  G -->|"yes, independently verified"| NEXT["G2 witness: representation deficit candidate"]
+  G -->|"no or unsupported"| STOP["Unidentifiable / invalid / outside Hplus"]
+  NEXT -.-> FUT["Future G3: learn predicate, Sleep Snapshot, fresh USE"]
+  SECRET["Host law + heldout families"] -.->|"No learner access"| EV
+~~~
+An observed pair with the same `(visible_state, action)` and different next states is inconsistent with a deterministic H0 using only visible current state. A one-step public-action-history predicate is a *human-specified Hplus candidate* for diagnosis, not an installed new module or a learned result. All actions, including `set`, cost 1. The independent checker, strict role binding, state augmentation comparator, and future matched-capacity evaluation are required before claims of concept invention. [Spec](../specs/EXP-REP-005-DIAG.md) / [proposed plan](../../experiments/EXP-REP-005/plan-diag-v0.md) / [ledger](../../experiments/EXP-REP-005/runs/README.md).
