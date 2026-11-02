@@ -23,3 +23,9 @@ P2: signatures for an unbounded tuple of models were built before proof limits w
 - New code/tests/docs are committed to the Draft #149 branch. GitHub Actions exact-head status: **NOT_YET_OBSERVED** at authoring; report actual run ID and SHA in a subsequent append-only note.
 - Full Hplus_G grammar contains 100,090,027 syntax candidates, above 200,000 census cap. The independent-family universe, source ancestry completeness, family-level power, M2/M3 classes, paid TRAIN, learner Snapshots, DEV/FINAL score all remain **NOT_CERTIFIED / NOT_RUN**.
 - No historic scored evaluator, protected run, old holdout, or merged main source was changed.
+
+## Exact-head independent GitHub Actions evidence (2026-11-03)
+
+- Tested head: `c9cafa171460ad5bb9d2d06dddf82281a60bf566`. [Dedicated G0b synthetic run 41485212370](https://github.com/ryonakayama234/DekaSugi/actions/runs/41485212370) **SUCCESS**; test step, source-only pilot census and source-only artifact upload succeeded.
+- [Research verification v2 41485212233](https://github.com/ryonakayama234/DekaSugi/actions/runs/41485212233) **SUCCESS**; historical source lock, documentation/internal links and explicit synthetic-only tests succeeded.
+- These results validate the committed engineering regressions; they are NOT an independent expert methods/security review and do not certify causal-family independence. This receipt update itself is docs-only and requires the usual docs checks. G0b scientific status remains STOP.
