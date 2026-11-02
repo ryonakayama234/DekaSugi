@@ -35,3 +35,13 @@ G0 write and review contract -> G1 synthetic non-scoring fixtures -> G2 exhausti
 
 ## Local-model note
 Do NOT call a fresh-world exposure sweep an epoch. With any future neural policy, log both independent training-world count and SGD epochs/gradient steps separately. Reserve a new unseen-family test set for every confirmatory model change. No baseline release, model promotion or sealed test is authorized by this document.
+
+
+## G0 refinement: pre-registered witness fixture candidate (NOT RUN)
+Before G1, independently review a 4-bit-visible-state, paid `set/pulse` synthetic fixture with an optional one-step public action-history guard. The four-event legal trace proposed in [the diagnostic specification](../../docs/specs/EXP-REP-005-DIAG.md#g0-illustrative-discriminating-world-temporal-aliasing-proposal-not-executed) is a **candidate** for G2; do not treat the hand-derived inconsistency as completed exhaustive testing.
+
+G1 acceptance proposal: enforce charged `set` and `pulse`, canonical ordered observations, explicit initial history marker, source/target role permutation, and no direct truth/generator references in learner-visible records. Make a source-only check that the same public state+action can be reached on two distinct legal histories. Check the exact allowed action horizon; any shorter-horizon negative result is scoped to that horizon.
+
+G2 acceptance proposal: construct finite behavior signatures for H0 and Hplus; verify two contradictory old-model pulse outcomes and a consistent Hplus model; produce a reproducible witness transcript and SHA; test visible-state-conditional H0, delayed-memory beyond Hplus, both-spaces-empty and insufficient-budget controls. Run only synthetic, non-scored verification after separate methods review and approval; preserve all old evidence.
+
+G3+ remain entirely separate. Neither a deterministic analytical witness nor the human-provided Hplus guard demonstrates the agent autonomously inventing it. Capacity-matched preinstalled-Hplus comparison and independent structural-family transfer remain mandatory.
