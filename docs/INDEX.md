@@ -291,3 +291,9 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | EXP-REP-005-DIAG | Paid-public counterexample -> distinguish missing data, policy limits and H0 grammar insufficiency; capacity-matched Hplus controls | proposed_design_only; NOT_IMPLEMENTED; NOT_TRAINED; NOT_SCORED | [spec](specs/EXP-REP-005-DIAG.md) / [plan](../experiments/EXP-REP-005/plan-diag-v0.md) / [runs](../experiments/EXP-REP-005/runs/README.md) / [Issue #142](https://github.com/ryonakayama234/DekaSugi/issues/142) |
 
 Primary planned module: packages/representation_repair. ARCH-001 (Mermaid) and ARCH-002 (proposed event/Snapshot contracts) are updated together; no source code or historical experimental receipt changes.
+
+
+## EXP-REP-005 G0 — diagnosable temporal representation gap (design refinement, 2026-11-02)
+| ID | Theme | Status | Document |
+|---|---|---|---|
+| EXP-REP-005-G0-TEMPORAL | A paid same-state/same-action divergent-outcome witness; H0 memoryless versus Hplus typed single-step history; controls for augmented-state and preinstalled equal-capacity Hplus | proposed_not_implemented_not_run | [G0 witness](specs/EXP-REP-005-DIAG.md#g0-illustrative-discriminating-world-temporal-aliasing-proposal-not-executed) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) / [plan](../experiments/EXP-REP-005/plan-diag-v0.md) / [ledger](../experiments/EXP-REP-005/runs/README.md) / [Issue #142](https://github.com/ryonakayama234/DekaSugi/issues/142) |
