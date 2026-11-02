@@ -1039,3 +1039,52 @@ flowchart LR
   HOLDOUT["Evaluator-only answers"] -.->|"Never exposed"| RECON
 ~~~
 **Canonical storage contract:** `QuerySession.class_ids` is exactly `tuple` whose entries are exactly `str`, never a tuple or string subclass, because equality can differ from iteration. The compact `answers` tuple contains exact 3-tuples of (int ID, str output, str local receipt). The `trace` container is exactly tuple; each ordered entry is an exact tuple of typed `QueryProposal` and `QueryAnswer`. Session status, pool/world/split digest fields, and proposal and answer primitive fields must have exact builtin types; bool is rejected when int is required. Exact types are checked at the public boundary **before** Gini, random policy, history revalidation, or final-program selection. Per-prefix policy/receipt semantics and the active-query/2 schema remain unchanged. Hashes remain local consistency checks, NOT independent Oracle authentication. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## ARCH-002 — EXP-REP-005 G0b V3 planned typed data boundary (NOT IMPLEMENTED)
+[Decision](../specs/EXP-REP-005-G0B-DECISION-V3.md) / [plan](../../experiments/EXP-REP-005-G0B/plan.md). Public information must be a projected copy, not a mutable mapping of private data.
+
+| Record (version proposed) | Fields / invariant | Trust domain |
+|---|---|---|
+| WorldSpec/1 | semantics_version, typed AST, public_state_shape, hidden_memory_init, action_alphabet, finite_domain_version, mechanism_ancestor_id | generator and source certifier ONLY |
+| SemanticCertificate/1 | full_signature_hash, reachable_signature_hash, alias_group, role_orbit, causal_motif, independent_ref_checker_digest, completeness_status | source certifier ONLY |
+| IdentifiabilityCertificate/1 | candidate_class_digest, public_s0, B, branch_witness_or_exhaustive_counterproof, proof_nodes, status ID/UNID/NOT_CERTIFIED | source/evaluator ONLY |
+| OpportunityCertificate/1 | public_prefix_digest, posterior_candidates, prior_spec, legal_action_set, fixed_comparator, optimal_value_gap, bound_status | independent evaluator ONLY |
+| PublicEpisode/1 | public_episode_id, visible_state, legal_actions, ordered paid action/observation/cost receipts, budget_remaining | learner read/write public |
+| ConceptCandidate/1 (future) | validated typed body_ast, public supports/counterexamples, scope, body_sha256, acquisition_trace_digest | Sleep provisional |
+| PolicySnapshot/1 (future) | public_train_source_sha, grammar_sha, concept/policy digests, version, immutable serialization | learner reload/USE |
+| EvaluationReceipt/1 (future) | committed prediction hash, truth evidence URI under custody, per-family delta, raw SHA, reviewer/source head | evaluator only |
+
+~~~mermaid
+flowchart LR
+  SPEC["Private WorldSpec"] --> SIM["Interpreter"]
+  SPEC --> CERT["Independent certifier"]
+  SIM --> PROJ["Public-only projection"]
+  PROJ --> EP["PublicEpisode / paid actions"]
+  EP --> LEARN["Inquiry / future Wake-Sleep"]
+  LEARN --> SNAP["Future Snapshot"]
+  CERT --> SEC["Private certificate + hidden manifest"]
+  SEC --> EVAL["Independent Evaluator"]
+  SNAP --> EVAL
+~~~
+Untrusted reconstructed catalogs or exact-type subclasses cannot be used as computational authority, even if structural equality passes. Full typed finite semantic signature and reachable-from-s0 semantics are distinct. A family split is keyed by mechanism ancestor and role-orbit, never seed/instance. Single-world repeated actions and 64 audit transitions are NOT independent samples. Typed correct M2/M3 negative diagnoses and honest NOT_CERTIFIED statuses are valid outcomes. Planned schema fields require versioned concrete implementation and tests before any use.
+
+### V3.1 exact pilot encoding
+Proposed deterministic WorldSpec/1 state is (x: tuple of four exact builtin bits, h: tuple of 0..2 exact tagged public actions). Action ::= set(index 0..3, bit 0|1) | pulse(index 0..3), unit paid. Source Edge ::= (source!=target, lag 0|1|2, conjunction of <=2 typed literals); each matched Edge XORs its target against a shared pre-action snapshot. The base set write precedes XOR commit; pulse has identity base. No same-step cascading. Missing-history sentinel never matches; last-two history is truncated only *after* execution. Total typed table has 30,144 inputs, but a separately proven reachable-from-zero projection is used for learner opportunity claims. Full hidden edge/ancestry/certificate is excluded from PublicEpisode and Snapshot. Proof exhaustion yields NOT_CERTIFIED and exact resource receipt; it must never be coerced to UNID or semantic equivalence. Details [V3.1](../specs/EXP-REP-005-G0B-DECISION-V3.md).
+
+### OpportunityCertificate/1 soundness rule (review correction)
+Store certification_direction = maximize_utility or minimize_risk; feasible_policy_trace or lower_bound_candidate and upper_bound_comparator for positive utility opportunity, never upper_bound_candidate alone. For certified no utility opportunity require upper_bound_optimum <= lower_bound_comparator. With risk minimization invert inequalities. If any bound missing, answer NOT_CERTIFIED rather than asserting POSITIVE or NO_OPPORTUNITY. RepresentationLabel/1 records membership in H0_G and Hplus_G independently and H0_all contradiction separately; a memoryless law can be M1 if expanded finite grammar alone expresses it.
+
+## ARCH-002 — G0b-A implemented source-only boundary (2026-11-03)
+
+The Draft PR #149 module exposes exact-type finite Python records Action(kind,obj,value), Literal(kind,obj,value,lag), Edge(source,target,lag,guard) and Law(edges). Pure source-only transition consumes Law and public (visible_state, last-two typed actions, current paid Action). The public_step projection emits only schema, visible_state, ordered public_history, last_action and paid_cost=1; no Law/ancestry/target fields. This is a local projection test, NOT secure learner process isolation.
+
+full_signature computes 16*157*12=30,144 total typed cells; reachable_domain separately discovers from (0,empty) using <=8 charged actions. role_key canonicalizes all 24 object permutations; memoryless_contradiction returns two actual legal reset-from-zero prefixes for the universal memorylessness refutation; adaptive_identification returns ID/UNID/NOT_CERTIFIED under a specified closed deduplicated class with actual worst-case truthful branches, and a node limit does NOT imply UNID. action_opportunity uses complete feasible policy trees and exact terminal MAP identification expected accuracy under uniform prior versus repeated fixed action, not a relaxed upper bound. audit_family_split rejects supplied common ancestor, exact semantic and role-orbit overlaps between TRAIN/DEV/EVAL; missing ancestry remains unknown.
+
+pilot_grammar_size counts 32 literals, 360 valid guard pairs, 393 guards/edge, 14,148 edge syntaxes and 100,090,027 0/1/2-edge Law syntax forms. Complete grammar semantics and independent families are **NOT_CERTIFIED** under the 200,000 raw candidate cap. No training or scientific evaluator API was added. [Engine](../../packages/rep005_g0b/__init__.py) / [tests](../../tests/test_rep005_g0b_synthetic.py) / [run](../../experiments/EXP-REP-005-G0B/runs/20261103-g0b-a-synthetic.md).
+
+## ARCH-002 — G0b-A bounded proof / semantic role-orbit contract (2026-11-03)
+- `canonical_role_semantic_signature(Law) -> bytes`: private/evaluator-only 30,144-cell complete output, minimum over 24 consistent object permutations. For split decisions compare **bytes**, not syntactic role orbit or digest alone. A syntactically inert edge must not evade split auditing.
+- Both proof entrypoints preflight trusted finite Law tuples, budget 0..8 and max_nodes 0..250,000. Class length >64 produces NOT_CERTIFIED/CANDIDATE_CAP before allocating signatures; zero nodes produces NOT_CERTIFIED/NODE_CAP before signature work. Within limit, signatures are compared sequentially; exact aliases raise ValueError.
+- NOT_CERTIFIED includes reason, candidate_count, checked_candidates, candidate_digest (null if preflight incomplete), nodes, max_nodes, max_candidates, elapsed_seconds and peak_rss_mib (null if unavailable). Positive opportunity still requires an achieved feasible legal policy, not a loose upper bound.
+- The 120s/2048MiB check is cooperative process observation; OS runner must separately enforce hard resource limits. Private source Law/proof records are never part of the learner's PublicStep.

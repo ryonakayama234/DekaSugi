@@ -962,3 +962,70 @@ flowchart TB
   OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
 ~~~
 `tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## ARCH-001 — EXP-REP-005 G0b V3 causal laboratory (design-only, 2026-11-02)
+[Decision V3](../specs/EXP-REP-005-G0B-DECISION-V3.md) / [plan](../../experiments/EXP-REP-005-G0B/plan.md) / [ADR-0006](decisions/ADR-0006-causal-world-laboratory.md). Main does not yet contain a REP005 certified world generator or representation_repair learner; G0a experimental source is only on Draft #147.
+
+~~~mermaid
+flowchart TB
+  subgraph PRIVATE["Evaluator / Source-only sealed side"]
+    G["Typed WorldSpec + ancestry"] --> W["Bounded world interpreter"]
+    G --> C["Independent semantic + structural certifier"]
+    C --> I["Full signatures / ID / opportunity certificates"]
+    G --> T["Private truth / split / ancestor manifest"]
+  end
+  subgraph PUBLIC["Learner public-only interaction"]
+    W --> O["Public reset/observe/actions/step"]
+    O <--> A["Kernel + Active inquiry"]
+    A --> E["Paid ordered InquiryTrace"]
+    E --> R["H0 mismatch / Hplus repair diagnostics"]
+    R --> S["Future Sleep: executable ConceptBody"]
+    S --> P["Future immutable Snapshot"]
+    P --> U["Future fresh-process unknown-world use"]
+  end
+  U --> V["Independent paired Evaluator"]
+  T --> V
+  I --> V
+  V --> D["Family-level measured claims / STOP"]
+~~~
+The direction from T/I to V is permitted; NO truth/ancestry/certificate target field is a learner API input. Opportunity certificates are evaluator-only diagnostics, not training labels. G0b currently implements only a DESIGN, not the nodes. See ARCH-002 contracts and design-only run.
+
+## ARCH-001 — G0b-A implemented source-only pilot (2026-11-03; Draft PR #149)
+
+This later checkpoint supersedes only the earlier G0b V3 design-only implementation status. The new module exists on the Draft branch, not main. It is **not a learner**.
+
+~~~mermaid
+flowchart LR
+  PRIVATE["Source-only typed Law"] --> PURE["Pure finite transition interpreter"]
+  PRIVATE --> FULL["30,144-cell total semantics"]
+  PURE --> PUBLIC["Public step projection"]
+  PRIVATE --> REACH["Reachable public-history BFS"]
+  PRIVATE --> ORACLE["Independent reference interpreter"]
+  ORACLE --> CERT["Semantic + role/orbit witness verification"]
+  FULL --> CERT
+  CERT --> IDENT["Adaptive ID/UNID or NOT_CERTIFIED"]
+  CERT --> OPP["Realizable policy opportunity"]
+  CERT --> SPLIT["Private source/semantic/role split audit"]
+  IDENT --> STATUS["Full Hplus census STOP / source-only run"]
+  OPP --> STATUS
+  SPLIT --> STATUS
+  REACH --> STATUS
+~~~
+
+The generator-private Law is NOT an allowed learner field. Public projection is not independent process isolation. Eight disclosed synthetic laws, 13 source-only tests and an analytic 100M syntactic candidate count do not establish causal family independence. [Engine](../../packages/rep005_g0b/__init__.py) / [evidence](../../experiments/EXP-REP-005-G0B/runs/20261103-g0b-a-synthetic.md).
+
+## ARCH-001 — G0b-A code review P1/P2 resource/semantic boundaries (2026-11-03)
+~~~mermaid
+flowchart LR
+  PRIVATE["Evaluator-only Law manifest"] --> CAN["24-permutation full semantic canonicalizer"]
+  CAN --> SPLIT["Private TRAIN/DEV/EVAL overlap audit"]
+  PRIVATE --> LIMIT["<=64 candidates: check before signatures"]
+  LIMIT --> SIG["Streaming signature validation"]
+  SIG --> PROOF["<=250k-node adaptive proof"]
+  PROOF --> CERT["ID / UNID / achievable opportunity"]
+  LIMIT --> STOP["NOT_CERTIFIED + reason/counters"]
+  SIG --> STOP
+  PROOF --> STOP
+~~~
+The learner never reads this private certification data. Wall/RSS checks are cooperative, not a substitute for OS-level limits. Complete Hplus grammar and independence remain NOT_CERTIFIED. [Contracts](contracts.md) / [receipt](../../experiments/EXP-REP-005-G0B/runs/20261103-g0b-review-hardening.md).

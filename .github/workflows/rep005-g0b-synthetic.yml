@@ -1,0 +1,32 @@
+name: EXP-REP-005 G0b source-only synthetic verification
+on:
+  pull_request:
+    paths:
+      - 'packages/rep005_g0b/**'
+      - 'tests/test_rep005_g0b_synthetic.py'
+      - 'docs/specs/EXP-REP-005-G0B-DECISION-V3.md'
+      - 'experiments/EXP-REP-005-G0B/**'
+      - '.github/workflows/rep005-g0b-synthetic.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  g0b-synthetic-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Exact synthetic tests (never historical scorers)
+        run: python -m unittest discover -s tests -p 'test_rep005_g0b_synthetic.py' -v
+      - name: Source-only pilot census (no TRAIN/DEV/FINAL)
+        run: python -m packages.rep005_g0b --output .run/EXP-REP-005-G0B-pilot.json
+      - name: Upload source-only engineering artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: REP005-G0b-source-only-pilot
+          path: .run/EXP-REP-005-G0B-pilot.json
+          if-no-files-found: warn
