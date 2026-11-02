@@ -312,3 +312,7 @@ The proposed decision **does not** report any new learned model, train use or sc
 
 ## EXP-REP-005 G0 feasibility subresult (2026-11-02)
 [Auditable three-paid-action witness precheck](research/EXP-REP-005-G0-witness-feasibility-20261102.md) and [synthetic source](../experiments/EXP-REP-005/g0_witness.py) / [allowlisted tests](../tests/test_rep005_g0_witness.py). Status: G0_METHOD_PRECHECK (not independent approval); minimal witnessed horizon=3 (not 4), 24 permutations test; 80 structural semantic families and G0 approval outstanding. All TRAIN/Sleep/Snapshot/USE/scoring are NOT_RUN.
+
+
+## EXP-REP-005 G0 structural-family capacity bound (2026-11-02)
+[Conservative pilot-generator orbit bound](research/EXP-REP-005-G0-witness-feasibility-20261102.md#additional-g0-capacity-audit--pilot-fixture-cannot-support-the-proposed-80-family-split): the current source fixture has at most 14 S4-role orbits (12 guard + always + never), not 80 verified structural meaning families. Full Hplus family generation remains unimplemented. This is a G0 fail-closed finding, not a learned or scored result. [Source](../experiments/EXP-REP-005/g0_witness.py) / [test](../tests/test_rep005_g0_witness.py) / [ledger](../experiments/EXP-REP-005/runs/README.md).
