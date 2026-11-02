@@ -1,0 +1,23 @@
+name: EXP-REP-005 G2 public-state repair synthetic-only
+on:
+  pull_request:
+    paths:
+      - 'packages/representation_repair/**'
+      - 'tests/test_rep005_representation_repair_synthetic.py'
+      - 'experiments/EXP-REP-005-G2/**'
+      - 'docs/specs/EXP-REP-005-G2-SYNTHETIC.md'
+      - '.github/workflows/rep005-repair-synthetic.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-public-traces-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Explicit public-only invented synthetic tests
+        run: python -m unittest discover -s tests -p 'test_rep005_representation_repair_synthetic.py' -v
