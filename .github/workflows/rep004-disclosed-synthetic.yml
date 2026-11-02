@@ -38,7 +38,7 @@ jobs:
         env:
           REP004R_SOURCE_HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
-          python scripts/run_rep004r.py --output-dir /tmp/rep004r-evidence --source-sha "$REP004R_SOURCE_HEAD"
+          python -m scripts.run_rep004r --output-dir /tmp/rep004r-evidence --source-sha "$REP004R_SOURCE_HEAD"
       - name: Publish immutable EXP-REP-004R synthetic evidence
         if: ${{ always() && github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'exp/rep004r-remediation-train-use-score-v1' }}
         uses: actions/upload-artifact@v4
