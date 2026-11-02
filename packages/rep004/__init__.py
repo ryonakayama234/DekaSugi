@@ -14,6 +14,8 @@ from dataclasses import dataclass
 from functools import lru_cache
 
 N = 4
+# Physical typed-AST interpreter dispatches, single-threaded disclosed experiment.
+_INTERPRETER_CALLS = 0
 VERSION = 'rep004/executable-concept/1'
 ACTIONS = tuple([('pulse', i, None) for i in range(N)] + [('set', i, v) for i in range(N) for v in (0, 1)])
 ARMS = ('LQ', 'LA', 'LR', 'ER', 'FA', 'FX', 'BODY-OFF', 'STATIC-MACRO')
@@ -239,6 +241,8 @@ def validate_body(body):
 
 def execute_body(body, state, action, binding):
     """Interpreter only; no fixed-model catalog, no callable from untrusted JSON."""
+    global _INTERPRETER_CALLS
+    _INTERPRETER_CALLS += 1
     validate_body(body)
     if type(binding) is not dict or set(binding)!={'source','target','guard'}:
         raise ValueError('bad role binding')
@@ -270,6 +274,8 @@ def compose_ast(shape):
 
 
 def execute_composition(body,state,action,edges):
+    global _INTERPRETER_CALLS
+    _INTERPRETER_CALLS += 1
     validate_body(body)
     if body['ast']['op']!='parallel_xor' or len(edges)!=2 or motif(edges)!=body['ast']['shape']:
         raise ValueError('bad composition binding')
@@ -459,7 +465,7 @@ def weights_for(models,snapshot,arm,metrics):
         physical=(_edge_execution_matches.cache_info().misses+
                   _composition_equivalent.cache_info().misses-before_misses)
         logical=metrics['body_invocations']-before_invocations
-        metrics['body_evals']=metrics.get('body_evals',0)+physical
+        metrics['semantic_cache_misses']=metrics.get('semantic_cache_misses',0)+physical
         metrics['body_cache_hits']=metrics.get('body_cache_hits',0)+logical-physical
     return out
 
@@ -505,9 +511,10 @@ def committed_use(snapshot,world,arm,budget):
     # physical-vs-logical counter; no hidden truth or prior arm state is reused.
     _edge_execution_matches.cache_clear()
     _composition_equivalent.cache_clear()
+    interpreter_before=_INTERPRETER_CALLS
     session=Session(world)
     meter={'actions':0,'model_checks':0,'body_invocations':0,
-           'body_evals':0,'body_cache_hits':0}
+           'semantic_cache_misses':0,'body_cache_hits':0}
     t0=time.process_time()
     for _ in range(budget):
         h=consistent(session.trace,meter)
@@ -522,6 +529,7 @@ def committed_use(snapshot,world,arm,budget):
     predarm='LQ' if arm in ('LQ','LA') else arm
     p=weights_for(h,snapshot,predarm,meter)
     pred=h[max(range(len(h)),key=lambda i:(p[i],-i))] if h else None
+    meter['physical_interpreter_calls']=_INTERPRETER_CALLS-interpreter_before
     commit={'schema':VERSION,'arm':arm,'budget':budget,'public_ids':list(world.public_ids),
             'trace':session.trace,'status':status,'predicted_edges':[list(e) for e in pred] if pred is not None else None,
             'snapshot_digest':snapshot['digest'],'meter':meter}
@@ -553,8 +561,9 @@ def evaluate(snapshot):
                                  'status':c['status'],'actions':c['meter']['actions'],
                                  'model_checks':c['meter']['model_checks'],
                                  'body_invocations':c['meter']['body_invocations'],
-                                 'body_evals':c['meter']['body_evals'],
+                                 'semantic_cache_misses':c['meter']['semantic_cache_misses'],
                                  'body_cache_hits':c['meter']['body_cache_hits'],
+                                 'physical_interpreter_calls':c['meter']['physical_interpreter_calls'],
                                  'snapshot_train_worlds':snapshot['train_worlds'],
                                  'seen_in_train':world.family_id in {e['family'] for e in snapshot['episodes']},
                                  'ood_topology':'THREE_EDGE_CHAIN' if key is None else None,
