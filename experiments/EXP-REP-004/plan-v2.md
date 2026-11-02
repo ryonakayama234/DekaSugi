@@ -1,4 +1,5 @@
 # EXP-REP-004 — Executed engineering protocol and future formal boundary V2
+tags: research, experiment, synthetic, public-evidence, method
 
 id: EXP-REP-004-PLAN-V2
 status: RETROSPECTIVE_METHOD_RECORD / ENGINEERING_SCORED / NO_FORMAL_PREREGISTRATION
