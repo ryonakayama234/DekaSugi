@@ -1,7 +1,7 @@
 # EXP-REP-005 G0b V3 — preregistration candidate / execution protocol
 
 id: EXP-REP-005-G0B-PLAN-V3
-status: draft_method_not_frozen_not_run
+status: g0b_a_source_engineering_pass_full_hplus_stop
 updated: 2026-11-02
 tags: experiment, feasibility, representation, active-inquiry, preregistration
 
@@ -45,3 +45,9 @@ Initial proposed fail-closed engineering ceilings: 200,000 raw candidates per ce
 
 ## Review-driven classification and opportunity proof correction
 Review of early V3 PR head found two methodological bugs, fixed before implementation: (1) M1 covers every law inside Hplus_G but outside H0_G even when it happens to be memoryless, and M2 requires nonmembership in Hplus_G; never infer H0_all temporal dependence from M1. (2) Positive opportunity requires a feasible legal policy witness whose achieved expected utility exceeds the baseline, or lower-bound(candidate)>upper-bound(baseline), under maximization; mere upper-bound(optimum)>baseline is NOT sufficient. To prove no opportunity, upper-bound(optimum)<=lower-bound(baseline). If not certified, report NOT_CERTIFIED. Bayes-risk minimization reverses all inequalities. Assert these directions in negative fixtures including loose bounds.
+
+## Actual G0b-A engineering checkpoint (2026-11-03)
+
+The D0-only statements above preserve original chronology. G0b-A implemented an eight-law source-only fixture, exact typed interpreter, independently authored full-domain reference, role equivariance, reachable domain, public-only projection, supplied-source split overlap audit, finite adaptive ID/UNID/NOT_CERTIFIED proofs and exact feasible policy opportunity under uniform prior. [13-test PASS engineering receipt](runs/20261103-g0b-a-synthetic.md).
+
+The grammar's 100,090,027 syntactic laws exceed the predeclared 200,000 candidate cap. Full universe enumeration, M0/M1 x ID/UNID population, independent families, M2/M3 stress cohorts, power and scientific scoring are **NOT CERTIFIED / NOT RUN**. G0b-B cannot freeze an 80-family distribution; issue #148 science criteria are still open. No historical raw alteration, paid TRAIN, DEV/FINAL access or actual learner implementation.
