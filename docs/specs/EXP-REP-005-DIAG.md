@@ -29,7 +29,7 @@ EXP-REP-004R's corrected role-invariant semantics removed the old query switch i
 ## Scientific identification: the 2 x 2 experiment
 Factor 1: **representation** H0 = original validated finite grammar; Hplus = bounded typed extension.
 Factor 2: **inquiry** P0 = fixed strong active policy; Pctx = state/history-conditioned active policy.
-Compare H0/P0, H0/Pctx, Hplus/P0 and Hplus/Pctx using identical paid questions, computational budgets, priors declared before evaluation and the same evidence visibility. Add (a) learned repair candidate, (b) preinstalled Hplus STATIC comparator, (c) policy-only learner, (d) episodic lookup and (e) body-off ablation.
+Compare H0/P0, H0/Pctx, Hplus/P0 and Hplus/Pctx on paired worlds with the same initial public information, legality constraints, charged/compute budgets and preregistered priors. **Adaptive paid questions are chosen independently by each arm; identical full inquiry paths must not be forced, nor may naturally coincident paths be excluded.** Fixed identical public prefixes are used only for the separate representation/version-space diagnostic. Add (a) learned repair candidate, (b) preinstalled Hplus STATIC comparator, (c) policy-only learner, (d) episodic lookup and (e) body-off ablation.
 The static Hplus control must have the same expressible semantic candidate space as learned Hplus. A gain over H0 alone demonstrates capacity, NOT learning.
 
 ## Diagnosis and epistemic limits
