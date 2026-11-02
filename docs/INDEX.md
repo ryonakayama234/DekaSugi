@@ -302,3 +302,10 @@ Primary planned module: packages/representation_repair. ARCH-001 (Mermaid) and A
 ## EXP-REP-005 — G0 identification-method audit (2026-11-02; proposed, not run)
 - [G0 audit: shared-prefix diagnostic vs independently adaptive paired-world policy evaluation](research/EXP-REP-005-G0-identification-audit.md) — main module future `representation_repair`; supporting `active_learning`, `evaluation`, `protocol`. Compare H0/Hplus × P0/Pctx without forcing identical chosen questions; preserve source- and family-leakage boundaries.
 - [Design specification](specs/EXP-REP-005-DIAG.md) / [plan](../experiments/EXP-REP-005/plan-diag-v0.md) / [run ledger](../experiments/EXP-REP-005/runs/README.md). No code or score; latest primary proposal remains Draft PR #143, audit is stacked and not a methods approval.
+
+## EXP-REP-005 — integrated end-to-end research decision candidate (2026-11-02)
+| ID | Theme | State | Canonical document |
+|---|---|---|---|
+| EXP-REP-005-INTEGRATED-DECISION-V1 | Measurands, hypotheses, typed repair algorithm, paired-policy attribution, 0/8/16/32/64 TRAIN → Sleep → Snapshot → fresh USE → independent engineering score → stop/adoption gates | proposed_for_owner_agreement_not_frozen_not_run | [decision v1](specs/EXP-REP-005-INTEGRATED-DECISION-V1.md) / [diagnostic spec](specs/EXP-REP-005-DIAG.md) / [plan](../experiments/EXP-REP-005/plan-diag-v0.md) / [run ledger](../experiments/EXP-REP-005/runs/README.md) |
+
+The proposed decision **does not** report any new learned model, train use or score. New G0 independent review and owner agreement are prerequisites to implementation. Previous EXP-REP-004R failed H-ACT and 11,520 NOT_RUN remain preserved.
