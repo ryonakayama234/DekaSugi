@@ -23,3 +23,8 @@ status: PROPOSED_NOT_RUN. A same-visible-state/action divergent-transition **ana
 
 ## 2026-11-02 — G0 methodological identification audit (NOT_RUN)
 status: PROPOSED_METHOD_REVIEW_NOT_RUN. The earlier wording about identical paid questions was clarified: common-prefix evidence checks and paired-world adaptive inquiry comparisons have different estimands. The [method audit](../../../docs/research/EXP-REP-005-G0-identification-audit.md) specifies independent arm traces and matched budgets. No code, test invocation, exhaustive proof, paid interventions, training, Snapshot, score or scientific acceptance resulted. Preserve preceding NOT_RUN entries.
+
+## 2026-11-02 — Integrated end-to-end plan candidate (NOT RUN)
+status: PROPOSED_FOR_OWNER_AGREEMENT_NOT_FROZEN_NOT_RUN
+design: [EXP-REP-005-INTEGRATED-DECISION-V1](../../../docs/specs/EXP-REP-005-INTEGRATED-DECISION-V1.md)
+Only document design and synchronized Mermaid/data contracts were authored. TRAIN/DEV/EVAL paid episodes, G1/G2 finite signatures, Sleep, Snapshot, fresh-process USE, score rows and model promotion remain NOT_RUN. G0 reviewer and owner agreement must precede implementation, and immutable prior receipts must not be rewritten.
