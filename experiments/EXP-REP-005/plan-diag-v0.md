@@ -3,6 +3,7 @@
 id: EXP-REP-005-PLAN-DIAG-V0
 status: proposed_not_frozen_not_run
 updated: 2026-11-02
+tags: representation, diagnostic, active-learning, experiment
 related: ../../docs/specs/EXP-REP-005-DIAG.md
 issue: https://github.com/ryonakayama234/DekaSugi/issues/142
 
