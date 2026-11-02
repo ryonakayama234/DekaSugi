@@ -2,7 +2,7 @@
 
 id: ARCH-001
 status: proposed
-updated: 2026-10-28
+updated: 2026-11-03
 tags: diagram, architecture, components, wake-sleep
 
 > 目標全体図は**提案**。EXP-0001に限定した型付き探索・実行・検証は実装済み（採否は実験runを参照）。各モジュールは [packages目録](../../packages/README.md) で管理。
@@ -962,3 +962,32 @@ flowchart TB
   OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
 ~~~
 `tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## EXP-REP-005 G0b-B — proposed constructive world → active learning architecture (2026-11-03; NOT IMPLEMENTED)
+
+Primary future module: packages/rep005_g0b, **source construction/certification**, not learner tuning. Supporting: packages/representation_repair (G2 public-only prototype in separate Draft #151), active inquiry, independent evaluation, persisted concept library. The generator's secret causal Law/ancestry **must not** enter the learning path. Source-only feasibility is the next gate; no TRAIN/EVAL has been run.
+
+~~~mermaid
+flowchart TB
+    M["Proposed versioned causal-motif constructors"] --> G["rep005_g0b: constructive source worlds"]
+    G --> S["Private Law + ancestor manifest"]
+    S --> E["Independent semantics / role-orbit / provenance audit"]
+    E --> C{"Certified family + reachable opportunity?"}
+    C -->|No or budget STOP| N["STOP / NULL / NOT_CERTIFIED receipt"]
+    C -->|Yes; future reviewed stage| W["Public-only WorldInterface: paid step"]
+    W --> A["Active inquiry: legal question selection"]
+    A --> R["representation_repair: contradiction + typed predicate"]
+    R --> L["Sleep: validate, compress, hash Snapshot"]
+    L --> U["Fresh USE: predict and select next question"]
+    U --> V["Independent new-family evaluator: learned vs STATIC-Hplus"]
+    V -->|new evidence; approval required| L
+    S -.->|Private truth only, never learner input| V
+    V --> N
+    style W stroke-dasharray: 6 4
+    style A stroke-dasharray: 6 4
+    style R stroke-dasharray: 6 4
+    style V stroke-dasharray: 6 4
+~~~
+
+The dashed paths are **future research contracts**, not integrated code. The diagram depicts public intervention, Wake–Sleep externalization and prospective matched learning evaluation while preserving the private evaluator. G0b-A's large syntax count is a feasibility STOP, not proof of 80 independent families. This D0 decision is [proposed](../specs/EXP-REP-005-G0B-B-CONSTRUCTIVE.md), with [NOT_RUN evidence](../../experiments/EXP-REP-005-G0B-B/runs/20261103-design-not-run.md).
