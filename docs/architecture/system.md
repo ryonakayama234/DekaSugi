@@ -1025,3 +1025,24 @@ flowchart TD
 ```
 
 Policy arms must be allowed to **diverge in selected legal questions**; otherwise the policy effect is structurally blocked. Match world, initial public information, action/compute budgets and split rather than entire query trace. H0/Hplus shared-prefix inference is a different diagnostic. All world/family hidden identities remain evaluator-only. See [proposed G0 audit](../research/EXP-REP-005-G0-identification-audit.md); no implementation, scoring or independent approval.
+
+## ARCH-001 EXP-REP-005 integrated end-to-end architecture (PROPOSED / NOT IMPLEMENTED)
+See [integrated decision v1](../specs/EXP-REP-005-INTEGRATED-DECISION-V1.md). Main NEW module: `packages/representation_repair`; support: `packages/active_learning`, typed runtime and independent evaluation.
+
+```mermaid
+flowchart TD
+    W["Evaluator-only hidden world / challenge probes"] --> H["Trusted charged environment"]
+    H --> P["PublicTrace: typed observations, no oracle"]
+    P --> V["H0/Hplus version-space and mismatch diagnosis"]
+    V --> Q["Active inquiry selector"]
+    Q --> H
+    V --> C["Typed repair candidate + public counterexamples"]
+    C --> S["Sleep: verify, alpha-normalize, deduplicate"]
+    S --> N["Content-addressed immutable Snapshot"]
+    N --> U["Fresh-process USE: prediction commit"]
+    U --> E["Independent evaluator / paired family metrics"]
+    W --> E
+    E --> L["Append-only run ledger + decision"]
+```
+
+A shared-prefix replay establishes logical expressibility, **not** policy value. A paired-world adaptive experiment keeps arm-local legal question traces independently selected; naturally identical paths are valid and included. All simulator truth, structural family IDs and private probes are evaluator-only. Design does not imply any new code, run or model promotion.
