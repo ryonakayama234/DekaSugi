@@ -1081,3 +1081,13 @@ flowchart LR
 - `FiniteWitnessCheck`: `grammar_H0_digest`, `grammar_Hplus_digest`, `finite_universe_digest`, `H0_consistent_count`, `Hplus_consistent_count`, `max_charged_actions`, `role_permutation_pass_count`, `status` and canonical `evidence_sha256`. Report `PUBLICLY_FALSIFIED_H0` only when H0 has zero consistent candidates and Hplus at least one, under an independently validated legal transcript; otherwise record specific insufficiency/invalid/out-of-scope conditions.
 - Test the alternative `augmented_state=(visible_state, last_public_action)` under the same information and computation budget. It is a representation variant, not a source of free truth. Hplus being expressive does not demonstrate learned novelty: later compare against preinstalled equal-capacity Hplus.
 - No implementation, signed independent evidence, result, learned model, or frozen acceptance threshold exists yet. See [G0 specimen](../specs/EXP-REP-005-DIAG.md).
+
+
+## ARCH-002 EXP-REP-005 G0 — paired-policy comparison amendment (PROPOSED, NOT IMPLEMENTED)
+- `PolicyArmSpec`: grammar_id/digest, policy_id, training_exposure_digest, maximum_paid_actions, maximum_interpreter_dispatches, tie-break seed (secret/isolated where appropriate). Equal budgets, not forced identical adaptive actions.
+- `PublicInquiryTrace`: **arm-local** ordered charged interventions/results, legality, actual paid cost, public-history digest, prediction-before-audit commitment, content digest; no peer-arm answers or private evaluator labels.
+- `PairedWorldKey`: opaque paired world/family provenance **evaluator-only**; forbidden in learner events/Snapshot, even if structurally encoded.
+- `ComparisonMode`: `same_public_prefix_diagnostic` (compare expressibility) versus `paired_world_independent_policy` (compare adaptive inquiry). A diagnostic prefix is not an off-policy reward estimate.
+- `EvaluationReport`: family-paired exact outcome deltas; paid actions; physical interpreter dispatch and CPU/wall/RSS if measured; coverage/abstention and training amortization. Source/score independence maintained.
+
+See [G0 identification audit](../research/EXP-REP-005-G0-identification-audit.md) and [experiment plan](../../experiments/EXP-REP-005/plan-diag-v0.md). No G1/G2 witness, Snapshot, model or score exists from this amendment.

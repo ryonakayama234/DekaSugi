@@ -29,7 +29,7 @@ EXP-REP-004R's corrected role-invariant semantics removed the old query switch i
 ## Scientific identification: the 2 x 2 experiment
 Factor 1: **representation** H0 = original validated finite grammar; Hplus = bounded typed extension.
 Factor 2: **inquiry** P0 = fixed strong active policy; Pctx = state/history-conditioned active policy.
-Compare H0/P0, H0/Pctx, Hplus/P0 and Hplus/Pctx using identical paid questions, computational budgets, priors declared before evaluation and the same evidence visibility. Add (a) learned repair candidate, (b) preinstalled Hplus STATIC comparator, (c) policy-only learner, (d) episodic lookup and (e) body-off ablation.
+Compare H0/P0, H0/Pctx, Hplus/P0 and Hplus/Pctx on paired worlds with the same initial public information, legality constraints, charged/compute budgets and preregistered priors. **Adaptive paid questions are chosen independently by each arm; identical full inquiry paths must not be forced, nor may naturally coincident paths be excluded.** Fixed identical public prefixes are used only for the separate representation/version-space diagnostic. Add (a) learned repair candidate, (b) preinstalled Hplus STATIC comparator, (c) policy-only learner, (d) episodic lookup and (e) body-off ablation.
 The static Hplus control must have the same expressible semantic candidate space as learned Hplus. A gain over H0 alone demonstrates capacity, NOT learning.
 
 ## Diagnosis and epistemic limits
@@ -77,3 +77,9 @@ This example makes the G1/G2 tests operationally understandable; it is **not** a
 - Critical boundary: this toy tests **expressibility and the availability of a legal counterexample**, not whether a learner detects the deficit or builds the predicate itself. The future G3 learned Hplus must beat equal-capacity *preinstalled* Hplus on genuine information/compute efficiency or independent-family transfer, rather than claiming that its larger grammar is a learned gain.
 
 This witness connects to active automata learning's distinction between histories that appear identical under an inadequate state abstraction but have distinguishable futures. The design must not assume a free teacher/equivalence-query oracle; only the charged public actions are learner-visible.
+
+
+## G0 methods-audit amendment: identical budgets, **not** identical adaptive questions (PROPOSED)
+For H0/P0 vs H0/Pctx (and Hplus equivalents), perform **paired-world, independent-arm** trials with the same evaluator-held target instance, initial learner-visible public prefix, legal action set, action/compute budgets and predetermined scoring protocol. Arms may then choose different paid questions; their answers must remain strictly arm-local. The earlier phrase “identical paid questions” applies only to the separate **shared-prefix representation/version-space diagnostic**, never to policy-utility comparisons. Do not estimate the counterfactual value of the unchosen query from another arm's private trace.
+
+The 2x2 factorial report separates representation main effect, policy main effect and interaction; within-Hplus learned repair requires an equal-capacity preinstalled-Hplus comparator. Pre-register family-unit utility, costs, coverage/abstention, chronology, and training amortization before new scoring. Include stochastic/noisy/non-Markov and longer-memory alternatives so a deterministic H0 mismatch is not overstated as general causal concept invention. [G0 method audit](../research/EXP-REP-005-G0-identification-audit.md). This is design only; G0 independent review remains open.
