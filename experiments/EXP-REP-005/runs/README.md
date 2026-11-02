@@ -12,3 +12,7 @@ plan: ../plan-diag-v0.md
 | 2026-11-02 | diagnostic design only | NOT_RUN | No dataset, learner implementation, Snapshot, score, or frozen release |
 
 Do not interpret the separate EXP-REP-004R STOP as a zero score here. Append later runs without rewriting earlier receipts. Archive hashes, source commits, budgets and all unsuccessful/null attempts.
+
+
+## 2026-11-02 — G0 temporal witness DESIGN REFINEMENT
+status: PROPOSED_NOT_RUN. A same-visible-state/action divergent-transition **analytical fixture candidate** and explicit H0/Hplus controls were documented in [spec](../../../docs/specs/EXP-REP-005-DIAG.md). No executable fixture, exhaustive finite proof, paid test run, train, Snapshot, learning curve, score, independent review acceptance, or model promotion is claimed. The prior NOT_RUN row is unchanged.
