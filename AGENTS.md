@@ -457,3 +457,8 @@
 - Fail closed on proof-node cap, exact semantic alias, all 24 object renamings, source-ancestry or role-orbit split overlap, and missing full-vs-reachable scope. Never transform NOT_CERTIFIED into UNID or positive opportunity from loose upper bounds.
 - PublicStep contains only public observation fields; Python projection is NOT isolated learner process custody. Later source-hidden learner must have no private Law/certifier import access. G0b source-only CI may execute only disclosed invented fixtures, never archived DEV/FINAL, source-first score runners or a paid TRAIN.
 - Synchronize any implementation and method change in AGENTS, INDEX, ARCH-001/002, specs, plan, run and test path. Source-only CI PASS is engineering evidence; independently reviewed full method and scientific freeze remain separate gates.
+
+## EXP-REP-005 G0b-A P1/P2 code-review hardening (2026-11-03; Draft #149)
+- Split auditing compares **all 24 object-renamed complete semantic signatures as exact bytes**, in addition to unrenamed full signatures, syntactic roles and supplied source ancestor IDs. Inert Edge semantic aliases after renaming must be rejected cross-split.
+- Both finite proof APIs cap candidates at 64 **before** any full signature allocation, compare signatures one at a time, and cap proof nodes at 250,000. Missing proof resources return reasoned NOT_CERTIFIED and resource counters, never UNID or NO_OPPORTUNITY. The 120s/2GiB wall/RSS observations are cooperative; CI/OS process caps are still required.
+- [Hardening receipt](experiments/EXP-REP-005-G0B/runs/20261103-g0b-review-hardening.md) is source-only; independent family count, full 100,090,027-syntax census, future TRAIN/score remain STOP.
