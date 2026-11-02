@@ -44,7 +44,7 @@ H-NULL: object count, legal actions or semantics are inadequate; the actual atta
 A semantic novelty witness against H0_all (same public state and action, different observed successors under distinct histories) proves *memorylessness is insufficient*; it does not prove the learned concept beats a static, equally expressive Hplus. Positive action opportunity requires a *feasible* legal decision tree with better verified utility, not an unattained optimal upper bound. A target with no such opportunity is a negative result, not a defective sample.
 
 ## Intended externalized learning loop after source feasibility
-~~~mermaid
+```mermaid
 flowchart TD
     S["Constructive source & independent oracle (private)"] --> C["Certify semantic/role/source-disjoint families"]
     C --> O["Legal paid public observations"]
@@ -56,7 +56,7 @@ flowchart TD
     U --> V["Independent unseen-family comparison"]
     V -->|accepted after review| P
     V -->|no gain / uncertain| N["Retain NULL / NEGATIVE / abstention"]
-~~~
+```
 No G3 TRAIN, score or promotion is authorized by this D0 proposal. DREAM can replay models for exploration but never counts synthetic replay as new independent public evidence.
 
 ## Evaluation contract to freeze later, not now
