@@ -1,4 +1,6 @@
 # EXP-REP-004 — 2026-11-02 disclosed engineering outcome
+updated: 2026-11-02
+tags: experimental, run, evidence, measured, null-result
 
 id: EXP-REP-004-20261102-DISCLOSED
 status: IMPLEMENTED_SYNTHETIC / MECHANISM_ACTIVATED / PRIMARY_NEGATIVE / NO_FORMAL_F0
