@@ -1046,3 +1046,17 @@ flowchart TD
 ```
 
 A shared-prefix replay establishes logical expressibility, **not** policy value. A paired-world adaptive experiment keeps arm-local legal question traces independently selected; naturally identical paths are valid and included. All simulator truth, structural family IDs and private probes are evaluator-only. Design does not imply any new code, run or model promotion.
+
+## ARCH-001 EXP-REP-005 actual G0 feasibility boundary (method-only)
+```mermaid
+flowchart TD
+  E["Private synthetic fixture (G0 methodology only)"] --> T["Legal actions: pulse, set, pulse; cost 3"]
+  T --> O["PublicEvent trace: same visible state/action, different successor"]
+  O --> H0["Reject ALL deterministic memoryless H0 f(s,a)"]
+  O --> HP["Bounded public-only Hplus candidate checker: nonempty"]
+  H0 --> R["G0 shortest-witness feasibility receipt"]
+  HP --> R
+  R --> B["BLOCK: 80 independent structural families + methods review"]
+  B -.-> G1["Future G1-G6 only after approval"]
+```
+Source/negative controls and shortest horizon: [G0 pilot audit](../research/EXP-REP-005-G0-witness-feasibility-20261102.md). Existing architectural design remains PROPOSED. This code is **not** the new learner or scored evaluation.
