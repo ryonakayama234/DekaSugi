@@ -21,9 +21,9 @@ Primary research question: Can public, priced evidence induce an agent to distin
 
 ## 1. Competing hypotheses, with falsification paths
 
-- H-OBS: available paid observations are insufficient; (V_0(O_t)\neq\varnothing) and several predictions remain viable. More lawful inquiry may help without a representation change. A failure to improve on such worlds disfavors the specific inquiry strategy, not all active learning.
+- H-OBS: available paid observations are insufficient; `V0(O_t) ≠ ∅` and several predictions remain viable. More lawful inquiry may help without a representation change. A failure to improve on such worlds disfavors the specific inquiry strategy, not all active learning.
 - H-POL: H0 is sufficient for target phenomenon, but fixed P0 inquiry wastes information. A history/context-conditioned Pctx with H0 should improve paired-world predictive utility or same-accuracy cost. Equal questions chosen independently are valid data, never removed.
-- H-REP: a deterministic visible-state-only H0 is *observationally falsified*: (V_0(O_t)=\varnothing\) while bounded typed Hplus fits, as witnessed by actual public charged events. New grammar expressibility alone is an **upper bound**, not learned invention.
+- H-REP: a deterministic visible-state-only H0 is *observationally falsified*: `V0(O_t) = ∅` while bounded typed Hplus fits, as witnessed by actual public charged events. New grammar expressibility alone is an **upper bound**, not learned invention.
 - H-INVENT: learner synthesizes, validates and uses a typed predicate/feature from generic operators, rather than receiving the exact `previous_action_is` solution as an installed macro. Its causal removal or replacement changes a legal public-history prediction and possibly a paid decision; the same-capacity static Hplus comparator isolates any learned-search benefit.
 - H-XFER: learned predicates and their applicability conditions improve independent-family new-world adaptation after Snapshot save/load, with positive incremental benefit when training and inference costs are amortized over future uses. If fixed Hplus matches learned Hplus, report no learned advantage.
 - H-SAFE: when H0 and Hplus both fail, or legal actions cannot identify the difference within horizon, system correctly abstains/diagnoses unsupported rather than forcing invention.
@@ -32,9 +32,9 @@ Alternatives NOT preselected as preferred outcome: increasing training exposure;
 
 ## 2. Measurands: what we observe rather than assert
 
-A. **L0 expressibility/diagnosis:** number of genuine public witnesses with (V_0=\varnothing,V_+=\neq\varnothing), exact finite-proof signature / counterexample length, witness validity after all 24 object-role permutations, false positive and abstention rates on negative controls.
+A. **L0 expressibility/diagnosis:** number of genuine public witnesses with `V0=∅, Vplus≠∅`, exact finite-proof signature / counterexample length, witness validity after all 24 object-role permutations, false positive and abstention rates on negative controls.
 B. **L1 bounded search:** candidate AST nodes and canonical distinct semantic programs examined, actual primitive interpreter dispatches, time/CPU/RSS (if instrumented), timeouts and budget-exhausted as separate outcomes.
-C. **L2 Active Learning:** paid action sequence, unique diagnostic questions, information reduction (Δ\log_2 |V|) when applicable, exact post-inquiry predictions, coverage/abstention. A changed query alone is a *mechanism signal*, not outcome improvement.
+C. **L2 Active Learning:** paid action sequence, unique diagnostic questions, information reduction `Δ log2|V|` when applicable, exact post-inquiry predictions, coverage/abstention. A changed query alone is a *mechanism signal*, not outcome improvement.
 D. **L3 Learning/transfer:** novel validated typed concept bodies, provenance, support/counterexamples, body-off/swap intervention effect, independent-family paired prediction utility and cost, Snapshot reproducibility in a clean process.
 E. **Lifetime economics:** total training paid actions, generator/dream/repair/interpreter/validation/Snapshot loading CPU, per-use inference + paid question costs, amortization at planned N=1/10/100 uses. Never confuse cached logical calls with physical dispatches, or epochs with newly acquired worlds.
 
@@ -56,8 +56,8 @@ Canonical witness candidate (ALL four events priced 1): `set(source,0)` -> `puls
 
 **Diagnostics:**
 - (V_0(O_t)\neq\varnothing): not publicly falsified (not proof that H0 represents the true hidden law).
-- (V_0(O_t)=\varnothing, V_+(O_t)\neq\varnothing): mismatch relative to deterministic checked grammars; attempt contextual feature invention.
-- (V_0(O_t)=V_+(O_t)=\varnothing): OUTSIDE_HPLUS/INVALID/possible stochasticity; abstain and inspect noise.
+- `V0(O_t)=∅, Vplus(O_t)≠∅`: mismatch relative to deterministic checked grammars; attempt contextual feature invention.
+- `V0(O_t)=Vplus(O_t)=∅`: OUTSIDE_HPLUS/INVALID/possible stochasticity; abstain and inspect noise.
 - indistinguishable alternatives under all *legal available priced actions within remaining horizon*: UNIDENTIFIABLE; do not hallucinate a witness.
 - Compare against alternative *public-state augmentation* and stochastic/latent-state explanations, never equate representational mismatch with globally proven causality.
 
