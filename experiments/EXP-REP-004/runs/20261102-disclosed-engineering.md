@@ -43,3 +43,10 @@ The 1,920 trial receipts report 3,974,007 *logical* learned-body invocations und
 Reconstruct and verify the archive with scripts/read_rep004_archive.py. Its source family IDs and results were generated and scored in one disclosed research environment. No separate trusted evaluator custody, prospective independent preregistration, or formal one-shot F0/FINAL evidence is claimed.
 
 **Verdict:** M2 bounded executable learned body YES; M3 live inquiry change YES; M4 query performance benefit NO; M5 unique learned abstraction beyond static macros NO; M6 OOD safe abstention NO. This is a valid negative scientific outcome with a working technical mechanism.
+
+
+## Executable-source provenance (post-run integrity annotation)
+
+- The executing REP004 learner source is preserved at Git blob SHA **37a1122a5c40414204a747d3b6727c1b19c5495f**, first committed in this feature branch at commit **5ac9f88fc977e104fb11ff0ed917b47db4cd5698**. The local tested source is byte-identical excluding only a terminal newline removed by the file transfer; all Python statements and semantic behavior match.
+- The measured score was produced with this source version, a canonical Snapshot with digest 4585f68f150318e94cc38cf26143f29bc9fe0e03a1fc0bd7bb99db997ae040f2, and manifest digest 440547723d7f7a4ef5f8302c796d8fefc847dfd451be681a3ff7a7d38f08d052. Retrospective documentation commits do not change the source blob, data or score.
+- The retained raw archive has non-deterministic per-trial CPU seconds, but the prediction commit digests intentionally EXCLUDE CPU seconds, making the decision/trace hashes repeatable; score, raw-row structure and cost counts reaggregate exactly. A new full raw byte hash is not promised upon CPU-clock-dependent rerun.
