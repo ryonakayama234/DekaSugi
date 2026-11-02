@@ -35,3 +35,9 @@ source: [g0_witness.py](../g0_witness.py)
 tests: [test_rep005_g0_witness.py](../../../tests/test_rep005_g0_witness.py)
 interpretation: [research report](../../../docs/research/EXP-REP-005-G0-witness-feasibility-20261102.md)
 Theoretical/precheck result: the 4-action illustrative trace is valid but 3 paid steps suffice for the specified world; 12^1+12^2+12^3 legal finite sequences form the scoped minimum-horizon search, and all 24 object role permutations are tested. This is a **method fixture test, not a learned or scored model**; 80 structural families and independent exact-head method review have NOT been established. G1/G2 independent certification, G3 paid TRAIN, Sleep, Snapshot, fresh USE, G5 numeric engineering score and FINAL all remain NOT_RUN. Never populate score rows with zero.
+
+
+## 2026-11-02 — G0 fixture structural-capacity audit (executed source precheck, not learning)
+status: G0_PILOT_FAMILY_UPPER_BOUND_14_NOT_80; G0_FAIL_CLOSED
+source: [g0_witness.py](../g0_witness.py) / [test](../../../tests/test_rep005_g0_witness.py) / [report](../../../docs/research/EXP-REP-005-G0-witness-feasibility-20261102.md)
+The present fixture's 216 nonredundant parameter assignments collapse to **at most 14 S4 role orbits** (12 guard + always + never); this is an upper bound, not 14 independently validated families. It cannot fill the proposed 20-per-stratum P/R family requirements. This result is limited to the pilot fixture, not the future full Hplus DSL. Prior CI and Codex code-review receipts on `d7e4919` did not certify G0, and this later change needs exact-head CI/review. All G1/G2 certification, TRAIN, Sleep, Snapshot, USE, scoring, sealed FINAL, promotion and merge remain NOT_RUN. Earlier rows are retained unchanged.
