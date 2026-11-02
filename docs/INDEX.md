@@ -390,3 +390,7 @@ The original EXP-REP-001 plan is a proposal, not a frozen FINAL method. Do not i
 |---|---|---|---|
 | EXP-REP-004R | 役割不変性、固定比較の独立性、6水準学習量、訂正後の公開人工得点と使用記録 | design candidate; not implemented; not scored | [Issue #139](https://github.com/ryonakayama234/DekaSugi/issues/139) / [decision](specs/EXP-REP-004R.md) / [plan](../experiments/EXP-REP-004R/plan.md) / [run ledger](../experiments/EXP-REP-004R/runs/README.md) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) |
 旧REP004原本とSHAは不変。修正後スコアは探索的工学結果であり、正式な独立F0/FINALやモデル昇格と同一視しない。
+
+| REP004R runner | Six TRAIN exposures, fresh process USE, new correction-specific score archive, per-family signed deltas and provenance | implementation candidate; measured outcome only on successful CI | [Runner](../scripts/run_rep004r.py) / [new run ledger](../experiments/EXP-REP-004R/runs/README.md) |
+
+**EXP-REP-004R pre-score STOP:** 108 public adaptive histories have no LQ/LA question split after role-invariance repair. Six corrected exposure scores are NOT RUN; see [negative receipt](../experiments/EXP-REP-004R/runs/README.md).

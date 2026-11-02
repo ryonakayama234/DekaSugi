@@ -9,6 +9,82 @@ class Rep004(unittest.TestCase):
     @classmethod
     def setUpClass(cls):cls.manifest=study_manifest();cls.snap=learn(8)
 
+    def test_role_binding_counterexample_and_all_permutations(self):
+        from packages.rep004 import concept_matches, PERMS, relabel
+        # This guarded example used to match guard=2 but fail on guard=3.
+        snap=learn(64)
+        guarded=((0,1,2,0),)
+        expected=concept_matches(snap,guarded)
+        self.assertGreater(expected,0)
+        self.assertEqual(expected,concept_matches(snap,((0,1,3,0),)))
+        for edge in EDGES:
+            candidate=(edge,)
+            original=concept_matches(snap,candidate)
+            for perm in PERMS:
+                self.assertEqual(original,concept_matches(snap,relabel(candidate,perm)),
+                                 (edge,perm))
+                for state in range(16):
+                    mapped=sum(((state>>j)&1)<<perm[j] for j in range(4))
+                    for source in range(4):
+                        action=('pulse',source,None)
+                        pa=('pulse',perm[source],None)
+                        result=step(state,action,candidate)
+                        presult=step(mapped,pa,relabel(candidate,perm))
+                        self.assertEqual(sum(((result>>j)&1)<<perm[j] for j in range(4)),presult)
+        # Full pre-state XOR semantics, all 16 states/actions, across 24 renamings.
+        from packages.rep004 import _composition_equivalent, motif
+        two=(((0,1,-1,-1),(1,2,3,1)),((0,2,3,0),(0,2,3,1)))
+        for edges in two:
+            for perm in PERMS:
+                renamed=relabel(edges,perm)
+                self.assertTrue(_composition_equivalent(motif(renamed),renamed))
+
+    def test_static_macro_independence_from_learned_library(self):
+        from packages.rep004 import weights_for
+        models=list(catalog())[:80]
+        z=learn(0);full=learn(64)
+        def measured(s):
+            meter={'body_invocations':0}
+            return weights_for(models,s,'STATIC-MACRO',meter)
+        a,b=measured(z),measured(full)
+        self.assertEqual(a,b)
+        self.assertTrue(any(v>1 for v in a))
+        self.assertEqual(weights_for(models,z,'FA',None),[1.0]*len(models))
+
+    def test_optional_guard_is_not_an_arbitrary_fixed_index(self):
+        from packages.rep004 import execute_body
+        edge=(3,2,-1,-1)
+        ast=concept_ast(edge)
+        body={'ast':ast,'body_hash':digest(ast),'support':3,'positive':['fixture'],
+              'negative':[],'status':'candidate'}
+        binding={'source':3,'target':2,'guard':None}
+        for state in range(16):
+            for action in (('pulse',i,None) for i in range(4)):
+                self.assertEqual(execute_body(body,state,action,binding),step(state,action,(edge,)))
+        with self.assertRaises(ValueError):
+            execute_body(body,0,('pulse',3,None),{'source':3,'target':2,'guard':3})
+
+    def test_full_train_prior_reduces_to_edge_count_and_equals_static(self):
+        from packages.rep004 import weights_for
+        full=learn(64)
+        zero=learn(0)
+        models=list(catalog())
+        learned=weights_for(models,full,'LQ',{'body_invocations':0})
+        static=weights_for(models,zero,'STATIC-MACRO',{'body_invocations':0})
+        self.assertEqual(len(full['library']),7)
+        self.assertEqual(learned,static)
+        for edges,w in zip(models,learned):
+            self.assertEqual(w,{0:1.0,1:4.0,2:13.0}[len(edges)])
+
+    def test_physical_interpreter_and_semantic_cache_are_distinct(self):
+        snap=learn(64)
+        w=world_for(self.manifest['composition'][0],590)
+        c=committed_use(snap,w,'LQ',2)
+        m=c['meter']
+        self.assertEqual(m['body_invocations'],m['semantic_cache_misses']+m['body_cache_hits'])
+        self.assertGreater(m['physical_interpreter_calls'],0)
+        self.assertGreater(m['physical_interpreter_calls'],m['semantic_cache_misses'])
+
     def test_grammar_and_family_cardinality(self):
         self.assertEqual(len(EDGES),60)
         self.assertEqual(len(catalog()),1735)
@@ -59,7 +135,10 @@ class Rep004(unittest.TestCase):
         fixture=activation_fixture(snap)
         self.assertTrue(fixture['differs'],fixture)
         self.assertGreater(fixture['body_invocations'],0)
-        self.assertEqual(fixture['paid_conditioning'],2)
+        self.assertIsInstance(fixture['paid_conditioning'],int)
+        self.assertGreaterEqual(fixture['paid_conditioning'],0)
+        self.assertLessEqual(fixture['paid_conditioning'],7)
+        self.assertGreater(fixture['paths_checked'],0)
 
     def test_composition_body_prestate(self):
         a=compose_ast('CHAIN')

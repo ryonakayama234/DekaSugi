@@ -14,6 +14,8 @@ from dataclasses import dataclass
 from functools import lru_cache
 
 N = 4
+# Physical typed-AST interpreter dispatches, single-threaded disclosed experiment.
+_INTERPRETER_CALLS = 0
 VERSION = 'rep004/executable-concept/1'
 ACTIONS = tuple([('pulse', i, None) for i in range(N)] + [('set', i, v) for i in range(N) for v in (0, 1)])
 ARMS = ('LQ', 'LA', 'LR', 'ER', 'FA', 'FX', 'BODY-OFF', 'STATIC-MACRO')
@@ -239,10 +241,19 @@ def validate_body(body):
 
 def execute_body(body, state, action, binding):
     """Interpreter only; no fixed-model catalog, no callable from untrusted JSON."""
+    global _INTERPRETER_CALLS
+    _INTERPRETER_CALLS += 1
     validate_body(body)
-    if type(binding) is not dict or set(binding)!={'source','target','guard'} or any(type(v) is not int or v not in range(N) for v in binding.values()):
+    if type(binding) is not dict or set(binding)!={'source','target','guard'}:
         raise ValueError('bad role binding')
-    if len(set(binding.values()))!=3:raise ValueError('non-injective roles')
+    source,target,guard=(binding[k] for k in ('source','target','guard'))
+    if any(type(v) is not int or v not in range(N) for v in (source,target)):
+        raise ValueError('invalid source/target roles')
+    if source==target:raise ValueError('non-injective roles')
+    if guard is not None and (type(guard) is not int or guard not in range(N) or guard in (source,target)):
+        raise ValueError('invalid guard role')
+    if (body['ast']['guard']['op']=='state_is') != (guard is not None):
+        raise ValueError('conditional guard binding mismatch')
     validate_action(action)
     if type(state) is not int or state not in range(16):raise ValueError('bad state')
     a=body['ast']
@@ -263,6 +274,8 @@ def compose_ast(shape):
 
 
 def execute_composition(body,state,action,edges):
+    global _INTERPRETER_CALLS
+    _INTERPRETER_CALLS += 1
     validate_body(body)
     if body['ast']['op']!='parallel_xor' or len(edges)!=2 or motif(edges)!=body['ast']['shape']:
         raise ValueError('bad composition binding')
@@ -363,15 +376,24 @@ def load(path):
     return validate_snapshot(json.loads(Path(path).read_text(encoding='utf-8')))
 
 
-@lru_cache(maxsize=128)
-def _edge_execution_matches(guard_op,guard_value,edge_guard,edge_value):
-    # Cache is based on pure AST semantics, never hidden truth / public IDs.
+@lru_cache(maxsize=256)
+def _edge_execution_matches(guard_op,guard_value,edge):
+    """Execute the stored abstract AST under the CANDIDATE's actual role map.
+
+    Equal semantics must not depend on whether a conditional guard happens
+    to occupy object index 2 or index 3, nor on source/target numbering.
+    """
+    source,target,edge_guard,edge_value=edge
+    if (guard_op=='state_is') != (edge_guard>=0):
+        return False
     ast=concept_ast((0,1,2,guard_value)) if guard_op=='state_is' else concept_ast((0,1,-1,-1))
     body={'ast':ast,'body_hash':digest(ast),'support':3,
           'positive':['synthetic-fixture'],'negative':[],'status':'candidate'}
-    e=(0,1,edge_guard,edge_value)
-    return all(execute_body(body,state,('pulse',0,None),{'source':0,'target':1,'guard':2})==
-               step(state,('pulse',0,None),(e,)) for state in range(16))
+    binding={'source':source,'target':target,
+             'guard':edge_guard if edge_guard>=0 else None}
+    return all(execute_body(body,state,('pulse',i,None),binding)==
+               step(state,('pulse',i,None),(edge,))
+               for state in range(16) for i in range(N))
 
 
 @lru_cache(maxsize=8192)
@@ -380,7 +402,7 @@ def _composition_equivalent(shape,edges):
     body={'ast':ast,'body_hash':digest(ast),'support':3,
           'positive':['trusted-schema-check'],'negative':[],'status':'candidate'}
     return all(execute_composition(body,s,('pulse',i,None),edges)==step(s,('pulse',i,None),edges)
-               for s in (0,1,3,7,15) for i in range(4))
+               for s in range(16) for i in range(N))
 
 
 def concept_matches(snapshot,edges,metrics=None):
@@ -394,7 +416,7 @@ def concept_matches(snapshot,edges,metrics=None):
             if ast['op']!='toggle_if_pulse':continue
             if metrics is not None:metrics['body_invocations']+=1
             g=ast['guard'];v=g.get('value',-1)
-            if _edge_execution_matches(g['op'],v,e[2],e[3]):
+            if _edge_execution_matches(g['op'],v,e):
                 covered+=1;break
     if len(edges)==2:
         for b in snapshot['library']:
@@ -414,20 +436,38 @@ def static_macro_library():
 
 
 def weights_for(models,snapshot,arm,metrics):
-    if arm in ('FA','FX','BODY-OFF','LA') or not snapshot['library']:
+    """Query-policy prior; STATIC-MACRO is entirely learner-independent."""
+    if arm in ('FA','FX','BODY-OFF','LA'):
         return [1.0]*len(models)
+    if arm=='STATIC-MACRO':
+        library={'library':static_macro_library()}
+    elif not snapshot['library']:
+        if arm in ('LR','ER'):
+            # Episodic/role-ranking may still have evidence, independent of AST.
+            library=None
+        else:
+            return [1.0]*len(models)
+    else:
+        library=snapshot
     if arm=='LR':
         counts=Counter(e['family'] for e in snapshot['episodes'])
         return [1.0+counts.get(family(x),0) for x in models]
     if arm=='ER':
-        # Real episode retrieval: compare candidate public semantics to stored
-        # inferred TRAIN semantics, invariant to variable renaming.
         ep={e['family'] for e in snapshot['episodes']}
         return [2.0 if family(x) in ep else 1.0 for x in models]
-    if arm=='STATIC-MACRO':
-        fixed={'library':static_macro_library()}
-        return [1.0+3.0*concept_matches(fixed,x,metrics) for x in models]
-    return [1.0+3.0*concept_matches(snapshot,x,metrics) for x in models]
+    if arm not in ('LQ','STATIC-MACRO'):
+        raise ValueError('unknown weighted arm')
+    # Cache-hit counts are not physical AST interpretation. Meter both.
+    before_invocations=metrics.get('body_invocations',0) if metrics is not None else 0
+    before_misses=_edge_execution_matches.cache_info().misses+_composition_equivalent.cache_info().misses
+    out=[1.0+3.0*concept_matches(library,x,metrics) for x in models]
+    if metrics is not None:
+        physical=(_edge_execution_matches.cache_info().misses+
+                  _composition_equivalent.cache_info().misses-before_misses)
+        logical=metrics['body_invocations']-before_invocations
+        metrics['semantic_cache_misses']=metrics.get('semantic_cache_misses',0)+physical
+        metrics['body_cache_hits']=metrics.get('body_cache_hits',0)+logical-physical
+    return out
 
 
 def groups_at(models,state,action):
@@ -467,8 +507,14 @@ def committed_use(snapshot,world,arm,budget):
     validate_snapshot(snapshot)
     if type(world) is not World or arm not in ARMS or type(budget) is not int or budget not in BUDGETS:
         raise ValueError('invalid use arguments')
+    # Reset pure semantic caches between arm episodes for an auditable cold
+    # physical-vs-logical counter; no hidden truth or prior arm state is reused.
+    _edge_execution_matches.cache_clear()
+    _composition_equivalent.cache_clear()
+    interpreter_before=_INTERPRETER_CALLS
     session=Session(world)
-    meter={'actions':0,'model_checks':0,'body_invocations':0}
+    meter={'actions':0,'model_checks':0,'body_invocations':0,
+           'semantic_cache_misses':0,'body_cache_hits':0}
     t0=time.process_time()
     for _ in range(budget):
         h=consistent(session.trace,meter)
@@ -483,6 +529,7 @@ def committed_use(snapshot,world,arm,budget):
     predarm='LQ' if arm in ('LQ','LA') else arm
     p=weights_for(h,snapshot,predarm,meter)
     pred=h[max(range(len(h)),key=lambda i:(p[i],-i))] if h else None
+    meter['physical_interpreter_calls']=_INTERPRETER_CALLS-interpreter_before
     commit={'schema':VERSION,'arm':arm,'budget':budget,'public_ids':list(world.public_ids),
             'trace':session.trace,'status':status,'predicted_edges':[list(e) for e in pred] if pred is not None else None,
             'snapshot_digest':snapshot['digest'],'meter':meter}
@@ -514,6 +561,12 @@ def evaluate(snapshot):
                                  'status':c['status'],'actions':c['meter']['actions'],
                                  'model_checks':c['meter']['model_checks'],
                                  'body_invocations':c['meter']['body_invocations'],
+                                 'semantic_cache_misses':c['meter']['semantic_cache_misses'],
+                                 'body_cache_hits':c['meter']['body_cache_hits'],
+                                 'physical_interpreter_calls':c['meter']['physical_interpreter_calls'],
+                                 'snapshot_train_worlds':snapshot['train_worlds'],
+                                 'seen_in_train':world.family_id in {e['family'] for e in snapshot['episodes']},
+                                 'ood_topology':'THREE_EDGE_CHAIN' if key is None else None,
                                  'cpu_seconds':c['cpu_seconds'],'trace_actions':[r['action'] for r in c['trace']],
                                  'commit_digest':c['commit_digest']})
     summaries={}
@@ -525,17 +578,50 @@ def evaluate(snapshot):
 
 
 def activation_fixture(snapshot):
-    """Development-only paid-history gate, never a scored study world."""
+    """Outcome-blind charged shared-history question-activation witness.
+
+    After correcting the original role bug, the previously fixed 2-pulse
+    fixture no longer exhibits an action switch. Inspect ONLY a finite
+    declared grid of public development world families, budgets and their
+    adaptive, legal *shared* action prefix. If LQ/LA diverge, this is the
+    first intervention difference at an identical public history, not a
+    scored efficacy observation. Otherwise fail closed, do not score.
+    """
     validate_snapshot(snapshot)
-    w=world_for(study_manifest()['composition'][0],508)
-    session=Session(w)
-    for a in [('pulse',0,None),('pulse',1,None)]:session.apply(a)
-    h=consistent(session.trace)
-    ma={'actions':len(session.trace),'model_checks':0,'body_invocations':0}
-    mb={'actions':len(session.trace),'model_checks':0,'body_invocations':0}
-    a=choose(session.state,h,weights_for(h,snapshot,'LQ',ma),2,ma,'LQ')
-    b=choose(session.state,h,weights_for(h,snapshot,'LA',mb),2,mb,'LA')
-    return {'type':'development-only-mechanism-gate','paid_conditioning':len(session.trace),
-            'remaining_candidates':len(h),'LQ_first_action':list(a),'LA_first_action':list(b),
-            'differs':a!=b,'body_invocations':ma['body_invocations'],
-            'transcript_digest':digest(session.trace)}
+    checked=0
+    manifest=study_manifest()
+    for group in ('composition','unseen','seen'):
+        for idx,f in enumerate(manifest[group]):
+            world=world_for(f,508+idx)
+            for budget in (2,4,8):
+                session=Session(world)
+                meter_lq={'actions':0,'model_checks':0,'body_invocations':0}
+                meter_la={'actions':0,'model_checks':0,'body_invocations':0}
+                checked+=1
+                while len(session.trace)<budget:
+                    h=consistent(session.trace)
+                    if not h:break
+                    remaining=budget-len(session.trace)
+                    lq=choose(session.state,h,weights_for(h,snapshot,'LQ',meter_lq),
+                              remaining,meter_lq,'LQ')
+                    la=choose(session.state,h,weights_for(h,snapshot,'LA',meter_la),
+                              remaining,meter_la,'LA')
+                    if lq!=la:
+                        return {'type':'development-only-mechanism-gate',
+                                'scope':'3x12 public semantic families, budgets (2,4,8)',
+                                'paths_checked':checked,
+                                'group':group,'family_index':idx,'budget':budget,
+                                'paid_conditioning':len(session.trace),
+                                'remaining_candidates':len(h),
+                                'LQ_first_action':list(lq) if lq else None,
+                                'LA_first_action':list(la) if la else None,
+                                'differs':True,
+                                'body_invocations':meter_lq['body_invocations'],
+                                'transcript_digest':digest(session.trace)}
+                    if lq is None:break
+                    session.apply(lq)
+                    meter_lq['actions']+=1;meter_la['actions']+=1
+    return {'type':'development-only-mechanism-gate',
+            'scope':'3x12 public semantic families, budgets (2,4,8)',
+            'paths_checked':checked,'paid_conditioning':None,'differs':False,
+            'body_invocations':0,'mechanism_status':'NO_CAUSAL_ACTION_SWITCH_FOUND'}

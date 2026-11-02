@@ -549,3 +549,10 @@ New `packages/relational_world`, `world_model`, `representation`, and `rep_evalu
 - STATIC-MACRO固定比較はTRAIN0/64で学習ライブラリに依存しない。全armの予測側・質問側の情報アクセスを独立レビューし、同予算を用いる。
 - 修正後に実際の6水準TRAIN→Sleep→Snapshot保存→fresh USE→公開人工世界採点を設計するが、scoreは新しい原本・新しいhashへ追記し旧REP004 rawに触れない。TRAIN64は32意味ファミリー、OOD12は同一三段連鎖の変数名違い、低nの「SEEN」群は必ずしも既知でない。
 - 既知のdisclosed集合による工学測定を正式独立F0/FINALと偽称しない。学習モデルの正式昇格、sealed datasets、main統合は別判定。
+
+## EXP-REP-004R — user-authorized bounded execution, before score
+- Owner authorized G1→G6 public artificial corrections, TRAIN, Snapshot, separate-process USE, disclosed revised engineering score and interpretation. Branch remains Draft; no automatic merge or model promotion.
+- The new runner must fail closed on role permutation / fixed macro controls; new score archives are separate from immutable REP004 scored history. Independent reviewer acceptance is a separate gate.
+
+## EXP-REP-004R — observed gate STOP (2026-11-02)
+P1 role-invariance and P2 static baseline tests PASS, but the historical action switch disappears after the correction. A disclosed 108-public-path adaptive mechanism audit found zero LQ/LA action switches. Required activation test intentionally fails and prevents G3–G5 score. See [actual negative run receipt](experiments/EXP-REP-004R/runs/README.md). Do not disable gate, run historical FINAL, promote model or merge the draft.

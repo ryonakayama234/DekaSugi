@@ -6,6 +6,8 @@ on:
       - 'tests/test_rep004_engineering.py'
       - 'scripts/read_rep004_archive.py'
       - 'experiments/EXP-REP-004/**'
+      - 'experiments/EXP-REP-004R/**'
+      - 'scripts/run_rep004r.py'
       - '.github/workflows/rep004-disclosed-synthetic.yml'
   workflow_dispatch:
 permissions:
@@ -13,7 +15,7 @@ permissions:
 jobs:
   disclosed-only:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,3 +32,18 @@ jobs:
             --output /tmp/rep004-recovered.json
       - name: Validate documentation index and links
         run: python scripts/check_docs.py
+
+      - name: EXP-REP-004R corrected six-exposure disclosed synthetic research
+        if: ${{ success() && github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'exp/rep004r-remediation-train-use-score-v1' }}
+        env:
+          REP004R_SOURCE_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          python -m scripts.run_rep004r --output-dir /tmp/rep004r-evidence --source-sha "$REP004R_SOURCE_HEAD"
+      - name: Publish immutable EXP-REP-004R synthetic evidence
+        if: ${{ always() && github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'exp/rep004r-remediation-train-use-score-v1' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rep004r-corrected-disclosed-evidence
+          path: /tmp/rep004r-evidence/
+          if-no-files-found: warn
+          retention-days: 90

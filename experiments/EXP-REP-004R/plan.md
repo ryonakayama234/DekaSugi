@@ -56,3 +56,15 @@ Secondary: TRAIN paid actions, distinct semantic TRAIN families, AST and witness
 ## Acceptance
 Engineering preflight PASS requires 24-permutation exact semantic invariance, independent static-macro behavior for TRAIN0/64, valid public-only observed traces, fixed action charges, integrity-correct snapshots, pure interpreter, preserved historical SHA, exact-head tests/docs/review. Any failure causes STOP before scoring.
 Exploratory candidate threshold, not scientific significance: Δ(LQ−LA)>=+0.02 AND Δ(LQ−STATIC-MACRO)>=+0.02 AND Δ(LQ−FA)>=+0.02, LQ−LA positive in >=9/12 families, no boundary violation, and full cost disclosures. Otherwise preserve NULL/NEGATIVE and do **not** promote a learned model. Only an independent future custodied, source-frozen fresh-FINAL can support formal scientific adoption.
+
+
+## Implementation activation receipt (2026-11-02)
+The owner authorized one substantial G1–G6 synthetic execution, with discretion over implementation and auditing. The remediation PR adds role-binding and fixed-comparator regression tests, a disclosed six-exposure runner (`scripts/run_rep004r.py`), and CI artifact preservation. A successful workflow run and raw checks are required before **any** measured-result claim. This implementation does not authorize historical holdout access, main merge, F0/FINAL or promoted release.
+
+## Exact-head review remediation
+- First corrected role-invariant build caused the previously selected two-pulse mechanism fixture to stop switching first actions. This is a real change in the learned query prior, not something to explain away. The replacement mechanism test searches a finite, disclosed, outcome-blind set of legal paid LQ/LA paths for the first divergent action at identical public histories; no scorer is consulted. If no witness exists in that grid, the CI gate FAILS and **no scoring is run**.
+- Run the synthetic runner with `python -m scripts.run_rep004r` so repository-root imports resolve in CI. Do not call it as `python scripts/run_rep004r.py`.
+- `semantic_cache_misses` and actual `physical_interpreter_calls` are separately metered, never conflated.
+
+## Measured G2 STOP (do not score)
+After role correction the historical two-pulse action-switch gate failed. A further bounded 108 charged adaptive-public-path check independently failed to find the first legal action divergence, so the corrected 6-exposure G3/G4/G5 plan is BLOCKED. Treat results as pre-score engineering evidence; preserve original REP004 raw rows, report only observed test counters and the formal hypothesis limitation. This is not 0/11520 correct; the 11,520 scoring trials are genuinely NOT RUN. See runs/README.md.

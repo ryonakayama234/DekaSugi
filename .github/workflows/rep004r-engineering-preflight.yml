@@ -1,0 +1,33 @@
+name: rep004r-corrected-engineering-preflight
+on:
+  pull_request:
+    paths:
+      - 'packages/rep004/**'
+      - 'tests/test_rep004_engineering.py'
+      - 'scripts/run_rep004r.py'
+      - 'experiments/EXP-REP-004R/**'
+      - '.github/workflows/rep004r-engineering-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  correct-components:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify P1/P2 invariance, prior collapse and physical execution meter
+        run: |
+          python -m unittest \
+            tests.test_rep004_engineering.Rep004.test_role_binding_counterexample_and_all_permutations \
+            tests.test_rep004_engineering.Rep004.test_static_macro_independence_from_learned_library \
+            tests.test_rep004_engineering.Rep004.test_optional_guard_is_not_an_arbitrary_fixed_index \
+            tests.test_rep004_engineering.Rep004.test_full_train_prior_reduces_to_edge_count_and_equals_static \
+            tests.test_rep004_engineering.Rep004.test_physical_interpreter_and_semantic_cache_are_distinct -v
+      - name: Verify new synthetic runner is importable without invoking a score
+        run: python -m scripts.run_rep004r --help
+      - name: Verify research documentation
+        run: python scripts/check_docs.py
