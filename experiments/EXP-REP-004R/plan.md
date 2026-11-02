@@ -40,3 +40,19 @@ python -m packages.rep004 evaluate-disclosed --snapshot .run/rep004r/snapshot64.
 
 ## 保全・レビュー
 old PR #138 の raw sha=70ee6d9c531e18d1576d05649469808375678aebda804036d3ccc7d83ca8b1b3 に触れない。source/manifest/plan/policy SHAを採点開始前にrunへ記載し、最初のscoreより後の方法修正は別run IDを採番。CI greenは学習有効性を証明しない。Independent exact-head reviewが未完了ならreview_pendingを保持する。正式なsealed評価・main merge・Releaseはこの計画の範囲外。
+
+
+## Hypothesis
+- H-INV: fully role-bound atomic/guarded/two-edge AST semantics is invariant under all 24 permutations of four object indices, checked on all 16 states and all 4 pulse actions (and legal set state transformations).
+- H-CONTROL: STATIC-MACRO fixed-library query weights/actions/predictions are exactly independent of TRAIN0 vs TRAIN64 and do not read the learned library.
+- H-Q: for 12 distinct unseen-composition semantic families the paired family-mean predictive effect Δ(LQ−LA) is positive, tested without assuming any gain.
+- H-UNIQUE: the learned concept adds predictive value beyond both an independently installed STATIC-MACRO control and strong fixed FA; if not, no learned-unique claim.
+- H-DOSE: variation in distinct training exposure, not deterministic replay epoch count, can change outcomes; no monotonicity assumption.
+
+## Metrics
+Primary: equal-family-weighted mean Δ for LQ−LA, LQ−STATIC-MACRO, and LQ−FA over 12 unseen-composition families, each averaging budgets 0/1/2/4/8; per-trial accuracy is correct transitions / 64, ABSTAIN utility is 0 by preregistered convention. Report 12 signed family-level differences, 5 budget strata, counts better/worse/tied, action divergence, coverage and abstentions. 64 audit transitions and 5 budgets are repeated measures, **not independent samples**.
+Secondary: TRAIN paid actions, distinct semantic TRAIN families, AST and witness diversity, zero-training control invariance, body logical/physical invocations, cache hits, model checks, fresh-USE CPU, learning + Sleep + Snapshot CPU, resource amortization at 1/10/100 uses; missing metrics are not_observed. The OOD12 are renamed variants of one three-edge-chain topology and cannot establish generalized OOD calibration.
+
+## Acceptance
+Engineering preflight PASS requires 24-permutation exact semantic invariance, independent static-macro behavior for TRAIN0/64, valid public-only observed traces, fixed action charges, integrity-correct snapshots, pure interpreter, preserved historical SHA, exact-head tests/docs/review. Any failure causes STOP before scoring.
+Exploratory candidate threshold, not scientific significance: Δ(LQ−LA)>=+0.02 AND Δ(LQ−STATIC-MACRO)>=+0.02 AND Δ(LQ−FA)>=+0.02, LQ−LA positive in >=9/12 families, no boundary violation, and full cost disclosures. Otherwise preserve NULL/NEGATIVE and do **not** promote a learned model. Only an independent future custodied, source-frozen fresh-FINAL can support formal scientific adoption.
