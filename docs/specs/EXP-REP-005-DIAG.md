@@ -63,3 +63,17 @@ Do not set or revise thresholds after viewing heldout performance. The eventual 
 - Clarke et al., Counterexample-guided Abstraction Refinement (2000), https://web.stanford.edu/class/cs357/cegar.pdf
 - Ellis et al., DreamCoder Wake–Sleep library learning (2021), https://doi.org/10.1145/3453483.3454080
 These are conceptual analogies; DekaSugi does not inherit their guarantees.
+
+
+## G0 illustrative discriminating world: temporal aliasing (PROPOSAL; NOT EXECUTED)
+This example makes the G1/G2 tests operationally understandable; it is **not** a training result, frozen benchmark, or a claim that the learner invented a temporal primitive.
+
+- H0: the REP004-style deterministic, fully visible 4-bit state transition model `f(visible_state, action)`; all old 0/1/2-edge candidates are memoryless with respect to the public action history.
+- Hplus candidate: a strictly typed single-lag public-action predicate `previous_action_is(set, role=source, value=0)`, gating a `pulse(source) -> toggle(target)` effect. Role binding is by source/target roles, never object IDs.
+- Legal four-action **illustrative** transcript from all-zero visible state: `set(source,0): 0 -> 0`; `pulse(source): 0 -> target_on`; `set(target,0): target_on -> 0`; `pulse(source): 0 -> 0`. All four actions have price 1; there is no free reset or privileged observation.
+- The two pulse records have identical `(visible_state=0, action=pulse(source))` but unequal successors. Thus no deterministic memoryless H0 transition function can fit BOTH records, regardless of its search policy. A single-lag Hplus hypothesis can describe them. This is an analytical witness **candidate**; an independent finite-enumeration checker, the actual paid runtime, all 24 role permutations, negative controls and source-boundary checks must validate it before G2 is marked PASS.
+- Alternative representation: augment the agent state with a public previous-action feature. Compare this fairly with an explicit temporal predicate. A change of state encoding is itself a representation intervention, not free additional information.
+- Positive H0 control: visible-state-conditional pulse dynamics representable by old conditional edges. Negative controls: no repeated-state witness before the allowed horizon; observations incompatible with BOTH grammars; delayed dependence beyond Hplus's one-step memory; forged/unpaid transitions. For the first case report UNIDENTIFIABLE, for the second OUTSIDE_HPLUS/INVALID as appropriate, never forced invention.
+- Critical boundary: this toy tests **expressibility and the availability of a legal counterexample**, not whether a learner detects the deficit or builds the predicate itself. The future G3 learned Hplus must beat equal-capacity *preinstalled* Hplus on genuine information/compute efficiency or independent-family transfer, rather than claiming that its larger grammar is a learned gain.
+
+This witness connects to active automata learning's distinction between histories that appear identical under an inadequate state abstraction but have distinguishable futures. The design must not assume a free teacher/equivalence-query oracle; only the charged public actions are learner-visible.
