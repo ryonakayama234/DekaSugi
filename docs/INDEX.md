@@ -2,7 +2,7 @@
 
 id: DOC-INDEX
 status: active
-updated: 2026-10-28
+updated: 2026-11-02
 tags: navigation, architecture, research, experiments
 
 **探す → 該当する小さな文書を読む → 必要な依存文書だけを辿る。**
@@ -283,3 +283,10 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | Evidence ID | Question | Engineering receipt |
 |---|---|---|
 | ACTIVE-001-PR2-CONTAINERS | Can equality-preserving tuple/str/int subclasses launder forged semantic votes, answers or proposal fields through replay? Exact builtin types required before any learner calculation. | [Synthetic check](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md) / [Architecture](architecture/system.md) / [Contracts](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+
+## 2026-11-02 — REP005 V2研究決定稿・GitHub整理（設計のみ）
+- [測定対象・仮説・技術選定・G0〜G6を統合したV2決定稿](specs/EXP-REP-005-DECISION-V2.md)：未凍結、未学習、未採点。
+- [32件のopen PRの整理監査と段階的統合方針](research/20261102-research-pr-portfolio-audit.md)：mainと研究Draftの能力を区別する。
+- [ARCH-001 システム図](architecture/system.md) / [ARCH-002 データ構造・流れ](architecture/contracts.md) / [V2設計run台帳](../experiments/EXP-REP-005/runs/20261102-v2-design-not-run.md)。
+- 従来の[Draft PR #145](https://github.com/ryonakayama234/DekaSugi/pull/145)の3操作反例は方法プレチェックであり、80独立ファミリー、学習モデル、正式評価の成立を意味しない。
