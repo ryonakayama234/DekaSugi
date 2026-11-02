@@ -89,6 +89,18 @@ class G0FiniteWitnessTest(unittest.TestCase):
             with self.subTest(args=args), self.assertRaises(ValueError):
                 m.Action(*args)
 
+    def test_pilot_fixture_role_orbits_fail_eighty_family_gate(self):
+        # Structural upper bound, not an assertion of 14 independent families.
+        # Source/target are distinct; guard is source/target/other;
+        # guard value and lag give 2x2 variants; always/never add one each.
+        upper = m.fixture_role_orbit_upper_bound()
+        self.assertEqual(upper, {
+            "always": 1, "never": 1, "guard": 12, "total": 14
+        })
+        self.assertLess(upper["total"], 80)
+        self.assertLess(upper["guard"], 20)
+        self.assertLess(upper["always"] + upper["never"], 20)
+
     def test_g0_receipt_explicitly_not_certified_or_scored(self):
         receipt = m.audit()
         self.assertEqual(receipt["role_permutations_checked"], 24)
@@ -97,6 +109,8 @@ class G0FiniteWitnessTest(unittest.TestCase):
         self.assertFalse(receipt["learning_performed"])
         self.assertFalse(receipt["scoring_performed"])
         self.assertFalse(receipt["distinct_structural_families_verified"])
+        self.assertEqual(receipt["pilot_fixture_role_orbit_upper_bound"]["total"], 14)
+        self.assertFalse(receipt["family_gate_passed"])
 
 
 if __name__ == "__main__":
