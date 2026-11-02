@@ -122,7 +122,7 @@ def main():
         score_cpu=time.process_time()-t
         assert len(scores['rows'])==1920 and scores['record_count']==1920
         paid=sum(r['actions'] for r in scores['rows'])
-        assert all(r['body_invocations']==r['body_evals']+r['body_cache_hits'] for r in scores['rows'])
+        assert all(r['body_invocations']==r['semantic_cache_misses']+r['body_cache_hits'] for r in scores['rows'])
         raw_path=out/f'scored{n}-raw.json.zlib.b64'
         sha,length=pack(raw_path,scores)
         st='UNSEEN_COMPOSITION'
@@ -132,7 +132,7 @@ def main():
             next(r for r in complete if r['family']==f and r['budget']==b and r['arm']=='LQ')['trace_actions']!=
             next(r for r in complete if r['family']==f and r['budget']==b and r['arm']=='LA')['trace_actions']
             for f in sorted({r['family'] for r in complete}) for b in BUDGETS)
-        same=all(r['body_invocations']==r['body_evals']+r['body_cache_hits'] for r in scores['rows'])
+        same=all(r['body_invocations']==r['semantic_cache_misses']+r['body_cache_hits'] for r in scores['rows'])
         v={'train_worlds':n,'distinct_semantic_train_families':snapshot['distinct_train_families'],
            'paid_train_actions':snapshot['paid_actions'],'snapshot_digest':snapshot['digest'],
            'snapshot_file_sha256':sp_sha,'library_size':len(snapshot['library']),
@@ -144,7 +144,8 @@ def main():
            'scores_raw_sha256':sha,'scores_raw_bytes':length,'trial_rows':len(scores['rows']),
            'evaluation_paid_actions':paid,'evaluation_model_checks':sum(r['model_checks'] for r in scores['rows']),
            'logical_body_invocations':sum(r['body_invocations'] for r in scores['rows']),
-           'actual_body_evals':sum(r['body_evals'] for r in scores['rows']),
+           'semantic_cache_misses':sum(r['semantic_cache_misses'] for r in scores['rows']),
+           'physical_interpreter_calls':sum(r['physical_interpreter_calls'] for r in scores['rows']),
            'body_cache_hits':sum(r['body_cache_hits'] for r in scores['rows']),
            'meter_identity_check':same,'train_cpu_seconds':round(train_cpu,6),
            'evaluation_cpu_seconds':round(score_cpu,6),
