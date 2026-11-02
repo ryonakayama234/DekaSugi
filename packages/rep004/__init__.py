@@ -240,9 +240,16 @@ def validate_body(body):
 def execute_body(body, state, action, binding):
     """Interpreter only; no fixed-model catalog, no callable from untrusted JSON."""
     validate_body(body)
-    if type(binding) is not dict or set(binding)!={'source','target','guard'} or any(type(v) is not int or v not in range(N) for v in binding.values()):
+    if type(binding) is not dict or set(binding)!={'source','target','guard'}:
         raise ValueError('bad role binding')
-    if len(set(binding.values()))!=3:raise ValueError('non-injective roles')
+    source,target,guard=(binding[k] for k in ('source','target','guard'))
+    if any(type(v) is not int or v not in range(N) for v in (source,target)):
+        raise ValueError('invalid source/target roles')
+    if source==target:raise ValueError('non-injective roles')
+    if guard is not None and (type(guard) is not int or guard not in range(N) or guard in (source,target)):
+        raise ValueError('invalid guard role')
+    if (body['ast']['guard']['op']=='state_is') != (guard is not None):
+        raise ValueError('conditional guard binding mismatch')
     validate_action(action)
     if type(state) is not int or state not in range(16):raise ValueError('bad state')
     a=body['ast']
@@ -363,15 +370,24 @@ def load(path):
     return validate_snapshot(json.loads(Path(path).read_text(encoding='utf-8')))
 
 
-@lru_cache(maxsize=128)
-def _edge_execution_matches(guard_op,guard_value,edge_guard,edge_value):
-    # Cache is based on pure AST semantics, never hidden truth / public IDs.
+@lru_cache(maxsize=256)
+def _edge_execution_matches(guard_op,guard_value,edge):
+    """Execute the stored abstract AST under the CANDIDATE's actual role map.
+
+    Equal semantics must not depend on whether a conditional guard happens
+    to occupy object index 2 or index 3, nor on source/target numbering.
+    """
+    source,target,edge_guard,edge_value=edge
+    if (guard_op=='state_is') != (edge_guard>=0):
+        return False
     ast=concept_ast((0,1,2,guard_value)) if guard_op=='state_is' else concept_ast((0,1,-1,-1))
     body={'ast':ast,'body_hash':digest(ast),'support':3,
           'positive':['synthetic-fixture'],'negative':[],'status':'candidate'}
-    e=(0,1,edge_guard,edge_value)
-    return all(execute_body(body,state,('pulse',0,None),{'source':0,'target':1,'guard':2})==
-               step(state,('pulse',0,None),(e,)) for state in range(16))
+    binding={'source':source,'target':target,
+             'guard':edge_guard if edge_guard>=0 else None}
+    return all(execute_body(body,state,('pulse',i,None),binding)==
+               step(state,('pulse',i,None),(edge,))
+               for state in range(16) for i in range(N))
 
 
 @lru_cache(maxsize=8192)
@@ -380,7 +396,7 @@ def _composition_equivalent(shape,edges):
     body={'ast':ast,'body_hash':digest(ast),'support':3,
           'positive':['trusted-schema-check'],'negative':[],'status':'candidate'}
     return all(execute_composition(body,s,('pulse',i,None),edges)==step(s,('pulse',i,None),edges)
-               for s in (0,1,3,7,15) for i in range(4))
+               for s in range(16) for i in range(N))
 
 
 def concept_matches(snapshot,edges,metrics=None):
@@ -394,7 +410,7 @@ def concept_matches(snapshot,edges,metrics=None):
             if ast['op']!='toggle_if_pulse':continue
             if metrics is not None:metrics['body_invocations']+=1
             g=ast['guard'];v=g.get('value',-1)
-            if _edge_execution_matches(g['op'],v,e[2],e[3]):
+            if _edge_execution_matches(g['op'],v,e):
                 covered+=1;break
     if len(edges)==2:
         for b in snapshot['library']:
@@ -414,20 +430,38 @@ def static_macro_library():
 
 
 def weights_for(models,snapshot,arm,metrics):
-    if arm in ('FA','FX','BODY-OFF','LA') or not snapshot['library']:
+    """Query-policy prior; STATIC-MACRO is entirely learner-independent."""
+    if arm in ('FA','FX','BODY-OFF','LA'):
         return [1.0]*len(models)
+    if arm=='STATIC-MACRO':
+        library={'library':static_macro_library()}
+    elif not snapshot['library']:
+        if arm in ('LR','ER'):
+            # Episodic/role-ranking may still have evidence, independent of AST.
+            library=None
+        else:
+            return [1.0]*len(models)
+    else:
+        library=snapshot
     if arm=='LR':
         counts=Counter(e['family'] for e in snapshot['episodes'])
         return [1.0+counts.get(family(x),0) for x in models]
     if arm=='ER':
-        # Real episode retrieval: compare candidate public semantics to stored
-        # inferred TRAIN semantics, invariant to variable renaming.
         ep={e['family'] for e in snapshot['episodes']}
         return [2.0 if family(x) in ep else 1.0 for x in models]
-    if arm=='STATIC-MACRO':
-        fixed={'library':static_macro_library()}
-        return [1.0+3.0*concept_matches(fixed,x,metrics) for x in models]
-    return [1.0+3.0*concept_matches(snapshot,x,metrics) for x in models]
+    if arm not in ('LQ','STATIC-MACRO'):
+        raise ValueError('unknown weighted arm')
+    # Cache-hit counts are not physical AST interpretation. Meter both.
+    before_invocations=metrics.get('body_invocations',0) if metrics is not None else 0
+    before_misses=_edge_execution_matches.cache_info().misses+_composition_equivalent.cache_info().misses
+    out=[1.0+3.0*concept_matches(library,x,metrics) for x in models]
+    if metrics is not None:
+        physical=(_edge_execution_matches.cache_info().misses+
+                  _composition_equivalent.cache_info().misses-before_misses)
+        logical=metrics['body_invocations']-before_invocations
+        metrics['body_evals']=metrics.get('body_evals',0)+physical
+        metrics['body_cache_hits']=metrics.get('body_cache_hits',0)+logical-physical
+    return out
 
 
 def groups_at(models,state,action):
@@ -467,8 +501,13 @@ def committed_use(snapshot,world,arm,budget):
     validate_snapshot(snapshot)
     if type(world) is not World or arm not in ARMS or type(budget) is not int or budget not in BUDGETS:
         raise ValueError('invalid use arguments')
+    # Reset pure semantic caches between arm episodes for an auditable cold
+    # physical-vs-logical counter; no hidden truth or prior arm state is reused.
+    _edge_execution_matches.cache_clear()
+    _composition_equivalent.cache_clear()
     session=Session(world)
-    meter={'actions':0,'model_checks':0,'body_invocations':0}
+    meter={'actions':0,'model_checks':0,'body_invocations':0,
+           'body_evals':0,'body_cache_hits':0}
     t0=time.process_time()
     for _ in range(budget):
         h=consistent(session.trace,meter)
@@ -514,6 +553,11 @@ def evaluate(snapshot):
                                  'status':c['status'],'actions':c['meter']['actions'],
                                  'model_checks':c['meter']['model_checks'],
                                  'body_invocations':c['meter']['body_invocations'],
+                                 'body_evals':c['meter']['body_evals'],
+                                 'body_cache_hits':c['meter']['body_cache_hits'],
+                                 'snapshot_train_worlds':snapshot['train_worlds'],
+                                 'seen_in_train':world.family_id in {e['family'] for e in snapshot['episodes']},
+                                 'ood_topology':'THREE_EDGE_CHAIN' if key is None else None,
                                  'cpu_seconds':c['cpu_seconds'],'trace_actions':[r['action'] for r in c['trace']],
                                  'commit_digest':c['commit_digest']})
     summaries={}

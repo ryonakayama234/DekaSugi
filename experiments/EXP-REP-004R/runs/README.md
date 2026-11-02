@@ -13,3 +13,6 @@ parent_historical_score_sha256: 70ee6d9c531e18d1576d05649469808375678aebda804036
 experiment_spec: docs/specs/EXP-REP-004R.md
 experiment_plan: experiments/EXP-REP-004R/plan.md
 note: A docs-only design proposal; no patch, no new learning Snapshot, no local USE execution and no scored trials. New dated immutable runs will be appended in the implementation PR.
+
+## Execution authority (2026-11-02)
+User approved implementation and end-to-end synthetic learning/use/re-scoring on a separate Draft implementation PR. No run is considered completed until CI and exported raw evidence are checked. Historical source and original 1,920 rows remain frozen. The CI evidence artifact contains all six corrected raw score dumps, snapshots, separate-process USE receipts and an aggregate summary; results and exact hashes must be appended in a distinct dated ledger after verification.

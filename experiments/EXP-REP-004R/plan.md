@@ -56,3 +56,7 @@ Secondary: TRAIN paid actions, distinct semantic TRAIN families, AST and witness
 ## Acceptance
 Engineering preflight PASS requires 24-permutation exact semantic invariance, independent static-macro behavior for TRAIN0/64, valid public-only observed traces, fixed action charges, integrity-correct snapshots, pure interpreter, preserved historical SHA, exact-head tests/docs/review. Any failure causes STOP before scoring.
 Exploratory candidate threshold, not scientific significance: Δ(LQ−LA)>=+0.02 AND Δ(LQ−STATIC-MACRO)>=+0.02 AND Δ(LQ−FA)>=+0.02, LQ−LA positive in >=9/12 families, no boundary violation, and full cost disclosures. Otherwise preserve NULL/NEGATIVE and do **not** promote a learned model. Only an independent future custodied, source-frozen fresh-FINAL can support formal scientific adoption.
+
+
+## Implementation activation receipt (2026-11-02)
+The owner authorized one substantial G1–G6 synthetic execution, with discretion over implementation and auditing. The remediation PR adds role-binding and fixed-comparator regression tests, a disclosed six-exposure runner (`scripts/run_rep004r.py`), and CI artifact preservation. A successful workflow run and raw checks are required before **any** measured-result claim. This implementation does not authorize historical holdout access, main merge, F0/FINAL or promoted release.
