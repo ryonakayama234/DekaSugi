@@ -3,6 +3,7 @@
 id: EXP-REP-005-RUNS
 status: not_run
 updated: 2026-11-02
+tags: representation, diagnostic, active-learning, experiment
 spec: ../../../docs/specs/EXP-REP-005-DIAG.md
 plan: ../plan-diag-v0.md
 
