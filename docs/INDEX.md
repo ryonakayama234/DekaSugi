@@ -392,3 +392,5 @@ The original EXP-REP-001 plan is a proposal, not a frozen FINAL method. Do not i
 旧REP004原本とSHAは不変。修正後スコアは探索的工学結果であり、正式な独立F0/FINALやモデル昇格と同一視しない。
 
 | REP004R runner | Six TRAIN exposures, fresh process USE, new correction-specific score archive, per-family signed deltas and provenance | implementation candidate; measured outcome only on successful CI | [Runner](../scripts/run_rep004r.py) / [new run ledger](../experiments/EXP-REP-004R/runs/README.md) |
+
+**EXP-REP-004R pre-score STOP:** 108 public adaptive histories have no LQ/LA question split after role-invariance repair. Six corrected exposure scores are NOT RUN; see [negative receipt](../experiments/EXP-REP-004R/runs/README.md).

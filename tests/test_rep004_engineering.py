@@ -64,6 +64,27 @@ class Rep004(unittest.TestCase):
         with self.assertRaises(ValueError):
             execute_body(body,0,('pulse',3,None),{'source':3,'target':2,'guard':3})
 
+    def test_full_train_prior_reduces_to_edge_count_and_equals_static(self):
+        from packages.rep004 import weights_for
+        full=learn(64)
+        zero=learn(0)
+        models=list(catalog())
+        learned=weights_for(models,full,'LQ',{'body_invocations':0})
+        static=weights_for(models,zero,'STATIC-MACRO',{'body_invocations':0})
+        self.assertEqual(len(full['library']),7)
+        self.assertEqual(learned,static)
+        for edges,w in zip(models,learned):
+            self.assertEqual(w,{0:1.0,1:4.0,2:13.0}[len(edges)])
+
+    def test_physical_interpreter_and_semantic_cache_are_distinct(self):
+        snap=learn(64)
+        w=world_for(self.manifest['composition'][0],590)
+        c=committed_use(snap,w,'LQ',2)
+        m=c['meter']
+        self.assertEqual(m['body_invocations'],m['semantic_cache_misses']+m['body_cache_hits'])
+        self.assertGreater(m['physical_interpreter_calls'],0)
+        self.assertGreater(m['physical_interpreter_calls'],m['semantic_cache_misses'])
+
     def test_grammar_and_family_cardinality(self):
         self.assertEqual(len(EDGES),60)
         self.assertEqual(len(catalog()),1735)

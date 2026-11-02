@@ -65,3 +65,6 @@ The owner authorized one substantial G1–G6 synthetic execution, with discretio
 - First corrected role-invariant build caused the previously selected two-pulse mechanism fixture to stop switching first actions. This is a real change in the learned query prior, not something to explain away. The replacement mechanism test searches a finite, disclosed, outcome-blind set of legal paid LQ/LA paths for the first divergent action at identical public histories; no scorer is consulted. If no witness exists in that grid, the CI gate FAILS and **no scoring is run**.
 - Run the synthetic runner with `python -m scripts.run_rep004r` so repository-root imports resolve in CI. Do not call it as `python scripts/run_rep004r.py`.
 - `semantic_cache_misses` and actual `physical_interpreter_calls` are separately metered, never conflated.
+
+## Measured G2 STOP (do not score)
+After role correction the historical two-pulse action-switch gate failed. A further bounded 108 charged adaptive-public-path check independently failed to find the first legal action divergence, so the corrected 6-exposure G3/G4/G5 plan is BLOCKED. Treat results as pre-score engineering evidence; preserve original REP004 raw rows, report only observed test counters and the formal hypothesis limitation. This is not 0/11520 correct; the 11,520 scoring trials are genuinely NOT RUN. See runs/README.md.

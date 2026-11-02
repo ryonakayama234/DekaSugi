@@ -1293,3 +1293,5 @@ flowchart TD
 修正主対象: packages/rep004 でのguard/source/target全ロール束縛とSTATIC-MACROの学習ライブラリからの独立化。G1/G2失格なら以後のTRAIN/USE/採点停止。G3→G5で0/3/8/16/32/64の学習、Snapshot、fresh USEと公開人工採点を同じ後続PRにまとめる。EのtruthをTへ漏洩させない。正式な独立カストディ評価器ではない。[研究仕様](../specs/EXP-REP-004R.md) / [工程](../../experiments/EXP-REP-004R/plan.md)。
 
 **EXP-REP-004R implementation note:** candidate-role maps are concretely passed into `execute_body`; unconditional guard uses `None`, and simultaneous two-edge composition is checked over all 16 states. The STATIC-MACRO branch executes independently of `Snapshot.library`. The synthetic CI runner constructs six snapshots and exercises one fresh child-process USE per exposure before scoring. Success requires actual CI logs/evidence, not this diagram alone.
+
+**Observed G2 mechanism STOP:** a corrected-role concept prior covers all atomic/2-edge shapes, yet its query policy does not diverge from LA in the examined 108 public adaptive inquiry paths. Architecture is tested as a *candidate*, not as an independently validated acquired intelligence or deployed capability. [Run receipt](../../experiments/EXP-REP-004R/runs/README.md).

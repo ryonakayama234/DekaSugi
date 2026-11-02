@@ -553,3 +553,6 @@ New `packages/relational_world`, `world_model`, `representation`, and `rep_evalu
 ## EXP-REP-004R — user-authorized bounded execution, before score
 - Owner authorized G1→G6 public artificial corrections, TRAIN, Snapshot, separate-process USE, disclosed revised engineering score and interpretation. Branch remains Draft; no automatic merge or model promotion.
 - The new runner must fail closed on role permutation / fixed macro controls; new score archives are separate from immutable REP004 scored history. Independent reviewer acceptance is a separate gate.
+
+## EXP-REP-004R — observed gate STOP (2026-11-02)
+P1 role-invariance and P2 static baseline tests PASS, but the historical action switch disappears after the correction. A disclosed 108-public-path adaptive mechanism audit found zero LQ/LA action switches. Required activation test intentionally fails and prevents G3–G5 score. See [actual negative run receipt](experiments/EXP-REP-004R/runs/README.md). Do not disable gate, run historical FINAL, promote model or merge the draft.
