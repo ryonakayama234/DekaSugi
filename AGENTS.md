@@ -439,7 +439,7 @@
 
 ## EXP-REP-005 V2 と研究PR整理（2026-11-02、設計案）
 - [V2研究設計](docs/specs/EXP-REP-005-DECISION-V2.md) と [32 PR整理監査](docs/research/20261102-research-pr-portfolio-audit.md) は未凍結・未採点の提案であり、作業承認・学術的なG0承認ではない。
-- P/R/U/N各20以上の独立した構造的意味ファミリー、役割置換と生成元依存を除去した分割、合法な有料反例、独立方法レビューが成立するまで実TRAIN・採点を停止する。数合わせを禁止。
+- 【改訂済み】M0/M1（H0可/Hplusのみ）× ID/UNIDの直交4セルに独立ファミリーを仮に各20とする案。範囲外M2/雑音M3は別途安全性対照として設計し、G0b認証まではTRAINと採点をSTOP。数合わせ禁止。
 - 研究DraftのNULL/NEGATIVEをmainの正の能力として扱わず、積み上げPRの一括マージ・強制push・閉鎖をしない。移植時は既存評価ワークフロー・source-lockを個別に監査する。
 - 以降の実装PRではAGENTS、INDEX、ARCH-001 Mermaid、ARCH-002契約、実験計画、追記型run記録、テストを同時に更新する。
 
@@ -448,3 +448,5 @@
 - **Supersedes the older phrase above that required P/R/U/N as four disjoint strata**: representation is M0(H0), M1(Hplus-only), M2(outside Hplus), M3(stochastic/invalid); identification is separate ID/UNID/NOT_CERTIFIED. The tentative primary 2×2 cells M0/M1 × ID/UNID require separate independent family certification, plus M2/M3 safety stress cases. See [G0 plan](experiments/EXP-REP-005/plan.md).
 - G2 does NOT require Hplus to express M2/M3; correctly proving out-of-grammar and correctly handling stochastic/invalid events are successful diagnostic negative controls. Do not treat exhausted search as a non-identifiability proof.
 - [G0a witness implementation](experiments/EXP-REP-005/g0_witness.py) was selectively ported from Draft #145; [orthogonal G0 checker](experiments/EXP-REP-005/g0_axes.py) is a bounded artificial engineering diagnostic. Pilot fixture orbit upper bound is 14, so original 80 independent-family quota is blocked in this fixture. No TRAIN or scored G0b certification.
+
+- [研究能力とmain/Draft境界の最新表](docs/research/CURRENT-STATE.md) / [32既存PR個別台帳](docs/research/20261102-research-pr-registry.md)。
