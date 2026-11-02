@@ -127,3 +127,9 @@ Review-driven [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) uses 
 
 ## ACTIVE-001 PR2 — exact-state types and replay (2026-10-30)
 [Draft PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) now checks that externally reconstructed semantic-class ID tuples and proposal/answer fields contain exact Python primitive types, preventing equality-preserving subclass operations from changing question scores. [System map](docs/architecture/system.md), [data contract](docs/architecture/contracts.md), [synthetic run](experiments/ACTIVE-001/runs/20261030-pr2-container-types.md). No historical scoring, independent source custody or measured intelligence gain is claimed.
+
+
+## 2026-11-03 — 次の研究判断候補：EXP-REP-005 G0b-B (提案段階)
+2026-10-25〜30の各節は当時の状態を記録しています。最新の研究は別の未マージDraftとして進み、[G0b-A Draft #149](https://github.com/ryonakayama234/DekaSugi/pull/149)は8件の人工世界で意味・型・安全な停止の工学検査を完了した一方、全約1億構文を列挙できず、独立した未知ファミリーの科学的な認証はSTOPです。[G2 Draft #151](https://github.com/ryonakayama234/DekaSugi/pull/151)では4人工エピソードから特徴を選択してSnapshotへ保存・再読込できましたが、強い固定Hplusを上回ったわけではありません。
+
+新しい[Issue #152](https://github.com/ryonakayama234/DekaSugi/issues/152)では、構文総当たりを置き換える構成的な因果ファミリー生成と、意味・役割・祖先・合法的質問可能性の独立認証を**検討**します。[研究判断案](docs/specs/EXP-REP-005-G0B-B-CONSTRUCTIVE.md) / [実験計画案](experiments/EXP-REP-005-G0B-B/plan.md) / [未実行記録](experiments/EXP-REP-005-G0B-B/runs/20261103-design-not-run.md)。この段階は設計提案のみで、学習済み固定モデル、追加epoch、未知世界性能、正式採点、main統合の承認を意味しません。
