@@ -443,3 +443,9 @@
 - Compare H0/Hplus crossed with fixed/context inquiry; capacity-match a static Hplus to learned Hplus. Keep learner Snapshot and hidden evaluation provenance strictly separate.
 - No fresh model freeze, training, score, reuse of sealed historical splits, or automatic main merge is authorized by the docs-only candidate. Update ARCH-001/002, docs/INDEX, experimental ledger and acceptance gates in the same later implementation PR.
 - Source: [EXP-REP-005-DIAG spec](docs/specs/EXP-REP-005-DIAG.md), [plan](experiments/EXP-REP-005/plan-diag-v0.md), [runs](experiments/EXP-REP-005/runs/README.md), [Issue #142](https://github.com/ryonakayama234/DekaSugi/issues/142).
+
+
+## EXP-REP-005 G0 temporal aliasing witness guard (2026-11-02; PROPOSAL only)
+- A two-history witness with equal visible current state/action and different next states can invalidate a deterministic *visible-state-only* H0, but cannot establish autonomous predicate invention. Explicitly record all charged `set/pulse` actions and the observable previous-action boundary; no free reset, hidden truth or family access.
+- Verify a legal public transcript and all role permutations before moving from G0 proposal to any G2 proof, then compare learned extension against *preinstalled capacity-matched* Hplus and augmented-state alternatives. Keep G1/G2 code and scores blocked pending review/authorization; this PR adds no executable new model.
+- Diagram/contract/spec/plan/run ledger must change together. [G0 example](docs/specs/EXP-REP-005-DIAG.md).
