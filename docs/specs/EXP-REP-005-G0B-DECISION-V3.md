@@ -1,7 +1,7 @@
 # EXP-REP-005 G0b — Causal World Laboratory / Integrated Research Decision V3
 
 id: EXP-REP-005-G0B-DECISION-V3
-status: decision_candidate_review_required_not_frozen_not_run
+status: g0b_a_source_engineering_pass_full_hplus_stop
 updated: 2026-11-02
 tags: representation, active-learning, causal-world, wake-sleep, identifiability, research
 
@@ -111,3 +111,13 @@ This appendix resolves ambiguities left by the V3 exploratory grammar descriptio
 - G0b-A acceptance deliberately does NOT depend on finding 80 families. It must output verified counts AND proof incompleteness. G0b-B/future study distribution cannot be frozen until full completed certification and an independently approved family-level power simulation.
 
 This V3.1 appendix is intended to govern the pilot over the earlier general motif list. If the grammar cannot produce useful inhibitory/mediated mechanisms without further primitives, report that as a **measured limitation** and request a separately reviewed V4, not reinterpret the grammar after the fact.
+
+## G0b-A executable source-only engineering result (2026-11-03)
+
+G0b-A source-only implementation and independent finite oracle now exist **on Draft PR #149**, not main: [module](../../packages/rep005_g0b/__init__.py), [synthetic tests](../../tests/test_rep005_g0b_synthetic.py), and [exact-head engineering run](../../experiments/EXP-REP-005-G0B/runs/20261103-g0b-a-synthetic.md). Earlier D0-only statements above are historical initial scope; this addendum supersedes them for implementation status.
+
+The full typed-domain reference check passes for eight disclosed artificial laws: eight distinct full signatures and eight typed role-orbit keys, at 30,144 outcomes/law. A constructed closed two-law fixture admits exact legal B=1 positive inquiry opportunity (feasible pulse policy terminal MAP 1.0 versus repeated-set baseline 0.5); a lag1 pair is UNID at B=1 and ID at B=2, with NOT_CERTIFIED on proof cap. This verifies engineering mechanics only, NOT learned behavior, independently sampled worlds, or transferable concept novelty.
+
+The fully specified <=2-Edge syntax space has 32 literals, 360 valid guard pairs, 393 guards/Edge, 14,148 Edge syntaxes and **100,090,027 normal-form Law syntaxes** (0/1/2 edges). The documented 200,000 raw candidate enumeration cap cannot exhaust this grammar. The syntax count is NOT a count of independent semantic worlds. Full-Hplus_G classification, complete family census, family-level power, source ancestry independence and 80-family feasibility remain NOT_CERTIFIED; G0b scientific gate stays **G0B_STOP_FULL_GRAMMAR_NOT_ENUMERATED**. A targeted, independently reviewed narrower grammar or sound structural compression is needed before the next actual scientific study; no paid TRAIN, formal DEV/FINAL or Snapshot promotion.
+
+The Python source-only public_step output is a projection of public observations, NOT a secure process separation for a future learning agent. The future learner must not import the law/certifier code or private source labels. Source-only engineering CI is not a scientific review.
