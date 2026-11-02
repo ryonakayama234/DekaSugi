@@ -2,7 +2,7 @@
 
 id: ARCH-002
 status: proposed
-updated: 2026-10-28
+updated: 2026-11-02
 tags: contracts, schema, task, ast, evaluation
 
 EXP-0001は**型付きの小さなDSL**を実装し、自由なPythonコードを生成・実行しない。以下のTaskSpec/ASTのJSON例は実装スキーマ `0.1` に対応する。
@@ -1039,3 +1039,22 @@ flowchart LR
   HOLDOUT["Evaluator-only answers"] -.->|"Never exposed"| RECON
 ~~~
 **Canonical storage contract:** `QuerySession.class_ids` is exactly `tuple` whose entries are exactly `str`, never a tuple or string subclass, because equality can differ from iteration. The compact `answers` tuple contains exact 3-tuples of (int ID, str output, str local receipt). The `trace` container is exactly tuple; each ordered entry is an exact tuple of typed `QueryProposal` and `QueryAnswer`. Session status, pool/world/split digest fields, and proposal and answer primitive fields must have exact builtin types; bool is rejected when int is required. Exact types are checked at the public boundary **before** Gini, random policy, history revalidation, or final-program selection. Per-prefix policy/receipt semantics and the active-query/2 schema remain unchanged. Hashes remain local consistency checks, NOT independent Oracle authentication. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## ARCH-002 — EXP-REP-005 V2 仮データ契約（未実装、2026-11-02）
+
+[V2方法](../specs/EXP-REP-005-DECISION-V2.md)。評価者私有のWorldSpecと公開可能な実行証拠を厳格に分離する。
+
+```mermaid
+flowchart LR
+    W["WorldSpec: 評価者のみ"] --> E["有料実行"]
+    E --> P["PublicEvent: 状態・操作・結果・費用"]
+    P --> V["VersionSpaceReceipt / MismatchWitness"]
+    V --> C["ConceptCandidate: 型付き実行表現"]
+    C --> S["Snapshot: 出典と内容hash"]
+    S --> PC["PredictionCommit: 正解公開前"]
+    PC --> R["ScoreReceipt: 採点側の証拠"]
+    W --> R
+```
+
+PublicEventは真正な出所、順序、合法性、実費を持つ。VersionSpaceReceiptの候補枯渇と探索時間切れは区別し、MismatchWitnessの証明範囲は決定論的無記憶H0に限定。ConceptCandidateは支持・負例・適用条件と実行可能な型付きbodyを保持する。Snapshotはソース・文法・公開学習履歴・bodyのdigestを保持し、新プロセスで再読込を検査する。PredictionCommitは未知入力のみを受け取り、正解公開前に回答・棄権を固定する。ScoreReceiptの意味ファミリーID、隠れた世界の規則・seed・正解は学習器へ渡さない。世界の意味署名の同一性と、構造的意味ファミリーの独立性は別々に検証する。
