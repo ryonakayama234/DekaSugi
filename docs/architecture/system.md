@@ -962,3 +962,31 @@ flowchart TB
   OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
 ~~~
 `tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## ARCH-001 — EXP-REP-005 G0b V3 causal laboratory (design-only, 2026-11-02)
+[Decision V3](../specs/EXP-REP-005-G0B-DECISION-V3.md) / [plan](../../experiments/EXP-REP-005-G0B/plan.md) / [ADR-0006](decisions/ADR-0006-causal-world-laboratory.md). Main does not yet contain a REP005 certified world generator or representation_repair learner; G0a experimental source is only on Draft #147.
+
+~~~mermaid
+flowchart TB
+  subgraph PRIVATE["Evaluator / Source-only sealed side"]
+    G["Typed WorldSpec + ancestry"] --> W["Bounded world interpreter"]
+    G --> C["Independent semantic + structural certifier"]
+    C --> I["Full signatures / ID / opportunity certificates"]
+    G --> T["Private truth / split / ancestor manifest"]
+  end
+  subgraph PUBLIC["Learner public-only interaction"]
+    W --> O["Public reset/observe/actions/step"]
+    O <--> A["Kernel + Active inquiry"]
+    A --> E["Paid ordered InquiryTrace"]
+    E --> R["H0 mismatch / Hplus repair diagnostics"]
+    R --> S["Future Sleep: executable ConceptBody"]
+    S --> P["Future immutable Snapshot"]
+    P --> U["Future fresh-process unknown-world use"]
+  end
+  U --> V["Independent paired Evaluator"]
+  T --> V
+  I --> V
+  V --> D["Family-level measured claims / STOP"]
+~~~
+The direction from T/I to V is permitted; NO truth/ancestry/certificate target field is a learner API input. Opportunity certificates are evaluator-only diagnostics, not training labels. G0b currently implements only a DESIGN, not the nodes. See ARCH-002 contracts and design-only run.

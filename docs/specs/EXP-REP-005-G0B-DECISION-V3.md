@@ -1,0 +1,98 @@
+# EXP-REP-005 G0b — Causal World Laboratory / Integrated Research Decision V3
+
+id: EXP-REP-005-G0B-DECISION-V3
+status: decision_candidate_review_required_not_frozen_not_run
+updated: 2026-11-02
+tags: representation, active-learning, causal-world, wake-sleep, identifiability, research
+
+## Executive decision
+Parent [Issue #148](https://github.com/ryonakayama234/DekaSugi/issues/148); parent science [Issue #142](https://github.com/ryonakayama234/DekaSugi/issues/142). The primary module of THIS task is experiments/EXP-REP-005-G0B (world generation, certification and opportunity audit). Supporting planned modules: packages/inquiry_world, packages/active_learning, packages/protocol, packages/verification. packages/representation_repair is a FUTURE learner and is NOT implemented by this decision.
+
+Choose Causal World Laboratory: a finite, reproducible laboratory that independently certifies whether the observable evidence can distinguish hypotheses, whether the installed representation is inadequate, whether active inquiry has an actionable opportunity, and whether later acquired executable concepts causally improve fresh-world use. The toy world is a measurement apparatus, NOT the intended lifetime application domain. Later game, application and dialogue adapters must obey the same public interaction contract; cross-domain transfer is NOT established by creating adapters.
+
+This is an implementation-ready **decision candidate**, not an approved scientific distribution. PR is docs-only. No paid TRAIN, new score, frozen model, historical FINAL access, promotion, or merge is authorized. H0/G0a method sources stay on [Draft PR #147](https://github.com/ryonakayama234/DekaSugi/pull/147), not on main. Before selective port, audit exact head, CI, and the unresolved P2 counting mismatch.
+
+## Scientific construct and estimands
+Intelligence is operationally studied as a changing process of representational construction, information-seeking, policy selection and externally persisted tools. Do not claim a universal definition. Distinguish:
+- L0R — representability: semantic membership of law f in a *declared* hypothesis language; additionally a general memorylessness contradiction witness.
+- L1I — identifiability: worst-case identification of a finite, predeclared meaning-distinct candidate class from common public start using legal paid adaptive actions by budget B; separate from a learner's search efficiency.
+- L2Q — inquiry: action utility and reachable information gain of a public-history policy against fixed and context-dependent controls under identical observation costs.
+- L3C — acquisition and transfer: data-derived, executable typed ConceptBody changes later decisions and improves new *structurally disjoint* families relative to capacity- and compute-matched comparator.
+- L4M — learning-to-learn and dialogue: future cross-domain and mutually changing agents; OUT OF SCOPE this cycle.
+
+Primary feasibility outcomes are counts of independently certified mechanism families per predeclared mechanism stratum, certificates or NOT_CERTIFIED reasons for expressive membership and adaptive identification, and counts of certified inquiry opportunities. They are not measures of acquired intelligence. Future utility outcome, after a new preregistration, is paired family-level utility difference of learned-body versus strongest eligible fixed baseline at matched budgets, with family clustering, confidence interval and action/CPU costs. No benefit threshold is frozen today.
+
+## Competing hypotheses (not a priori privileged)
+H-WORLD: a richer typed mechanism grammar yields genuinely distinct semantics and non-isomorphic mechanism families, not merely new names/seeds.
+H-OBS: errors result from insufficient public observations; a different paid legal question resolves uncertainty without new predicates.
+H-SEARCH: a model exists in installed grammar but search or policy fails under bounded resources; improved planner suffices.
+H-REP: there exist verified public traces inconsistent with any deterministic memoryless mapping, while a specified temporal candidate predicts them; do NOT conflate this with successful learned invention.
+H-INVENT: public counterexamples induce a new executable typed predicate/composition that is not installed as a ready-made macro; body is independently falsifiable, rather than a frequency alias.
+H-QUERY: a learned ConceptBody changes an *available legal* choice beyond matched STATIC-Hplus/policy-only controls, and improves predictive utility.
+H-XFER: a persisted snapshot improves transfer on holdout mechanism families beyond episodic retrieval, frequency priors, BODY-OFF and equally expressive fixed Hplus.
+H-SAFE: correct exclusion/abstention for out-of-grammar, observationally aliased, stochastic or invalid cases. Observing an M2 nonmember is not G2 failure.
+
+Every hypothesis may fail independently. Positive L0 or structural count does not entail L2/L3 success.
+
+## World formalization and typed semantics
+Specify E=(S,H,A,T,O,c,rho). Pilot scope: four Boolean public objects in fixed order; visible S={0,1}^4; actions A = set(i,0), set(i,1), pulse(i), i in 0..3 (12 legal, each cost 1); no free probe/reset within an episode; deterministic transitions; initial visible state all zero; maximum charged horizon B=8; action history H records the last two public actions including their exact typed arguments. The evaluator may retain hidden finite causal state, but it must be explicitly serialized and its initialization declared. All simultaneous assignments read pre-action state and commit together; conflicts and precedence must be defined before code. No arbitrary Python execution.
+
+A **versioned proposal grammar** (to be independently checked before freeze) has typed AST nodes: ActionIs, ObjectIs, CurrentBit, PreviousAction(lag=1|2), Eq/Not/And/Or (boolean), Guard(predicate, effect), XorTarget(target), NoEffect, and bounded sequential/composed effects or multi-target simultaneous effects. Initially generate candidate *motifs* direct, conditional, delayed, mediated/composed, inhibitory/competitive, feedback. They are exploratory sources, NOT already certified independent families. Explicit bounds proposal: AST<=12 nodes, at most two effect edges, at most two guard clauses, lag<=2; list all canonical operators and transition precedence in a follow-up pre-freeze grammar table. If these bounds yield no meaningful target distribution, STOP and version the grammar, do not silently increase bounds.
+
+Two different H0 questions MUST be separated:
+(1) H0_all = the class of all deterministic memoryless functions f(public_state,action)->next_public_state. An actual same-state/same-action divergent-successor trace refutes H0_all without enumerating functions.
+(2) H0_G = finite installed **memoryless grammar** and Hplus_G = preregistered finite typed expanded grammar with H0_G subset of Hplus_G. Membership M0/M1/M2 is always explicitly relative to G (M0 H0_G; M1 Hplus_G only; M2 outside Hplus_G); never assert Hplus_G contains every H0_all function. A memoryless law outside H0_G is M2 although it is not evidence of temporal dependence. M3 is a separate stochastic/invalid observational contract with a distributional/noise specification; deterministic full-signature routines do not classify M3.
+
+## Equivalence, causality and independent-family certificates
+Create TWO semantic signatures per candidate: total defined typed transition-domain signature (for finite semantic equivalence and alias rejection), and publicly reachable signature from shared start for paid horizons (for actionability). Never use unreachable total-domain cells as evidence that a learner can distinguish worlds through legal queries. G0a's 16 visible states x 157 typed histories x 12 actions = 30,144 outputs is restricted to its specific defined fixture; it is not automatically the full new grammar signature.
+
+Certified distinctness layers:
+1. Exact semantic aliases: equal full signatures are ONE law; reject duplicate names, templates, seeds.
+2. Object-role permutations: canonicalize all 24 bijections for four objects; same orbit is ONE structural candidate.
+3. Mechanism structure: normalize typed causal dependency hypergraph including time-lag, guard arity, effect composition and operator semantics. A graph label difference alone does not guarantee meaningful distinctness; compare observational and intervention consequences.
+4. Generator/source ancestry: document original mechanism template DAG, shared parameter family, ancestor group and signatures. Families sharing a source mechanism are grouped, not split across train/DEV/EVAL.
+5. Independent implementation: a separately authored interpreter or exhaustive table reference checks selected canonical witnesses and metamorphic invariance; the same interpreter must not self-certify itself.
+
+A FamilyCertificate establishes independence **relative to this declared finite constructive taxonomy**. It is NOT a universal proof of causally independent mechanisms in nature. If structural type depends on subjective classification or mechanism hidden behind observational equivalence, return NOT_CERTIFIED. Expose exact scope, confidence and counterexamples.
+
+## Identification and availability are two different certificates
+Identification proposition I(C,s0,A,B): for a predeclared finite, fully semantic-deduplicated closed candidate set C with common public initial s0 and legal A, exists an adaptive decision tree of worst-case depth <=B whose every possible truthful answer leaf uniquely identifies a semantic candidate. Memoization keys must include remaining candidate semantics, public state, public action history, hidden states maintained per candidate, and remaining charged budget. Use exhaustive branch search, not a single true-world trace. If proof limit reached: NOT_CERTIFIED, never UNID.
+
+UNID means exhaustive proof that no such tree exists for the exact closed set and B=8. It does NOT mean world f is intrinsically unidentifiable. Record alternative B (e.g. 12) exploratory, whether candidate laws are distinguishable eventually, or behaviorally equivalent forever. The last case is an alias/observational equivalence control, NOT a genuine budget-limited UNID family. The H0/Hplus representability axis is independent of I. Predeclare C, knowledge/prior, initial conditions, budgets and evidence access BEFORE assigning ID/UNID labels.
+
+Opportunity O(h): at a public history h that is reachable and permitted, compute the value gap between best feasible legal adaptive policy and an explicit comparator with identical belief C_h, costs, and forecast horizon (e.g. expected prediction utility or Bayes risk under declared prior). Positive opportunity requires a reproducible public prefix, exact candidate belief, optimal/upper-bound certificate and an action that can differ; report no-opportunity and NOT_CERTIFIED rather than cherry-picking successful learner switches. The optimal policy is an experimenter diagnostic, never learner input. Distinguish adaptivity gap, representational repair potential, and learned-policy benefit; no preinstalled static Hplus benefit can be attributed to learned novelty. Report across all generated eligible structures, not only positive cases.
+
+## Design of future comparison and statistical unit
+Use separate reset copies of the SAME world instance with same public start and paid budget per treatment, but independently selected legal adaptive query trajectories; do NOT force identical query sequences except the diagnostic same-prefix witness. Main controls: memoryless fixed, strong STATIC-Hplus with same semantic capacity, policy-only (same bodies), episodic retrieval only, same-body STATIC-MACRO, learned executable ConceptBody, BODY-OFF, uniform/random and context-active. A clairvoyant/oracle arm is diagnostic upper bound only, NOT a fair learned comparator.
+
+At G3, compare TRAIN exposures 0/8/16/32/64 *only if G0b independently passes and explicit follow-on authorization exists*. Wake must pay and record public actions, mismatch and failed probes. Sleep reconstructs concept using public trace only, verifies typed interpreter against independent public counterexamples, canonicalizes semantic body, writes an immutable hash-bound Snapshot. A fresh process reloads Snapshot; neither generator-private law nor evaluator-only label may be read by learner. DREAM samples are model-derived, not independent world experience.
+
+Future primary per-family outcome: signed paired delta in utility, utility definition frozen before scored EVAL; secondary accuracy, coverage/abstention, question count, interpreter calls, search nodes, CPU/wall/RSS, total TRAIN amortization, and failure taxonomy. Resampling and uncertainty intervals use mechanism family/ancestry as cluster, never 64 audit transitions or multiple seeds as independent observations. Power simulation uses plausible effect sizes and intra-family variance; do not presume 80 is enough or 160 needed. Negative/null are retained. No sequential peeking at sealed FINAL.
+
+## The 80-vs-160 arithmetic correction
+The old tentative 4 cells x (TRAIN8+DEV4+EVAL8) = **80 world instances**, if one world per family, NOT 160. To have 160 instances with 80 independent families would require an explicitly defined two-instances-per-family scheme; those correlated instances cannot create independent samples, and a family must never be split between TRAIN and EVAL. This V3 does not adopt either quota. First certify the attained family universe; then propose a numbered new preregistration with family-disjoint allocations and power, subject to independent approval. PR #147's P2 remains an outstanding historical review finding until resolved on its own head.
+
+## Hard safety, resources and no-leak contract
+Python 3.12+ standard library, CPU-first, finite typed interpreter, JSON/JSONL (canonical deterministic serialization), SHA-256 content/source commitments, read-only source seals and process separation. Reject noncanonical primitive/subclass containers and forged catalog lookups. Set explicit upper bounds before code: grammar enumeration candidates, certificate search nodes, memory, wall-time and paid actions; exhausted => NOT_CERTIFIED and artifact. Exact limits are experimental engineering tuning parameters, to be recorded and audited, not hidden in code. No old sealed DEV/FINAL, previous scored world recycling, bulk Draft merge, disabled workflow reactivation, or direct main change. Hash proves local integrity, not independent source authentication; provenance must include actual custody and source SHA.
+
+## Decision gates and work package limits
+- D0 (THIS PR): decision candidate, architecture diagrams, contracts, hypothesis/measurement plan, explicit not-run receipt, GitHub traceability. Docs checks and independent method review required. No implementation or TRAIN.
+- G0b-A (NEXT IMPLEMENTATION UNIT): full typed semantics, source ancestry, independent equivalence/intervention oracle, role canonicalizer, adaptive ID/UNID proof + NOT_CERTIFIED, opportunity/no-opportunity certificates, adversarial tests; 4-object exploratory feasibility census. Explicit all-scope report, including negative results.
+- G0b-B (CONDITIONAL NEXT UNIT): power/family census and frozen new preregistration. 80 not attainable or no suitable action opportunity => STOP/redesign new grammar; never fabricate split.
+- G1/G2 (CONDITIONAL): externally witnessed public-only chronology; independent exhaustive expressibility diagnostics with correct M2/M3 negative controls.
+- G3 (CONDITIONAL): paid synthetic TRAIN Wake/Sleep/Snapshot/fresh USE, learned body ablation; only with reviewed G0b/G1/G2 and separate authorization.
+- G4/G5/G6 (FUTURE): fixed fair controls, disclosed engineering score, independent family-level analysis; sealed scientific FINAL separately authorized and protected, scientific adoption not default.
+
+This is ONE coherent program with internal fail-closed gates, not permission to jump stages. G0b-A is a meaningful completed engineering deliverable even if G0b-B reports STOP.
+
+## Decision alternatives
+A. Quota-driven random world enlargement: reject (renaming and shared ancestor leakage).
+B. Finite certified causal laboratory: CHOOSE (tests the precondition for learning claims and can falsify hypotheses).
+C. Start new neural training/epoch tuning: defer; no independent structural learner target or scored denominator yet.
+D. Jump directly to conversation/GUI transfer: defer; retain common environment interface and dialogue-as-interaction as long-term hypothesis.
+E. Merge all earlier REP Drafts: reject; historical source/holdout safety and negative outcomes are indispensable.
+
+## External references, scope notes
+- DreamCoder, Ellis et al. (2021) https://doi.org/10.1145/3453483.3454080 : joint library learning and search policy; does NOT establish DekaSugi concept acquisition.
+- Repo evidence: [REP003 #135](https://github.com/ryonakayama234/DekaSugi/pull/135) no learned question change; [REP004 #138](https://github.com/ryonakayama234/DekaSugi/pull/138) executable learned body but negative against strong fixed baseline; [REP004R #141](https://github.com/ryonakayama234/DekaSugi/pull/141) role fix, learned question mechanism null; [G0a #147](https://github.com/ryonakayama234/DekaSugi/pull/147) 14 pilot-orbit upper bound, 129 synthetic tests at recorded exact code SHA.
+- [Protocol](../../experiments/EXP-REP-005-G0B/plan.md) / [run status](../../experiments/EXP-REP-005-G0B/runs/20261102-v3-design-not-run.md) / [ADR](../architecture/decisions/ADR-0006-causal-world-laboratory.md) / [ARCH-001](../architecture/system.md) / [ARCH-002](../architecture/contracts.md).

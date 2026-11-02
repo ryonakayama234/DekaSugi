@@ -1039,3 +1039,32 @@ flowchart LR
   HOLDOUT["Evaluator-only answers"] -.->|"Never exposed"| RECON
 ~~~
 **Canonical storage contract:** `QuerySession.class_ids` is exactly `tuple` whose entries are exactly `str`, never a tuple or string subclass, because equality can differ from iteration. The compact `answers` tuple contains exact 3-tuples of (int ID, str output, str local receipt). The `trace` container is exactly tuple; each ordered entry is an exact tuple of typed `QueryProposal` and `QueryAnswer`. Session status, pool/world/split digest fields, and proposal and answer primitive fields must have exact builtin types; bool is rejected when int is required. Exact types are checked at the public boundary **before** Gini, random policy, history revalidation, or final-program selection. Per-prefix policy/receipt semantics and the active-query/2 schema remain unchanged. Hashes remain local consistency checks, NOT independent Oracle authentication. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## ARCH-002 — EXP-REP-005 G0b V3 planned typed data boundary (NOT IMPLEMENTED)
+[Decision](../specs/EXP-REP-005-G0B-DECISION-V3.md) / [plan](../../experiments/EXP-REP-005-G0B/plan.md). Public information must be a projected copy, not a mutable mapping of private data.
+
+| Record (version proposed) | Fields / invariant | Trust domain |
+|---|---|---|
+| WorldSpec/1 | semantics_version, typed AST, public_state_shape, hidden_memory_init, action_alphabet, finite_domain_version, mechanism_ancestor_id | generator and source certifier ONLY |
+| SemanticCertificate/1 | full_signature_hash, reachable_signature_hash, alias_group, role_orbit, causal_motif, independent_ref_checker_digest, completeness_status | source certifier ONLY |
+| IdentifiabilityCertificate/1 | candidate_class_digest, public_s0, B, branch_witness_or_exhaustive_counterproof, proof_nodes, status ID/UNID/NOT_CERTIFIED | source/evaluator ONLY |
+| OpportunityCertificate/1 | public_prefix_digest, posterior_candidates, prior_spec, legal_action_set, fixed_comparator, optimal_value_gap, bound_status | independent evaluator ONLY |
+| PublicEpisode/1 | public_episode_id, visible_state, legal_actions, ordered paid action/observation/cost receipts, budget_remaining | learner read/write public |
+| ConceptCandidate/1 (future) | validated typed body_ast, public supports/counterexamples, scope, body_sha256, acquisition_trace_digest | Sleep provisional |
+| PolicySnapshot/1 (future) | public_train_source_sha, grammar_sha, concept/policy digests, version, immutable serialization | learner reload/USE |
+| EvaluationReceipt/1 (future) | committed prediction hash, truth evidence URI under custody, per-family delta, raw SHA, reviewer/source head | evaluator only |
+
+~~~mermaid
+flowchart LR
+  SPEC["Private WorldSpec"] --> SIM["Interpreter"]
+  SPEC --> CERT["Independent certifier"]
+  SIM --> PROJ["Public-only projection"]
+  PROJ --> EP["PublicEpisode / paid actions"]
+  EP --> LEARN["Inquiry / future Wake-Sleep"]
+  LEARN --> SNAP["Future Snapshot"]
+  CERT --> SEC["Private certificate + hidden manifest"]
+  SEC --> EVAL["Independent Evaluator"]
+  SNAP --> EVAL
+~~~
+Untrusted reconstructed catalogs or exact-type subclasses cannot be used as computational authority, even if structural equality passes. Full typed finite semantic signature and reachable-from-s0 semantics are distinct. A family split is keyed by mechanism ancestor and role-orbit, never seed/instance. Single-world repeated actions and 64 audit transitions are NOT independent samples. Typed correct M2/M3 negative diagnoses and honest NOT_CERTIFIED statuses are valid outcomes. Planned schema fields require versioned concrete implementation and tests before any use.

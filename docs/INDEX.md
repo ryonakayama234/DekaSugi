@@ -283,3 +283,13 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | Evidence ID | Question | Engineering receipt |
 |---|---|---|
 | ACTIVE-001-PR2-CONTAINERS | Can equality-preserving tuple/str/int subclasses launder forged semantic votes, answers or proposal fields through replay? Exact builtin types required before any learner calculation. | [Synthetic check](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md) / [Architecture](architecture/system.md) / [Contracts](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+
+## EXP-REP-005 G0b V3 — Causal World Laboratory (2026-11-02, design only)
+| ID | Status | Entry |
+|---|---|---|
+| EXP-REP-005-G0B-DECISION-V3 | reviewed decision candidate required; not frozen; no experiments | [Integrated research design](specs/EXP-REP-005-G0B-DECISION-V3.md) / [ADR-0006](architecture/decisions/ADR-0006-causal-world-laboratory.md) |
+| EXP-REP-005-G0B-PLAN-V3 | proposed, not run | [Hypotheses, metrics, gates](../experiments/EXP-REP-005-G0B/plan.md) / [not-run evidence](../experiments/EXP-REP-005-G0B/runs/20261102-v3-design-not-run.md) / [Issue #148](https://github.com/ryonakayama234/DekaSugi/issues/148) |
+| ARCH-001/ARCH-002 G0b V3 | planned design only; no REP005 learner on main | [System Mermaid](architecture/system.md) / [Data flow and schemas](architecture/contracts.md) / [AGENTS safety](../AGENTS.md) |
+
+V3 supersedes ONLY the proposed future study design; it does not rewrite Draft #147 G0a findings, existing 14-orbit STOP, historic experiments, sealed scoring and source locks. New 80/160 arithmetic and H0_all/H0_G distinctions are proposed corrections, subject to independent review.
