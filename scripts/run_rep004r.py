@@ -17,7 +17,7 @@ from pathlib import Path
 
 from packages.rep004 import (ARMS,BUDGETS,canonical,digest,learn,save,load,evaluate,
                              study_manifest,concept_matches,weights_for,catalog,
-                             _edge_execution_matches,_composition_equivalent)
+                             _edge_execution_matches,_composition_equivalent,activation_fixture)
 
 EXPOSURES=(0,3,8,16,32,64)
 OLD_RAW_SHA='70ee6d9c531e18d1576d05649469808375678aebda804036d3ccc7d83ca8b1b3'
@@ -86,7 +86,10 @@ def main():
                     a=step(state,('pulse',pulse,None),(edge,))
                     b=step(mapped,('pulse',perm[pulse],None),renamed)
                     assert sum(((a>>i)&1)<<perm[i] for i in range(4))==b
-    print('G1-G2: PASS guard/role permutations (24x60), all 16 states/4 pulses, STATIC TRAIN0/64 independent',flush=True)
+    mechanism=activation_fixture(s64)
+    assert mechanism['differs'], 'STOP: no corrected LQ/LA paid question switch in bounded disclosed development grid'
+    print('G1-G2: PASS role permutations (24x60), 16 states/4 pulses, STATIC independent',flush=True)
+    print('ACTIVATION '+canonical(mechanism),flush=True)
 
     meta={'experiment':'EXP-REP-004R','phase':'DISCLOSED_SYNTHETIC_CORRECTED',
           'source_head_sha':args.source_sha,'source_checkout':os.getenv('GITHUB_SHA','unknown'),
