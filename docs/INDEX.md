@@ -283,3 +283,10 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | Evidence ID | Question | Engineering receipt |
 |---|---|---|
 | ACTIVE-001-PR2-CONTAINERS | Can equality-preserving tuple/str/int subclasses launder forged semantic votes, answers or proposal fields through replay? Exact builtin types required before any learner calculation. | [Synthetic check](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md) / [Architecture](architecture/system.md) / [Contracts](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+## EXP-REP-005 G2 — Public-only Predictive State Repair (2026-11-03; independent synthetic Draft)
+| ID | Status | Source |
+|---|---|---|
+| EXP-REP-005-G2-SYNTHETIC | isolated engineering fixture, NOT scientific G3/score | [Issue #150](https://github.com/ryonakayama234/DekaSugi/issues/150) / [method](specs/EXP-REP-005-G2-SYNTHETIC.md) / [source](../packages/representation_repair/__init__.py) / [tests](../tests/test_rep005_representation_repair_synthetic.py) / [dedicated synthetic workflow](../.github/workflows/rep005-repair-synthetic.yml) / [plan](../experiments/EXP-REP-005-G2/plan.md) / [receipt](../experiments/EXP-REP-005-G2/runs/20261103-public-repair-synthetic.md) |
+
+Learns a bounded lagged-public-action predicate from legal public counterexamples and serializes a fresh-process executable Snapshot; same-capacity static control is expected to match. No G0b independent-family certificate, paid training, scientific score or promotion.
