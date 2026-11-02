@@ -290,3 +290,9 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 - [32件のopen PRの整理監査と段階的統合方針](research/20261102-research-pr-portfolio-audit.md)：mainと研究Draftの能力を区別する。
 - [ARCH-001 システム図](architecture/system.md) / [ARCH-002 データ構造・流れ](architecture/contracts.md) / [V2設計run台帳](../experiments/EXP-REP-005/runs/20261102-v2-design-not-run.md)。
 - 従来の[Draft PR #145](https://github.com/ryonakayama234/DekaSugi/pull/145)の3操作反例は方法プレチェックであり、80独立ファミリー、学習モデル、正式評価の成立を意味しない。
+
+
+## EXP-REP-005 G0a — restricted-world synthetic implementation and independent-review corrections (2026-11-02)
+- [G0 method/research plan](../experiments/EXP-REP-005/plan.md) / [witness source](../experiments/EXP-REP-005/g0_witness.py) / [orthogonal class and adaptive-identification source](../experiments/EXP-REP-005/g0_axes.py).
+- [G0a negative tests](../tests/test_rep005_g0_witness.py) / [G0b axes adversarial tests](../tests/test_rep005_g0_axes.py) / [implementation and STOP ledger](../experiments/EXP-REP-005/runs/20261102-v2-design-not-run.md).
+- Earlier exclusive P/R/U/N grouping was **incorrect**; M0/M1/M2/M3 representation and ID/UNID identification are orthogonal. G2 correctly classifies M2/M3 rather than forcing an Hplus fit. This limited fixture has only up to **14 role orbits**, below 80 required independent families. Formal G0b STOP; no paid learner, new scored result or stable model.
