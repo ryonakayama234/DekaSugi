@@ -1,4 +1,6 @@
 # rep004 — executable symbolic concept engineering pilot
+id: PKG-REP004
+tags: package, executable-concept, synthetic, evaluation
 
 status: IMPLEMENTED / DISCLOSED_1920_SCORED / SCIENTIFIC_BENEFIT_NEGATIVE
 updated: 2026-11-02
