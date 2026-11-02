@@ -1246,3 +1246,28 @@ flowchart TD
 - G3: deterministic body intervention and body-on vs body-masked **first paid action** divergence at identical legal public history and cost; a mechanism check, NOT evidence of performance.
 - G4: 8-arm matched disclosed scoring only after source/split/method freeze, with strong fixed full-grammar FA and STATIC-MACRO controls. Private F0/DEV/FINAL remain disconnected.
 - All submodule changes must update ARCH-001 diagram, ARCH-002 contract, AGENTS, INDEX, spec and append-only run in the same PR. [Decision](../specs/EXP-REP-004-DECISION-V1.md) / [Plan](../../experiments/EXP-REP-004/plan-v1.md).
+
+
+## EXP-REP-004 — implemented bounded executable-concept path (2026-11-02)
+
+~~~mermaid
+flowchart LR
+  HOST["WorldHost: hidden 0/1/2 edges"] --> PAID["Paid Session.set/pulse: PUBLIC trace"]
+  PAID --> SLEEP["SleepFromPublicTraces: infer semantic models"]
+  SLEEP --> AST["Seven learned AST templates + witnesses"]
+  AST --> SNAP["Canonical Snapshot + SHA256"]
+  SNAP --> USE["Fresh-world USE: load + validate"]
+  USE --> INFER["Public evidence finite hypothesis filter"]
+  INFER --> RUNTIME["Execute bound ConceptBody interpreter"]
+  RUNTIME --> QUERY["Two-step costed inquiry: LQ vs masked LA"]
+  QUERY --> PAID
+  QUERY --> COMMIT["Immutable prediction commit, no CPU clock in digest"]
+  COMMIT --> SCORER["Separate audit(World truth): all 64 transitions"]
+  HOST -.->|"Truth only after commitment"| SCORER
+  SCORER --> RAW["1,920 raw rows + verified archive"]
+  RAW --> DEC["Negative mechanism-utility decision; no promotion"]
+~~~
+
+**Implemented:** packages/rep004 standalone finite grammar, public-only learner input, typed atomic and concurrent two-edge composition body execution, context binding, CPU/cache-aware planning, cross-family structural TRAIN separation and discovered action-switch fixture, snapshot reloading, score archive and checksum. **Not proven:** new interpreter primitive invention, formal external evaluator custody, effective learned performance vs fixed/static macro, OOD uncertainty, matched full-lifetime resource advantage or independent neural epochs.
+
+Historical architecture diagrams above remain stage-specific; this is the latest implemented engineering study. See Decision V2, ARCH-002 contracts below, and dated measured run.
