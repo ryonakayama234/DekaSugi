@@ -22,7 +22,7 @@ class G0FiniteWitnessTest(unittest.TestCase):
 
     def test_three_paid_actions_are_minimal(self):
         self.assertIsNone(m.find_minimum_witness(self.world, 2))
-        shortest = m.find_minimum_witness(self.world, 3)
+        # Exact size-3 public-law enumeration: 12^3 legal paid sequences.\n        from itertools import product\n        self.assertEqual(sum(\n            m.memoryless_conflict(m.public_trace(self.world, seq)) is not None\n            for seq in product(m.all_actions(), repeat=3)\n        ), 1)\n        shortest = m.find_minimum_witness(self.world, 3)
         self.assertEqual(shortest, (
             m.Action("pulse", 0),
             m.Action("set", 0, 0),
