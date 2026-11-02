@@ -4,7 +4,8 @@ from itertools import permutations
 
 from packages.rep005_g0b import (
     ACTIONS, HISTORIES, FULL_CELLS, Action, Edge, Law, Literal, law,
-    transition, full_signature, role_key, permute_action, permute_law,
+    transition, full_signature, role_key, canonical_role_semantic_signature,
+    permute_action, permute_law,
     permute_state, reachable_domain, memoryless_contradiction,
     adaptive_identification, action_opportunity, witness_pilot_worlds,
     pilot_census, pilot_grammar_size, public_step, audit_family_split,
@@ -190,6 +191,42 @@ class CausalWorldSyntheticTests(unittest.TestCase):
                                        "last_action", "paid_cost"})
         self.assertNotIn("law", str(result))
         self.assertNotIn("ancestry", str(result))
+
+    def test_semantic_alias_after_role_renaming_and_inert_edge(self):
+        # Independent P1 report: differing syntax and labeled output signatures
+        # must not conceal identical semantics after a role permutation.
+        simple = law(Edge(0, 1))
+        disguised = law(Edge(2, 3), Edge(0, 1, 1,
+                       (Literal("prev_set", 0, 0, 1),)))
+        self.assertNotEqual(role_key(simple), role_key(disguised))
+        self.assertNotEqual(full_signature(simple), full_signature(disguised))
+        self.assertEqual(canonical_role_semantic_signature(simple),
+                         canonical_role_semantic_signature(disguised))
+        for left, right in ((simple, disguised), (disguised, simple)):
+            with self.assertRaisesRegex(ValueError, "overlaps"):
+                audit_family_split((("root-train", left, "TRAIN"),
+                                    ("root-eval", right, "EVAL")))
+
+    def test_proof_preflight_resource_caps_before_signature_generation(self):
+        # Old implementation built 100,000 signatures (~2.8 GiB) before limit checks.
+        huge = (law(),) * 100_000
+        pair = (law(), law(Edge(0, 1)))
+        for proof in (adaptive_identification, action_opportunity):
+            with self.subTest(proof=proof.__name__):
+                capped = proof(huge, budget=1, max_nodes=10)
+                self.assertEqual(capped["status"], "NOT_CERTIFIED")
+                self.assertEqual(capped["reason"], "CANDIDATE_CAP")
+                self.assertEqual(capped["checked_candidates"], 0)
+                self.assertIsNone(capped["candidate_digest"])
+                self.assertEqual(capped["candidate_count"], len(huge))
+                zero = proof(pair, budget=1, max_nodes=0)
+                self.assertEqual(zero["status"], "NOT_CERTIFIED")
+                self.assertEqual(zero["reason"], "NODE_CAP")
+                self.assertEqual(zero["checked_candidates"], 0)
+                with self.assertRaisesRegex(ValueError, "alias"):
+                    proof((law(), law()), budget=1, max_nodes=5)
+                with self.assertRaises(ValueError):
+                    proof(pair, budget=1, max_nodes=250_001)
 
     def test_private_split_rejects_shared_ancestor_semantic_alias_and_roles(self):
         a = law(Edge(0, 1))
