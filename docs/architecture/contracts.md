@@ -1058,3 +1058,21 @@ flowchart LR
 ```
 
 PublicEventは真正な出所、順序、合法性、実費を持つ。VersionSpaceReceiptの候補枯渇と探索時間切れは区別し、MismatchWitnessの証明範囲は決定論的無記憶H0に限定。ConceptCandidateは支持・負例・適用条件と実行可能な型付きbodyを保持する。Snapshotはソース・文法・公開学習履歴・bodyのdigestを保持し、新プロセスで再読込を検査する。PredictionCommitは未知入力のみを受け取り、正解公開前に回答・棄権を固定する。ScoreReceiptの意味ファミリーID、隠れた世界の規則・seed・正解は学習器へ渡さない。世界の意味署名の同一性と、構造的意味ファミリーの独立性は別々に検証する。
+
+
+## EXP-REP-005/G0a orthogonal methods contract — restricted artificial world (2026-11-02)
+
+The source-only checker [g0_axes.py](../../experiments/EXP-REP-005/g0_axes.py) accepts evaluator-owned finite PrivateFixture candidates and fixed legal operations. Representation class M0/M1/M2/M3 and finite-horizon identification ID/UNID/NOT_CERTIFIED are **independent fields**, not mutually exclusive P/R/U/N labels. IdentificationReceipt includes complete boolean, expanded proof nodes, horizon and candidate count. A resource-budget overflow returns NOT_CERTIFIED, not UNID. The evaluator-owned fixture list is never a future learner input.
+
+```mermaid
+flowchart LR
+    T["PrivateFixture set, start 0, unit-cost legal actions"] --> REP["H0/Hplus class diagnosis"]
+    T --> ID["Exhaustive adaptive decision-tree diagnosis"]
+    REP --> AX["Representation axis M0/M1/M2/M3"]
+    ID --> IN["Identification axis ID/UNID/NOT_CERTIFIED"]
+    AX --> OUT["G0b manifest: not certified"]
+    IN --> OUT
+    OUT --> STOP["14 pilot role-orbits: 80 quota STOP"]
+```
+
+This pilot is neither the source-authenticated PublicEvent protocol nor a full-Hplus semantic membership prover. Correct outside-grammar and stochastic/invalid classifications count as proper diagnostic negative controls. A boolean supplied to classify_representation is not independent scientific evidence; it MUST be certified from a separately reviewed full semantic checker before a genuine G2 PASS is claimed.
