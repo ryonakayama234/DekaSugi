@@ -159,13 +159,15 @@ def public_consistent_hplus(events: tuple[PublicEvent, ...],
                 [("guard", g, v, k) for g in range(4)
                  for v in (0, 1) for k in range(1, max_lag + 1)]
             ):
-                previous: tuple[Action, ...] = ()
-                if all(_candidate_predict(source, target, guard, value, lag,
-                                          mode, e.state_before, previous[:e.ordinal],
-                                          e.action) == e.state_after
-                       for e in events
-                       # Preserve public history in chronological order.
-                       for previous in (tuple(x.action for x in events[:e.ordinal]),)):
+                history: tuple[Action, ...] = ()
+                for e in events:
+                    predicted = _candidate_predict(source, target, guard, value, lag,
+                                                   mode, e.state_before, history,
+                                                   e.action)
+                    if predicted != e.state_after:
+                        break
+                    history += (e.action,)
+                else:
                     count += 1
     return count
 
