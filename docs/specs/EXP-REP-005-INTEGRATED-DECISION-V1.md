@@ -173,3 +173,7 @@ References/analogies (not inherited guarantees):
 ## 11. Current receipt
 
 2026-11-02: **DESIGN ONLY / NOT_RUN**. Candidate method is written for owner agreement. G0 independent review not yet accepted. No code for representation_repair, paid experiment, learned artifact, scored data, scientific claim, merge or model release originated from this decision document.
+
+
+## G0 capacity caveat — 2026-11-02 pilot source audit (NOT a frozen protocol)
+The executable `PrivateFixture` generator in [G0 witness](../../experiments/EXP-REP-005/g0_witness.py) has **at most 14 role-renaming orbits** (12 guarded and one each always/never), not 80 independently structural semantic families. This is a generous *upper bound*, not 14 validated families. Its P/R mechanisms alone cannot fill the proposed 20-per-stratum design. The richer typed Hplus metagrammar and independent P/R/U/N family generator are **not implemented or certified**. Therefore the 80-family prerequisite above is **FAILED for the current pilot generator / OPEN for a future expanded generator**; G0 remains blocked. Do not change the planned counts or run G1/G2 certification, TRAIN, Sleep, Snapshot, fresh USE or EVAL. A new prospective generator and exact semantic/role-canonical verification, split manifest, independent methods approval and source review must precede any gate transition. [Detailed bound](../research/EXP-REP-005-G0-witness-feasibility-20261102.md#additional-g0-capacity-audit--pilot-fixture-cannot-support-the-proposed-80-family-split).
