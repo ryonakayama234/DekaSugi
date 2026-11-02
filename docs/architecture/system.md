@@ -990,3 +990,27 @@ flowchart TB
   V --> D["Family-level measured claims / STOP"]
 ~~~
 The direction from T/I to V is permitted; NO truth/ancestry/certificate target field is a learner API input. Opportunity certificates are evaluator-only diagnostics, not training labels. G0b currently implements only a DESIGN, not the nodes. See ARCH-002 contracts and design-only run.
+
+## ARCH-001 — G0b-A implemented source-only pilot (2026-11-03; Draft PR #149)
+
+This later checkpoint supersedes only the earlier G0b V3 design-only implementation status. The new module exists on the Draft branch, not main. It is **not a learner**.
+
+~~~mermaid
+flowchart LR
+  PRIVATE["Source-only typed Law"] --> PURE["Pure finite transition interpreter"]
+  PRIVATE --> FULL["30,144-cell total semantics"]
+  PURE --> PUBLIC["Public step projection"]
+  PRIVATE --> REACH["Reachable public-history BFS"]
+  PRIVATE --> ORACLE["Independent reference interpreter"]
+  ORACLE --> CERT["Semantic + role/orbit witness verification"]
+  FULL --> CERT
+  CERT --> IDENT["Adaptive ID/UNID or NOT_CERTIFIED"]
+  CERT --> OPP["Realizable policy opportunity"]
+  CERT --> SPLIT["Private source/semantic/role split audit"]
+  IDENT --> STATUS["Full Hplus census STOP / source-only run"]
+  OPP --> STATUS
+  SPLIT --> STATUS
+  REACH --> STATUS
+~~~
+
+The generator-private Law is NOT an allowed learner field. Public projection is not independent process isolation. Eight disclosed synthetic laws, 13 source-only tests and an analytic 100M syntactic candidate count do not establish causal family independence. [Engine](../../packages/rep005_g0b/__init__.py) / [evidence](../../experiments/EXP-REP-005-G0B/runs/20261103-g0b-a-synthetic.md).
