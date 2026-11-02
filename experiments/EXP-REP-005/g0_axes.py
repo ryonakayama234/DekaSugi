@@ -96,6 +96,27 @@ def g2_diagnostic_gate(cases: tuple[Classification, ...]) -> bool:
         type(case) is Classification and case.certified for case in cases)
 
 
+def restricted_semantic_signature(world: w.PrivateFixture) -> bytes:
+    """Exact finite semantics for the RESTRICTED lag<=2 pilot, not full Hplus.
+
+    16 visible states * (1+12+144) public histories * 12 legal actions
+    gives 30144 byte outcomes. Byte equality, not digest equality.
+    """
+    if type(world) is not w.PrivateFixture or world.lag > 2:
+        raise ValueError("world outside restricted semantic universe")
+    from itertools import product
+    alphabet = w.all_actions()
+    histories = ((),) + tuple((act,) for act in alphabet) + tuple(
+        product(alphabet, repeat=2))
+    outcomes = bytearray()
+    for visible in range(16):
+        for history in histories:
+            for action in alphabet:
+                outcomes.append(w.next_state(world, visible, history, action))
+    assert len(outcomes) == 30144
+    return bytes(outcomes)
+
+
 @dataclass(frozen=True)
 class IdentificationReceipt:
     status: Identification
@@ -103,6 +124,7 @@ class IdentificationReceipt:
     horizon: int
     hypothesis_count: int
     complete: bool
+    reason: str = ""
 
 
 def identify_finite_class(worlds: tuple[w.PrivateFixture, ...],
@@ -121,6 +143,10 @@ def identify_finite_class(worlds: tuple[w.PrivateFixture, ...],
         type(max_actions) is not int or not 0 <= max_actions <= 8 or
         type(max_nodes) is not int or max_nodes < 1):
         raise ValueError("invalid finite identification scope")
+    signatures = tuple(restricted_semantic_signature(world) for world in worlds)
+    if len(signatures) != len(set(signatures)):
+        return IdentificationReceipt(Identification.UNCERTIFIED, 0, max_actions,
+                                     len(worlds), False, "SEMANTIC_ALIASES")
     explored = 0
 
     class SearchLimit(Exception):
@@ -152,10 +178,10 @@ def identify_finite_class(worlds: tuple[w.PrivateFixture, ...],
         identified = solve(tuple(range(len(worlds))), 0, (), max_actions)
     except SearchLimit:
         return IdentificationReceipt(Identification.UNCERTIFIED, explored,
-                                     max_actions, len(worlds), False)
+                                     max_actions, len(worlds), False, "NODE_BUDGET_EXHAUSTED")
     return IdentificationReceipt(
         Identification.IDENTIFIABLE if identified else Identification.UNIDENTIFIABLE,
-        explored, max_actions, len(worlds), True)
+        explored, max_actions, len(worlds), True, "COMPLETE_EXHAUSTIVE")
 
 
 def preflight() -> dict[str, object]:
@@ -163,8 +189,11 @@ def preflight() -> dict[str, object]:
     orbit = w.fixture_role_orbit_upper_bound()
     yes = identify_finite_class((w.PrivateFixture(mode="always"),
                                  w.PrivateFixture(mode="never")), max_actions=1)
-    no = identify_finite_class((w.PrivateFixture(source=0,target=1,mode="never"),
-                                w.PrivateFixture(source=1,target=0,mode="never")))
+    short_budget = identify_finite_class((w.PrivateFixture(mode="guard"),
+                                          w.PrivateFixture(mode="never")),
+                                         max_actions=1)
+    aliased = identify_finite_class((w.PrivateFixture(source=0,target=1,mode="never"),
+                                     w.PrivateFixture(source=1,target=0,mode="never")))
     return {
         "schema": "rep005-g0-orthogonal-method/1",
         "status": "ENGINEERING_PRECHECK_NOT_SCIENTIFIC_G0B",
@@ -172,7 +201,9 @@ def preflight() -> dict[str, object]:
         "pilot_structural_orbit_UPPER_BOUND": orbit,
         "pilot_can_supply_80_independent_families": orbit["total"] >= 80,
         "identified_pair": yes.status.value,
-        "nonidentified_pair": no.status.value,
+        "distinct_pair_short_budget": short_budget.status.value,
+        "aliased_pair": aliased.reason,
+        "restricted_signature_outcomes": 30144,
         "h0_hplus_truth_membership_full_certification": False,
         "80_independent_families_certified": False,
         "learning_performed": False,
