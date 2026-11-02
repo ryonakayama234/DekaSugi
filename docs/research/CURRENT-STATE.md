@@ -39,3 +39,7 @@ Main is adopted code; Drafts are proposals and exploratory evidence; archived ne
 Danger: historic main-push evaluation workflow/source lock and the independently controlled historical DEV/FINAL scoring must NOT be changed or retriggered as part of housekeeping. Old modules must be imported only as selectively audited, small main-based changes. Do not conflate CI green with scientific validity.
 
 Primary references: [V2 decision](../specs/EXP-REP-005-DECISION-V2.md), [G0 plan](../../experiments/EXP-REP-005/plan.md), [G0 synthetic evidence](../../experiments/EXP-REP-005/runs/20261102-v2-design-not-run.md), [PR portfolio](20261102-research-pr-portfolio-audit.md).
+
+## G0a exact-head synthetic evidence
+
+[2026-11-02 G0a engineering receipt](../../experiments/EXP-REP-005/runs/20261102-g0a-synthetic-calibration.md): the 129-test CI run succeeded for method code SHA a4e496b62619f6103cf54d33c89af5692df96bf6. A later docs-only head must also pass CI before source adoption. Scientific G0b is not complete. Alias-equivalent laws are filtered before claiming meaningful budget-limited identification. Future redesign is [Issue #148](https://github.com/ryonakayama234/DekaSugi/issues/148).
