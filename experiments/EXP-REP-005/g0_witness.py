@@ -198,6 +198,39 @@ def permute_actions(actions: tuple[Action, ...],
     return tuple(Action(a.kind, order[a.object_id], a.value) for a in actions)
 
 
+def fixture_role_orbit_upper_bound() -> dict[str, int]:
+    """Upper bound on structural families in THIS PILOT fixture, not full Hplus.
+
+    Quotient source/target/guard programs by every S4 object relabeling.
+    Modes always/never ignore guard/value/lag. This is an upper bound:
+    semantic equivalences or stricter structural-family rules can only
+    REDUCE the count. It does not generate or validate split families.
+    """
+    renamings = tuple(permutations(range(4)))
+    orbits: set[tuple[object, ...]] = set()
+    for source in range(4):
+        for target in range(4):
+            if source == target:
+                continue
+            for mode in ("always", "never", "guard"):
+                guards = range(4) if mode == "guard" else (0,)
+                values = (0, 1) if mode == "guard" else (0,)
+                lags = (1, 2) if mode == "guard" else (1,)
+                for guard in guards:
+                    for value in values:
+                        for lag in lags:
+                            variants = (
+                                (mode, p[source], p[target], p[guard], value, lag)
+                                if mode == "guard" else
+                                (mode, p[source], p[target])
+                                for p in renamings
+                            )
+                            orbits.add(min(variants))
+    counts = {mode: sum(k[0] == mode for k in orbits)
+              for mode in ("always", "never", "guard")}
+    return {**counts, "total": len(orbits)}
+
+
 def audit() -> dict[str, object]:
     spec = PrivateFixture()
     witness = find_minimum_witness(spec)
@@ -224,4 +257,7 @@ def audit() -> dict[str, object]:
         "learning_performed": False,
         "scoring_performed": False,
         "distinct_structural_families_verified": False,
+        "pilot_fixture_role_orbit_upper_bound": fixture_role_orbit_upper_bound(),
+        "minimum_proposed_distinct_families": 80,
+        "family_gate_passed": False,
     }
