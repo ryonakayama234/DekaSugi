@@ -24,3 +24,7 @@ Use JSONL append-only evidence, exact source hash and immutable Snapshot hashes.
 
 ## Consequences and review
 Main-based docs-only PR; future implementation separately reviewed. Original Issue #148 scientific acceptance remains unfulfilled. Review source, type/graph semantics, independent class proof, prior and budget definitions, data leak boundary, source hashes and arithmetic before freeze. Links: [V3](../../specs/EXP-REP-005-G0B-DECISION-V3.md), [plan](../../../experiments/EXP-REP-005-G0B/plan.md), [system](../system.md), [contracts](../contracts.md), [parent Issue](https://github.com/ryonakayama234/DekaSugi/issues/148).
+
+## G0b-A source-only implementation consequence (2026-11-03)
+
+The initially docs-only Draft PR #149 now stages one isolated synthetic-only G0b-A module and tests. Under the exact <=2 Edge guard grammar, direct enumeration of 100,090,027 syntactic normal forms exceeds the 200,000 candidate cap. The eight constructed examples establish correct mechanics but NOT independent scientific families. No production learner, source-custody process boundary or G1–G6 training was implemented. The correct method outcome is STOP / NOT_CERTIFIED for full Hplus_G; a separately reviewed tractable grammar or sound compressed proof is required. [Engineering receipt](../../../experiments/EXP-REP-005-G0B/runs/20261103-g0b-a-synthetic.md).
