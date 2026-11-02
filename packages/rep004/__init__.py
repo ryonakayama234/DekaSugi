@@ -569,40 +569,40 @@ def evaluate(snapshot):
 
 
 def activation_fixture(snapshot):
-    """Disclosed development-only mechanism gate, not a scored efficacy proof.
+    """Development-only, outcome-blind causal question activation witness.
 
-    The old [pulse(0), pulse(1)] fixture was specific to a BROKEN guard prior.
-    Deterministically search a bounded predeclared family/order grid instead
-    of retaining the invalid fixture or silently weakening the pass condition.
+    The former fixed two-pulse witness vanished after correcting role binding.
+    Search legal, charged ADAPTIVE question paths, selecting the first divergent
+    action at an otherwise identical shared public history. No audit scores read.
+    Finite search grid: 12 composition + 12 other + 12 reference families,
+    budgets 2/4/8, one fixed dev instance per family. Never final/heldout.
     """
     validate_snapshot(snapshot)
-    candidates=0
-    original=None
-    for family_index,f in enumerate(study_manifest()['composition']):
-        w=world_for(f,508+family_index)
-        for first in range(N):
-            for second in range(N):
-                session=Session(w)
-                for source in (first,second):
-                    session.apply(('pulse',source,None))
-                h=consistent(session.trace)
-                if not h:continue
-                ma={'actions':2,'model_checks':0,'body_invocations':0}
-                mb={'actions':2,'model_checks':0,'body_invocations':0}
-                a=choose(session.state,h,weights_for(h,snapshot,'LQ',ma),2,ma,'LQ')
-                b=choose(session.state,h,weights_for(h,snapshot,'LA',mb),2,mb,'LA')
-                candidates+=1
-                result={'type':'development-only-mechanism-gate',
-                        'searched_paid_histories':candidates,
-                        'family_index':family_index,
-                        'conditioning_pulses':[first,second],
-                        'paid_conditioning':len(session.trace),
-                        'remaining_candidates':len(h),
-                        'LQ_first_action':list(a) if a else None,
-                        'LA_first_action':list(b) if b else None,
-                        'differs':a!=b,'body_invocations':ma['body_invocations'],
-                        'transcript_digest':digest(session.trace)}
-                if original is None:original=result
-                if a!=b:return result
-    return {**original,'differs':False,'searched_paid_histories':candidates,
-            'mechanism_status':'NOT_FOUND_IN_BOUNDED_GRID'}
+    manifest=study_manifest()
+    checked=0
+    for group in ('composition','unseen','seen'):
+        for idx,f in enumerate(manifest[group]):
+            w=world_for(f,508+idx)
+            for budget in (2,4,8):
+                lq=committed_use(snapshot,w,'LQ',budget)
+                la=committed_use(snapshot,w,'LA',budget)
+                checked+=1
+                t1=lq['trace'];t2=la['trace']
+                for prefix,(a,b) in enumerate(zip(t1,t2)):
+                    if a['action']!=b['action']:
+                        assert t1[:prefix]==t2[:prefix], 'changed public history before first action switch'
+                        return {'type':'development-only-mechanism-gate',
+                                'scope':'3x12 public semantic families, budgets (2,4,8)',
+                                'paths_checked':checked,'group':group,
+                                'family_index':idx,'budget':budget,
+                                'paid_conditioning':prefix,
+                                'remaining_candidates':len(consistent(t1[:prefix])),
+                                'LQ_first_action':a['action'],
+                                'LA_first_action':b['action'],
+                                'differs':True,
+                                'body_invocations':lq['meter']['body_invocations'],
+                                'transcript_digest':digest(t1[:prefix])}
+    return {'type':'development-only-mechanism-gate',
+            'scope':'3x12 public semantic families, budgets (2,4,8)',
+            'paths_checked':checked,'paid_conditioning':None,'differs':False,
+            'body_invocations':0,'mechanism_status':'NO_CAUSAL_ACTION_SWITCH_FOUND'}
