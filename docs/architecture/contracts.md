@@ -1306,3 +1306,34 @@ flowchart LR
 - Validation separates syntax isomorphism, full finite semantic equality, ID permutation, reachable evidence ambiguity and capped UNKNOWN. A certified grammar mismatch requires complete finite search proof; an empty truncated search is UNKNOWN/RESOURCE_EXHAUSTED.
 - 8 arms: LQ, LA, LR, ER, FA, FX, BODY-OFF, STATIC-MACRO; all have the same legal charged actions/physical budgets and a defined comparable compute ceiling. Formally report estimand by **semantic family**, not renamed ID episodes, with coverage alongside zero-abstention AULC.
 - [Full scope and methods](../specs/EXP-REP-004-DECISION-V1.md) / [prospective plan](../../experiments/EXP-REP-004/plan-v1.md). Historic REP003 raw and sealed evaluation boundaries remain unchanged.
+
+
+## EXP-REP-004 — measured source and typed execution boundary (2026-11-02)
+
+~~~mermaid
+flowchart LR
+  SECRET["Host-only World.edges, seed, evaluation class"] --> SESSION["Paid Session.apply"]
+  SESSION --> OBS["Public traces: state int 0..15, set/pulse, ordinal, cost"]
+  OBS --> SLEEP["SleepFromPublicTraces: no World parameter"]
+  SLEEP --> BODY["ConceptBody: AST, roles, support, evidence digests"]
+  BODY --> SNAP["Snapshot: digest + TRAIN receipts"]
+  SNAP --> LOAD["Validator / fresh interpreter"]
+  LOAD --> Q["LQ inquiry candidate weighting by executable AST"]
+  Q --> COMMIT["Signed prediction and actual paid trace"]
+  COMMIT --> EVAL["Audit only AFTER commit"]
+  SECRET -.->|"Never before commit"| EVAL
+  EVAL --> ROW["Raw JSON record ×1,920"]
+  SECRET -.->|"No route"| SLEEP
+~~~
+
+**Public trace:** Each chronological row must contain exactly {before: int[0,15], action: [pulse,i,null] or [set,i,0|1], after: int[0,15], ordinal: positive exact sequential int, cost:1}; all before states must match prior after states. Set transition is independently recomputed, mismatches rejected. For pulse, evaluation truth is not available to Sleep; Sleep infers from full fixed hypothesis catalog only. World generator family/seed/class are never passed as source metadata into Sleep.
+
+**Body/2-edge composition:** Typed AST allowlist is toggle_if_pulse(source,target,guard=always/state_is[0|1]) or parallel_xor(shape in CHAIN/FANOUT/FANIN/OTHER, ordered two typed effects). Only pure, bounded internal interpretation is allowed; no custom Python callbacks/eval. Body includes AST SHA256, positive/negative public receipt hash lists, distinct inferred-family support >=3 and candidate status. Interpreter actual behavior is checked by guards and two-edge pre-state semantics; a syntactic class label alone is not execution authority. Four concurrency macros describe prior allowed metagrammar; they are not proof of autonomously created primitives.
+
+**Snapshot:** Schema rep004/executable-concept/1; manifest_digest, train_worlds, paid_actions, receipt_digest, library, episodes of *publicly inferred* train semantics, distinct_train_families and canonical digest. Strict type/schema/hash validation before use and no automatic promotion to global skill library. Verified retained Snapshot digest 4585f68f150318e94cc38cf26143f29bc9fe0e03a1fc0bd7bb99db997ae040f2.
+
+**Committed use:** arm, budget, anonymous public IDs, exact charged trace, predicted model edges or ABSTAIN, Snapshot digest and meters are hashed before audit. Wall/CPU clock is attached separately to avoid nondeterministic prediction commits. The host may hold true rules internally, but inquiry, induction, binding and scoring inputs must not receive them. The scorer itself has truth authority only after successful prediction digest verification.
+
+**Raw score:** Each row contains stratum and evaluator-only family key, index, arm, budget, committed digest, score out of 64 exact transitions, status, actual action sequence and cost ledger. The 64 audit transitions per trial do not constitute independent families. All 1,920 distinct arm/world/budget combinations must be present; scripts/read_rep004_archive.py rejects missing or forged row sets, invalid score arithmetic and archive raw SHA mismatch. The raw archive is a synthetic score, not a certified independent F0 holdout.
+
+**Trust/limitations:** Query caches are keyed by pure model/AST semantics, not secret truth; logical body-invocation meter counts cache hits as attempts, therefore is NOT physical interpreter invocation count. The current CPU times are descriptive, not a matched full lifecycle accounting. OOD three-edge worlds are outside hypothesis grammar and exhibited zero abstention; do not claim calibrated anomaly detection.
