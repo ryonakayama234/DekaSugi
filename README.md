@@ -155,3 +155,7 @@ accepted concept promotion and no original frozen dataset changes. See
 [contracts](docs/architecture/contracts.md),
 [candidate preregistration](experiments/EXP-REP-001/plan.md), and
 [G1-C evidence](experiments/EXP-REP-001/runs/20261101-g1c-rank-only-engineering.md).
+
+
+## EXP-REP-004R — 次の研究決定稿候補（2026-11-02）
+[Issue #139](https://github.com/ryonakayama234/DekaSugi/issues/139) について、EXP-REP-004の独立レビューP1（条件付き関係のrole bindingが名前置換で不変ではない）とP2（STATIC-MACROが学習ライブラリ空条件に依存）を修正し、TRAIN0/3/8/16/32/64→Snapshot→fresh USE→訂正後のdisclosed人工採点まで一括で進める[設計決定稿候補](docs/specs/EXP-REP-004R.md)と[実験計画](experiments/EXP-REP-004R/plan.md)。この注記時点ではDESIGN_ONLY、修正・訓練・新採点はいずれも未実行。過去の1,920行や旧F0/DEV/FINALは不変更。正式科学採用はしない。

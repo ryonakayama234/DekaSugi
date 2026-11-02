@@ -1271,3 +1271,23 @@ flowchart LR
 **Implemented:** packages/rep004 standalone finite grammar, public-only learner input, typed atomic and concurrent two-edge composition body execution, context binding, CPU/cache-aware planning, cross-family structural TRAIN separation and discovered action-switch fixture, snapshot reloading, score archive and checksum. **Not proven:** new interpreter primitive invention, formal external evaluator custody, effective learned performance vs fixed/static macro, OOD uncertainty, matched full-lifetime resource advantage or independent neural epochs.
 
 Historical architecture diagrams above remain stage-specific; this is the latest implemented engineering study. See Decision V2, ARCH-002 contracts below, and dated measured run.
+
+
+## EXP-REP-004R — 役割不変概念の修正・新学習/USE/採点（提案、未実装）
+~~~mermaid
+flowchart TD
+    W["Host-only secret world"] --> X["Charged public Wake set/pulse"]
+    X --> T["Public Trace"]
+    T --> S["Sleep: typed concepts"]
+    S --> N["Persisted Snapshot + digest"]
+    N --> R["RoleBinding + semantic equivalence (repair)"]
+    R --> Q["LQ query/prediction"]
+    F["STATIC-MACRO: independent fixed concepts"] --> A["Shared cost-bounded planner"]
+    Q --> A
+    L["LA/FA/BODY-OFF controls"] --> A
+    A --> C["Pre-audit prediction commit"]
+    C --> E["Disclosed evaluator: truth only here"]
+    W --> E
+    E --> O["New immutable score receipt"]
+~~~
+修正主対象: packages/rep004 でのguard/source/target全ロール束縛とSTATIC-MACROの学習ライブラリからの独立化。G1/G2失格なら以後のTRAIN/USE/採点停止。G3→G5で0/3/8/16/32/64の学習、Snapshot、fresh USEと公開人工採点を同じ後続PRにまとめる。EのtruthをTへ漏洩させない。正式な独立カストディ評価器ではない。[研究仕様](../specs/EXP-REP-004R.md) / [工程](../../experiments/EXP-REP-004R/plan.md)。

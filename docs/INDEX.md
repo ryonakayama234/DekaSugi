@@ -383,3 +383,10 @@ The original EXP-REP-001 plan is a proposal, not a frozen FINAL method. Do not i
 | REP004-ADR | Why constrained executable concepts were chosen before neural epochs, and what the negative result means | engineering decision | [ADR](architecture/decisions/ADR-REP-004.md) |
 
 **Current authoritative status:** Actual TRAIN=64 worlds (32 distinct families), 7 typed executable bodies, 78/240 matched question-switch episodes, new-composition LQ=0.700000 vs LA=0.705208 vs FA=0.760417; STATIC-MACRO equals LQ. No independent external scientific approval, no formal F0/DEV/FINAL or release-model promotion. Past stages are historical snapshots, not current authority.
+
+
+## EXP-REP-004R — P1/P2修正＋学習曲線＋TRAIN/Snapshot/USE/公開採点（DESIGN ONLY）
+| ID | 目的 | 現時点 | 参照 |
+|---|---|---|---|
+| EXP-REP-004R | 役割不変性、固定比較の独立性、6水準学習量、訂正後の公開人工得点と使用記録 | design candidate; not implemented; not scored | [Issue #139](https://github.com/ryonakayama234/DekaSugi/issues/139) / [decision](specs/EXP-REP-004R.md) / [plan](../experiments/EXP-REP-004R/plan.md) / [run ledger](../experiments/EXP-REP-004R/runs/README.md) / [ARCH-001](architecture/system.md) / [ARCH-002](architecture/contracts.md) |
+旧REP004原本とSHAは不変。修正後スコアは探索的工学結果であり、正式な独立F0/FINALやモデル昇格と同一視しない。
