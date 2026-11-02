@@ -988,3 +988,21 @@ flowchart TD
 ~~~
 
 The static Hplus comparator has equal expressive capacity to any learned Hplus candidate. The four-cell design H0/Hplus x P0/Pctx isolates language capacity from query policy. This diagram is a FUTURE responsibility map. [Spec](../specs/EXP-REP-005-DIAG.md) / [plan](../../experiments/EXP-REP-005/plan-diag-v0.md) / [runs](../../experiments/EXP-REP-005/runs/README.md).
+
+
+## ARCH-001 EXP-REP-005 — temporal aliasing diagnostic fixture (G0 candidate, NOT IMPLEMENTED)
+~~~mermaid
+flowchart TD
+  W["Synthetic host: hidden transition law"] --> OR["Charged set/pulse runtime"]
+  OR --> EV["Ordered public events: state/action/next state"]
+  EV --> PAIR["Find same visible state + action under different histories"]
+  PAIR --> H0["Check old H0 finite deterministic signatures"]
+  PAIR --> HP["Check typed history-aware Hplus signatures"]
+  H0 --> G{"H0 empty AND Hplus nonempty?"}
+  HP --> G
+  G -->|"yes, independently verified"| NEXT["G2 witness: representation deficit candidate"]
+  G -->|"no or unsupported"| STOP["Unidentifiable / invalid / outside Hplus"]
+  NEXT -.-> FUT["Future G3: learn predicate, Sleep Snapshot, fresh USE"]
+  SECRET["Host law + heldout families"] -.->|"No learner access"| EV
+~~~
+An observed pair with the same `(visible_state, action)` and different next states is inconsistent with a deterministic H0 using only visible current state. A one-step public-action-history predicate is a *human-specified Hplus candidate* for diagnosis, not an installed new module or a learned result. All actions, including `set`, cost 1. The independent checker, strict role binding, state augmentation comparator, and future matched-capacity evaluation are required before claims of concept invention. [Spec](../specs/EXP-REP-005-DIAG.md) / [proposed plan](../../experiments/EXP-REP-005/plan-diag-v0.md) / [ledger](../../experiments/EXP-REP-005/runs/README.md).
