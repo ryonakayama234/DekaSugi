@@ -1064,3 +1064,20 @@ Prospective contracts (must be versioned and implemented/tested only in a later 
 - EvaluationReport (separate trust boundary): paired baseline IDs; public/hidden partition provenance; per-family outcomes, paid actions, interpreter dispatch, wall/CPU/RSS if measured; coverage/abstention/missingness; training-cost amortization; status of all gates.
 
 The old-grammar expressibility proof is scoped to an explicitly finite state/action/sequence universe. Hash equality is not independent custody. [Spec](../specs/EXP-REP-005-DIAG.md) / [plan](../../experiments/EXP-REP-005/plan-diag-v0.md).
+
+
+## ARCH-002 EXP-REP-005 — temporal witness candidate, proposed schema (NOT IMPLEMENTED)
+~~~mermaid
+flowchart LR
+  R["Charged host transition"] --> E["PublicTransition: order, visible_before, action, visible_after, cost=1"]
+  E --> P["AliasingPair: two distinct public-history prefixes, same before/action, unequal after"]
+  P --> V["FiniteWitnessCheck: H0 survivors, Hplus survivors, universe digest"]
+  V --> G["G2 candidate receipt: status, evidence hash, permutation checks"]
+  G -.-> L["Future learned RepairCandidate and Snapshot"]
+  T["Generator truth / hidden family, seed"] -.->|"Forbidden to public event, candidate, Snapshot"| E
+~~~
+- `PublicTransition` (proposed): `ordinal: exact int`, `visible_before: exact int`, `action: typed(set|pulse, role, value?)`, `visible_after: exact int`, `cost: exact int=1`, `public_history_digest: str`, `runtime_version: str`. The explicit initial previous-action sentinel is public; never infer a free reset.
+- `AliasingPair`: two distinct **ordered public event prefixes** pointing to separate pulse observations whose visible state/action are equal but outcomes unequal. A claim based on a single observation or an uncharged state write fails.
+- `FiniteWitnessCheck`: `grammar_H0_digest`, `grammar_Hplus_digest`, `finite_universe_digest`, `H0_consistent_count`, `Hplus_consistent_count`, `max_charged_actions`, `role_permutation_pass_count`, `status` and canonical `evidence_sha256`. Report `PUBLICLY_FALSIFIED_H0` only when H0 has zero consistent candidates and Hplus at least one, under an independently validated legal transcript; otherwise record specific insufficiency/invalid/out-of-scope conditions.
+- Test the alternative `augmented_state=(visible_state, last_public_action)` under the same information and computation budget. It is a representation variant, not a source of free truth. Hplus being expressive does not demonstrate learned novelty: later compare against preinstalled equal-capacity Hplus.
+- No implementation, signed independent evidence, result, learned model, or frozen acceptance threshold exists yet. See [G0 specimen](../specs/EXP-REP-005-DIAG.md).
