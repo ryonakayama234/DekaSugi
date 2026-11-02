@@ -1091,3 +1091,32 @@ flowchart LR
 - `EvaluationReport`: family-paired exact outcome deltas; paid actions; physical interpreter dispatch and CPU/wall/RSS if measured; coverage/abstention and training amortization. Source/score independence maintained.
 
 See [G0 identification audit](../research/EXP-REP-005-G0-identification-audit.md) and [experiment plan](../../experiments/EXP-REP-005/plan-diag-v0.md). No G1/G2 witness, Snapshot, model or score exists from this amendment.
+
+## ARCH-002 EXP-REP-005 integrated typed data flow (PROPOSED / NOT IMPLEMENTED)
+
+```mermaid
+flowchart TD
+    A["PublicEvent: actual priced step"] --> B["PublicTrace + prefix hash"]
+    B --> C["VersionSpaceReceipt H0/Hplus"]
+    C --> D["MismatchWitness: role-invariant counterexample"]
+    D --> E["ConceptCandidate: typed AST + support/negative evidence"]
+    E --> F["Sleep Snapshot: hash + provenance"]
+    F --> G["Fresh-process PredictionCommit"]
+    H["Evaluator-only truth + probes + family match key"] --> I["ScoreReceipt: family paired utility and cost"]
+    G --> I
+```
+
+| Schema | Required separation / meaning |
+|---|---|
+| `PublicEvent` | ordinal, legal typed action, visible before/after, exact paid cost, prefix digest; no hidden family/world truth |
+| `VersionSpaceReceipt` | grammar digest, semantic candidate signatures, empty/nonempty status, logical and physical cost |
+| `MismatchWitness` | same (visible state, action), conflicting successors in a single world, source event ordinals, permutation proof |
+| `ConceptCandidate` | candidate typed metagrammar AST, normalized roles, body/hash, support and counterexample evidence, applicability |
+| `Snapshot` | frozen public TRAIN evidence, candidate/policy/source digests, verified loader and content hash; evaluator-only labels excluded |
+| `PredictionCommit` | arm-local paid question trace, exact pre-score predictions/abstentions, Snapshot hash and clock/cost |
+| `ScoreReceipt` | evaluator-only opaque world/family matching, 12 hidden challenge probes, exact/abstain/wrong, actions, physical dispatch, CPU, negative/missing reasons |
+
+Two independent modes: `same_public_prefix_diagnostic` (shared lawful public history) vs `paired_world_independent_policy` (matched hidden world/start/budget but independently chosen actions; retain coincident paths). Never supply evaluator truth or peer-arm observations to learner. Exact proposed contracts, G0→G6 stop rules, data split and utility are in [integrated decision v1](../specs/EXP-REP-005-INTEGRATED-DECISION-V1.md).
+
+## ARCH-002 EXP-REP-005 observed G0 witness fixture contract
+The G0-only feasibility implementation defines frozen Python `Action(kind,object_id,value)`, `PublicEvent(ordinal,state_before,action,state_after,paid_cost)`, and a separate trusted evaluator-private `PrivateFixture`. Public inference `memoryless_conflict` and `public_consistent_hplus` accept **only public events** and never the `PrivateFixture`. Each event costs exactly one; contiguous ordinals and state continuity are checked. **This does not prove event origin**: authoritative environment receipts, hash chain, independent role binding and future G1 adversarial trust tests are still required. See [method precheck](../research/EXP-REP-005-G0-witness-feasibility-20261102.md). No Snapshot/ScoreReceipt exists.
