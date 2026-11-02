@@ -17,3 +17,16 @@ Negative controls: visible-state-only deterministic consistent trace -> NO_REPAI
 Whitelist only `python -m unittest discover -s tests -p 'test_rep005_representation_repair_synthetic.py' -v` in a new isolated 5-minute GitHub Actions workflow. Record #tests, PASS/FAIL, exact head commit, run ID, artifact hashes if available. Engineering metrics: observed contradiction count, admissible typed feature candidates out of 24, paid actions, snapshot digest and executable dispatch. Do not aggregate invented transitions as independent families.
 
 G0 pass is not claimed; source anonymity, causal-family population, matched new-world score, train cost amortization, future G3–G6 all NOT_RUN or NOT_CERTIFIED. No old DEV/FINAL or original workflow executes.
+
+## Hypothesis
+H-STATE: same public state/action contradictory successors within a stationary deterministic world refute a deterministic memoryless public-state predictor. H-REPAIR: one of 24 typed lagged-public-action equality features can resolve a disclosed artificial counterexample without seeing the hidden law. H-NULL: no observed contradiction or insufficient feature grammar must not yield an adopted concept. H-MATCH: equal-capacity STATIC-Hplus makes matching predictions, therefore this prototype proves no learned superiority.
+
+## Metrics
+Synthetic engineering only: charged public action count, conflicting visible-state context count, admissible typed feature count out of 24, snapshot byte integrity, successful fresh-process executable-body dispatch, explicit prediction abstentions, and each negative-control pass/fail. No heldout structural family effect or statistical p-value is defined. CI records include exact head and independent source/docs checks.
+
+## Acceptance
+- [ ] Valid same-world public fixture emits a deterministic memoryless contradiction and a consistent executable predicate from the 24-element grammar.
+- [ ] Fresh-process Snapshot reload reproduces the witnessed public prediction; unseen context abstains; body-off/STATIC-Hplus attribution is not overstated.
+- [ ] No contradiction -> NO_REPAIR_NEEDED; unrepairable same-history conflict -> NOT_CERTIFIED; invalid episode chronology and tampering rejected.
+- [ ] Exact-head safe synthetic CI, research source integrity and docs/links pass. Independent expert review remains a separate requirement.
+- [ ] Maintain G0b STOP, no historical scorer, no actual G3 paid TRAIN, no scientific DEV/FINAL.
