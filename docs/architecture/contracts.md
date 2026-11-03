@@ -1039,3 +1039,26 @@ flowchart LR
   HOLDOUT["Evaluator-only answers"] -.->|"Never exposed"| RECON
 ~~~
 **Canonical storage contract:** `QuerySession.class_ids` is exactly `tuple` whose entries are exactly `str`, never a tuple or string subclass, because equality can differ from iteration. The compact `answers` tuple contains exact 3-tuples of (int ID, str output, str local receipt). The `trace` container is exactly tuple; each ordered entry is an exact tuple of typed `QueryProposal` and `QueryAnswer`. Session status, pool/world/split digest fields, and proposal and answer primitive fields must have exact builtin types; bool is rejected when int is required. Exact types are checked at the public boundary **before** Gini, random policy, history revalidation, or final-program selection. Per-prefix policy/receipt semantics and the active-query/2 schema remain unchanged. Hashes remain local consistency checks, NOT independent Oracle authentication. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+## EXP-ACTIVE-002 G0B — evaluator-only finite source data contract
+```mermaid
+flowchart LR
+    G["SourceSpec: 3 arrays x 8 fixed expressions"] --> P["PrivateWorld: source choices and 4 complete laws"]
+    P --> O1["WorldKnownCertificate"]
+    G --> M["PublicMixture: all 448 sources x 4 laws; no selected ID"]
+    M --> O2["PublicCertificate"]
+    O1 --> R["LandscapeReport: engineering evidence"]
+    O2 --> R
+    PUB["Future PublicObservation only: action, bit, remaining B"] --> L["Future G1 learner: NOT IMPLEMENTED"]
+    P -. "must not flow" .-> X["private wall"]
+    R -. "must not train" .-> X
+```
+| Contract | Fields / constraints | Access and purpose |
+|---|---|---|
+| `World` | `source_id:str`, `source_choices:tuple[int,int,int]`, four `Model`, partition | **Evaluator-only** selected grammar index; source identity is never learner input |
+| `Model` | `questions:tuple[bit,bit,bit]`, `audit:tuple[bit,bit,bit]`, `weight:int>0` | Bounded exact built-in types; query outputs on states 0/1; audit probes from same law on unreachable state 2 |
+| `Certificate` | `scope`, integer adaptive/fixed numerators, denominator, policy tree, root contingent gaps, best fixed sequence | Evaluator-only; scope `WORLD_KNOWN` or `PUBLIC_MIXTURE` never conflated |
+| `LandscapeReport` | version, 512 complete world rows, 64/448 counts, zero/positive census, exact canonical SHA256 | Engineering audit evidence only; not a model Snapshot, learner training input, skill or real holdout |
+| `PublicObservation` | future action ID, next public bit, remaining paid budget | Prospective G1 ONLY after new owner/method decision; never receives hidden u,v, source selection, law/audit or Oracle scores |
+
+All three actions legal in all three states; B=2. Initial state 0 and states 0/1 only transition into 0/1; only evaluator may probe state2. Public Oracle knows the entire grammar distribution but not the chosen hidden source index and computes an upper bound on achievable adaptive gain, not an empirical trained learner. Exact EXT448 outcome is **0/5376** gain; G1 blocked. [Spec](../specs/EXP-ACTIVE-002-G0B.md), [evidence](../../experiments/EXP-ACTIVE-002-G0B/runs/20261103-local-stop.md).
