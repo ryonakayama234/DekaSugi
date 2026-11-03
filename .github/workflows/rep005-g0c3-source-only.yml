@@ -1,0 +1,42 @@
+name: REP005 G0C3 disclosed causal-family source only
+
+on:
+  pull_request:
+    paths:
+      - 'packages/rep005_g0c3/**'
+      - 'tests/test_rep005_g0c3.py'
+      - 'scripts/rep005_g0c3_pilot.py'
+      - 'docs/specs/EXP-REP-005-G0C3.md'
+      - 'experiments/EXP-REP-005-G0C3/**'
+      - 'docs/architecture/**'
+      - 'AGENTS.md'
+      - 'docs/INDEX.md'
+      - '.github/workflows/rep005-g0c3-source-only.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Exact source-only tests
+        run: python -m unittest tests.test_rep005_g0c3 -v
+      - name: Docs integrity
+        run: python scripts/check_docs.py
+      - name: Disclosed P-NAT 48 attempts and 12 panels
+        run: python -m scripts.rep005_g0c3_pilot --output .run/g0c3-v1.json --draws 48 --proof-seconds 180 --panel-seconds 30
+      - name: Retain synthetic JSON evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rep005-g0c3-source-v1
+          path: .run/g0c3-v1.json
+          if-no-files-found: warn
+          retention-days: 30

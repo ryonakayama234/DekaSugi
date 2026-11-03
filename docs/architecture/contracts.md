@@ -1075,3 +1075,40 @@ flowchart TD
 **Must not conflate:** equal syntax, exact semantic equality, role-orbit equivalence, reachable public-identifiability, source-root separation and independent scientific family sampling. A nonalias proof checks a mismatch for **every** role permutation; an alias proves exact full-domain equality under one permutation. A budget cutoff always returns NOT_CERTIFIED, not UNID. The source identifier and Law truth must never be sent in a PublicStep. `InquiryCertificate` measures an evaluator's oracle value, not a learned agent's realized policy or actual paid TRAIN.
 
 V5 isolated code is only on its Draft branch pending review. [spec](../specs/EXP-REP-005-G0C-V5.md), [plan](../../experiments/EXP-REP-005-G0C/plan.md), [run](../../experiments/EXP-REP-005-G0C/runs/20261103-disclosed-source.md).
+
+
+## EXP-REP-005-G0C3 — causal-family provenance and inquiry contracts
+
+```mermaid
+flowchart LR
+  ROOT["Evaluator-only RootDraw"] --> LAW["Typed Law and dependent role variant"]
+  LAW --> INVARIANT["115680-cell complete invariant"]
+  INVARIANT --> CERT["Exact orbit fallback, or unknown"]
+  LAW --> PANEL["4 fixed-index roots, B3"]
+  PANEL --> ORACLE["Adaptive and strongest open-loop MAP"]
+  CERT --> EVID["Versioned private source JSON"]
+  ORACLE --> EVID
+  LAW -.->|"Forbidden learner crossing"| LEARN["Future public-only learning"]
+```
+
+- `RootDraw`: `root_id`, VALID/INVALID, reason, `model` (private Law/null), `variant` (role-renamed same ancestry/null), `role_permutation`. Index-derived PRNG does not constitute independent scientific mechanism sampling; INVALID never resampled.
+- `FullInvariant`: exact 115680 typed cells, 36 integer histogram bins (history length x action type x Hamming distance from same-action no-edge transition). Different histogram proves role-NONALIAS; equal histogram does not prove alias and requires existing exact 120-role proof. Cap => NOT_CERTIFIED.
+- `OrbitCensus`: CERTIFIED_NEW_ORBIT, CERTIFIED_ALIAS, INVALID or NOT_CERTIFIED; report conservative orbit lower/upper. `independent_scientific_family_count=null` always.
+- `InquiryPanel`: 4 consecutive root IDs, 15 legal actions, B3, state0, uniform prior, strongest adaptive/open-loop MAP; INVALID/NOT_CERTIFIED retained in all 12 attempted panels. Opportunity prevalence lower/upper bound is empirical attempted-panel bound, not population CI.
+- `SourceEvidence`: disclosed `g0c3-source-only-v1` JSON includes private synthetic Law repr to allow reproduction; **not suitable for learner ingestion or confidential future heldout**. Zero paid TRAIN; no old DEV/FINAL, new Snapshot or scientific transfer inference.
+
+[Spec](../specs/EXP-REP-005-G0C3.md) / [plan](../../experiments/EXP-REP-005-G0C3/plan.md) / [receipt](../../experiments/EXP-REP-005-G0C3/runs/20261103-engineering.md).
+
+
+### G0C-3 deep canonicalization security boundary (independent P1 remediation)
+
+```mermaid
+flowchart LR
+  IN["Caller-supplied Law, Edge, Atom"] --> V["Exact builtin type checks recursively"]
+  V -->|subclass, forged tuple or field| STOP["Reject before equality, hash, transition"]
+  V -->|all primitive fields trusted| REBUILD["Fresh Law / Edge / Atom constructors"]
+  REBUILD --> I["Complete invariant / orbit / panel"]
+  I --> LOG["Source-only proof evidence"]
+```
+
+`canonical_law(model)` rejects nonexact `Law`, `Law.edges` tuple, `Edge`, `Edge.guard` tuple, `Atom`, and exact builtin primitive fields: integer Edge source/target/lag, builtin `str` Atom.kind, integer Atom.role/value/lag. No hash, equality, comparison, or G0C `_transition` can touch caller-defined subclasses before this test. A fresh trusted Law is then rebuilt with existing typed constructors. `full_invariant`, `orbit_census`, and `panels` all enforce this boundary; rejected synthetic panels keep their denominator. This protects this evaluator-side API, not arbitrary hostile Python process execution. [Security review findings](https://github.com/ryonakayama234/DekaSugi/pull/161).
