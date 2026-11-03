@@ -76,6 +76,21 @@ class CausalFamilyTests(unittest.TestCase):
         r = panels(roots)
         self.assertEqual(r["records"][0]["reason"], "DUPLICATE_LAW_NO_REPLACEMENT")
 
+    def test_unknown_root_blocks_later_new_orbit_claim(self):
+        from unittest.mock import patch
+        names = ("direct", "guard_bit", "lag1")
+        roots = tuple(dict(root_id=f"root-{i:04d}", status="VALID",
+                           model=compose(name, (0, 1, 2)))
+                      for i, name in enumerate(names))
+        with patch("packages.rep005_g0c3.full_invariant", return_value=(1,)), \
+             patch("packages.rep005_g0c3.full_semantic_orbit_equivalence",
+                   return_value={"status": "NOT_CERTIFIED"}):
+            result = orbit_census(roots, proof_seconds=10)
+        self.assertEqual(result["certified_orbits_lower_bound"], 1)
+        self.assertEqual(result["orbit_upper_bound"], 3)
+        self.assertEqual([x["status"] for x in result["records"]],
+                         ["CERTIFIED_NEW_ORBIT", "NOT_CERTIFIED", "NOT_CERTIFIED"])
+
     def test_challenge_positive_is_not_natural_sample(self):
         from packages.rep005_g0c.opportunity import certify
         m = tuple(compose(name, (0, 1, 2))

@@ -87,11 +87,18 @@ def orbit_census(roots, *, proof_seconds=180):
     """Exact-orbit lower/upper bounds; unknown proofs never become positives."""
     end = monotonic() + _seconds(proof_seconds)
     reps, records = [], []
+    halted_after_unknown = False
     exact_pairs = invariant_nonalias_pairs = 0
     for root in roots:
         id_ = root["root_id"]
         if root["status"] != "VALID":
             records.append(dict(root_id=id_, status="INVALID", reason=root["reason"]))
+            continue
+        # A prior unresolved root may be semantically equal to any later root.
+        # Hence no later root may be certified NEW until the unknown is resolved.
+        if halted_after_unknown:
+            records.append(dict(root_id=id_, status="NOT_CERTIFIED",
+                                reason="PRIOR_UNRESOLVED_ROOT"))
             continue
         try:
             if monotonic() >= end:
@@ -119,6 +126,7 @@ def orbit_census(roots, *, proof_seconds=180):
             else:
                 records.append(dict(root_id=id_, status="CERTIFIED_ALIAS", alias_of=alias_of))
         except TimeoutError:
+            halted_after_unknown = True
             records.append(dict(root_id=id_, status="NOT_CERTIFIED", reason="PROOF_RESOURCE_CAP"))
     unknown = sum(r["status"] == "NOT_CERTIFIED" for r in records)
     return dict(status="CERTIFIED_COHORT" if not unknown else "PARTIAL_NOT_CERTIFIED",
