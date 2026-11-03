@@ -127,3 +127,7 @@ The implementation checks canonical same-task/4-100-budget search status/program
 ## REP005 V4-C1 source-only (new, draft)
 - [rep005_g0b_v4](rep005_g0b_v4/__init__.py): PRIVATE 5-object deterministic causal world, 12 disclosed source recipes, full 115680-cell semantic signatures, 120 role permutation canonicalization, bounded adaptive ID and legal opportunity diagnostics, public step projection. **Not imported by a future learner**, not statistically independent world generation, no TRAIN or scientific EVAL.
 - [Standalone synthetic tests](../tests/test_rep005_v4_g0.py), [diagnostic log](../scripts/rep005_v4_g0_source_pilot.py), [research evidence ledger](../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-g0-code-pending.md).
+
+
+## V4 disclosed public learner engineering
+[rep005_study_v4/learner.py](rep005_study_v4/learner.py): process-separated public-only JSON training, 61 finite same-capacity candidate effects, typed lag template, SHA Snapshot, fresh new-world role binding. [Disclosed runner](../scripts/rep005_v4_g2_disclosed_pilot.py): charged private synthetic source interaction; [tests](../tests/test_rep005_v4_g2.py); [receipt](../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-g2-disclosed-engineering.md). No independent causal-family generalization or protected scorer.
