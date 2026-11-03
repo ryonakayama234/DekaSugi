@@ -125,6 +125,8 @@ def _transition(model: Law, state: int, history: tuple, action: tuple) -> tuple[
 
 def signature(model: Law, *, deadline_at: float | None = None) -> bytes:
     """Every typed input (including unreachable entries), one byte/output."""
+    if deadline_at is not None and (type(deadline_at) not in (int, float) or not 0 <= deadline_at < float("inf")):
+        raise ValueError("invalid absolute deadline")
     out = bytearray(DOMAIN_CELLS)
     n = 0
     for x in range(1 << N):
@@ -153,7 +155,7 @@ def full_semantic_orbit_equivalence(left: Law, right: Law,
     each permutation proves none is equal. For alias, all 115680 matching cells
     under one permutation prove equality.
     """
-    if type(deadline_seconds) not in (int, float) or deadline_seconds <= 0:
+    if type(deadline_seconds) not in (int, float) or not 0 < deadline_seconds <= 3600:
         return {"status": "NOT_CERTIFIED", "reason": "PROOF_RESOURCE_CAP"}
     deadline = monotonic() + deadline_seconds
     try:
@@ -241,7 +243,7 @@ def census(max_proposals: int = 48, *, deadline_seconds: float = 120) -> dict:
 
     Does NOT prove independence of generated samples or a full Hplus census.
     """
-    if type(deadline_seconds) not in (int, float) or deadline_seconds <= 0:
+    if type(deadline_seconds) not in (int, float) or not 0 < deadline_seconds <= 3600:
         return {"status": "NOT_CERTIFIED", "reason": "PROOF_RESOURCE_CAP"}
     deadline = monotonic() + deadline_seconds
     reps, records = [], []
