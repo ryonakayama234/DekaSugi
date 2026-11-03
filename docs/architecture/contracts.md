@@ -1039,3 +1039,25 @@ flowchart LR
   HOLDOUT["Evaluator-only answers"] -.->|"Never exposed"| RECON
 ~~~
 **Canonical storage contract:** `QuerySession.class_ids` is exactly `tuple` whose entries are exactly `str`, never a tuple or string subclass, because equality can differ from iteration. The compact `answers` tuple contains exact 3-tuples of (int ID, str output, str local receipt). The `trace` container is exactly tuple; each ordered entry is an exact tuple of typed `QueryProposal` and `QueryAnswer`. Session status, pool/world/split digest fields, and proposal and answer primitive fields must have exact builtin types; bool is rejected when int is required. Exact types are checked at the public boundary **before** Gini, random policy, history revalidation, or final-program selection. Per-prefix policy/receipt semantics and the active-query/2 schema remain unchanged. Hashes remain local consistency checks, NOT independent Oracle authentication. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+## EXP-ACTIVE-002-G0A — executable EVALUATOR-ONLY finite contract (Draft)
+[Spec](../specs/EXP-ACTIVE-002-G0A.md) / [source](../../packages/inquiry_opportunity/__init__.py) / [tests](../../tests/test_inquiry_opportunity_synthetic.py).
+- `ClosedWorld`: `prior: tuple[int]` (2..8, each1..1000); `transitions: tuple[law][public_state][action]` (2..8 states, 1..5 actions, exact legal next-state indices); `legal: tuple[state][action]: bool`; `audit_probes: tuple[(state,action)]` (1..8 unique source-legal probes); `initial_state: int`; `budget: int` (0..4). All nested builtins exact, no callback, no dynamically imported code.
+- `certify(ClosedWorld, max_plans, max_nodes, max_transitions, deadline_seconds)` only for bounded source-evaluator synthetic verification. Outputs `CERTIFIED_CLOSED_CLASS` with `adaptive_score_numerator`, `open_loop_score_numerator`, `gain_numerator`, `score_denominator = sum(prior)*len(audit_probes)`, legal schedule witnesses / visited counts; on preflight/exhaustion `NOT_CERTIFIED` with reason. Invalid schema raises ValueError. Integer exact decisions only; predicting or abstaining is optimal at each terminal public information set.
+- Audit target labels are not caller-declared arbitrary labels: derive `transitions[law][audit_state][audit_action]` only. The same hidden complete source table is used for observations and hidden evaluator probes, yet the learner gets **neither** this table nor audit probes/labels. Source-side local SHA is not independent custody.
+- A precommitted schedule (including empty) must be legal for *every* latent-world trajectory; the adaptive policy only chooses operations legal at the currently observed public state. Pay costs by actual number of selected actions in future learner, but G0A only proves value under an **at most B** budget (cost is not separately optimized).
+
+```mermaid
+flowchart TD
+  SRC["Trusted evaluator-only deterministic transition tables"] --> VALID["Exact canonical source validation"]
+  AUD["Predeclared evaluator-only (state, action) probes"] --> VALID
+  LEGAL["Public legality by visible state"] --> VALID
+  VALID --> OPTA["Adaptive Bellman full public outcome branches"]
+  VALID --> OPTF["All 0..B fixed action schedules legal under every Law"]
+  OPTA --> RES["Integer expected predictive utility"]
+  OPTF --> RES
+  RES --> LEDGER["Constructed positive / NULL / invalid / cap receipts"]
+  SRC -.->|"FORBIDDEN learner import"| LEARN["Future learner"]
+  AUD -.->|"FORBIDDEN learner exposure"| LEARN
+```
+The source model is public-state **Markov** only; do not imply equivalence with history-dependent G0C. A positive constructed certificate is not a family-frequency estimate or learned inquiry skill.

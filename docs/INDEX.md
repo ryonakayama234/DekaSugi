@@ -283,3 +283,8 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | Evidence ID | Question | Engineering receipt |
 |---|---|---|
 | ACTIVE-001-PR2-CONTAINERS | Can equality-preserving tuple/str/int subclasses launder forged semantic votes, answers or proposal fields through replay? Exact builtin types required before any learner calculation. | [Synthetic check](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md) / [Architecture](architecture/system.md) / [Contracts](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+## EXP-ACTIVE-002-G0A — isolated exact predictive-opportunity engineering (Draft only)
+- Status: `ENGINEERING_SYNTHETIC_ONLY`; new isolated evaluator-only module on main-based Draft branch, *not a main capability*; owner-delegated from [research issue #162](https://github.com/ryonakayama234/DekaSugi/issues/162).
+- [Issue #164](https://github.com/ryonakayama234/DekaSugi/issues/164) / [spec](specs/EXP-ACTIVE-002-G0A.md) / [plan](../experiments/EXP-ACTIVE-002-G0A/plan.md) / [run ledger](../experiments/EXP-ACTIVE-002-G0A/runs/README.md) / [local synthetic receipt](../experiments/EXP-ACTIVE-002-G0A/runs/20261103-g0a-local.md).
+- Strongest 0..B legal open-loop vs exact adaptive prediction utility using legal heldout transitions, weighted prior and abstention; constructed positive +2/12 and NULL controls. No actual learning, family prevalence, scientific inference, or old score activation. Design V2 [Draft #163](https://github.com/ryonakayama234/DekaSugi/pull/163) is separately reviewed and not a dependency merged into this branch.
