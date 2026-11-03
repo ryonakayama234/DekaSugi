@@ -2,7 +2,7 @@
 import itertools
 import unittest
 from packages.rep005_g0c import (
-    ACTIONS, HISTORIES, DOMAIN_CELLS, Atom, Edge, guards, law,
+    ACTIONS, HISTORIES, DOMAIN_CELLS, Atom, Edge, Law, guards, law,
     compose, generate, signature, transition, permute_law,
     full_semantic_orbit_equivalence, census, PRODUCTIONS,
 )
