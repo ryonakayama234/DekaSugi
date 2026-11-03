@@ -122,3 +122,10 @@ The implementation checks canonical same-task/4-100-budget search status/program
 ## OPPORTUNITY-001 Issue #74 private original capture preflight (no scored experiments)
 - New read-only verified preflight + private output CLI: [capture_opportunity_private_original.py](../scripts/capture_opportunity_private_original.py), [synthetic-only negatives](../tests/test_opportunity_private_original_capture.py), [data flow and scope](../docs/specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md).
 - The CLI never runs search, an old DEV/FINAL generator, real OFF/ON scorer or policy chooser. Capturing future evaluator-only third-audit originals and making two local SHA-verified copies is not independent offsite custody proof; actual new TRAIN64 scoring and skill promotion remain forbidden.
+
+## EXP-ACTIVE-002 G0B — isolated finite source-only engineering
+| Package | APIs | Scope |
+|---|---|---|
+| `inquiry_landscape` | `source.enumerate_worlds`, `source.world_from_choices`, `oracle.certify`, `analysis.build_report`, `python -m packages.inquiry_landscape --output <unique>.json` | Synthetic **evaluator-only** dual opportunity; 512 designed structures, 64 disclosed / 448 EXT; no learned inquiry, TRAIN, DEV, FINAL or source-family power |
+
+Observed LOCAL synthetic: 25/448 world-aware positives, but publicly usable adaptive gain **0/5376**; RESEARCH STOP. [Spec](../docs/specs/EXP-ACTIVE-002-G0B.md), [run](../experiments/EXP-ACTIVE-002-G0B/runs/20261103-local-stop.md), [Issue #166](https://github.com/ryonakayama234/DekaSugi/issues/166). Independent exact-head safety and reviews gate merge.
