@@ -60,3 +60,9 @@ An independently reviewed **prospectively specified distribution of mechanisms a
 - Latest-head independent method/security review was requested on Draft [PR #159](https://github.com/ryonakayama234/DekaSugi/pull/159); **approval NOT CONFIRMED**. This documentation addendum causes a new branch head and does not retroactively change the CI-evaluated source or confer new scientific evidence.
 
 **Final substantive gate resolution:** G0C-1 engineering PASS, G0C-2 constructed closed-class opportunity engineering PASS, G0C-3 independent source-family sampling/power **STOP_NOT_CERTIFIED**, prospective paid Wake/Sleep/USE and protected G3 **NOT_RUN**, no formal model adoption or `main` merge.
+
+## Independent review P2 remediation — 2026-11-03
+
+An independent Codex code review of commit `8ef81ef637` reported two P2 findings: (1) a forged `Edge` subclass bypassing constructor validation could be accepted into `Law`; (2) NaN/+infinity proof deadlines disabled time caps. Both are security/engineering trust-boundary defects; they do **not** invalidate the idea of the finite synthetic setup but must be fixed before accepting its exact certificates.
+
+The corrected code now validates `type(edge) is Edge` **before** dedup/sort of `Law.edges`, rejecting subclasses; all certificate entry points (`census`, `full_semantic_orbit_equivalence`, old-H0, `opportunity.certify`) require a built-in finite positive deadline <=3600s, and `signature` rejects nonfinite absolute deadlines. New adversarial regressions reproduce the rejected subclass and NaN/+Inf/-Inf inputs. In local rerun, **9/9** focused tests PASS; the original reported 48-proposal/11-orbit and positive +0.25 oracle results remain unchanged. GitHub exact-head CI and independent **re-review of this amended head** are required; historic earlier failed and passing runs are preserved.
