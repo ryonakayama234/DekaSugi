@@ -962,3 +962,22 @@ flowchart TB
   OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
 ~~~
 `tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+## EXP-ACTIVE-002 G0B — evaluator-only dual opportunity diagram (Draft STOP)
+```mermaid
+flowchart TB
+    GR["Finite typed source grammar: 512 indexed worlds"] --> PART["CAL64 disclosed vs EXT448 census"]
+    PART --> W["Private 4-law ClosedWorld / hidden u,v"]
+    W --> WO["WORLD_KNOWN Oracle: individual world optimal adaptive and best fixed"]
+    PART --> MIX["PUBLIC_MIXTURE: 448 sources x 4 hidden laws"]
+    MIX --> PO["PUBLIC Oracle: no selected source identity"]
+    WO --> AN["Exact value difference / full NULL denominator"]
+    PO --> AN
+    REF["Independent brute: full B2 policies and all prediction guesses"] --> AN
+    AN --> STOP{"Public gain strictly positive?"}
+    STOP -->|"No: 0/5376"| BLOCK["STOP / Issue #166 / no G1"]
+    STOP -->|"Yes: in a different reviewed study only"| FUT["Future G1 gate; not implemented"]
+    W -. "private identity, law and audit never to learner" .-> NO["Trust boundary"]
+```
+- **Isolated Draft implementation**: `packages/inquiry_landscape` source/oracle/analysis/CLI with stdlib exact B2 combinatorics and independent synthetic-only tests. None of these code paths are a learner or a production source-asset custodian.
+- Main `packages/active_learning` historical semantics remain untouched; G0A [Draft #165](https://github.com/ryonakayama234/DekaSugi/pull/165) is separate. Do not import unmerged Draft into main nor run historical scorers. [G0B spec](../specs/EXP-ACTIVE-002-G0B.md) / [run](../../experiments/EXP-ACTIVE-002-G0B/runs/20261103-local-stop.md).
