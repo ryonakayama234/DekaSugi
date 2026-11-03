@@ -100,6 +100,71 @@ def fit_models(rows, permitted=None):
     ))
 
 
+def count_residual_errors(model, rows):
+    """Number of 5-bit residual exceptions in fully disclosed public records."""
+    return sum(int(interp_effect_body(model, x, hist, action) != after)
+               for x, hist, action, after in rows)
+
+
+def two_part_mdl_codec(by_world):
+    """Explicit fixed bit grammar (v1) for FUTURE disclosed MDL-v2 pilots.
+
+    Model bits:
+      NULL = prefix(0): 1 bit.
+      EFFECT = prefix(1) + lag(2 bits) + per-world ordered source/target
+               binding (5 bits for 5*4=20 possibilities): 3+5*world_count bits.
+    Residual bits: 1 match/exception flag per paid public record, plus exactly
+    5 bits of XOR residual for each exception. No learned length weights.
+    World order is canonical sorted opaque ID. This encoder is introduced
+    AFTER prior G2a diagnostic scores and cannot retroactively pre-register them.
+    """
+    worlds = sorted(by_world)
+    rows_total = sum(len(by_world[w]) for w in worlds)
+    null_errors = sum(count_residual_errors(None, by_world[w]) for w in worlds)
+    entries = [{
+        "kind": "NULL", "lag": None, "model_bits": 1,
+        "residual_bits": rows_total + 5 * null_errors,
+        "residual_exceptions": null_errors,
+        "total_bits": 1 + rows_total + 5 * null_errors,
+        "world_bindings": [],
+    }]
+    for lag in (0, 1, 2):
+        bindings = []
+        errors = 0
+        for w in worlds:
+            local = min(
+                ((count_residual_errors((lag, s, t), by_world[w]), s, t)
+                 for s in range(N) for t in range(N) if s != t),
+                key=lambda x: (x[0], x[1], x[2]),
+            )
+            errors += local[0]
+            bindings.append([local[1], local[2]])
+        model_bits = 3 + 5 * len(worlds)
+        residual_bits = rows_total + 5 * errors
+        entries.append({
+            "kind": "EFFECT", "lag": lag, "model_bits": model_bits,
+            "residual_bits": residual_bits, "residual_exceptions": errors,
+            "total_bits": model_bits + residual_bits,
+            "world_bindings": bindings,
+        })
+    best_bits = min(x["total_bits"] for x in entries)
+    winners = [x for x in entries if x["total_bits"] == best_bits]
+    if len(winners) != 1 or winners[0]["kind"] != "EFFECT" or (
+        winners[0]["residual_exceptions"] != 0
+    ):
+        raise ValueError("NOT_CERTIFIED: MDL null/tie/exception winner")
+    return {
+        "version": "MDL-C1-FIXED-BITS-V1-POST-G2A",
+        "selection": "minimum_exact_two_part_body_plus_residual_bits",
+        "null_and_lag_candidates": entries,
+        "winning_kind": winners[0]["kind"],
+        "winning_lag": winners[0]["lag"],
+        "winning_model_bits": winners[0]["model_bits"],
+        "winning_residual_bits": winners[0]["residual_bits"],
+        "winning_total_bits": winners[0]["total_bits"],
+    }
+
+
 def make_snapshot(episodes):
     if type(episodes) is not list or len(episodes) == 0 or len(episodes) > 64:
         raise ValueError("invalid training episode count")
@@ -118,21 +183,13 @@ def make_snapshot(episodes):
         public_only.append(item)
     if len(by_world) < 2:
         raise ValueError("reusable template requires >=2 training world sessions")
-    lag_support = set((0, 1, 2))
-    candidate_counts = {}
-    for world, rows in by_world.items():
-        consistent = fit_models(rows)
-        candidate_counts[world] = len(consistent)
-        allowed = set(m[0] for m in consistent if m is not None)
-        if not allowed:
-            lag_support = set()
-            break
-        lag_support &= allowed
-    if len(lag_support) != 1:
-        raise ValueError("NOT_CERTIFIED: lag ambiguous/unrepairable across public sessions")
-    lag = next(iter(lag_support))
+    candidate_counts = {
+        world: len(fit_models(rows)) for world, rows in by_world.items()
+    }
+    mdl = two_part_mdl_codec(by_world)
+    lag = mdl["winning_lag"]
     payload = {
-        "schema": "REP005-V4-TYPED-EFFECT-C1-ENGINEERING",
+        "schema": "REP005-V4-TYPED-EFFECT-C1-MDL-ENGINEERING",
         "body": {
             "trigger": "public_pulse_at_lag",
             "lag": lag,
@@ -145,8 +202,9 @@ def make_snapshot(episodes):
         "training_paid_steps": sum(len(rows) for rows in by_world.values()),
         "candidate_counts_by_opaque_session": candidate_counts,
         "candidate_support_lags": [lag],
-        "selection": "unique_consistent_lag_across_public_worlds",
-        "status": "ENGINEERING_TEMPLATE_NOT_GENERAL_SCIENCE",
+        "mdl_codec": mdl,
+        "selection": "minimum_exact_two_part_body_plus_residual_bits",
+        "status": "ENGINEERING_V2_AFTER_DISCLOSED_PILOT_NO_CONFIRMATORY_SCIENCE",
     }
     return {"payload": payload, "sha256": digest(payload)}
 
@@ -157,7 +215,7 @@ def load_snapshot(raw):
     if digest(raw["payload"]) != raw["sha256"]:
         raise ValueError("tampered Snapshot")
     p = raw["payload"]
-    if type(p) is not dict or p.get("schema") != "REP005-V4-TYPED-EFFECT-C1-ENGINEERING":
+    if type(p) is not dict or p.get("schema") != "REP005-V4-TYPED-EFFECT-C1-MDL-ENGINEERING":
         raise ValueError("unrecognized Snapshot version")
     b = p.get("body")
     if type(b) is not dict or set(b) != {
@@ -169,7 +227,8 @@ def load_snapshot(raw):
         or b["source_role"] != "bound_from_paid_public_use"
         or b["target_role"] != "bound_from_paid_public_use"):
         raise ValueError("forged typed Body")
-    if p.get("status") != "ENGINEERING_TEMPLATE_NOT_GENERAL_SCIENCE":
+    if (p.get("status") != "ENGINEERING_V2_AFTER_DISCLOSED_PILOT_NO_CONFIRMATORY_SCIENCE"
+        or p.get("mdl_codec", {}).get("version") != "MDL-C1-FIXED-BITS-V1-POST-G2A"):
         raise ValueError("unapproved Snapshot")
     return b["lag"]
 
@@ -181,9 +240,8 @@ def _valid_prefix(steps):
 def viable_models(rows, *, snapshot=None, body_off=False):
     # Same full public grammar/meta-operator envelope for STATIC and LEARNED.
     # Learned template narrows the *prior hypothesis support* via public TRAIN.
-    # Body-off removes the acquired effect semantics, not the public evidence.
-    if body_off:
-        return (None,)
+    # A pure body-only ablation MUST retain the exact same posterior support
+    # after matching the same public evidence; it only disables dispatch.
     lag = load_snapshot(snapshot) if snapshot is not None else None
     models = MODELS if lag is None else ((None,) + tuple(m for m in MODELS[1:]
                                                     if m[0] == lag))
@@ -217,7 +275,8 @@ def choose_query(rows, snapshot=None, body_off=False):
                  else available_pulses + set_actions)
     best_a, best_gain = None, -1.
     for a in preferred:
-        outcomes = [interp_effect_body(m, state, hist, a) for m in candidates]
+        outcomes = [(base_state(state, a) if body_off else
+                     interp_effect_body(m, state, hist, a)) for m in candidates]
         gain = _entropy(outcomes)
         if gain > best_gain + 1e-12:
             best_a, best_gain = a, gain
@@ -243,7 +302,8 @@ def predict(rows, probes, snapshot=None, body_off=False):
         if type(x) is not int or not 0 <= x < 32:
             raise ValueError("invalid probe state")
         hist, action = history_keys(q["history"]), action_key(q["action"])
-        outcomes = {interp_effect_body(m, x, hist, action) for m in candidates}
+        outcomes = {(base_state(x, action) if body_off else
+                     interp_effect_body(m, x, hist, action)) for m in candidates}
         pred.append(next(iter(outcomes)) if len(outcomes) == 1 else None)
     return {"status": "OK", "predictions": pred,
             "candidate_count": len(candidates),
