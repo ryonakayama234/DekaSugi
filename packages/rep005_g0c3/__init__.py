@@ -57,6 +57,32 @@ def draw_root(index):
                 variant=permute_law(model, perm), role_permutation=perm)
 
 
+def canonical_law(model):
+    """Rebuild trusted Law after recursive exact built-in type checks.
+
+    Upstream Atom.kind can be a str subclass with malicious __eq__; no
+    hash/equality/_transition can run before checking all nested fields.
+    """
+    if type(model) is not Law or type(model.edges) is not tuple or len(model.edges) > 2:
+        raise ValueError("noncanonical Law")
+    for edge in model.edges:
+        if type(edge) is not Edge or type(edge.guard) is not tuple or len(edge.guard) > 2:
+            raise ValueError("noncanonical Edge/guards")
+        if any(type(v) is not int for v in (edge.source, edge.target, edge.lag)):
+            raise ValueError("noncanonical Edge integer")
+        for atom in edge.guard:
+            if type(atom) is not Atom or type(atom.kind) is not str:
+                raise ValueError("noncanonical Atom/kind")
+            if any(type(v) is not int for v in (atom.role, atom.value, atom.lag)):
+                raise ValueError("noncanonical Atom integers")
+    # Every source field is now an exact built-in type. These constructors
+    # cannot execute a caller-defined equality/hash/ordering callback.
+    return Law(tuple(
+        Edge(e.source, e.target, e.lag, tuple(
+            Atom(a.kind, a.role, a.value, a.lag) for a in e.guard))
+        for e in model.edges))
+
+
 def full_invariant(model, *, deadline_at):
     """Complete role-invariant histogram: unequal histograms PROVE nonalias.
 
@@ -64,8 +90,9 @@ def full_invariant(model, *, deadline_at):
     Hamming distance from same-action no-edge transition on all typed cells.
     Equal histograms are only a filter, NEVER an alias certificate.
     """
-    if type(model) is not Law or type(deadline_at) not in (int, float) or not isfinite(deadline_at):
-        raise ValueError("typed Law and finite absolute deadline required")
+    if type(deadline_at) not in (int, float) or not isfinite(deadline_at):
+        raise ValueError("finite absolute deadline required")
+    model = canonical_law(model)
     counts = Counter()
     seen = 0
     for before in range(1 << N):
@@ -97,6 +124,12 @@ def orbit_census(roots, *, proof_seconds=180):
         if root["status"] != "VALID":
             records.append(dict(root_id=id_, status="INVALID", reason=root["reason"]))
             continue
+        try:
+            safe_model = canonical_law(root["model"])
+        except ValueError:
+            records.append(dict(root_id=id_, status="INVALID",
+                                reason="NONCANONICAL_MODEL"))
+            continue
         # A prior unresolved root may be semantically equal to any later root.
         # Hence no later root may be certified NEW until the unknown is resolved.
         if halted_after_unknown:
@@ -106,7 +139,7 @@ def orbit_census(roots, *, proof_seconds=180):
         try:
             if monotonic() >= end:
                 raise TimeoutError("global cap")
-            invariant = full_invariant(root["model"], deadline_at=end)
+            invariant = full_invariant(safe_model, deadline_at=end)
             alias_of = None
             for old_id, old_law, old_invariant in reps:
                 if invariant != old_invariant:
@@ -117,7 +150,7 @@ def orbit_census(roots, *, proof_seconds=180):
                     raise TimeoutError("global cap")
                 exact_pairs += 1
                 certificate = full_semantic_orbit_equivalence(
-                    old_law, root["model"], deadline_seconds=min(remaining, 120))
+                    old_law, safe_model, deadline_seconds=min(remaining, 120))
                 if certificate["status"] == "NOT_CERTIFIED":
                     raise TimeoutError("exact oracle cap")
                 if certificate["status"] == "ALIAS":
@@ -128,7 +161,7 @@ def orbit_census(roots, *, proof_seconds=180):
             if monotonic() >= end:
                 raise TimeoutError("global orbit certificate deadline at completion")
             if alias_of is None:
-                reps.append((id_, root["model"], invariant))
+                reps.append((id_, safe_model, invariant))
                 records.append(dict(root_id=id_, status="CERTIFIED_NEW_ORBIT"))
             else:
                 records.append(dict(root_id=id_, status="CERTIFIED_ALIAS", alias_of=alias_of))
@@ -156,10 +189,10 @@ def panels(roots, *, panel_seconds=30):
         if any(r["status"] != "VALID" for r in group):
             records.append({**row, "status": "INVALID", "reason": "INVALID_ROOT_NO_REPLACEMENT"})
             continue
-        laws = tuple(r["model"] for r in group)
-        # P1: untrusted Law subclasses can execute __hash__/__eq__ on set().
-        # Validate exact canonical types before any hashing or comparison.
-        if any(type(model) is not Law for model in laws):
+        raw_laws = tuple(r["model"] for r in group)
+        try:
+            laws = tuple(canonical_law(model) for model in raw_laws)
+        except ValueError:
             records.append({**row, "status": "INVALID", "reason": "NONCANONICAL_MODEL_TYPE"})
             continue
         if len(set(laws)) != 4:

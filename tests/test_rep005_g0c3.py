@@ -125,6 +125,43 @@ class CausalFamilyTests(unittest.TestCase):
         self.assertEqual(result["status"], "PARTIAL_NOT_CERTIFIED")
         self.assertEqual(result["records"][0]["status"], "NOT_CERTIFIED")
 
+    def test_p1_inner_str_subclass_cannot_run_callback(self):
+        from packages.rep005_g0c import Atom, Edge, guards, law
+        from packages.rep005_g0c3 import canonical_law
+        class Kind(str):
+            calls = 0
+            def __eq__(self, other):
+                type(self).calls += 1
+                return super().__eq__(other)
+            __hash__ = str.__hash__
+        forged = law(Edge(0, 1, 0, guards(Atom(Kind("bit"), 2, 1))))
+        Kind.calls = 0
+        with self.assertRaises(ValueError):
+            canonical_law(forged)
+        with self.assertRaises(ValueError):
+            full_invariant(forged, deadline_at=monotonic() + 10)
+        roots = tuple(dict(root_id=f"root-{i:04d}", status="VALID",
+                           model=forged) for i in range(4))
+        self.assertEqual(panels(roots)["records"][0]["reason"], "NONCANONICAL_MODEL_TYPE")
+        self.assertEqual([r["status"] for r in orbit_census(roots)["records"]],
+                         ["INVALID"] * 4)
+        self.assertEqual(Kind.calls, 0)
+
+    def test_nested_edge_and_tuple_subclasses_are_rejected(self):
+        from packages.rep005_g0c import Edge, Law
+        from packages.rep005_g0c3 import canonical_law
+        class BadEdge(Edge):
+            def __post_init__(self):
+                pass
+        class BadTuple(tuple):
+            pass
+        with self.assertRaises(ValueError):
+            canonical_law(Law((BadEdge(0, 5),)))
+        sample = compose("guard_bit", (0, 1, 2))
+        object.__setattr__(sample, "edges", BadTuple(sample.edges))
+        with self.assertRaises(ValueError):
+            canonical_law(sample)
+
     def test_challenge_positive_is_not_natural_sample(self):
         from packages.rep005_g0c.opportunity import certify
         m = tuple(compose(name, (0, 1, 2))
