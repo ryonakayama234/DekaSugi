@@ -34,7 +34,7 @@ Source manifest and Law remain independent evaluator-only; learner sees PublicSt
 - [ ] G0 source/interpreter equivalence and reachable query opportunity certified independently, no hidden aliases/ancestor overlap and no incomplete full grammar claims
 - [ ] G0 engineering GATE or exact STOP evidence with metadata, counts, realistic resource bounds and negative cases
 - [ ] G1 public-only custody, independent actual process boundary, tamper tests and same-capacity fixed comparator integrity
-- [ ] G2 genuine paid TRAIN/Wake, Sleep public fitting, fresh-use Snapshot dispatch and independent new-world paired disclosed engineering score **or** mechanistic gate STOP with raw evidence
+- [ ] G2 genuine paid TRAIN/Wake, Sleep public fitting, fresh-use Snapshot dispatch and new-world paired disclosed prediction score; query-switch STOP blocks H-QUERY claims alone, without erasing independently eligible L3 predictive-transfer results
 - [ ] G3 only upon separate method/security authorization, independent family power/precision, frozen analysis/source/learner and new sealed cohort; underpowered results explicitly marked
 - [ ] All gates update AGENTS.md, docs/INDEX.md, ARCH-001 Mermaid, ARCH-002 typed data flow, code/plan/append-only run within same PR
 - [ ] No historical scoring run or old Draft merge to fake current G0b acceptance; adoption decisions require independent review
