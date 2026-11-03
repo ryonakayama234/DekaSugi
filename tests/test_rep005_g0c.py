@@ -120,3 +120,14 @@ class SourceTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ExpressibilityTests(unittest.TestCase):
+    def test_old_h0_complete_membership_and_nonmembership(self):
+        from packages.rep005_g0c.expressibility import certify_old_h0
+        self.assertEqual(certify_old_h0(compose("direct", (0, 1, 2)))["status"], "IN_H0")
+        self.assertEqual(certify_old_h0(compose("split_guard_alias", (0, 1, 2)))["status"], "IN_H0")
+        outside = certify_old_h0(compose("guard_bit", (0, 1, 2)))
+        self.assertEqual(outside["status"], "OUTSIDE_H0")
+        self.assertEqual(outside["mismatch_witnesses"], 61)
+        self.assertEqual(certify_old_h0(compose("guard_bit", (0, 1, 2)), deadline_seconds=0)["status"], "NOT_CERTIFIED")
