@@ -1013,3 +1013,21 @@ flowchart TB
 ```
 
 Mandatory gates: G0 source feasibility and proof -> G1 truth isolation and reviewer -> G2 genuine public TRAIN/Sleep/Snapshot/USE and **disclosed** development score, subject to body-action switch mechanism -> G3 fresh powered independently custodied evaluation only under a new explicit approval. See [V4 decision](../specs/EXP-REP-005-G0B-B-INTEGRATED-DECISION-V4.md), [plan](../../experiments/EXP-REP-005-G0B-B/plan-v4.md) and [NOT_RUN receipt](../../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-integrated-not-run.md).
+
+
+## EXP-REP-005 V4 G0 implemented source-side subset — science remains NOT_RUN
+The new **packages/rep005_g0b_v4** constructor and certifier are private source-only code, pending independent exact-head review and engineering CI. They are not accessible as inputs to a learner. Their bounded catalog/proof and PublicStep are prototype, not a hardened process-isolation guarantee.
+
+```mermaid
+flowchart LR
+  S["PRIVATE C1 motif constructors"] --> I["Pure typed law interpreter"]
+  I --> F["Complete 115680-cell typed signature"]
+  F --> R["120-role exact orbit / alias check"]
+  S --> P["Bounded public ID/UNID or NOT_CERTIFIED proof"]
+  I --> W["Paid public WorldSession / chronology"]
+  P --> REC["Source-only engineering receipt"]
+  R --> REC
+  W --> REC
+  W -.-> L["FUTURE G1 public learner isolation: NOT BUILT"]
+  L -.-> E["FUTURE G2 TRAIN/Sleep/USE: NOT RUN"]
+```
