@@ -135,6 +135,30 @@ class V4G0SourceTest(unittest.TestCase):
         self.assertEqual(legal_closed_class_id(tuple(self.none for _ in range(65)), 1)["reason"],
                          "CLASS_SIZE_CAP")
 
+    def test_deadline_overrun_during_last_transition_is_not_unid(self):
+        # Independent clock control: signature preparation is precomputed;
+        # a single DFS transition consumes the deadline *after* the last
+        # prior clock check. No stale ID/UNID may escape.
+        from unittest.mock import patch
+        import packages.rep005_g0b_v4 as src
+        signatures = (src.full_signature(self.none), src.full_signature(self.direct))
+        old_step = src.step
+        clock = [0.0]
+
+        def costly_step(*args, **kwargs):
+            answer = old_step(*args, **kwargs)
+            clock[0] += 0.02
+            return answer
+
+        with patch.object(src, "full_signature", side_effect=signatures), \
+             patch.object(src, "monotonic", side_effect=lambda: clock[0]), \
+             patch.object(src, "step", side_effect=costly_step):
+            result = src.legal_closed_class_id(
+                (self.none, self.direct), 1, deadline_seconds=0.01
+            )
+        self.assertEqual(result["status"], "NOT_CERTIFIED")
+        self.assertEqual(result["reason"], "PROOF_RESOURCE_CAP")
+
     def test_actual_feasible_vs_nonadaptive_query(self):
         out = feasible_fixed_opportunity(self.none, self.direct,
                                          ("pulse", 0, -1), ("set", 0, 0))
