@@ -77,6 +77,12 @@ class SourceTests(unittest.TestCase):
                     Edge(0, 1, 0, guards(Atom("bit", 2, 1))))
         for x in range(32):
             self.assertEqual(transition(model, x, (), ("pulse", 0, -1))[0], x ^ 2)
+        # Two simultaneously triggered edges targeting B XOR-cancel.
+        both = law(Edge(0, 1), Edge(0, 1, 0, guards(Atom("bit", 2, 1))))
+        self.assertEqual(transition(both, 4, (), ("pulse", 0, -1))[0], 4)
+        self.assertEqual(transition(both, 0, (), ("pulse", 0, -1))[0], 2)
+        with self.assertRaises(ValueError):
+            Law((object(),))
         with self.assertRaises(ValueError):
             Edge(0, 1, 0, guards(Atom("bit", 2, 0), Atom("bit", 2, 1)))
         with self.assertRaises(ValueError):
