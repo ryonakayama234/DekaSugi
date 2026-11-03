@@ -8,8 +8,10 @@ this is NOT independent causal-family scientific transfer.
 """
 import hashlib
 import json
+import os
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 from packages.rep005_g0b_v4 import ACTIONS, BUDGET, Edge, PrivateWorld, law
@@ -171,8 +173,23 @@ def run_use(model, snapshot, arm):
     return result, panel, answers
 
 
+def physical_snapshot_file_roundtrip(snapshot):
+    """Actually persist bytes on disk, read them, then validate in fresh child."""
+    with tempfile.TemporaryDirectory(prefix="rep005-v4-snapshot-") as tmp:
+        path = Path(tmp) / "learned-concept.snapshot.json"
+        path.write_text(json.dumps(snapshot, sort_keys=True, ensure_ascii=False),
+                        encoding="utf-8")
+        loaded = json.loads(path.read_text(encoding="utf-8"))
+        check = learner_request({"mode": "plan", "steps": [],
+                                 "snapshot": loaded, "body_off": False})
+        if check["status"] != "OK":
+            raise RuntimeError("disk Snapshot rehydration failed")
+        return loaded
+
+
 def run_disclosed_g2():
     snapshot, paid_train, train_episodes = disclosed_training()
+    snapshot = physical_snapshot_file_roundtrip(snapshot)
     use_laws = (
         ("use-instance-0", law(Edge(2, 3, 1))),
         ("use-instance-1", law(Edge(4, 1, 1))),
@@ -217,6 +234,7 @@ def run_disclosed_g2():
         "source_imported_in_public_learner": False,
         "learner_code_path": "packages/rep005_study_v4/learner.py",
         "snapshot": snapshot,
+        "snapshot_file_roundtrip_verified": True,
         "training_public_episodes": len(train_episodes),
         "actual_training_paid_steps": paid_train,
         "new_use_world_instances": len(world_results),
@@ -231,6 +249,18 @@ def run_disclosed_g2():
 
 def main():
     r = run_disclosed_g2()
+    # Preserve real public-only Snapshot and evaluator receipt as CI artifacts
+    # when explicitly configured; never include private Law/source files.
+    artifact_dir = os.environ.get("REP005_V4_ARTIFACT_DIR")
+    if artifact_dir:
+        root = Path(artifact_dir)
+        root.mkdir(parents=True, exist_ok=True)
+        (root / "learned-concept.snapshot.json").write_text(
+            json.dumps(r["snapshot"], sort_keys=True, ensure_ascii=False, indent=2),
+            encoding="utf-8")
+        (root / "disclosed-engineering-report.json").write_text(
+            json.dumps(r, sort_keys=True, ensure_ascii=False, indent=2),
+            encoding="utf-8")
     print("REP005_V4_G2_DISCLOSED_RESULT_START")
     print(json.dumps(r, ensure_ascii=False, sort_keys=True, indent=2))
     print("REP005_V4_G2_DISCLOSED_RESULT_END")
