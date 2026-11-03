@@ -2,9 +2,13 @@
 
 id: EXP-REP-005-G0C-PLAN
 status: disclosed_development_pilot_not_preregistered_confirmatory_study
-date: 2026-11-03
+updated: 2026-11-03
+tags: experiment, engineering, source-only, not-confirmatory
 primary_module: packages/rep005_g0c
 issue: #158
+
+## Hypothesis
+The source-only pilot tests exact H0 expressibility, role-orbit aliasing and whether a constructed closed class can have an adaptive inquiry advantage without claiming acquired intelligence.
 
 ## Competing hypotheses
 - H-R: law can be outside the previous 61-model H0 but inside the declared finite extended source grammar.
@@ -16,6 +20,12 @@ issue: #158
 Source-only synthetic, independent of V4 Drafts and all historical sealed data. Declare five Boolean variables, 15 legal actions, lag<=2, 115680 typed cells/law, 120 role permutations. Default cohort 48 interleaved grammar proposals, bounded 90-s census, H0=61. Inquiry positive C=(direct, guard_bit, guard_pulse, chain), B3, uniform prior; null C=(direct, guard_bit), B2; B4 cap negative. These are disclosed constructed calibrations selected after previous V4 diagnostics; **not blinded confirmation**.
 
 Measure proposal count, nonaliased semantic orbits, production-root count (not scientific family N), exact H0/OUTSIDE_H0, adaptive/open-loop accuracy, plans checked and memo nodes, proof STOP, CPU/wall and raw SHA/commit in CI.
+
+## Metrics
+Record exact proposed candidates, semantic role-orbits, proof resource status, adaptive/open-loop terminal MAP, full source evidence, CPU/wall and every negative control; independent family N remains unknown.
+
+## Acceptance
+Only engineering PASS if independent reference, exact semantic/role tests, positive/null/cap inquiry controls and docs CI succeed. Scientific G0C-3 remains STOP unless independent family ancestry, sample size and power are confirmed.
 
 ## Execution and review
 ```bash
