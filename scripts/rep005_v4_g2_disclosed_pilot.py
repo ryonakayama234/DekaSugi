@@ -59,9 +59,9 @@ def training_episode(model, indices):
 
 def disclosed_training():
     training_sources = (
-        ("train-opaque-0", law(Edge(0, 1, 1))),
-        ("train-opaque-1", law(Edge(1, 4, 1))),
-        ("train-opaque-2", law(Edge(3, 2, 1))),
+        ("train-opaque-0", law(Edge(0, 3, 1))),
+        ("train-opaque-1", law(Edge(2, 4, 1))),
+        ("train-opaque-2", law(Edge(4, 0, 1))),
     )
     episodes = []
     for sid, model in training_sources:
@@ -133,6 +133,22 @@ def run_use(model, snapshot, arm):
             "mode": "predict", "steps": transcript, "snapshot": active_snap,
             "body_off": body_off, "probes": [probe],
         })
+        # Strict counterfactual at the SAME frozen prefix / snapshot / public
+        # candidate support. Toggle *only* typed body execution.
+        counterfactual = None
+        alternative_pred = None
+        if arm == "LEARNED":
+            counterfactual = learner_request({
+                "mode": "plan", "steps": transcript,
+                "snapshot": snapshot, "body_off": True,
+            })
+            alternative_pred = learner_request({
+                "mode": "predict", "steps": transcript,
+                "snapshot": snapshot, "body_off": True,
+                "probes": [probe],
+            })
+            assert counterfactual["candidate_count"] == decision["candidate_count"]
+            assert alternative_pred["candidate_count"] == prior["candidate_count"]
         step = world.observe_paid(tuple(decision["action"]))
         transcript.append(as_public(step))
         interaction.append({
@@ -144,6 +160,21 @@ def run_use(model, snapshot, arm):
             "before": step.before,
             "public_history": [list(a) for a in step.history],
             "charged_cost": step.paid_cost,
+            "body_only_counterfactual_query": (
+                counterfactual["action"] if counterfactual is not None else None
+            ),
+            "body_only_query_changed": (
+                counterfactual["action"] != decision["action"]
+                if counterfactual is not None else None
+            ),
+            "body_only_prediction_mutated": (
+                alternative_pred["predictions"][0] != prior["predictions"][0]
+                if alternative_pred is not None else None
+            ),
+            "same_public_candidate_support_verified": (
+                counterfactual["candidate_count"] == decision["candidate_count"]
+                if counterfactual is not None else None
+            ),
         })
     panel, answers = evaluator_probes(model)
     pre = learner_request({
@@ -191,9 +222,9 @@ def run_disclosed_g2():
     snapshot, paid_train, train_episodes = disclosed_training()
     snapshot = physical_snapshot_file_roundtrip(snapshot)
     use_laws = (
-        ("use-instance-0", law(Edge(2, 3, 1))),
-        ("use-instance-1", law(Edge(4, 1, 1))),
-        ("use-instance-2", law(Edge(0, 4, 1))),
+        ("use-instance-0", law(Edge(1, 2, 1))),
+        ("use-instance-1", law(Edge(3, 4, 1))),
+        ("use-instance-2", law(Edge(4, 3, 1))),
     )
     world_results = []
     for sid, model in use_laws:
@@ -225,9 +256,11 @@ def run_disclosed_g2():
             "paid_use_steps_total": sum(x["paid_use_steps"] for x in rows),
         }
     return {
-        "status": "DISCLOSED_G2_ENGINEERING_ONLY_NOT_SCIENTIFIC_L3",
+        "status": "DISCLOSED_G2B_MDL_ENGINEERING_ONLY_NOT_SCIENTIFIC_L3",
         "hypothesis_type": "within_single_known_lag1_motif_role_rebinding",
         "source_family_ancestry_independent": False,
+        "method_version": "G2b-POST-G2a-REVIEW-EXPLICIT-MDL",
+        "historical_G2a_results": "PRESERVED_SEPARATELY_NOT_PREREGISTERED",
         "sealed_G3_score": "NOT_RUN",
         "full_Hplus_G": "NOT_CERTIFIED",
         "process_isolation": "fresh Python -I public-only subprocess; NOT a hardened OS sandbox",
@@ -240,6 +273,21 @@ def run_disclosed_g2():
         "new_use_world_instances": len(world_results),
         "panel_probes_per_instance": 16,
         "arm_summary": arm_summary,
+        "same_prefix_body_only_query_switches": sum(
+            int(row["body_only_query_changed"])
+            for w in world_results for a in w["arms"] if a["arm"] == "LEARNED"
+            for row in a["interactions"]
+        ),
+        "same_prefix_body_only_prediction_mutations": sum(
+            int(row["body_only_prediction_mutated"])
+            for w in world_results for a in w["arms"] if a["arm"] == "LEARNED"
+            for row in a["interactions"]
+        ),
+        "body_ablation_same_candidate_support_all": all(
+            row["same_public_candidate_support_verified"]
+            for w in world_results for a in w["arms"] if a["arm"] == "LEARNED"
+            for row in a["interactions"]
+        ),
         "world_results": world_results,
         "total_actual_paid_train_and_use": paid_train +
             sum(x["paid_use_steps_total"] for x in arm_summary.values()),
