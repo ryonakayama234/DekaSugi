@@ -72,7 +72,7 @@ class Law:
     edges: tuple[Edge, ...] = ()
 
     def __post_init__(self):
-        if type(self.edges) is not tuple or len(self.edges) > 2 or len(set(self.edges)) != len(self.edges):
+        if type(self.edges) is not tuple or any(type(e) is not Edge for e in self.edges) or len(self.edges) > 2 or len(set(self.edges)) != len(self.edges):
             raise ValueError("law edge count/duplicates")
         if tuple(sorted(self.edges, key=repr)) != self.edges:
             raise ValueError("uncanonical law")
