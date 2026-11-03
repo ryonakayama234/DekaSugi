@@ -122,3 +122,8 @@ The implementation checks canonical same-task/4-100-budget search status/program
 ## OPPORTUNITY-001 Issue #74 private original capture preflight (no scored experiments)
 - New read-only verified preflight + private output CLI: [capture_opportunity_private_original.py](../scripts/capture_opportunity_private_original.py), [synthetic-only negatives](../tests/test_opportunity_private_original_capture.py), [data flow and scope](../docs/specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md).
 - The CLI never runs search, an old DEV/FINAL generator, real OFF/ON scorer or policy chooser. Capturing future evaluator-only third-audit originals and making two local SHA-verified copies is not independent offsite custody proof; actual new TRAIN64 scoring and skill promotion remain forbidden.
+
+
+## REP005 V4-C1 source-only (new, draft)
+- [rep005_g0b_v4](rep005_g0b_v4/__init__.py): PRIVATE 5-object deterministic causal world, 12 disclosed source recipes, full 115680-cell semantic signatures, 120 role permutation canonicalization, bounded adaptive ID and legal opportunity diagnostics, public step projection. **Not imported by a future learner**, not statistically independent world generation, no TRAIN or scientific EVAL.
+- [Standalone synthetic tests](../tests/test_rep005_v4_g0.py), [diagnostic log](../scripts/rep005_v4_g0_source_pilot.py), [research evidence ledger](../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-g0-code-pending.md).
