@@ -127,5 +127,5 @@ The implementation checks canonical same-task/4-100-budget search status/program
 ## EXP-REP-005 G0C V5 (independent research Draft; source-only)
 
 - `rep005_g0c`: typed 5-bit finite causal constructors, exact full semantics and role orbit equivalence; `expressibility` certifies finite membership in old 61-model H0; `opportunity` finds best adaptive and best open-loop public inquiry for a **declared** tiny closed class. Source/evaluator PRIVATE only, not a learner dependency.
-- Experiment command: `python scripts/rep005_g0c_source_pilot.py --output /tmp/g0c-source.json`; [spec](../docs/specs/EXP-REP-005-G0C-V5.md), [run](../experiments/EXP-REP-005-G0C/runs/20261103-disclosed-source.md).
+- Experiment command: `python -m scripts.rep005_g0c_source_pilot --output /tmp/g0c-source.json`; [spec](../docs/specs/EXP-REP-005-G0C-V5.md), [run](../experiments/EXP-REP-005-G0C/runs/20261103-disclosed-source.md).
 - Not an integrated Wake-Sleep learner, not a full Hplus_G generator, not 11 independent families, not a scientific model promotion.
