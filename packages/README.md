@@ -131,3 +131,6 @@ The implementation checks canonical same-task/4-100-budget search status/program
 
 ## V4 disclosed public learner engineering
 [rep005_study_v4/learner.py](rep005_study_v4/learner.py): process-separated public-only JSON training, 61 finite same-capacity candidate effects, typed lag template, SHA Snapshot, fresh new-world role binding. [Disclosed runner](../scripts/rep005_v4_g2_disclosed_pilot.py): charged private synthetic source interaction; [tests](../tests/test_rep005_v4_g2.py); [receipt](../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-g2-disclosed-engineering.md). No independent causal-family generalization or protected scorer.
+
+## G2b post-G2a MDL and controlled ablation
+[New disclosed G2b receipt](../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-g2b-mdl-disclosed.md): explicit bit-length codec, actual filesystem Snapshot roundtrip with archived [CI report](https://github.com/ryonakayama234/DekaSugi/actions/runs/41564186131), same-public-prefix model-preserving body-off dispatch, within-one-lag1-motif positive prediction coverage but 0/24 query switches. Historical G2a score is diagnostic only, no independent family-level scientific result.
