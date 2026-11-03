@@ -47,3 +47,6 @@ Next scientifically decisive effort, if pursued: implement a *prospectively fixe
 
 ## Integrity note
 The first G0 source-only evidence was 9 tests PASS and later 10 after reviewer deadlines. G2a initial test was 7 PASS; G2b fixed-MDL/bound comparison raised to 8 PASS. All earlier scores and method defects are explicitly preserved; no result edited into a fictitious pre-score protocol.
+
+### G2b raw TRAIN observation audit amendment
+Independent Codex audit after the first G2b 8-test PASS found the published artifact omitted 48 original public TRAIN steps, preventing independent recomputation of the stored evidence hash or fixed-bit MDL code lengths. The runner was amended to persist the exact allowlisted training_public_episodes_raw corpus inside the disclosed JSON report, and the synthetic test recomputes its canonical SHA-256 and asserts 48 real paid records and absence of Law/source fields. This is a reproducibility/integrity fix and does not change the reported G2b experiment design or turn it into prospective L3 science. Exact-head post-amendment CI/artifact and independent review are required.
