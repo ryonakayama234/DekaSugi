@@ -122,3 +122,10 @@ The implementation checks canonical same-task/4-100-budget search status/program
 ## OPPORTUNITY-001 Issue #74 private original capture preflight (no scored experiments)
 - New read-only verified preflight + private output CLI: [capture_opportunity_private_original.py](../scripts/capture_opportunity_private_original.py), [synthetic-only negatives](../tests/test_opportunity_private_original_capture.py), [data flow and scope](../docs/specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md).
 - The CLI never runs search, an old DEV/FINAL generator, real OFF/ON scorer or policy chooser. Capturing future evaluator-only third-audit originals and making two local SHA-verified copies is not independent offsite custody proof; actual new TRAIN64 scoring and skill promotion remain forbidden.
+
+
+## EXP-REP-005 G0C V5 (independent research Draft; source-only)
+
+- `rep005_g0c`: typed 5-bit finite causal constructors, exact full semantics and role orbit equivalence; `expressibility` certifies finite membership in old 61-model H0; `opportunity` finds best adaptive and best open-loop public inquiry for a **declared** tiny closed class. Source/evaluator PRIVATE only, not a learner dependency.
+- Experiment command: `python scripts/rep005_g0c_source_pilot.py --output /tmp/g0c-source.json`; [spec](../docs/specs/EXP-REP-005-G0C-V5.md), [run](../experiments/EXP-REP-005-G0C/runs/20261103-disclosed-source.md).
+- Not an integrated Wake-Sleep learner, not a full Hplus_G generator, not 11 independent families, not a scientific model promotion.
