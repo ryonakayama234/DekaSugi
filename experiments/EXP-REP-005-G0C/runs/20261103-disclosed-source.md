@@ -2,7 +2,8 @@
 
 id: EXP-REP-005-G0C-20261103-SOURCE
 status: LOCAL_ENGINEERING_PASS_PENDING_GITHUB_CI_AND_INDEPENDENT_REVIEW
-date: 2026-11-03
+updated: 2026-11-03
+tags: source-only, synthetic, engineering, negative-result
 issue: #158
 classification: disclosed synthetic calibration; NOT prospective science
 main_module: packages/rep005_g0c
