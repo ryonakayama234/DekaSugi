@@ -1,7 +1,7 @@
 # EXP-REP-005-G0C — 2026-11-03 disclosed source-only engineering receipt
 
 id: EXP-REP-005-G0C-20261103-SOURCE
-status: LOCAL_ENGINEERING_PASS_PENDING_GITHUB_CI_AND_INDEPENDENT_REVIEW
+status: SOURCE_ENGINEERING_CI_PASS_INDEPENDENT_REVIEW_PENDING
 updated: 2026-11-03
 tags: source-only, synthetic, engineering, negative-result
 issue: #158
@@ -49,3 +49,14 @@ The constructive positive +0.25 inquiry gap establishes only the *existence* of 
 ## Next research decision (not executed here)
 
 An independently reviewed **prospectively specified distribution of mechanisms and ancestry clusters** must be established before claiming family-disjoint learning transfer. A later study must compare same-capacity fixed-Hplus controllers, active and prior-only policies, episodic retrieval and exact body-off, using paid public-only observations and a new independently custodied holdout. The previous V4 #155/#157 research Drafts and archived negative outcomes remain unchanged.
+
+
+## GitHub Actions exact-code execution addendum (after original local receipt)
+
+- Dedicated source-only CI: [run #41604853288](https://github.com/ryonakayama234/DekaSugi/actions/runs/41604853288), exact tested PR head `1faa8512272a0ac2ee80fe3736950349fd421a91`, **SUCCESS**; Python 3.12.15, 8/8 unit tests, document integrity PASS (108 Markdown documents), complete 48-proposal source pilot SUCCESS.
+- CI's stdout confirms **48 proposals / 11 nonalias semantic role orbits / adaptive oracle gap +0.25**. This matches the disclosed local experiment, after fixing an initial script-as-file import failure (rerun as a module) and initial missing documentation metadata. Earlier failed CI runs remain historical and unaltered.
+- [Raw GitHub Actions proof JSON artifact #13216860042](https://github.com/ryonakayama234/DekaSugi/actions/runs/41604853288/artifacts/13216860042) uploaded (3,467 compressed bytes; expected GitHub expiry 2026-12-03). It contains generated proposal records, H0 representability checks, adaptive witness tree, open-loop schedule, negative cap and runtime details. Source data are disclosed synthetic evaluator-only artifacts, not a hidden scientific score.
+- [Research verification safe successor #41604853241](https://github.com/ryonakayama234/DekaSugi/actions/runs/41604853241) also SUCCESS at the same head.
+- Latest-head independent method/security review was requested on Draft [PR #159](https://github.com/ryonakayama234/DekaSugi/pull/159); **approval NOT CONFIRMED**. This documentation addendum causes a new branch head and does not retroactively change the CI-evaluated source or confer new scientific evidence.
+
+**Final substantive gate resolution:** G0C-1 engineering PASS, G0C-2 constructed closed-class opportunity engineering PASS, G0C-3 independent source-family sampling/power **STOP_NOT_CERTIFIED**, prospective paid Wake/Sleep/USE and protected G3 **NOT_RUN**, no formal model adoption or `main` merge.
