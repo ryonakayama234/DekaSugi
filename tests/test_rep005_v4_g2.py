@@ -124,6 +124,17 @@ class TestDisclosedG2(unittest.TestCase):
         self.assertEqual(out["method_version"], "G2b-POST-G2a-REVIEW-EXPLICIT-MDL")
         self.assertGreaterEqual(out["same_prefix_body_only_prediction_mutations"], 1)
         self.assertEqual(out["actual_training_paid_steps"], 48)
+        public = out["training_public_episodes_raw"]
+        self.assertEqual(sum(len(x["steps"]) for x in public), 48)
+        import hashlib
+        canonical = json.dumps(public, ensure_ascii=False, sort_keys=True,
+                               separators=(",", ":"), allow_nan=False)
+        self.assertEqual(hashlib.sha256(canonical.encode("utf-8")).hexdigest(),
+                         out["snapshot"]["payload"]["evidence_sha256"])
+        self.assertTrue(all(set(e) == {"world_session_id", "steps"} for e in public))
+        self.assertTrue(all(set(step) == {
+            "before", "history", "action", "after", "paid_cost"
+        } for ep in public for step in ep["steps"]))
         self.assertEqual(out["new_use_world_instances"], 3)
         self.assertEqual(out["panel_probes_per_instance"], 16)
         self.assertFalse(out["source_family_ancestry_independent"])
