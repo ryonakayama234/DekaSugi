@@ -57,3 +57,7 @@ Safety limits: at most 4,000 fixed schedules, at most 250,000 visited adaptive m
 ## Acceptance/status
 
 Engineering-only evidence may be accepted after relevant tests, `python scripts/check_docs.py`, CI exact-head verification and independent code/security review. Nothing in G0C authorizes model promotion or implies scientific L2/L3 improvement. Related [plan](../../experiments/EXP-REP-005-G0C/plan.md), [run](../../experiments/EXP-REP-005-G0C/runs/20261103-disclosed-source.md), [architecture](../architecture/system.md), and [contracts](../architecture/contracts.md).
+
+## P2 exact-head review hardening (2026-11-03)
+
+Source `Law.edges` accepts strictly `Edge` instances, never unchecked subclasses, before deduplication or sorting. All proof deadline arguments must be built-in int/float and finite positive <=3600 seconds; invalid certificate deadlines fail closed as NOT_CERTIFIED, and `signature(deadline_at=...)` rejects nonfinite deadlines. Tests cover forged `Edge` subclass and NaN/infinite deadlines. These remedies followed post-disclosure Codex review; do not retroactively call previous results preregistered science.
