@@ -33,7 +33,7 @@ jobs:
       - name: Documentation integrity
         run: python scripts/check_docs.py
       - name: Synthetic-only complete source census and inquiry proof
-        run: python scripts/rep005_g0c_source_pilot.py --output .run/g0c-source.json --proposals 48 --proof-seconds 90
+        run: python -m scripts.rep005_g0c_source_pilot --output .run/g0c-source.json --proposals 48 --proof-seconds 90
       - name: Archive reproducible public synthetic proof JSON
         if: always()
         uses: actions/upload-artifact@v4
