@@ -95,6 +95,7 @@ class TestDisclosedG2(unittest.TestCase):
 
     def test_full_disclosed_pilot_including_body_off_comparator(self):
         out = run_disclosed_g2()
+        self.assertTrue(out["snapshot_file_roundtrip_verified"])
         self.assertEqual(out["actual_training_paid_steps"], 48)
         self.assertEqual(out["new_use_world_instances"], 3)
         self.assertEqual(out["panel_probes_per_instance"], 16)
