@@ -299,6 +299,9 @@ def legal_closed_class_id(
 
     def recurse(ixs: tuple[int, ...], state: int, hist: History, b: int):
         nonlocal visited
+        # Deadline must be checked BEFORE every cache hit and trivial leaf.
+        if monotonic() >= deadline_at:
+            raise ResourceStop
         key = ixs, state, hist, b
         if key in cache:
             return cache[key]
@@ -311,9 +314,14 @@ def legal_closed_class_id(
             cache[key] = None
             return None
         for a in ACTIONS:
+            if monotonic() >= deadline_at:
+                raise ResourceStop
             groups: dict[int, list[int]] = {}
             for j in ixs:
                 sx, _ = step(models[j], state, hist, a)
+                # Every individual transition can cross the resource boundary.
+                if monotonic() >= deadline_at:
+                    raise ResourceStop
                 groups.setdefault(sx, []).append(j)
             branches = {}
             ok = True
@@ -324,15 +332,22 @@ def legal_closed_class_id(
                     break
                 branches[str(outcome)] = subtree
             if ok:
+                if monotonic() >= deadline_at:
+                    raise ResourceStop
                 tree = {"action": list(a), "branches": branches}
                 cache[key] = tree
                 return tree
+        if monotonic() >= deadline_at:
+            raise ResourceStop
         cache[key] = None
         return None
 
     try:
         tree = recurse(tuple(range(len(models))), 0, (), budget)
     except ResourceStop:
+        return {"status": "NOT_CERTIFIED", "reason": "PROOF_RESOURCE_CAP", "nodes": visited}
+    # No exact ID/UNID can be issued after deadline, even if DFS just returned.
+    if monotonic() >= deadline_at:
         return {"status": "NOT_CERTIFIED", "reason": "PROOF_RESOURCE_CAP", "nodes": visited}
     return {"status": "ID" if tree is not None else "UNID",
             "budget": budget, "nodes": visited, "witness_tree": tree}
