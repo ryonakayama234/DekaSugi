@@ -306,3 +306,5 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 
 ## REP005 V4 G1/G2 disclosed pilot (engineering only)
 - [Source-blind temporal-effect learner](../packages/rep005_study_v4/learner.py) / [private paid TRAIN→fresh USE runner](../scripts/rep005_v4_g2_disclosed_pilot.py) / [tests](../tests/test_rep005_v4_g2.py) / [safe CI](../.github/workflows/rep005-v4-g2-disclosed-engineering.yml) / [receipt](../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-g2-disclosed-engineering.md). [Issue #156](https://github.com/ryonakayama234/DekaSugi/issues/156). **Same lag1 motif across training/use; no independent scientific family transfer.**
+
+- **EXP-REP-005 V4 G2b:** [new explicit two-part MDL / pure body-only paired counterfactual result and STOP reasons](../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-g2b-mdl-disclosed.md), source-blind learner and [CI #41564186131](https://github.com/ryonakayama234/DekaSugi/actions/runs/41564186131): 8 tests PASS, Snapshot+raw report archived; same-source-motif development only, H-QUERY NULL. Old G2a evidence preserved, not retroactively treated as preregistered.
