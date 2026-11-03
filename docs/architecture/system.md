@@ -962,3 +962,20 @@ flowchart TB
   OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
 ~~~
 `tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+## EXP-ACTIVE-002-G0A — finite evaluator-side predictive opportunity certifier (Draft, synthetic only)
+[Spec](../specs/EXP-ACTIVE-002-G0A.md) / [plan](../../experiments/EXP-ACTIVE-002-G0A/plan.md) / [local receipt](../../experiments/EXP-ACTIVE-002-G0A/runs/20261103-g0a-local.md).
+```mermaid
+flowchart LR
+  TABLE["Evaluator-only immutable ClosedWorld table<br/>law x public_state x action"] --> VALID["Strict exact-type validation"]
+  LEGAL["Source-declared public legality masks"] --> VALID
+  AUDIT["Evaluator-only distinct legal audit probes<br/>state + action; output derived from table"] --> VALID
+  VALID --> ADAPT["Memoized exact adaptive Bellman oracle<br/>branch by public next state"]
+  VALID --> OPEN["Exhaustive strongest 0..B legal open-loop plans"]
+  ADAPT --> CMP["Exact predictive utility numerators<br/>shared integer denominator"]
+  OPEN --> CMP
+  CMP --> REC["CERTIFIED_CLOSED_CLASS / NOT_CERTIFIED<br/>counts and witness"]
+  REC --> LOG["G0A constructed-fixture run"]
+  LEARN["Future inquiry_learning / learner"] -.->|"NO IMPORT OR PRIVATE INPUT"| VALID
+```
+G0A is a proof about the declared closed finite Markov source, prior, legal operations and predeclared terminal legal predictions. Never equate `Law-ID MAP` with unseen prediction, assume state-history2 support, pass private audit to learner, or call this a new scored policy. Legacy ACTIVE-001 and G0C/V4 remain untouched.
