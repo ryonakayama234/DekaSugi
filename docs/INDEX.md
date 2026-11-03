@@ -302,3 +302,7 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 
 ## EXP-REP-005 V4 G0 code — prospective source-only engineering
 - [V4 G0 source package](../packages/rep005_g0b_v4/__init__.py) / [independent reference and negative tests](../tests/test_rep005_v4_g0.py) / [disclosed diagnostic](../scripts/rep005_v4_g0_source_pilot.py) / [dedicated CI](../.github/workflows/rep005-v4-g0-source-only.yml) / [code status receipt](../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-g0-code-pending.md). Tracked in [Issue #154](https://github.com/ryonakayama234/DekaSugi/issues/154); **source-engineering-only**, no TRAIN/Sleep/fresh scored USE, no full-Hplus_G certification.
+
+
+## REP005 V4 G1/G2 disclosed pilot (engineering only)
+- [Source-blind temporal-effect learner](../packages/rep005_study_v4/learner.py) / [private paid TRAIN→fresh USE runner](../scripts/rep005_v4_g2_disclosed_pilot.py) / [tests](../tests/test_rep005_v4_g2.py) / [safe CI](../.github/workflows/rep005-v4-g2-disclosed-engineering.yml) / [receipt](../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-g2-disclosed-engineering.md). [Issue #156](https://github.com/ryonakayama234/DekaSugi/issues/156). **Same lag1 motif across training/use; no independent scientific family transfer.**
