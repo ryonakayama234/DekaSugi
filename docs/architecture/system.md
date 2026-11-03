@@ -1031,3 +1031,20 @@ flowchart LR
   W -.-> L["FUTURE G1 public learner isolation: NOT BUILT"]
   L -.-> E["FUTURE G2 TRAIN/Sleep/USE: NOT RUN"]
 ```
+
+
+## REP005 V4 disclosed public Wake/Sleep/USE path (not scientific G3)
+The private evaluator owns Law, source family and scoring answers. A fresh Python -I child receives only charged public JSON episodes and a SHA-bound executable typed lag-effect Snapshot. New-world role bindings derive from charged public context. This is not a hardened adversarial OS sandbox; G2 model is narrow single Edge, not full guard/effect invention.
+
+```mermaid
+flowchart TD
+  SRC["Private source Law, same lag1 motif"] --> PUB["Public paid observation allowlist"]
+  PUB --> CHILD["Fresh child: public-only temporal-effect induction"]
+  CHILD --> SNAP["SHA Snapshot: lagged pulse -> XOR target"]
+  SNAP --> USE["Fresh child USE: public role binding"]
+  USE --> SCORE["Private common 16-probe evaluator"]
+  SRC -.->|"evaluator-only truth"| SCORE
+  F["STATIC same 61-candidate grammar"] --> SCORE
+  O["BODY-OFF diagnostic"] --> SCORE
+  SCORE --> REC["Engineering-only scored receipt; science STOP"]
+```
