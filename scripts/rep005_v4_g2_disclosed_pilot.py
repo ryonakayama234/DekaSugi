@@ -269,6 +269,9 @@ def run_disclosed_g2():
         "snapshot": snapshot,
         "snapshot_file_roundtrip_verified": True,
         "training_public_episodes": len(train_episodes),
+        # Audit-grade immutable public source observations, exactly the
+        # 48 paid PublicSteps passed to the child. No private Law/provenance.
+        "training_public_episodes_raw": train_episodes,
         "actual_training_paid_steps": paid_train,
         "new_use_world_instances": len(world_results),
         "panel_probes_per_instance": 16,
