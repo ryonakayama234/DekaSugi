@@ -1039,3 +1039,48 @@ flowchart LR
   HOLDOUT["Evaluator-only answers"] -.->|"Never exposed"| RECON
 ~~~
 **Canonical storage contract:** `QuerySession.class_ids` is exactly `tuple` whose entries are exactly `str`, never a tuple or string subclass, because equality can differ from iteration. The compact `answers` tuple contains exact 3-tuples of (int ID, str output, str local receipt). The `trace` container is exactly tuple; each ordered entry is an exact tuple of typed `QueryProposal` and `QueryAnswer`. Session status, pool/world/split digest fields, and proposal and answer primitive fields must have exact builtin types; bool is rejected when int is required. Exact types are checked at the public boundary **before** Gini, random policy, history revalidation, or final-program selection. Per-prefix policy/receipt semantics and the active-query/2 schema remain unchanged. Hashes remain local consistency checks, NOT independent Oracle authentication. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+## EXP-ACTIVE-002 — proposed typed contracts and public/private flow (NOT_IMPLEMENTED)
+[Spec](../specs/EXP-ACTIVE-002.md) / [plan](../../experiments/EXP-ACTIVE-002/plan.md) / [ADR](decisions/ADR-ACTIVE-002.md). `inquiry-skill/v1` is a **proposal**, not a stable runtime interface. Implement only after independent method/security review.
+
+| Contract (proposed) | Fields / invariants | Authority |
+|---|---|---|
+| `WorldAction/v1` | `op, target, value, semantics_version`; action is in evaluator-issued legal allowlist, exact primitive types, budget charged | publicly executable, not private source |
+| `PublicStep/v1` | `world_session_id, step_index, before_public, history_public, action, after_public, paid_cost, receipt_ref`; sequential continuity, no free/counterfactual step | environment-issued observation |
+| `BeliefState/v1` | `model_version, episode_digest, hypotheses_digest, posterior, status`; update from public steps only, empty support=MODEL_INCONSISTENT | learner-owned |
+| `PolicyDecision/v1` | `prefix_digest, snapshot_digest, selector_arm, legal_action, remaining_budget, decision_digest, resources`; committed before response | learner-owned public decision |
+| `InquirySkill/v1` | `typed_body_ast, applicability_ast, training_episode_digest, mdl_codec_version, validation_status`; no raw Python executable | candidate from SLEEP |
+| `SkillSnapshot/v1` | `schema, typed_skills, predeclared_grammar_version, source_public_hashes, created_phase, digest`; fresh-process reload, no private labels | learner candidate storage |
+| `EvaluatorTrial/v1` | `private_world_ref, true_law_ref, probe_manifest, source_ancestry, oracle_certificate, paired_arm_receipts, sample_unit, cost, failure_state` | evaluator-only, never learner |
+| `TrialReport/v1` | family/world-cluster deltas, correct/wrong/abstain/invalid denominators, negative/null/NOT_CERTIFIED, provenance, CI/reviewer refs | independently audited summary |
+
+Potential JSON example, **illustrative only**:
+```json
+{
+  "schema": "inquiry-skill/v1",
+  "status": "candidate",
+  "intent": "discriminate_predictive_models",
+  "body_ast": {"kind": "conditional", "condition": {"kind": "public-observation-predicate"}, "then": {"kind": "typed-legal-action"}, "else": {"kind": "typed-legal-action"}},
+  "applicability_ast": {"kind": "remaining-budget-at-least", "value": 2},
+  "mdl_codec_version": "NOT_FROZEN",
+  "training_episode_digest": "PENDING",
+  "causal_ablation_status": "NOT_RUN"
+}
+```
+
+```mermaid
+flowchart LR
+  TRUE["Private causal Law / evaluator audit / ancestry"] --> GATE["Stateful adapter + paid public response"]
+  LEGAL["Public legal action set"] --> CHOOSE["Public belief + typed inquiry selector"]
+  CHOOSE -->|"decision sealed before answer"| GATE
+  GATE -->|"PublicStep: before/history/action/after/cost"| BEL["Public belief / episode"]
+  BEL --> SKILL["Sleep: typed candidate + digest"]
+  SKILL --> CHOOSE
+  TRUE --> EVAL["Independent predictive evaluator"]
+  CHOOSE --> EVAL
+  EVAL --> REPORT["Evidence report, status and denominators"]
+  TRUE -.->|"FORBIDDEN private data input"| BEL
+  EVAL -.->|"FORBIDDEN audit labels/utility input"| SKILL
+```
+
+**Nonnegotiable:** enforce exact canonical primitive types and complete ordered trace; reject forged receipts, step cost, out-of-order chronology, illegal action, bool-as-int, mutable/equality-overriding subclass, unknown schema or divergent model versions. Source-independent boundary requires separately controlled authority: local SHA only identifies bytes; `python -I` is not an OS sandbox. Deliberately scripted DREAM inputs carry `origin=model_generated` and may never be cast as `PublicStep`. Every cost and source version is recorded, including unidentifiable, exhausted, NOT_CERTIFIED and negative results.

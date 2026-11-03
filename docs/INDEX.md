@@ -283,3 +283,8 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | Evidence ID | Question | Engineering receipt |
 |---|---|---|
 | ACTIVE-001-PR2-CONTAINERS | Can equality-preserving tuple/str/int subclasses launder forged semantic votes, answers or proposal fields through replay? Exact builtin types required before any learner calculation. | [Synthetic check](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md) / [Architecture](architecture/system.md) / [Contracts](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+## EXP-ACTIVE-002 — owner-approved inquiry-skill research design V2 (docs-only)
+- **Status:** owner direction agreed 2026-11-03; `METHOD_NOT_FROZEN`, `NOT_IMPLEMENTED`, `NOT_TRAINED`, `NOT_SCORED`, independent review pending; new main-based Draft PR, not an integrated capability.
+- [Issue #162](https://github.com/ryonakayama234/DekaSugi/issues/162) / [spec](specs/EXP-ACTIVE-002.md) / [design ADR](architecture/decisions/ADR-ACTIVE-002.md) / [plan](../experiments/EXP-ACTIVE-002/plan.md) / [run index](../experiments/EXP-ACTIVE-002/runs/README.md) / [design receipt](../experiments/EXP-ACTIVE-002/runs/20261103-design-only.md).
+- Primary prospective module: `packages/inquiry_learning` (not created); existing `packages/active_learning` preserves ACTIVE-001 behavior. The new proposal distinguishes exact inquiry opportunity, paid public belief learning, genuine learned question selection and independent structurally disjoint transfer; hypothesis and utility improvements require separate evidence.
