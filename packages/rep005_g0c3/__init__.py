@@ -80,6 +80,9 @@ def full_invariant(model, *, deadline_at):
                 seen += 1
     if seen != DOMAIN_CELLS:
         raise AssertionError("incomplete semantic domain")
+    # P2: deadline must also be checked AFTER the final transition.
+    if monotonic() >= deadline_at:
+        raise TimeoutError("full-domain invariant exhausted at completion")
     return tuple(counts[key] for key in KEYS)
 
 
@@ -120,6 +123,10 @@ def orbit_census(roots, *, proof_seconds=180):
                 if certificate["status"] == "ALIAS":
                     alias_of = old_id
                     break
+            # P2: no CERTIFIED verdict can escape after the overall deadline,
+            # including the first representative or distinct-invariant fast path.
+            if monotonic() >= end:
+                raise TimeoutError("global orbit certificate deadline at completion")
             if alias_of is None:
                 reps.append((id_, root["model"], invariant))
                 records.append(dict(root_id=id_, status="CERTIFIED_NEW_ORBIT"))
@@ -150,6 +157,11 @@ def panels(roots, *, panel_seconds=30):
             records.append({**row, "status": "INVALID", "reason": "INVALID_ROOT_NO_REPLACEMENT"})
             continue
         laws = tuple(r["model"] for r in group)
+        # P1: untrusted Law subclasses can execute __hash__/__eq__ on set().
+        # Validate exact canonical types before any hashing or comparison.
+        if any(type(model) is not Law for model in laws):
+            records.append({**row, "status": "INVALID", "reason": "NONCANONICAL_MODEL_TYPE"})
+            continue
         if len(set(laws)) != 4:
             records.append({**row, "status": "INVALID", "reason": "DUPLICATE_LAW_NO_REPLACEMENT"})
             continue

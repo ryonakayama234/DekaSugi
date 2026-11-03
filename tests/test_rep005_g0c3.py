@@ -91,6 +91,40 @@ class CausalFamilyTests(unittest.TestCase):
         self.assertEqual([x["status"] for x in result["records"]],
                          ["CERTIFIED_NEW_ORBIT", "NOT_CERTIFIED", "NOT_CERTIFIED"])
 
+    def test_p1_hash_trap_rejected_before_hash(self):
+        from packages.rep005_g0c import Law
+        class HashTrap(Law):
+            def __hash__(self):
+                raise AssertionError("attacker hash executed before type validation")
+            def __eq__(self, other):
+                raise AssertionError("attacker equality executed before type validation")
+        roots = tuple(dict(root_id=f"root-{i:04d}", status="VALID",
+                           model=HashTrap(())) for i in range(4))
+        result = panels(roots)
+        self.assertEqual(result["records"][0]["status"], "INVALID")
+        self.assertEqual(result["records"][0]["reason"], "NONCANONICAL_MODEL_TYPE")
+
+    def test_p2_invariant_checks_deadline_after_last_transition(self):
+        from unittest.mock import patch
+        from packages.rep005_g0c import HISTORIES
+        count = [0]
+        def fake_clock():
+            count[0] += 1
+            return 0.0 if count[0] <= 32 * len(HISTORIES) else 2.0
+        with patch("packages.rep005_g0c3.monotonic", side_effect=fake_clock):
+            with self.assertRaises(TimeoutError):
+                full_invariant(compose("direct", (0, 1, 2)), deadline_at=1.0)
+
+    def test_p2_orbit_checks_global_deadline_before_certifying(self):
+        from unittest.mock import patch
+        root = dict(root_id="root-0000", status="VALID",
+                    model=compose("direct", (0, 1, 2)))
+        with patch("packages.rep005_g0c3.full_invariant", return_value=(0,)):
+            with patch("packages.rep005_g0c3.monotonic", side_effect=(0.0, 0.0, 2.0)):
+                result = orbit_census((root,), proof_seconds=1)
+        self.assertEqual(result["status"], "PARTIAL_NOT_CERTIFIED")
+        self.assertEqual(result["records"][0]["status"], "NOT_CERTIFIED")
+
     def test_challenge_positive_is_not_natural_sample(self):
         from packages.rep005_g0c.opportunity import certify
         m = tuple(compose(name, (0, 1, 2))
