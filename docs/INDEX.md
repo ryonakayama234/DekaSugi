@@ -283,3 +283,10 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | Evidence ID | Question | Engineering receipt |
 |---|---|---|
 | ACTIVE-001-PR2-CONTAINERS | Can equality-preserving tuple/str/int subclasses launder forged semantic votes, answers or proposal fields through replay? Exact builtin types required before any learner calculation. | [Synthetic check](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md) / [Architecture](architecture/system.md) / [Contracts](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+
+## EXP-REP-005-G0C V5 — scoped source-only constructive research (Draft, 2026-11-03)
+
+- **EXP-REP-005-G0C-V5**: [falsifiable finite source/old-H0/inquiry certificate contract](specs/EXP-REP-005-G0C-V5.md), [study engineering plan](../experiments/EXP-REP-005-G0C/plan.md), [measured synthetic receipt](../experiments/EXP-REP-005-G0C/runs/20261103-disclosed-source.md), [Issue #158](https://github.com/ryonakayama234/DekaSugi/issues/158).
+- **G0C source implementation**: [typed constructor/census](../packages/rep005_g0c/__init__.py), [old 61-model expressibility](../packages/rep005_g0c/expressibility.py), [closed-class exact question opportunity](../packages/rep005_g0c/opportunity.py), [independent tests](../tests/test_rep005_g0c.py), [runner](../scripts/rep005_g0c_source_pilot.py), [source-only CI](../.github/workflows/rep005-g0c-source-only.yml).
+- **Status**: 48 syntactic proposals => 11 nonalias semantic role-orbits among 12 human-authored production roots; constructed 4-Law B3 oracle adaptive 1.0 vs best nonadaptive 0.75; **NO TRAIN, NO LEARNED QUESTION SWITCH, NO INDEPENDENT SCIENTIFIC FAMILY N, NO G3**. All results are disclosed source engineering pending exact-head CI/review. V4 archived Draft #155/#157 unchanged.
