@@ -3,6 +3,7 @@
 id: EXP-REP-005-G0C-V5
 status: implementation_candidate_source_only_scientific_G1_G3_NOT_RUN
 updated: 2026-11-03
+tags: causal-source, active-learning, finite-proof, engineering
 parent_issue: #158 / #142 / #148
 primary_module: packages/rep005_g0c
 research_level: source-engineering, NOT trained intelligence
