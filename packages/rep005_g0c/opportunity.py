@@ -20,8 +20,10 @@ def certify(laws: tuple[Law, ...], budget: int, *, initial_state: int = 0,
         raise ValueError("repeated syntax: invalid closed class")
     if type(budget) is not int or not 1 <= budget <= 8 or type(initial_state) is not int or not 0 <= initial_state < 32:
         raise ValueError("budget/state")
-    if any(type(v) is not int or v <= 0 for v in (max_plans, max_nodes)) or deadline_seconds <= 0:
+    if any(type(v) is not int or v <= 0 for v in (max_plans, max_nodes)):
         raise ValueError("resource limits")
+    if type(deadline_seconds) not in (int, float) or not 0 < deadline_seconds <= 3600:
+        return {"status": "NOT_CERTIFIED", "reason": "INVALID_DEADLINE"}
     if len(ACTIONS) ** budget > max_plans:
         return {"status": "NOT_CERTIFIED", "reason": "OPEN_LOOP_PLAN_CAP",
                 "plans_required": len(ACTIONS) ** budget}
