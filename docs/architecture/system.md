@@ -1048,3 +1048,6 @@ flowchart TD
   O["BODY-OFF diagnostic"] --> SCORE
   SCORE --> REC["Engineering-only scored receipt; science STOP"]
 ```
+
+### V4 G2b review remedy (disclosed only)
+The source-blind child now selects its typed temporal Body using an explicitly versioned, two-part fixed-bit MDL selection codec and rehydrates a true filesystem Snapshot, not an ephemeral in-process-only JSON. At every learned public prefix, Body ON and OFF share the exact evidence, model hypotheses, binding and uniform weights; only effect execution toggles. Reviewer-requested 24 paired decisions yield 10 prediction changes and 0 action switches. See [G2b actual receipt](../../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-g2b-mdl-disclosed.md). This is a *method revision after G2a*, not frozen independent evaluation.
