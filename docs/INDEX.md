@@ -283,3 +283,10 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | Evidence ID | Question | Engineering receipt |
 |---|---|---|
 | ACTIVE-001-PR2-CONTAINERS | Can equality-preserving tuple/str/int subclasses launder forged semantic votes, answers or proposal fields through replay? Exact builtin types required before any learner calculation. | [Synthetic check](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md) / [Architecture](architecture/system.md) / [Contracts](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+## EXP-ACTIVE-002 G0B — dual opportunity census and research STOP (2026-11-03)
+| ID | Status | Entry |
+|---|---|---|
+| EXP-ACTIVE-002-G0B | SOURCE-ONLY / EXT448_PUBLIC_ZERO / RESEARCH_STOP / NOT_F0 | [spec](specs/EXP-ACTIVE-002-G0B.md) / [plan](../experiments/EXP-ACTIVE-002-G0B/plan.md) / [run](../experiments/EXP-ACTIVE-002-G0B/runs/20261103-local-stop.md) / [ADR](architecture/decisions/ADR-ACTIVE-002-G0B.md) / [Issue #166](https://github.com/ryonakayama234/DekaSugi/issues/166) |
+
+Exact engineered 448-source census: 25 per-world adaptive positives, but PUBLIC_MIXTURE adaptive=fixed 1040/5376. Formal learning G1 STOP and new source/method needs another owner decision. No independent causal-family estimate or learned policy result. Code/test source on isolated Draft, review and CI pending.
