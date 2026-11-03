@@ -122,6 +122,14 @@ class V4G0SourceTest(unittest.TestCase):
                          "ID")
         stopped = legal_closed_class_id((self.none, self.lag1), 2, max_nodes=0)
         self.assertEqual(stopped["status"], "NOT_CERTIFIED")
+        self.assertEqual(legal_closed_class_id((self.none, self.direct), 0,
+                                               deadline_seconds=1e-6)["status"],
+                         "NOT_CERTIFIED")
+        # Deadline must cover all full_signature work, not only adaptive DFS.
+        tiny = legal_closed_class_id((self.none, self.direct), 1,
+                                     deadline_seconds=0.001)
+        self.assertEqual((tiny["status"], tiny["reason"]),
+                         ("NOT_CERTIFIED", "PROOF_RESOURCE_CAP"))
         self.assertEqual(legal_closed_class_id((self.none, self.none), 1)["status"],
                          "NOT_CERTIFIED")
         self.assertEqual(legal_closed_class_id(tuple(self.none for _ in range(65)), 1)["reason"],
