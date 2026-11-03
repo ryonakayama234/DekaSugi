@@ -2,7 +2,7 @@
 
 id: DOC-INDEX
 status: active
-updated: 2026-10-28
+updated: 2026-11-04
 tags: navigation, architecture, research, experiments
 
 **探す → 該当する小さな文書を読む → 必要な依存文書だけを辿る。**
