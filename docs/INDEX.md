@@ -302,3 +302,13 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 
 ## EXP-REP-005 V4 G0 code — prospective source-only engineering
 - [V4 G0 source package](../packages/rep005_g0b_v4/__init__.py) / [independent reference and negative tests](../tests/test_rep005_v4_g0.py) / [disclosed diagnostic](../scripts/rep005_v4_g0_source_pilot.py) / [dedicated CI](../.github/workflows/rep005-v4-g0-source-only.yml) / [code status receipt](../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-g0-code-pending.md). Tracked in [Issue #154](https://github.com/ryonakayama234/DekaSugi/issues/154); **source-engineering-only**, no TRAIN/Sleep/fresh scored USE, no full-Hplus_G certification.
+
+
+## REP005 V4 G1/G2 disclosed pilot (engineering only)
+- [Source-blind temporal-effect learner](../packages/rep005_study_v4/learner.py) / [private paid TRAIN→fresh USE runner](../scripts/rep005_v4_g2_disclosed_pilot.py) / [tests](../tests/test_rep005_v4_g2.py) / [safe CI](../.github/workflows/rep005-v4-g2-disclosed-engineering.yml) / [receipt](../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-g2-disclosed-engineering.md). [Issue #156](https://github.com/ryonakayama234/DekaSugi/issues/156). **Same lag1 motif across training/use; no independent scientific family transfer.**
+
+- **EXP-REP-005 V4 G2b:** [new explicit two-part MDL / pure body-only paired counterfactual result and STOP reasons](../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-g2b-mdl-disclosed.md), source-blind learner and [CI #41564186131](https://github.com/ryonakayama234/DekaSugi/actions/runs/41564186131): 8 tests PASS, Snapshot+raw report archived; same-source-motif development only, H-QUERY NULL. Old G2a evidence preserved, not retroactively treated as preregistered.
+
+- **REP005 V4 ENGINEERING CLOSEOUT**: [integrated actual G0 and G2b measurement, source-family/power STOP, method audit and detailed level-by-level interpretation](../experiments/EXP-REP-005-G0B-B/20261103-engineering-closeout.md). Includes G0 10 tests, G2b 8 tests, publicly stored SHA Snapshot/artifact and 0/24 concept-driven action switches. Not an independent L3 result or authorized G3 score.
+
+- **G2b raw public evidence audit fix**: appended actual 6 chronological TRAIN episodes /48 paid public steps to the archived disclosed JSON report, with exact canonical evidence_sha256 regression. No private Law/source fields. [G2b evidence](../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-g2b-mdl-disclosed.md) / [Closeout](../experiments/EXP-REP-005-G0B-B/20261103-engineering-closeout.md). Original missing-raw artifact preserved as a prior version, not silently replaced.

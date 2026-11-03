@@ -1,0 +1,39 @@
+name: "REP005 V4 G2 disclosed Wake Sleep USE / engineering only"
+on:
+  pull_request:
+    paths:
+      - "packages/rep005_study_v4/**"
+      - "scripts/rep005_v4_g2_disclosed_pilot.py"
+      - "tests/test_rep005_v4_g2.py"
+      - ".github/workflows/rep005-v4-g2-disclosed-engineering.yml"
+  workflow_dispatch:
+jobs:
+  disclosed-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout isolated pilot
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fresh-process paid training and USE synthetic tests
+        run: |
+          python -m unittest discover -s tests -p 'test_rep005_v4_g2.py' -v
+      - name: Disclosed pilot receipt / NOT confirmatory scientific score
+        env:
+          REP005_V4_ARTIFACT_DIR: ${{ runner.temp }}/rep005-v4-disclosed
+        run: |
+          python -m scripts.rep005_v4_g2_disclosed_pilot
+      - name: Archive public-only Snapshot and disclosed report
+        uses: actions/upload-artifact@v4
+        with:
+          name: rep005-v4-disclosed-snapshot-and-report
+          path: ${{ runner.temp }}/rep005-v4-disclosed/
+          if-no-files-found: error
+          retention-days: 30
