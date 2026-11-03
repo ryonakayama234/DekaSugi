@@ -962,3 +962,45 @@ flowchart TB
   OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
 ~~~
 `tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+## EXP-ACTIVE-002 / V2: proposed learnt inquiry-skill architecture (not implemented)
+[Spec](../specs/EXP-ACTIVE-002.md) / [ADR](decisions/ADR-ACTIVE-002.md) / [plan](../../experiments/EXP-ACTIVE-002/plan.md). Owner-approved research direction only. Neither `inquiry_learning` nor the proposed independent evaluator adapter exists on main.
+```mermaid
+flowchart TB
+  subgraph PRIVATE["SOURCE / INDEPENDENT EVALUATOR SIDE"]
+    SRC["Versioned causal source: hidden Law, ancestry"]
+    ENV["Stateful World Adapter: legal paid actions"]
+    ORACLE["Exact bounded opportunity Oracle"]
+    AUDIT["Evaluator-only fresh prediction probes"]
+    SRC --> ENV
+    SRC --> ORACLE
+    SRC --> AUDIT
+  end
+  subgraph LEARNER["PUBLIC-ONLY LEARNER (future inquiry_learning)"]
+    BEL["Wake belief / hypotheses"]
+    DEC["Typed inquiry policy decision"]
+    EP["Public episodes / chronology"]
+    SLP["Sleep: typed candidate synthesis + MDL"]
+    SNAP["Candidate Snapshot; fresh-process load"]
+    DREAM["Dream hypothetical probes; not observations"]
+    BEL --> DEC
+    BEL --> EP
+    EP --> SLP
+    SLP --> SNAP
+    SNAP --> DEC
+    SNAP --> DREAM
+    DREAM --> SLP
+  end
+  DEC -->|"commit then execute paid legal action"| ENV
+  ENV -->|"PublicStep only; after execution"| BEL
+  subgraph REPORT["INDEPENDENT EVIDENCE"]
+    SCORE["Paired evaluator + exact certified ceiling"]
+    LEDGER["Raw evidence + status + cost + SHA"]
+    SCORE --> LEDGER
+  end
+  DEC -->|"public decisions"| SCORE
+  ORACLE --> SCORE
+  AUDIT --> SCORE
+  SRC -.->|"private truth NEVER learner input"| SCORE
+```
+**Trust and experimental controls:** `active_learning` ACTIVE-001 remains a separate fixed-code comparison. `inquiry_learning` learner may consume only public observations, legal actions and independent cost receipts; Oracle hidden law / private probes are evaluator-side only. Same prefix, frozen model/belief/hypothesis support and Snapshot are held constant during skill-dispatch ON/OFF; divergent legitimate post-choice trajectories are evaluated independently. DREAM simulations are non-evidence. No direct code imports across the private boundary or automatic candidate promotion.
