@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 from dataclasses import replace
+from itertools import product
+from random import Random
 import unittest
 
 from packages.inquiry_opportunity import ClosedWorld, certify
@@ -86,6 +88,94 @@ class ExactPredictiveOpportunityTests(unittest.TestCase):
         self.assertEqual(certify(fixture(), max_plans=1)["reason"], "OPEN_LOOP_PLAN_CAP")
         self.assertEqual(certify(fixture(), max_nodes=1)["reason"], "ADAPTIVE_NODE_CAP")
         self.assertEqual(certify(fixture(), max_transitions=1)["reason"], "TRANSITION_CAP")
+
+
+    def test_independent_bruteforce_policy_reference_on_random_finite_tables(self):
+        # Reference does NOT call certify's Bellman or closed-form payoff.
+        # Enumerate every depth-2 public-history-contingent deterministic policy.
+        rng = Random(20261103)
+        for case in range(18):
+            law_count = 3
+            transitions = tuple(tuple(tuple(rng.randrange(2) for _ in range(2))
+                                      for _ in range(2)) for _ in range(law_count))
+            legal = ((True, rng.choice((True, False))),
+                     (True, rng.choice((True, False))))
+            w = ClosedWorld(
+                prior=tuple(rng.randrange(1, 4) for _ in range(law_count)),
+                transitions=transitions, legal=legal,
+                audit_probes=((0, 0), (1, 0)), initial_state=0, budget=2)
+
+            def independently_score(observation_signatures):
+                grouped = {}
+                for law_id, signature in enumerate(observation_signatures):
+                    grouped.setdefault(signature, []).append(law_id)
+                score = 0
+                for members in grouped.values():
+                    for state, action in w.audit_probes:
+                        # enumerate every possible point prediction and abstention
+                        values = [None] + list(range(len(w.legal)))
+                        best = 0
+                        for predicted in values:
+                            gain = 0
+                            for law_id in members:
+                                weight = w.prior[law_id]
+                                truth = w.transitions[law_id][state][action]
+                                if predicted is not None:
+                                    gain += weight if predicted == truth else -weight
+                            best = max(best, gain)
+                        score += best
+                return score
+
+            def execute(root, contingent):
+                signatures = []
+                for law_id in range(law_count):
+                    state = w.initial_state
+                    seen = []
+                    if root is not None:
+                        if not w.legal[state][root]:
+                            return None
+                        state = w.transitions[law_id][state][root]
+                        seen.append(state)
+                        second = contingent[state]
+                        if second is not None:
+                            if not w.legal[state][second]:
+                                return None
+                            state = w.transitions[law_id][state][second]
+                            seen.append(state)
+                    signatures.append(tuple(seen))
+                return independently_score(signatures)
+
+            best_adaptive = independently_score([() for _ in range(law_count)])
+            for root in range(2):
+                for contingent in product((None, 0, 1), repeat=2):
+                    trial = execute(root, contingent)
+                    if trial is not None:
+                        best_adaptive = max(best_adaptive, trial)
+            best_fixed = independently_score([() for _ in range(law_count)])
+            for sequence_length in (1, 2):
+                for sequence in product(range(2), repeat=sequence_length):
+                    signatures = []
+                    legal_everywhere = True
+                    for law_id in range(law_count):
+                        state = w.initial_state
+                        observed = []
+                        for action in sequence:
+                            if not w.legal[state][action]:
+                                legal_everywhere = False
+                                break
+                            state = w.transitions[law_id][state][action]
+                            observed.append(state)
+                        if not legal_everywhere:
+                            break
+                        signatures.append(tuple(observed))
+                    if legal_everywhere:
+                        best_fixed = max(best_fixed, independently_score(signatures))
+            result = certify(w)
+            with self.subTest(case=case):
+                self.assertEqual(result["status"], "CERTIFIED_CLOSED_CLASS")
+                self.assertEqual(result["adaptive_score_numerator"], best_adaptive)
+                self.assertEqual(result["open_loop_score_numerator"], best_fixed)
+                self.assertGreaterEqual(result["gain_numerator"], 0)
 
     def test_strict_types_and_invalid_tables_are_rejected(self):
         w = fixture()

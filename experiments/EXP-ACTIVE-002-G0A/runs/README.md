@@ -14,3 +14,4 @@ tags: run-index, provenance, synthetic, evidence
 | H3/H4 actual learned policy | NOT_RUN | No trained agent, paid USE, fresh holdout, ablation, or transfer |
 
 Retain invalid, negative, zero and `NOT_CERTIFIED` original receipts. No changes to old G0C/V4 or historical sealed artifacts. A toy oracle score is never an AI ability score.
+| 20261103-g0a-reference | [Independent depth-2 exhaustive reference](20261103-g0a-reference.md) | 18 deterministic artificial tables, 9/9 local tests; newest-head CI/review pending |

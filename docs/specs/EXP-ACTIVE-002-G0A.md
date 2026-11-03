@@ -55,3 +55,6 @@ This source-only proof contains **no** inquiry learner, WAKE/MDL/SLEEP, actual p
 Prospective G0B requires an independently specified transition grammar, generation/ancestry policy, holdout legal probe distribution, proof-resource power/prevalence feasibility and comparable static policies, before interpreting learned USE results.
 
 Related: [plan](../../experiments/EXP-ACTIVE-002-G0A/plan.md) / [run ledger](../../experiments/EXP-ACTIVE-002-G0A/runs/README.md) / [module](../../packages/inquiry_opportunity/__init__.py) / [tests](../../tests/test_inquiry_opportunity_synthetic.py).
+
+## Independent implementation cross-check (engineering only)
+The separate [2026-11-03 brute-force reference](../../experiments/EXP-ACTIVE-002-G0A/runs/20261103-g0a-reference.md) enumerates all lawful depth-2 observation-conditioned policies and all terminal prediction-label/abstention choices independently of the production Bellman/payoff formula. Eighteen deterministic small invented tables match both optimal numerators. This adds confidence in finite-table correctness, **not** a population performance result.
