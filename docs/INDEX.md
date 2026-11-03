@@ -298,3 +298,7 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 - Primary packages/rep005_g0b successor; integration packages/rep005_study future; public-only representation_repair and active_learning supporting. [V4 ARCH-001](architecture/system.md) and [V4 ARCH-002](architecture/contracts.md) show graph/schema. The new program contains *prospective* TRAIN/Sleep/fresh USE/scoring, but none of it was run by the V4 documentation PR.
 
 - **EXP-REP-005-G0B-B-V4-EXECUTABLE-LOGIC**: [precise typed source semantics, public effect-body synthesis/role-binding, causal query ablation, leakage/negative test matrix](specs/EXP-REP-005-G0B-B-V4-EXECUTABLE-LOGIC.md) — implementation contract candidate, NOT IMPLEMENTED.
+
+
+## EXP-REP-005 V4 G0 code — prospective source-only engineering
+- [V4 G0 source package](../packages/rep005_g0b_v4/__init__.py) / [independent reference and negative tests](../tests/test_rep005_v4_g0.py) / [disclosed diagnostic](../scripts/rep005_v4_g0_source_pilot.py) / [dedicated CI](../.github/workflows/rep005-v4-g0-source-only.yml) / [code status receipt](../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-g0-code-pending.md). Tracked in [Issue #154](https://github.com/ryonakayama234/DekaSugi/issues/154); **source-engineering-only**, no TRAIN/Sleep/fresh scored USE, no full-Hplus_G certification.

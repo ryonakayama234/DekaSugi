@@ -1,0 +1,30 @@
+name: "REP005 V4 G0 source-only synthetic / no sealed data"
+on:
+  pull_request:
+    paths:
+      - "packages/rep005_g0b_v4/**"
+      - "tests/test_rep005_v4_g0.py"
+      - "scripts/rep005_v4_g0_source_pilot.py"
+      - ".github/workflows/rep005-v4-g0-source-only.yml"
+  workflow_dispatch:
+jobs:
+  source-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout PR synthetic candidate (no source/score secrets)
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Synthetic V4 G0 independent full-domain tests
+        run: |
+          python -m unittest discover -s tests -p 'test_rep005_v4_g0.py' -v
+      - name: Disclosed source-only G0 certification receipt in logs
+        run: |
+          python -m scripts.rep005_v4_g0_source_pilot

@@ -455,3 +455,9 @@
 - Required L3 comparison: fixed before new scored cohort, paired strongest eligible practical F0/F1 comparator with matched legal action/inference budgets, body-off causality, immutable Snapshot, raw family-unit results, coverage and compute/total training costs. Do not infer improvement from synthetic fixture or inquiry switch alone.
 
 - V4 G1/G2 must follow the [typed effect-synthesis contract](docs/specs/EXP-REP-005-G0B-B-V4-EXECUTABLE-LOGIC.md): an executable transition-effect body and public role binding (not just G2 lookup-table replay), with not-trained-row prediction and learned-body-only ablation. The G1-specific MDL codec must be versioned/frozen before seeing disclosed G2 scores; do not leak source-C membership into fixed or learned learner.
+
+
+## EXP-REP-005 V4 G0 code PR #154 tracked source-only (2026-11-03)
+- Source-owned prototype is **packages/rep005_g0b_v4/** (not the old Draft #149 or learner). Independent source-only synthetic oracle tests: tests/test_rep005_v4_g0.py; source engineering log: scripts/rep005_v4_g0_source_pilot.py; isolated CI workflow: .github/workflows/rep005-v4-g0-source-only.yml. [G0 implementation receipt](experiments/EXP-REP-005-G0B-B/runs/20261103-v4-g0-code-pending.md) distinguishes code from independent science.
+- Source engine must never be imported by public-only learner. Exact 115680 cells/law, all 120 role permutations and bounded <=64 candidate closed-class proof (with NOT_CERTIFIED at cap) are *implemented algorithms*, not certified family-level statistical power or complete historical Hplus_G enumeration.
+- Do not infer science progress from synthetic tests, nominal source roots, role permutations or fixed-question witness. No EVAL/protected old workflows or sealed data touched. Implementation CI, security review and source census evidence are mandatory before a G1/G2 science run.
