@@ -7,7 +7,7 @@ from . import ACTIONS, HISTORIES, N, Edge, Law, _transition, law, signature
 def certify_old_h0(model: Law, *, deadline_seconds: float = 120) -> dict:
     if type(model) is not Law:
         raise ValueError("Law required")
-    if type(deadline_seconds) not in (int, float) or deadline_seconds <= 0:
+    if type(deadline_seconds) not in (int, float) or not 0 < deadline_seconds <= 3600:
         return {"status": "NOT_CERTIFIED", "reason": "PROOF_RESOURCE_CAP"}
     end = monotonic() + deadline_seconds
     try:
