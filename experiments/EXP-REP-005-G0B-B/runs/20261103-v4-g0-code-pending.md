@@ -42,3 +42,10 @@ Single lag1 world H0_all witness: common visible before=0, same action=set(0,0),
 - Closed-C proof covers two predeclared pairs only; full Hplus_G (100M syntax) remains NOT_CERTIFIED.
 - PublicStep is projected in-memory, **not** a secure process boundary.
 - No TRAIN, Sleep, new-world scored scientific utility, or G3 run in this source-only PR.
+
+
+## Independent reviewer P1/P2 corrections after initial source PASS (2026-11-03)
+- [G0 corrected CI #41563093684](https://github.com/ryonakayama234/DekaSugi/actions/runs/41563093684) passed **9 tests**, including a 0.001-second deadline regression. Research verification safe-successor also PASS [#41563093719](https://github.com/ryonakayama234/DekaSugi/actions/runs/41563093719). P1 identified the full-signature preparation work was previously outside the proof deadline; correction starts the deadline before signatures, checking inside every candidate history loop, returning NOT_CERTIFIED/PROOF_RESOURCE_CAP rather than stale ID/UNID.
+- Subsequent independent P2 found cached DFS subtrees and the last action/return could also overrun after the prior check. Code now checks time **before cache read, before each action, after each step, before tree return, and before final ID/UNID return**. An injected-clock regression explicitly crosses deadline after a DFS step and expects NOT_CERTIFIED. The corrected P2 code and synthetic CI / independent review need verification at the new exact head.
+- Earlier original run's zero-node budget showed 1 visited node because it was checked in DFS; corrected P1/P2 code returns PROOF_RESOURCE_CAP before any node visit. Both outputs are preserved with distinct source head/history, not silently rewritten.
+- These corrections concern truthfulness of certification under resource pressure; no new independent families or scientific-score claim follows.
