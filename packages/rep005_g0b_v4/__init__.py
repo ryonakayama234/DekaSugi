@@ -162,12 +162,14 @@ def step(model: Law, x: int, hist: History, action: Action) -> tuple[int, Histor
     return base ^ parity_mask, (hist + (action,))[-2:]
 
 
-def full_signature(model: Law) -> bytes:
-    """Authoritative complete typed-domain semantics, not just reachable prefixes."""
+def full_signature(model: Law, *, deadline_at: float | None = None) -> bytes:
+    """Authoritative complete typed-domain semantics with cooperative deadline."""
     out = bytearray(DOMAIN_CELLS)
     p = 0
     for x in range(1 << N):
         for hist in HISTORIES:
+            if deadline_at is not None and monotonic() >= deadline_at:
+                raise TimeoutError("signature certification deadline exhausted")
             for a in ACTIONS:
                 out[p] = step(model, x, hist, a)[0]
                 p += 1
@@ -272,11 +274,23 @@ def legal_closed_class_id(
     """
     if type(budget) is not int or not 0 <= budget <= BUDGET:
         raise ValueError("invalid budget")
+    started = monotonic()  # certification includes *all* signature preparation
     if len(models) == 0 or len(models) > 64:
         return {"status": "NOT_CERTIFIED", "reason": "CLASS_SIZE_CAP", "nodes": 0}
-    if len(set(full_signature(m) for m in models)) != len(models):
-        return {"status": "NOT_CERTIFIED", "reason": "SEMANTIC_DUPLICATES", "nodes": 0}
-    started = monotonic()
+    deadline_at = started + deadline_seconds
+    if max_nodes <= 0 or deadline_seconds <= 0:
+        return {"status": "NOT_CERTIFIED", "reason": "PROOF_RESOURCE_CAP", "nodes": 0}
+    signatures: set[bytes] = set()
+    try:
+        for model in models:
+            sig = full_signature(model, deadline_at=deadline_at)
+            if sig in signatures:
+                return {"status": "NOT_CERTIFIED", "reason": "SEMANTIC_DUPLICATES", "nodes": 0}
+            signatures.add(sig)
+            if monotonic() >= deadline_at:
+                raise TimeoutError("proof preparation deadline exhausted")
+    except TimeoutError:
+        return {"status": "NOT_CERTIFIED", "reason": "PROOF_RESOURCE_CAP", "nodes": 0}
     visited = 0
     cache = {}
 
@@ -289,7 +303,7 @@ def legal_closed_class_id(
         if key in cache:
             return cache[key]
         visited += 1
-        if visited > max_nodes or monotonic() - started > deadline_seconds:
+        if visited > max_nodes or monotonic() >= deadline_at:
             raise ResourceStop
         if len(ixs) == 1:
             return {"model": ixs[0]}
