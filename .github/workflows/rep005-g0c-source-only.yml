@@ -1,0 +1,44 @@
+name: REP005 G0C V5 source-only engineering (no sealed evaluator)
+
+on:
+  pull_request:
+    paths:
+      - 'packages/rep005_g0c/**'
+      - 'tests/test_rep005_g0c.py'
+      - 'scripts/rep005_g0c_source_pilot.py'
+      - 'docs/specs/EXP-REP-005-G0C-V5.md'
+      - 'experiments/EXP-REP-005-G0C/**'
+      - 'docs/architecture/**'
+      - 'docs/INDEX.md'
+      - 'AGENTS.md'
+      - '.github/workflows/rep005-g0c-source-only.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - name: Checkout exact source revision
+        uses: actions/checkout@v4
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Exact-source unit tests and independent reference
+        run: python -m unittest tests.test_rep005_g0c -v
+      - name: Documentation integrity
+        run: python scripts/check_docs.py
+      - name: Synthetic-only complete source census and inquiry proof
+        run: python scripts/rep005_g0c_source_pilot.py --output .run/g0c-source.json --proposals 48 --proof-seconds 90
+      - name: Archive reproducible public synthetic proof JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rep005-g0c-v5-source-proof
+          path: .run/g0c-source.json
+          if-no-files-found: warn
+          retention-days: 30
