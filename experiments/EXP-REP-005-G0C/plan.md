@@ -31,7 +31,7 @@ Only engineering PASS if independent reference, exact semantic/role tests, posit
 ```bash
 python -m unittest tests.test_rep005_g0c -v
 python scripts/check_docs.py
-python scripts/rep005_g0c_source_pilot.py --output /tmp/g0c-source.json
+python -m scripts.rep005_g0c_source_pilot --output /tmp/g0c-source.json
 ```
 
 Use Python standard library and safe allowlisted source-only CI; upload raw JSON artifact. All claims are conditional on matching source commit and command outcome. Report limitations and costs. The step 48 cohort has four role-binding copies of each of 12 fixed productions and is structurally correlated; a representative total of 11 role orbits is not 11 independent research samples. G0C-3 family N/power stays STOP until a prospective distribution and credible independent ancestry groups exist.
