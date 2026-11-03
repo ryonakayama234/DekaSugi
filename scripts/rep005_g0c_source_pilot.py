@@ -7,6 +7,7 @@ from pathlib import Path
 from time import perf_counter
 from packages.rep005_g0c import PRODUCTIONS, compose, census
 from packages.rep005_g0c.opportunity import certify
+from packages.rep005_g0c.expressibility import certify_old_h0
 
 
 def run(proposals: int = 48, proof_seconds: float = 90) -> dict:
@@ -24,6 +25,11 @@ def run(proposals: int = 48, proof_seconds: float = 90) -> dict:
             "source_implementation": "G0C-V5-1", "synthetic_only": True,
             "real_paid_train_actions": 0, "new_family_scientific_score": "NOT_RUN",
             "source": source,
+            "expressibility": {
+                "direct": certify_old_h0(compose("direct", (0, 1, 2))),
+                "semantic_alias_of_direct": certify_old_h0(compose("split_guard_alias", (0, 1, 2))),
+                "current_bit_guard": certify_old_h0(compose("guard_bit", (0, 1, 2))),
+            },
             "inquiry": {"positive_four_law_budget3": positive,
                         "negative_two_law_budget2": negative,
                         "cap_two_law_budget4": limit},
