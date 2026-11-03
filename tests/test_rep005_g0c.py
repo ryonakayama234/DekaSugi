@@ -83,6 +83,11 @@ class SourceTests(unittest.TestCase):
         self.assertEqual(transition(both, 0, (), ("pulse", 0, -1))[0], 2)
         with self.assertRaises(ValueError):
             Law((object(),))
+        class UncheckedEdge(Edge):
+            def __post_init__(self):
+                pass
+        with self.assertRaises(ValueError):
+            Law((UncheckedEdge(0, 5),))
         with self.assertRaises(ValueError):
             Edge(0, 1, 0, guards(Atom("bit", 2, 0), Atom("bit", 2, 1)))
         with self.assertRaises(ValueError):
@@ -149,3 +154,17 @@ class ExpressibilityTests(unittest.TestCase):
         self.assertEqual(outside["status"], "OUTSIDE_H0")
         self.assertEqual(outside["mismatch_witnesses"], 61)
         self.assertEqual(certify_old_h0(compose("guard_bit", (0, 1, 2)), deadline_seconds=0)["status"], "NOT_CERTIFIED")
+
+
+class DeadlineRegressionTests(unittest.TestCase):
+    def test_nan_and_infinity_cannot_certify(self):
+        from packages.rep005_g0c.expressibility import certify_old_h0
+        model = compose("direct", (0, 1, 2))
+        other = compose("guard_bit", (0, 1, 2))
+        for invalid in (float("nan"), float("inf"), -float("inf")):
+            self.assertEqual(census(12, deadline_seconds=invalid)["status"], "NOT_CERTIFIED")
+            self.assertEqual(full_semantic_orbit_equivalence(model, other, deadline_seconds=invalid)["status"], "NOT_CERTIFIED")
+            self.assertEqual(certify_old_h0(model, deadline_seconds=invalid)["status"], "NOT_CERTIFIED")
+            self.assertEqual(certify((model, other), 2, deadline_seconds=invalid)["status"], "NOT_CERTIFIED")
+            with self.assertRaises(ValueError):
+                signature(model, deadline_at=invalid)
