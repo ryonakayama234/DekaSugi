@@ -1,0 +1,49 @@
+# EXP-REP-005 V4 — integrated G0/G1/G2b engineering closeout and scientific gate
+
+id: EXP-REP-005-G0B-B-20261103-ENGINEERING-CLOSEOUT
+status: engineering_completed_scientific_g3_stopped_independent_review_pending
+updated: 2026-11-03
+tags: engineering, evidence, negative-result, active-learning, concept-invention, evaluation
+
+## Authority / status
+Owner delegated execution and technical judgment. This record **closes the newly disclosed ENGINEERING package only**. It does not close the scientific parent question or authorize a sealed G3 score. Historical old PRs and scores remain unchanged. New stacked Drafts: V4 methodology [#153](https://github.com/ryonakayama234/DekaSugi/pull/153), G0 implementation [#155](https://github.com/ryonakayama234/DekaSugi/pull/155), public learned-body pilot [#157](https://github.com/ryonakayama234/DekaSugi/pull/157). Tracking Issue [#152](https://github.com/ryonakayama234/DekaSugi/issues/152), [#154](https://github.com/ryonakayama234/DekaSugi/issues/154), [#156](https://github.com/ryonakayama234/DekaSugi/issues/156). No main merge, no old sealed evaluator, no science promotion. Independent review of latest exact heads pending.
+
+## Executed G0: precise finite source engineering
+- Private source type: five public Boolean objects, 15 legal paid actions, two preceding public typed actions, deterministic Edge-XOR transitions; at most two edges in typed Law.
+- **115,680 exact typed transitions per law** and **all 120 simultaneous object-role semantic renamings**. Separate 6-Law independent reference oracle ran the full 115,680-cell table/law; dedicated G0 CI **10 tests PASS** [#41563761414](https://github.com/ryonakayama234/DekaSugi/actions/runs/41563761414); safe successor [#41563761423](https://github.com/ryonakayama234/DekaSugi/actions/runs/41563761423) PASS.
+- Twelve predeclared human-authored constructed motif recipes -> **12 exact nonalias semantic orbit signatures**. This is NOT a measured population with 12 independently sampled causal families; no new 80-family census is implied.
+- Complete source-only closed-class public proof: null/direct B=1 ID; null/lag1 B=1 UNID, B=2 ID. Resource cap yields NOT_CERTIFIED. Legal fixed-vs-pulse two-law witness: 0.5 vs 1.0 terminal MAP at one paid action and uniform two-world prior. One same-world actual public chronology witnesses memoryless insufficiency. Neither is learned-policy gain.
+- Independent review found P1 and P2 time-boundary defects: full semantics were originally outside deadline; cache and final returns could slip after deadline. Fixed and regression-tested by checking signature preparation, DFS loop, cache and final return. G0 latest-head method/security review still pending.
+- Full historical Hplus_G (100,090,027 syntactic candidates), true independent generator ancestry population and family-level statistical power: **NOT_CERTIFIED**. G0 ENGINEERING_PASS, SCIENTIFIC_SOURCE_FEASIBILITY_STOP.
+
+## Executed G1/G2a: public process/proof of functional use
+- A source-blind stdlib learner runs as fresh Python -I subprocess with strictly validated public-only JSON observation/plan/predict messages, independent of PrivateWorld Law. This is a guard against accidental imports, **not a hardened malicious-code OS sandbox**.
+- Three related lag1 training-world sessions, six reset paid episodes, **48 charged TRAIN operations**; user did not merely request "epochs" on the same data.
+- SHA-256 Snapshot with executable typed pulse-at-lag XOR-one-target effect. Fresh public-only child inferred new-world object role bindings from paid use data; actual Snapshot persisted to disk, reloaded and archived in Actions. This is bounded program/representation selection from a human-provided grammar, not invention of a primitive from nothing.
+- Initial G2a disclosed scores are preserved in [G2a receipt](runs/20261103-v4-g2-disclosed-engineering.md), but reviewer found no pre-frozen MDL code and an invalid body-only ablation, so G2a remains a **methodologically insufficient development diagnostic**, not an approved G2 scientific gate.
+
+## Executed G2b: reviewer-driven new version, post-G2a methodological amendment
+- New separately disclosed training/use object bindings. Fixed two-part MDL-C1-FIXED-BITS-V1-POST-G2A: null 1-bit prefix; effect 1+2 lag+5 binding bits per training world; one flag bit per observed paid transition and five XOR residual bits for each mismatch. Total model+residual bit lengths **NULL 74, lag0 106, lag1 66 (winner), lag2 91**. This codec was introduced AFTER original G2a disclosure, NOT retroactive preregistration.
+- New three TRAIN sessions × two eight-step episodes = **48 TRAIN**. Three related new-world role instances × STATIC, LEARNED and BODY_OFF × eight legal charged operations = **72 USE**. Total **120 charged training/use actions**, all recorded. One common evaluator-only source-blind panel of **16 legal prediction probes per use world** and arm.
+- **LEARNED:** 46 correct / 0 wrong / 2 abstain of 48, U=0.958333.
+- **STATIC same 61-model capacity, myopic entropy active:** 42 /0 /6, U=0.875000.
+- **BODY_OFF exact same fitted model support/weights/evidence, effect dispatch disabled:** 42 /6 /0, U=0.750000.
+- Descriptive U(LEARNED)−U(STATIC)=**+0.083333**. This gain is **four fewer abstentions**, not lower accepted error rate (both 0 wrong). The individual related new-world gains are +0.1875, +0.1875 and **−0.1250**; one world is worse with the learned prior.
+- Same-prefix same-Snapshot same-candidate/weight body mutation: **10/24** predictive differences, **0/24** actual legal question switches. Thus acquired typed effect CAN alter predictions in this disclosed fixture, but H-QUERY activation is **NULL**, distinct from the positive descriptive predictive coverage.
+- [G2b exact-code CI 8 tests PASS #41564186131](https://github.com/ryonakayama234/DekaSugi/actions/runs/41564186131), [safe successor PASS #41564186084](https://github.com/ryonakayama234/DekaSugi/actions/runs/41564186084), [actual saved public-only Snapshot JSON and full raw report, 30-day artifact](https://github.com/ryonakayama234/DekaSugi/actions/runs/41564186131/artifacts/13197918123). Full experimental ledger [G2b receipt](runs/20261103-v4-g2b-mdl-disclosed.md). Result repeatable in public synthetic CI at reported exact head; independent latest-head methods/security review is NOT yet an approval.
+
+## Scientific interpretations, limited claims and cost
+1. **L0 / engineering representability:** YES for explicit five-bit typed candidate Laws; subset/candidate-level, NOT general full-Hplus_G membership.
+2. **L1 / closed-class inquiry identification:** YES for specified tiny two-law fixtures with truthful accessible legal observations; this does not prove any realistic wide-family opportunity or that the learner selected better queries because of invention.
+3. **L2 / concept actually used:** YES, public-trained typed effect dispatch changed predictions at matched prefixes (10/24). **L2 active inquiry benefit:** NOT DEMONSTRATED (0/24 action changes); do not infer it from prediction coverage.
+4. **L3 / predictive generalization:** only within a *single known lag1 source motif* across role assignments. Training and use share source ancestry / structural orbit. Treat all 3 new-world instances and 48 probes as CORRELATED; do NOT compute family-cluster p-values/CI or claim new-causal-family transfer. Effective independent family population is unverified. L3 scientific PASS/NEGATIVE significance: **NOT_CERTIFIED / STOP**.
+5. **Economic utility:** each method spends 8 paid USE actions per new world, but LEARNED additionally spent **48 charged TRAIN interventions**. Amortization over just three USE worlds = 16 extra preceding TRAIN actions per USE world, plus unmeasured CPU/wall/RSS. +0.083333 descriptive U does not imply positive net cost-benefit. STATIC myopic heuristic is not a proven optimal active controller; F1 capacity/inference parity is not proven beyond candidate grammar and B=8.
+6. **Open-ended intelligence and language/game/dialogue:** not tested. No neural initial weights, no gradient epochs or unknown primitive invention. Report honest level of achieved capability, no substitution of synthetic replay for paid observation.
+
+## Gate resolution and successor research
+**This execution is complete at G0/G1/G2b engineering demonstration with a science STOP.** G3 sealed prospective scoring is **NOT_RUN**. Do not merge Draft PRs, adopt an initial model as proven, or rename synthetic role-permutation gains as independent causal-world science until latest exact-head review and prospective source-family/power conditions are satisfied.
+
+Next scientifically decisive effort, if pursued: implement a *prospectively fixed population generator* with labeled causal ancestry beyond twelve hand-authored recipes; certify semantic, reachable/public and source-disjoint independent mechanism cohorts; design legal positive inquiry opportunities under a nonadaptive and strong active control, and estimate actual effective family N/power **before** freezing new train/final. Move from one-edge lag prior to bounded compositional guard/multi-edge concept synthesis with independently withheld mechanism-family groups, stronger Bayes/compute-matched static active controls and exact-body causal ablation. A new study needs a new version, independent review and entirely fresh heldout data. The current evidence is archived instead of continuing a false positive research trajectory.
+
+## Integrity note
+The first G0 source-only evidence was 9 tests PASS and later 10 after reviewer deadlines. G2a initial test was 7 PASS; G2b fixed-MDL/bound comparison raised to 8 PASS. All earlier scores and method defects are explicitly preserved; no result edited into a fictitious pre-score protocol.
