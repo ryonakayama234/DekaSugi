@@ -23,3 +23,36 @@ Source-only G0 engine exact-head CI engineering PASS, see [G0 code receipt](2026
 ## Interpretation
 Positive measured engineering: actual paid observation induction + SHA Snapshot fresh execution + new-role public rebinding, if tests pass.
 Negative/limits: no new primitive language, 61 hand-installed meta-operators; static same-capacity may match/outperform; role permutations not independent family; CPU/subprocess overhead charged separately; no fully independent G3 scientific cohort.
+
+
+## Executed disclosed result (verified first dedicated CI run #41562894309)
+Workflow: https://github.com/ryonakayama234/DekaSugi/actions/runs/41562894309. Tested original G2 head 7beea49834f98f0aba3f087be6f5e47a95ca6773. **Seven G2 synthetic tests PASS**. The later G0 reviewer P1 deadline fix was cherry-copied through separate source-file synchronization into this branch and requires latest-head CI/review; all G2 numerical values below come from the earlier tested G2 head, whose new G2 learner and runner were unchanged.
+
+Actual three train-world sessions, six separately reset charged episodes, **48 paid TRAIN steps**. Each train world had exactly **1 consistent single-edge full typed candidate** of the 61-capacity language (null plus 60 lag/source/target patterns). A SHA-verified executable temporal effect-template Snapshot was produced with public-only learned lag=1 and inferred source/target roles deferred to public new-world observations:
+- Snapshot SHA256: d0be27f86c8e974ce7906c7c7de84044483dbf778e8b982c318e348c3945f137
+- Public evidence SHA256: 0906f33d5f7fa5626f5150bd28e9b96f2156b1330ae2669c68852e3068bd80d3
+- Child source Law import: NONE. Each plan/predict executed in a new Python -I process (accidental import isolation, **not** hardened OS sandbox).
+
+**72 paid USE steps** = 3 use instances × 3 arms × 8 legal interventions; source-agnostic evaluator fixed 16 legal prediction probes per use instance; 48 scored predictions/arm. **Total actual environment interaction receipts 120** = 48 TRAIN +72 USE (does not count private probes as learner experience).
+
+| Arm | Correct/48 | Wrong/48 | Abstain/48 | Overall U=(correct-wrong)/48 | Paid use |
+|---|---:|---:|---:|---:|---:|
+| LEARNED lag-1 body | 46 | 0 | 2 | **+0.958333** | 24 |
+| STATIC 61-candidate active baseline | 42 | 0 | 6 | **+0.875000** | 24 |
+| BODY_OFF (memoryless capability ablation) | 42 | 6 | 0 | **+0.750000** | 24 |
+
+**Descriptive difference:** LEARNED minus STATIC **+0.083333**, corresponding to 4 extra correct and 4 fewer abstentions across 48 highly correlated prediction probes. LEARNED minus BODY_OFF +0.208333 (large because body-off is deliberately nonexpressive, not a matched independent control). Both LEARNED and STATIC had **zero wrong** among accepted predictions; the gain is in coverage, not conditional accuracy.
+
+Per related use-world instance LEARNED / STATIC utility: (1.000/0.8125), (0.875/0.8125), (1.000/1.000). The third world ties the strong fixed baseline; the second learned world retains 5 public candidate role bindings after 8 paid steps and abstains twice, unlike the first/third with unique binding. This is not universal successful re-binding.
+
+**Question-switch outcome:** On the three recorded identical-world LEARNED vs BODY_OFF trajectories, all eight selected actions per world are identical (**0/24** observed action switches). Thus H-QUERY action activation is **NULL in this disclosed fixture**, even while prediction coverage is better. An action-policy improvement must NOT be claimed or inferred from the utility difference.
+
+**Cost interpretation:** LEARNED uses the same 8 paid USE actions per world as STATIC but requires **48 additional paid TRAIN observations**, which are not charged to STATIC. Across the three new worlds, this is 16 preceding TRAIN interventions per USE world, ignoring additional subprocess inference/compute overhead; no amortized net economic benefit has been demonstrated. The source code records candidate scans/dispatch count but not full calibrated CPU/RSS/battery totals, so cost parity is not independently established.
+
+**Scientific limitation / STOP:**
+- Three new USE laws are **role permutations of the same lag1 source-motif** seen in all three training worlds. Source-ancestry and semantic-orbit disjointness deliberately FAIL. Effective independent causal-family sample N is **not 3**, and 48 correlated probes are **not N=48**.
+- Fixed F1 comparator is a 61-candidate myopic-entropy heuristic with equal paid action cap, not proven Bayes-optimal or rigorously CPU-matched; BODY_OFF is an expressivity ablation, not equivalent Hplus.
+- Only one-edge lag0/1/2 true-source form was trained/evaluated; no full two-edge/guard composition, unseen motif, M2/M3 generalization, or open-ended concept grammar.
+- The test has disclosed pilot-tuned construction and NO new independently frozen sealed cohort, formal sample-size/power, family-cluster CI, confirmed hardened OS isolation or scientific L3/G3 score.
+
+**Final interpretation:** Actual public TRAIN, typed Sleep/Snapshot, source-blind fresh-process USE and private common-panel scoring are **engineering-demonstrated**. A learned prior/template offers a positive descriptive **within-one-known-motif** gain over a practical fixed active heuristic in this fixture, but query-policy mechanism is NULL and **generalizable novel concept invention/scientific utility are NOT_CERTIFIED**. Retain as disclosed developmental evidence; do not promote model or claim statistical benefit.
