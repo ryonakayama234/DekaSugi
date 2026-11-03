@@ -24,6 +24,12 @@ class TestDisclosedG2(unittest.TestCase):
         self.assertEqual(self.snapshot["payload"]["body"]["lag"], 1)
         self.assertEqual(self.snapshot["payload"]["training_world_sessions"], 3)
         self.assertEqual(self.snapshot["payload"]["training_paid_steps"], 48)
+        codec = self.snapshot["payload"]["mdl_codec"]
+        self.assertEqual(codec["version"], "MDL-C1-FIXED-BITS-V1-POST-G2A")
+        self.assertEqual(codec["winning_lag"], 1)
+        self.assertEqual(codec["winning_model_bits"], 18)  # 1+2+5*3
+        self.assertEqual(codec["winning_residual_bits"], 48)
+        self.assertEqual(codec["winning_total_bits"], 66)
         self.assertEqual(self.snapshot["payload"]["body"]["effect"], "xor_one_target_bit")
         self.assertFalse(any(k in json.dumps(self.snapshot).lower()
                              for k in ('source_root', 'private_law', 'source_motif')))
@@ -37,6 +43,24 @@ class TestDisclosedG2(unittest.TestCase):
         self.assertEqual(obj["status"], "OK")
         self.assertTrue(obj["actual_body_dispatch_count"] > 0)
         self.assertEqual(len(obj["predictions"]), 16)
+
+    def test_body_only_counterfactual_keeps_public_posterior_and_changes_dispatch(self):
+        disclosed = training_episode(law(Edge(0, 3, 1)), (0, 1, 2, 3))
+        public_prefix = disclosed[:2]
+        args = {"mode": "plan", "steps": public_prefix,
+                "snapshot": self.snapshot}
+        on = learner_request(dict(args, body_off=False))
+        off = learner_request(dict(args, body_off=True))
+        self.assertEqual(on["candidate_count"], off["candidate_count"])
+        probe = {"before": 0, "history": [["pulse", 0, -1]],
+                 "action": ["set", 0, 0]}
+        pred_args = {"mode": "predict", "steps": public_prefix,
+                     "snapshot": self.snapshot, "probes": [probe]}
+        on_pred = learner_request(dict(pred_args, body_off=False))
+        off_pred = learner_request(dict(pred_args, body_off=True))
+        self.assertEqual(on_pred["candidate_count"], off_pred["candidate_count"])
+        self.assertEqual(on_pred["predictions"][0], 8)
+        self.assertEqual(off_pred["predictions"][0], 0)
 
     def test_tampering_rejected_by_untrusted_fresh_process(self):
         broken = json.loads(json.dumps(self.snapshot))
@@ -96,6 +120,9 @@ class TestDisclosedG2(unittest.TestCase):
     def test_full_disclosed_pilot_including_body_off_comparator(self):
         out = run_disclosed_g2()
         self.assertTrue(out["snapshot_file_roundtrip_verified"])
+        self.assertTrue(out["body_ablation_same_candidate_support_all"])
+        self.assertEqual(out["method_version"], "G2b-POST-G2a-REVIEW-EXPLICIT-MDL")
+        self.assertGreaterEqual(out["same_prefix_body_only_prediction_mutations"], 1)
         self.assertEqual(out["actual_training_paid_steps"], 48)
         self.assertEqual(out["new_use_world_instances"], 3)
         self.assertEqual(out["panel_probes_per_instance"], 16)
