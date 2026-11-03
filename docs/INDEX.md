@@ -293,5 +293,5 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 
 
 ## EXP-REP-005-G0C3 — causal family laboratory (engineering Draft)
-- [Spec](specs/EXP-REP-005-G0C3.md), [plan](../experiments/EXP-REP-005-G0C3/plan.md), [run receipt](../experiments/EXP-REP-005-G0C3/runs/20261103-engineering.md), [module](../packages/rep005_g0c3/README.md), [Issue #160](https://github.com/ryonakayama234/DekaSugi/issues/160).
+- [Spec](specs/EXP-REP-005-G0C3.md), [plan](../experiments/EXP-REP-005-G0C3/plan.md), [original pre-CI receipt](../experiments/EXP-REP-005-G0C3/runs/20261103-engineering.md), [measured exact-head CI result](../experiments/EXP-REP-005-G0C3/runs/20261103-ci-evidence.md), [module](../packages/rep005_g0c3/README.md), [Issue #160](https://github.com/ryonakayama234/DekaSugi/issues/160).
 - 48 root draws/48 dependent role variants; 12 preassigned four-law B3 panels; exact orbit and inquiry comparisons; unknown/invalid preserved. Source-only stacked on unmerged #159; `main` remains unchanged. No scientific-family independence or learned policy claim.
