@@ -962,3 +962,33 @@ flowchart TB
   OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
 ~~~
 `tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## EXP-REP-005-G0C V5 — bounded causal source and inquiry certificates (isolated Draft)
+
+**Main module:** `packages/rep005_g0c/` (source-only). `rep005_g0b_v4` / `rep005_study_v4` live on historical unmerged V4 Draft branches and are NOT imported or silently merged into this main-based G0C branch. What exists now: typed finite constructors, exact semantic/role comparison, old-H0 expressibility, small closed-class adaptive/open-loop source oracle and source-only CLI/tests. What remains future: paid Wake/Sleep, Snapshot, independent family corpus and sealed science.
+
+```mermaid
+flowchart TB
+    subgraph SOURCE["PRIVATE — source/certifier, implemented G0C"]
+      P["Typed motif productions and role bindings"] --> L["Law: 0-2 typed guarded Edges"]
+      L --> S["Full 115,680-cell semantic signature"]
+      S --> O["All 120 role-renaming equivalence checks"]
+      L --> H["Old H0: NULL + 60 single effects"]
+      L --> Q["Exact bounded adaptive vs best open-loop oracle"]
+      O --> R["Census + alias / ancestry labels"]
+      H --> R
+      Q --> R
+    end
+    subgraph FUTURE["FUTURE — NOT IMPLEMENTED/NOT RUN in G0C"]
+      W["Paid public WorldInterface"] --> K["Active Learning and Wake"]
+      K --> SL["Sleep: typed representation repair"]
+      SL --> SNAP["Executable ConceptSnapshot"]
+      SNAP --> E["Fresh USE / independent evaluator"]
+    end
+    R -.->|"future vetted private setup; no Law to learner"| W
+    R -.->|"evaluator-only truth"| E
+    R --> REC["Source-only evidence, raw JSON + STOP"]
+```
+
+The 4-Law adaptive +0.25 is exact only for a closed synthetic candidate set, common initial state, uniform prior, B3 and terminal MAP law identification. This oracle has access to the declared candidate class and is **not** the public-only learned agent. 48 proposals are mainly role variations of 12 declared production recipes; 11 semantic role orbits are not independent family samples. Full historic Hplus_G closure, G0C-3 family power, G1/G2/G3 scientific gains: NOT_CERTIFIED/NOT_RUN. Refer [G0C spec](../specs/EXP-REP-005-G0C-V5.md) and [data contract](contracts.md).
