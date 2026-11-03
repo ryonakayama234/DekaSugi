@@ -105,6 +105,18 @@ class SourceTests(unittest.TestCase):
         self.assertEqual(result["adaptive_gain"], 0.25)
         self.assertEqual(result["evaluated_open_loop_plans"], 3375)
         self.assertIsNotNone(result["adaptive_tree"])
+        # Independently replay the public-outcome policy witness on each Law.
+        trajectories = set()
+        for model in members:
+            x, h, node = 0, (), result["adaptive_tree"]
+            observations = []
+            while node is not None:
+                action = tuple(node["action"])
+                x, h = independent_reference(model, x, h, action)
+                observations.append((action, x))
+                node = node["branches"][str(x)]
+            trajectories.add(tuple(observations))
+        self.assertEqual(len(trajectories), len(members))
 
     def test_opportunity_null_and_resource_stop(self):
         members = (compose("direct", (0, 1, 2)), compose("guard_bit", (0, 1, 2)))
