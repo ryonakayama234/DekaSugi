@@ -2,7 +2,7 @@
 
 id: DOC-INDEX
 status: active
-updated: 2026-10-28
+updated: 2026-11-03
 tags: navigation, architecture, research, experiments
 
 **探す → 該当する小さな文書を読む → 必要な依存文書だけを辿る。**
@@ -283,3 +283,18 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | Evidence ID | Question | Engineering receipt |
 |---|---|---|
 | ACTIVE-001-PR2-CONTAINERS | Can equality-preserving tuple/str/int subclasses launder forged semantic votes, answers or proposal fields through replay? Exact builtin types required before any learner calculation. | [Synthetic check](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md) / [Architecture](architecture/system.md) / [Contracts](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+
+## 2026-11-03: EXP-REP-005 G0b-B constructive source proposal (D0 only)
+- **EXP-REP-005-G0B-B-CONSTRUCTIVE — proposed / not frozen**: [method, five-way comparison and decision](specs/EXP-REP-005-G0B-B-CONSTRUCTIVE.md); primary future module packages/rep005_g0b, supporting packages/representation_repair and active-learning. [Issue #152](https://github.com/ryonakayama234/DekaSugi/issues/152).
+- **EXP-REP-005-G0B-B-PLAN — proposed / NOT_RUN**: [hypothesis, controls, contracts and abort conditions](../experiments/EXP-REP-005-G0B-B/plan.md); [D0 NOT_RUN record](../experiments/EXP-REP-005-G0B-B/runs/20261103-design-not-run.md).
+- **ARCH-001 / ARCH-002**: [proposed source-to-experience system graph](architecture/system.md) and [typed proposed records/public-private data flow](architecture/contracts.md). No real G0b-B source certification, training, new score, or approval to merge. G0b-A Draft #149 and G2 Draft #151 are kept unchanged.
+
+
+## 2026-11-03: Integrated EXP-REP-005 G0b-B V4 (method candidate; not frozen)
+- **EXP-REP-005-G0B-B-V4-DECISION**: [large conditional work package with scientific quantities, hypotheses, typed-world grammar, learner, comparator arms, full G0→G3 gates and outcome rules](specs/EXP-REP-005-G0B-B-INTEGRATED-DECISION-V4.md) — proposed, NOT_RUN.
+- **EXP-REP-005-G0B-B-V4-PLAN**: [new prospective plan candidate](../experiments/EXP-REP-005-G0B-B/plan-v4.md) with precise failure/stop, 0/4/8/16/32 independent paid-world exposures, baseline and independent eval constraints — not frozen, NOT_RUN.
+- **EXP-REP-005-G0B-B-V4-RECEIPT**: [design-only NOT_RUN evidence](../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-integrated-not-run.md). Historical initial [D0 proposal](specs/EXP-REP-005-G0B-B-CONSTRUCTIVE.md), [original plan](../experiments/EXP-REP-005-G0B-B/plan.md) and prior receipts remain intact.
+- Primary packages/rep005_g0b successor; integration packages/rep005_study future; public-only representation_repair and active_learning supporting. [V4 ARCH-001](architecture/system.md) and [V4 ARCH-002](architecture/contracts.md) show graph/schema. The new program contains *prospective* TRAIN/Sleep/fresh USE/scoring, but none of it was run by the V4 documentation PR.
+
+- **EXP-REP-005-G0B-B-V4-EXECUTABLE-LOGIC**: [precise typed source semantics, public effect-body synthesis/role-binding, causal query ablation, leakage/negative test matrix](specs/EXP-REP-005-G0B-B-V4-EXECUTABLE-LOGIC.md) — implementation contract candidate, NOT IMPLEMENTED.

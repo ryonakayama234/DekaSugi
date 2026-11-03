@@ -2,7 +2,7 @@
 
 id: ARCH-002
 status: proposed
-updated: 2026-10-28
+updated: 2026-11-03
 tags: contracts, schema, task, ast, evaluation
 
 EXP-0001は**型付きの小さなDSL**を実装し、自由なPythonコードを生成・実行しない。以下のTaskSpec/ASTのJSON例は実装スキーマ `0.1` に対応する。
@@ -860,7 +860,7 @@ Optional `BoundaryCertificate`: `dsl_version`, `primitive_semantics`, `macro_bod
 Paired analysis still reuses canonical `TaskSpec`, trusted `SkillCandidate`, existing `MetricSpec` and `EvidenceEnvelope` contracts. Never change EXP-0003A frozen schemas or historical source locks. A derived `ContrastSpec` is not a new evaluation authority, not a policy training input, and not an original audit artifact.
 
 ### Data flow / strict information boundary
-~~~mermaid
+```mermaid
 flowchart TD
   P["Public TaskSpec + frozen hash/semantics"] --> X["Proposed ContrastSpec & synthetic-only boundary analysis"]
   P --> K["Frozen public-only Kernel choice"]
@@ -874,7 +874,7 @@ flowchart TD
   M --> R["Estimate and scientific decision"]
   A -.-|NO private data| K
   A -.-|NO private data| X
-~~~
+```
 
 ### C-G2 prospective outcome adapter — NOT the legacy normalizer
 
@@ -902,7 +902,7 @@ The current main-push historical `EXP-0002B DEV smoke` + source-lock conflict bl
 - **Aggregator stop rule:** if one row has an invalid digest/schema/source/AST/replay/chronology/label, or a duplicate/unpinned ID occurs, return `invalid_stopped`, `estimates=null` and diagnostic invalid count; never mix valid data into a reported estimand. Otherwise report `n_paired_valid, n_both_public_found, n_third_audit_discordant_given_both_public_found, n_public_not_found_arms/pairs, n_not_observed, n_non_comparable, n_integrity_invalid`; all-task accuracy difference, both-found discordance and accuracy-first then canonical verifier-call policy error use their own denominators. Denominator zero => `not_estimable`.
 - Comparison profiles `current_v1` (PR2 fixed 3 primitive operators + invented lower(trim(Input)) macro, 4 expanded nodes) and `toy_bias_v1` (deliberately different first-solution ordering for a reachable contract-calibration witness) have **distinct scientific interpretations**. `finite_reachability_probe` yields `IDENTIFIABLE` for a constructed finite witness or `INCONCLUSIVE` when one is not seen, NEVER `STRUCTURALLY_UNIDENTIFIABLE` from enumeration alone.
 
-~~~mermaid
+```mermaid
 flowchart LR
   X["Separately pinned synthetic fixture digest"] --> V["Exact schema / pinned source lock"]
   F["Invented public + synthetic audit pairs"] --> V
@@ -918,7 +918,7 @@ flowchart LR
   M --> A
   C --> A
   I -.-|"NO estimates"| A
-~~~
+```
 
 This code does **not** import historical scorer/learner/kernel packages; it holds invented third examples in test-only public GitHub, never genuine evaluator-only bytes. There is no new official third-audit custody, cryptographic timestamping, independent authentication, power analysis or empirical learned-effect result. The historical `normalize_audited_trial()` retains its strict `false_solved` contract unchanged.
 
@@ -978,7 +978,7 @@ flowchart LR
 The `InputSplit` requires exactly 28/64/64 sorted unique integer (not boolean) input IDs spanning 0..155, pairwise disjoint and matching its schema digest. `QuerySession` stores exactly two distinct public observations, validated public/question pool IDs and linked pool commitment, ordered unique answer IDs, bounded (0..2) budget, coherent terminal state, and the **exact** semantic class set reconstructed from public plus answered observations. `QueryProposal.random_seed` is null for B2, nonnegative uint63 for B1. Acceptance replays true B2 maximum disagreement/tie or B1 deterministic seed choice, not only hash equality. Local checksum and pool linkage do **not** establish third-party oracle authenticity or seed custody; the future independent evaluator owns those trust boundaries. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-integrity-repair.md).
 
 ## ARCH-002 ACTIVE-001 — active-query/2 split and answer-trace contract (2026-10-30)
-~~~mermaid
+```mermaid
 flowchart LR
   PUB["28 public IDs + 2 observed outputs"] --> GATE["Validate canonical inquiry-world/1 split"]
   Q["64 question IDs"] --> GATE
@@ -990,11 +990,11 @@ flowchart LR
   T -->|"No"| R
   T -->|"Yes"| STOP["Reject additional questions"]
   AUDIT["64 evaluator-only labels"] -.->|"Forbidden"| S
-~~~
+```
 Session input-pool contract: sorted, unique, integer 28 public and 64 query IDs; evaluator pool reconstructed as their 64-ID complement; recompute the canonical inquiry-world/1 input-split digest and compare it with the stored split commitment at every public entry. QuerySession.trace stores a tuple of (QueryProposal, QueryAnswer), with exact local replay of the choice, local receipt and stop condition per prefix. QuerySession.answers must equal the trace's compact projection. active-query/2 is not serialized-compatible with synthetic active-query/1; B1 seed-to-input values can change due to the new session digest. No hash here is independent evaluator authority or a scientifically precommitted source, seed or Oracle; these require separate future evaluation safeguards. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-history-boundary-integration.md).
 
 ## ARCH-002 ACTIVE-001 PR2 — Catalog trust boundary and data flow (2026-10-30)
-~~~mermaid
+```mermaid
 flowchart LR
   GRAMMAR["Trusted 8-op DSL / finite 156 inputs"] --> CANON["_canonical_catalog: cached complete reference"]
   CALLER["Reconstructed/untrusted Catalog"] --> ASSERT["_assert_catalog"]
@@ -1007,11 +1007,11 @@ flowchart LR
   ANSWER --> REPLAY["Replay canonical classes + split + all prefixes"]
   REPLAY --> SESSION
   HIDDEN["Evaluator-only truth"] -.->|"No learner data flow"| SESSION
-~~~
+```
 Exact Catalog structural contract: `type(catalog) is Catalog`, `classes` is a tuple, `by_id` uses a read-only `MappingProxyType`, and dataclass equality against a lazily cached deterministic `build_catalog()` reference covers the full ordered class list, every output_signature and representative program, lookup keys and values, universe_digest and syntax_count. Both `start()` and session replay entry checks enforce it. The immutable canonical cache is internal process state; local integrity does NOT authenticate an independently custodied evaluator, hidden labels, or the source itself. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-catalog-integrity.md).
 
 ## ARCH-002 ACTIVE-001 PR2 — caller catalog validation vs canonical calculation (2026-10-30)
-~~~mermaid
+```mermaid
 flowchart LR
   UNTRUST["Caller Catalog with untrusted lookup behavior"] --> GUARD["_assert_catalog: structural equality"]
   MODEL["Internal deterministic build_catalog()"] --> CACHE["Cached canonical reference"]
@@ -1023,11 +1023,11 @@ flowchart LR
   PICK --> HIST["Replay each history prefix"]
   HIST --> PRED
   EVAL["Evaluator-only labels"] -.->|"No read path"| PRED
-~~~
+```
 **Caller input:** `Catalog` may be reconstructed, including `MappingProxyType(dict_subclass)`; proxy equality cannot establish the behavior of `__getitem__`. **Trusted computation:** `_assert_catalog` returns a private cached canonical reference. Both `start()` and `_assert_world()` bind this reference; every `by_id` prediction and final-program lookup uses the internal reference. A deceptive but equality-preserving external lookup may be admitted, but **must not change the output or permit false `query_unidentifiable`**. Mutation of a caller mapping must likewise have no influence. Existing active-query/2 trace, split integrity and B1/B2 policy gates remain intact. An independent evaluator and real scored evidence remain separate obligations. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-lookup-canonicalization.md).
 
 ## ARCH-002 ACTIVE-001 PR2 — exact primitive types for replay (2026-10-30)
-~~~mermaid
+```mermaid
 flowchart LR
   IN["Untrusted QuerySession, QueryProposal, QueryAnswer"] --> GATE["Exact built-in field types"]
   GATE -->|"class_ids tuple subclass / str subclass / bool-as-int"| STOP["ValueError"]
@@ -1037,5 +1037,74 @@ flowchart LR
   TRACE --> CHOOSE["B2 true max disagreement / B1 fixed seed"]
   CHOOSE --> RESULT["Validated hypothesis set / next question"]
   HOLDOUT["Evaluator-only answers"] -.->|"Never exposed"| RECON
-~~~
+```
 **Canonical storage contract:** `QuerySession.class_ids` is exactly `tuple` whose entries are exactly `str`, never a tuple or string subclass, because equality can differ from iteration. The compact `answers` tuple contains exact 3-tuples of (int ID, str output, str local receipt). The `trace` container is exactly tuple; each ordered entry is an exact tuple of typed `QueryProposal` and `QueryAnswer`. Session status, pool/world/split digest fields, and proposal and answer primitive fields must have exact builtin types; bool is rejected when int is required. Exact types are checked at the public boundary **before** Gini, random policy, history revalidation, or final-program selection. Per-prefix policy/receipt semantics and the active-query/2 schema remain unchanged. Hashes remain local consistency checks, NOT independent Oracle authentication. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## EXP-REP-005 G0b-B — proposed typed source/public/certificate data flow (2026-11-03; NOT IMPLEMENTED)
+
+Do not confuse this proposal with the existing EXP-0001 TaskSpec schema or G0b-A V3.1 frozen pilot. Every contract below is a **candidate**, subject to independent methods review and explicit version freeze before code/score.
+
+| Proposed record | Owner | Required semantics | Visibility |
+|---|---|---|---|
+| ConstructiveSourceCandidate v0 | rep005_g0b generator | grammar_version, typed motif_dag, parent_sources, source_root, construction_seed, bounds | private source |
+| FamilyCertificate v0 | independent verifier | full_semantic_signature, role_orbit, ancestry_group, reachable_public_digest, exact_equality_evidence, status and stop_reason | evaluator-only |
+| InquiryOpportunity v0 | source-only bounded prover | closed_class_id, public_prefix, legal_action_tree, baseline_policy, prior, paid_budget, expected_utility, proof_nodes, status | evaluator-only diagnostics |
+| PublicStep vG2 | WorldInterface | visible_state, canonical action/history, paid_cost, public transition | **learner-visible** |
+| ConceptSnapshot vG2 | representation_repair | typed executable body, public_support_ids, version, sha256, abstention condition | reloaded learner |
+| FreshUseOutcome v0 | later independent evaluator | source cohort, blinded paired arm, family-unit utility, charged cost, dispatches and compute | evaluator-only |
+
+```mermaid
+flowchart LR
+  SRC["Private motifs, Law and source ancestry"] --> CERT["Exact semantics, S4 orbit, source/split check"]
+  CERT --> ID["Closed-class ID/UNID or NOT_CERTIFIED"]
+  CERT --> OP["Reachable legal-query opportunity or NOT_CERTIFIED"]
+  CERT --> AD["Public projection: WorldInterface"]
+  AD --> PS["Paid PublicStep: state, action, public history"]
+  PS --> WAKE["Public-only prediction + counterexample"]
+  WAKE --> SNAP["Typed concept, Sleep + hash Snapshot"]
+  SNAP --> USE["Fresh process USE"]
+  USE --> EVAL["Later paired capacity-matched evaluation"]
+  CERT -.->|"evaluator-only; prohibited learner access"| EVAL
+  ID --> REC["Feasibility ledger"]
+  OP --> REC
+  EVAL --> REC
+```
+
+**Invariants (proposed):** (1) total defined-domain semantic equality is not the same as reachable paid-observation equivalence; (2) same ancestry, role permutation, equal semantics or merely renaming do not constitute independent families; (3) all proof states include public state, legal history, remaining candidates and budget, and partial proof is NOT_CERTIFIED, never UNID; (4) positive opportunity needs an executed/certified **feasible** public policy outperforming a matched baseline; (5) complete source signature/provenance is evaluator-only; (6) a hashed Snapshot protects local integrity, not independent source custody; (7) no G0b-B TRAIN, score or accepted model exists as of this addendum.
+
+Proposed contracts and classification: [decision](../specs/EXP-REP-005-G0B-B-CONSTRUCTIVE.md) / [plan](../../experiments/EXP-REP-005-G0B-B/plan.md) / [design receipt](../../experiments/EXP-REP-005-G0B-B/runs/20261103-design-not-run.md).
+
+
+## EXP-REP-005 G0b-B V4 — typed data/source trust contract (2026-11-03; DESIGN ONLY)
+
+V4-C1 proposes five visible Boolean objects, 15 legal typed paid actions, lag<=2, B=8. The declared full typed-domain signature per candidate law is 115,680 state/history/action transitions, and all 120 role permutations must be evaluated to canonicalize a law claimed distinct. This does **not** certify the historic full Hplus_G universe. No G0b-B V4 source/learner/data record is implemented or scored in this design PR.
+
+| Boundary record | Creator | Fields / invariant | Learner access |
+|---|---|---|---|
+| ConstructiveSourceCandidate v4 | source | grammar, motif AST, source ancestor DAG, object-binding and Law hash | NEVER |
+| FamilyCertificate v4 | independent certifier | exact signature + 120-role semantic orbit evidence, ancestry/root cluster, reachable legal-prefix evidence, ID/UNID/NOT_CERTIFIED proof nodes/resource | NEVER |
+| InquiryOpportunity v4 | private certifier | closed C and prior, legal common prefix, achievable policy tree, baseline, verified expected terminal utility and cost, status | NEVER: diagnostic |
+| PublicStep v4 | WorldInterface | opaque session, before 5-bit state, typed <=2 public history actions, action, after 5-bit state, paid cost=1, validated chronology | YES |
+| ConceptSnapshot v4 | learner | typed executable body, inferred public role bindings, public evidence hashes, MDL, ambiguity/abstention, serialization SHA | YES |
+| UseTrial v4 | recorder | chosen legal action/prediction before oracle result, body dispatch, actual public result, paid and compute receipts | public own trial only |
+| StudyFreeze v4 | independent custodian | code/grammar/plan/source group/cohort/snapshot/comparator/probe-schedule/analysis digests | NEVER |
+| EvaluationReport v4 | independent scorer | family cluster signed paired utility/95% uncertainty, probe coverage, actions, compute/amortization, negative/stopped outcome | post-score only |
+
+```mermaid
+flowchart LR
+   PRIVATE["Private Law, source ancestry, family/split labels"] --> CERT["Reference semantics + role/proof certificates"]
+   CERT --> PROJ["Strict public paid-step projection"]
+   PROJ --> WAKE["Wake: observe/predict/query"]
+   WAKE --> BODY["Sleep: typed concept + public witnesses"]
+   BODY --> SNAP["Hash-bound executable Snapshot"]
+   SNAP --> FRESH["Fresh process USE / fixed public budget"]
+   FRESH --> EVAL["Independent 16-probe paired scoring"]
+   PRIVATE -.->|"evaluator-only, not learner-visible"| EVAL
+   CERT --> STOP["Source G0 STOP/uncertainty ledger"]
+   EVAL --> STOP
+```
+
+Data invariants: no private Law/ancestor/role/oracle/probe labels into learner process; same-world chronology before contradiction; exact semantic equality separate from reachable observation and source ancestry; all proof exhaustion returns NOT_CERTIFIED; H0_all contradiction not equivalent to finite H0_C membership; no fixed-language expressive advantage credited as learned. Evaluator reference probes are selected before USE and common to all arms (but must record any accidental paid-action overlaps); one family, not its 16 probes, is the independent statistical unit. Primary proposed U=(correct-wrong)/16, abstain=0, with 8 paid questions and mandatory separate CPU/coverage/lifetime cost. G3 source/analysis freeze and separate approval are mandatory. See [V4 decision](../specs/EXP-REP-005-G0B-B-INTEGRATED-DECISION-V4.md) / [plan](../../experiments/EXP-REP-005-G0B-B/plan-v4.md).
+
+**V4 executable-body refinement:** [Detailed contract](../specs/EXP-REP-005-G0B-B-V4-EXECUTABLE-LOGIC.md) requires transition-effect AST rather than only a witnessed-history feature + table lookup. Source-only private closed catalog C is not a public prior for either F0 or L2; both receive the same declared generic meta-operators. New-world role bindings must derive solely from paid PublicStep and the frozen snapshot. A claim of new predictive structure requires a fresh reachable not-trained-row transition and an exact learned-body mutation test.

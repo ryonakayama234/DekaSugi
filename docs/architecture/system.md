@@ -2,7 +2,7 @@
 
 id: ARCH-001
 status: proposed
-updated: 2026-10-28
+updated: 2026-11-03
 tags: diagram, architecture, components, wake-sleep
 
 > 目標全体図は**提案**。EXP-0001に限定した型付き探索・実行・検証は実装済み（採否は実験runを参照）。各モジュールは [packages目録](../../packages/README.md) で管理。
@@ -792,7 +792,7 @@ The new [workflow](../../.github/workflows/research-verification-v2.yml) and [so
 ## ARCH-001 OPPORTUNITY-002 — proposed bounded capability/identification study (PR1 docs-only)
 **Status:** proposed only; no code, synthetic run or new scored trial. Main owner `packages/evaluation`; preserve learner/kernel/registry freeze. [Spec](../specs/OPPORTUNITY-002.md) / [plan](../../experiments/OPPORTUNITY-002/plan.md).
 
-~~~mermaid
+```mermaid
 flowchart TB
   subgraph Cognitive["Existing frozen-capability path"]
     T["Public TaskSpec"] --> K["Existing frozen Kernel / choice"]
@@ -812,14 +812,14 @@ flowchart TB
   S -.-> B
   V -.-> E
   I -.-> M
-~~~
+```
 
 The checker observes type-safe primitive/macro semantics and budgeted candidate sets, **not** original frozen private audit data. Kernel receives public-only information before choices; evaluator-only audit stays isolated. Macro expansion can preserve the semantic program set while changing search order/selected programs. Calibration proof/fixture PASS does not prove learning or transfer. No implicit arrows from diagnostic results back into a learner or previously frozen original source.
 
 The separately reviewed actual scorer, new evaluator-only source and private custody/one-shot gates are **future designs only**. Existing EXP-0003A old DEV/FINAL and OPPORTUNITY-001 original 64 are never replayed. [ARCH-002](contracts.md) includes precise data flow and versioning.
 
 ## ARCH-001 OPPORTUNITY-002 PR2 — isolated synthetic checker (implementation)
-~~~mermaid
+```mermaid
 flowchart LR
   A["Invented examples + fixed synthetic operators"] --> B["scripts/opportunity2_boundary.py"]
   B --> C["Independent BFS and Cartesian-product oracle"]
@@ -827,12 +827,12 @@ flowchart LR
   D --> E["Read-only synthetic summary / unittest"]
   E -.->|NO import / NO data flow| L["Existing scorer / Kernel / learner / old sources"]
   E -.->|NO authority| G["Future real evaluation"]
-~~~
+```
 `scripts/opportunity2_boundary.py`は本番用`packages.evaluation`のimport初期化を回避する独立検査器。第三例、実験generator、凍結方策、オリジナル証拠に接続しない。[source](../../scripts/opportunity2_boundary.py) / [tests](../../tests/test_opportunity2_boundary.py) / [run](../../experiments/OPPORTUNITY-002/runs/README.md)。PR2は人工校正のみで、mainは別途安全ゲート。
 
 
 ## ARCH-001 OPPORTUNITY-002 PR3 — independent C-G2 synthetic adapter (2026-10-30)
-~~~mermaid
+```mermaid
 flowchart TB
   subgraph Historic["Historic frozen source: NO IMPORT / NO WRITE"]
     H["Original opportunity_actual normalizer"]
@@ -851,7 +851,7 @@ flowchart TB
   M --> E["Synthetic engineering receipt, not scientific ability claim"]
   Q --> E
   Historic -.-|"NO runtime or data edge"| Synthetic
-~~~
+```
 This is a **synthetic-only** standalone code path. The `toy_bias_v1` order is an explicitly invented adversarial calibration, not the frozen DekaSugi policy. `current_v1` independently mirrors PR2's 40/47 synthetic grammar; finite negative results never prove a universal impossibility. An independent reviewer and separate owner authorization are required for any future real C-G2 evaluator, not merely a change of `phase`.
 
 ## ARCH-001 ACTIVE-001 — 自ら問いを選ぶ能力（提案・未実装）
@@ -896,7 +896,7 @@ flowchart TB
 The new guards check local consistency, not truth or authenticated external Oracle ownership. Stage I within-task updates are the only implemented research mechanism; Stage II learned question policies and Stage III transfer remain planned. The explicit synthetic CI allowlist does not unlock scored trials or change historical code. [Data contract](contracts.md) / [engineering run](../../experiments/ACTIVE-001/runs/20261030-pr2-integrity-repair.md).
 
 ## ARCH-001 ACTIVE-001 PR2 — complete local history verification (2026-10-30)
-~~~mermaid
+```mermaid
 flowchart TD
   PUBLIC["Two public examples / 28 public IDs"] --> SPLIT["Canonical 28/64/64 split commitment"]
   SPLIT --> SESSION["Active learner: active-query/2 state"]
@@ -909,11 +909,11 @@ flowchart TD
   VALID -->|"Invalid"| REJECT["Fail closed"]
   SECRET["Withheld evaluator labels"] -.->|"No learner edge"| SESSION
   HISTORIC["Frozen scorers and scored history"] -.->|"No runtime edge"| SESSION
-~~~
+```
 This is local synthetic engineering only: a digest is a consistency check, not an external Oracle signature or proof of useful transfer. The query policy cannot continue after a terminal state. [ARCH-002](contracts.md) and [run ledger](../../experiments/ACTIVE-001/runs/20261030-pr2-history-boundary-integration.md).
 
 ## ARCH-001 ACTIVE-001 PR2 — trusted canonical candidate catalogue (2026-10-30)
-~~~mermaid
+```mermaid
 flowchart TB
   WORLD["Fixed 8-operation inquiry world / 156 inputs"] --> BUILD["Deterministic canonical catalogue 4,681 syntactic programs"]
   BUILD --> CANON["Cached immutable 878 semantic classes + by_id lookup"]
@@ -926,11 +926,11 @@ flowchart TB
   REPLAY --> SESSION
   PRIVATE["Evaluator-only target and labels"] -.->|"No access"| SESSION
   OLD["Frozen original scorers and evidence"] -.->|"No runtime edge"| SESSION
-~~~
+```
 This is a consistency check against a fixed **experimenter-authored** synthetic world, not a learned representation, independently signed source, real measured generalization or trusted Oracle. The canonical reference is generated once per process, not enumerated on every question; equality still checks all semantic contents. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-catalog-integrity.md).
 
 ## ARCH-001 ACTIVE-001 PR2 — internal canonical computation (2026-10-30)
-~~~mermaid
+```mermaid
 flowchart TB
   EX["Caller Catalog / MappingProxyType / custom dict.__getitem__"] --> CHECK["Catalog validation: reject ordinary mismatch"]
   WORLD["Fixed eight-op, 156-input DSL"] --> CACHE["Cached internally built canonical Catalog"]
@@ -945,11 +945,11 @@ flowchart TB
   LOOKUP --> REPLAY
   REPLAY --> QUERY
   AUDIT["Withheld evaluator labels"] -.->|"No learner input"| QUERY
-~~~
+```
 A proxy is a read-only **view**, not a deep-frozen snapshot; dict subclass equality can disagree with indexing. Therefore external `by_id` is **never consulted for prediction**, even when structural equality passes. This is local synthetic integrity, not independent Oracle/source authority, learned skill, or scientific performance. [Data flow](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-lookup-canonicalization.md).
 
 ## ARCH-001 ACTIVE-001 PR2 — strict state-boundary validation (2026-10-30)
-~~~mermaid
+```mermaid
 flowchart TB
   CALLER["Caller-reconstructed QuerySession / proposal / answer"] --> TYPE["Exact built-in tuple, str, int field checks"]
   TYPE -->|"mismatch / subclass"| REJECT["Fail closed with ValueError"]
@@ -960,5 +960,56 @@ flowchart TB
   UPDATE --> REPLAY
   SECRET["Evaluator-only labels"] -.->|"No learner input"| PICK
   OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
-~~~
+```
 `tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## EXP-REP-005 G0b-B — proposed constructive world → active learning architecture (2026-11-03; NOT IMPLEMENTED)
+
+Primary future module: packages/rep005_g0b, **source construction/certification**, not learner tuning. Supporting: packages/representation_repair (G2 public-only prototype in separate Draft #151), active inquiry, independent evaluation, persisted concept library. The generator's secret causal Law/ancestry **must not** enter the learning path. Source-only feasibility is the next gate; no TRAIN/EVAL has been run.
+
+```mermaid
+flowchart TB
+    M["Proposed versioned causal-motif constructors"] --> G["rep005_g0b: constructive source worlds"]
+    G --> S["Private Law + ancestor manifest"]
+    S --> E["Independent semantics / role-orbit / provenance audit"]
+    E --> C{"Certified family + reachable opportunity?"}
+    C -->|No or budget STOP| N["STOP / NULL / NOT_CERTIFIED receipt"]
+    C -->|Yes; future reviewed stage| W["Public-only WorldInterface: paid step"]
+    W --> A["Active inquiry: legal question selection"]
+    A --> R["representation_repair: contradiction + typed predicate"]
+    R --> L["Sleep: validate, compress, hash Snapshot"]
+    L --> U["Fresh USE: predict and select next question"]
+    U --> V["Independent new-family evaluator: learned vs STATIC-Hplus"]
+    V -->|new evidence; approval required| L
+    S -.->|Private truth only, never learner input| V
+    V --> N
+    style W stroke-dasharray: 6 4
+    style A stroke-dasharray: 6 4
+    style R stroke-dasharray: 6 4
+    style V stroke-dasharray: 6 4
+```
+
+The dashed paths are **future research contracts**, not integrated code. The diagram depicts public intervention, Wake–Sleep externalization and prospective matched learning evaluation while preserving the private evaluator. G0b-A's large syntax count is a feasibility STOP, not proof of 80 independent families. This D0 decision is [proposed](../specs/EXP-REP-005-G0B-B-CONSTRUCTIVE.md), with [NOT_RUN evidence](../../experiments/EXP-REP-005-G0B-B/runs/20261103-design-not-run.md).
+
+
+## EXP-REP-005 G0b-B V4 — integrated architecture (2026-11-03; DESIGN ONLY)
+The proposed primary source module is packages/rep005_g0b successor; proposed isolating orchestrator is packages/rep005_study, with independently imported reviewed public-only representation_repair and active_learning. No unified V4 executable system exists yet. Public paid interaction and private source/evaluator truth must be separated at a process boundary. The G0/G1/G2/G3 graph is a **single conditional work program**, not observed science.
+
+```mermaid
+flowchart TB
+  CON["PRIVATE constructive motif grammar / source DAG"] --> CERT["rep005_g0b: full semantic, 120-role, ancestry and reachable certificates"]
+  CERT --> M["Private source/split manifest and legal opportunity"]
+  M --> PUB["Paid public WorldInterface: observations only"]
+  PUB --> K["active_learning: next legal query / belief"]
+  K --> PUB
+  PUB --> W["representation_repair: predict, counterexample, typed candidate"]
+  W --> S["Sleep: public support + bounded MDL"]
+  S --> P["Persisted executable ConceptSnapshot"]
+  P --> U["Fresh isolated process USE: frozen concept"]
+  U --> E["Independent evaluator: 16 probes / fixed Hplus / body-off"]
+  M -.->|"evaluator-only source, NEVER learner input"| E
+  E --> O["Signed family-level results / NULL / NEGATIVE / STOP"]
+```
+
+Mandatory gates: G0 source feasibility and proof -> G1 truth isolation and reviewer -> G2 genuine public TRAIN/Sleep/Snapshot/USE and **disclosed** development score, subject to body-action switch mechanism -> G3 fresh powered independently custodied evaluation only under a new explicit approval. See [V4 decision](../specs/EXP-REP-005-G0B-B-INTEGRATED-DECISION-V4.md), [plan](../../experiments/EXP-REP-005-G0B-B/plan-v4.md) and [NOT_RUN receipt](../../experiments/EXP-REP-005-G0B-B/runs/20261103-v4-integrated-not-run.md).
