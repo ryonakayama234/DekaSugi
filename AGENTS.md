@@ -450,3 +450,8 @@
 - Version CFAM-V1 root distribution before observations. 48 draws plus dependent role variants, no success-conditioned rerolls. All 12 predetermined four-law panels count; INVALID and NOT_CERTIFIED are NOT positive or zero.
 - Complete 115680-cell invariant differs => role-NONALIAS; equal invariant demands exact G0C role equivalence. No claims of independent scientific family N, new learner, Wake/Sleep or model promotion. Source Law/ancestry never enters a learner.
 - Same PR tests, safe CI, AGENTS/INDEX/ARCH-001 Mermaid/ARCH-002/spec/plan/append-only record; separate exact-head method/security review needed before merging.
+
+
+## G0C-3 review findings and nested-field boundary (PR #161)
+- P1: every evaluator-supplied Law/Edge/Atom and primitive field must use exact built-in types, including `Atom.kind` exact `str`. A top-level Law check is insufficient because str subclasses can execute arbitrary equality callbacks inside `_transition`. Use the G0C-3 `canonical_law` rebuild BEFORE any `set()`, semantic evaluation or closed-class oracle.
+- P2: check finite proof deadlines after the last transition and before certifying a new orbit. Keep regression tests for callback traps, nested subclasses and virtual clocks. Original source calibration receipts and new amended exact-head evidence remain distinct, and no previously scored data may be rerun or reclassified.

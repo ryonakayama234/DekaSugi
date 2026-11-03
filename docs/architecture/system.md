@@ -1013,3 +1013,19 @@ flowchart TD
 ```
 
 CFAM-V1 source is disclosed synthetic. Source roots/roles are not statistically independent scientific families. All invalids, duplicates and capped proofs preserve their attempted denominators. Requires unmerged PR #159; no adopted main implementation. [Spec](../specs/EXP-REP-005-G0C3.md) / [contract](contracts.md).
+
+
+### G0C-3 security-hardening source flow
+
+```mermaid
+flowchart TD
+  U["Synthetic source or caller Law"] --> V["Recursive exact builtin Law/Edge/Atom validator"]
+  V -->|invalid| REJ["INVALID / ValueError before executing callbacks"]
+  V -->|valid| SAFE["Trusted Law rebuilt"]
+  SAFE --> F["115680-cell invariant and exact role oracle"]
+  SAFE --> P["Closed-class B3 adaptive / open-loop oracle"]
+  F --> E["Evaluator-only source evidence"]
+  P --> E
+```
+
+A strict type check of the outer Law alone is insufficient: an Atom.kind str subclass may override equality. The amended implementation reconstructs a fresh Law only after validating every nested storage and field type. No learner import, no source truth crossing.

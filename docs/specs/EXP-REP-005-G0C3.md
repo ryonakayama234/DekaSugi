@@ -24,3 +24,8 @@ Bounds: 180s overall orbit scan, 30s/panel, 4000 open-loop schedules, 250000 ada
 ## Source
 
 [Package](../../packages/rep005_g0c3/__init__.py) / [tests](../../tests/test_rep005_g0c3.py) / [runner](../../scripts/rep005_g0c3_pilot.py) / [plan](../../experiments/EXP-REP-005-G0C3/plan.md) / [receipt](../../experiments/EXP-REP-005-G0C3/runs/20261103-engineering.md) / [system](../architecture/system.md) / [contracts](../architecture/contracts.md).
+
+
+## Post-review security hardening / proof exactness
+
+Following independent P1/P2 code-review findings, all G0C-3 evaluator entry points use `canonical_law` to validate each nested `Law`, `Edge`, `Atom` and exact built-in field types before invoking any hash, equality or transition. The inherited G0C Atom.kind constructor may otherwise admit a str subclass whose `__eq__` is executable during simulation; a top-level Law type check alone cannot stop it. On success the routine reconstructs trusted builtin-only objects using typed constructors. Invalid models are rejected as INVALID or ValueError, not certified. Proof clock checks also run after the final invariant transition and before a certified orbit result. This is an **engineering trust-boundary remediation**, not a new scientific measurement or approval; exact-head CI plus independent re-review remain required.

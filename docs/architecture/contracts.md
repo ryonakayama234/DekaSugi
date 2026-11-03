@@ -1098,3 +1098,17 @@ flowchart LR
 - `SourceEvidence`: disclosed `g0c3-source-only-v1` JSON includes private synthetic Law repr to allow reproduction; **not suitable for learner ingestion or confidential future heldout**. Zero paid TRAIN; no old DEV/FINAL, new Snapshot or scientific transfer inference.
 
 [Spec](../specs/EXP-REP-005-G0C3.md) / [plan](../../experiments/EXP-REP-005-G0C3/plan.md) / [receipt](../../experiments/EXP-REP-005-G0C3/runs/20261103-engineering.md).
+
+
+### G0C-3 deep canonicalization security boundary (independent P1 remediation)
+
+```mermaid
+flowchart LR
+  IN["Caller-supplied Law, Edge, Atom"] --> V["Exact builtin type checks recursively"]
+  V -->|subclass, forged tuple or field| STOP["Reject before equality, hash, transition"]
+  V -->|all primitive fields trusted| REBUILD["Fresh Law / Edge / Atom constructors"]
+  REBUILD --> I["Complete invariant / orbit / panel"]
+  I --> LOG["Source-only proof evidence"]
+```
+
+`canonical_law(model)` rejects nonexact `Law`, `Law.edges` tuple, `Edge`, `Edge.guard` tuple, `Atom`, and exact builtin primitive fields: integer Edge source/target/lag, builtin `str` Atom.kind, integer Atom.role/value/lag. No hash, equality, comparison, or G0C `_transition` can touch caller-defined subclasses before this test. A fresh trusted Law is then rebuilt with existing typed constructors. `full_invariant`, `orbit_census`, and `panels` all enforce this boundary; rejected synthetic panels keep their denominator. This protects this evaluator-side API, not arbitrary hostile Python process execution. [Security review findings](https://github.com/ryonakayama234/DekaSugi/pull/161).
