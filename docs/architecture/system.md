@@ -992,3 +992,24 @@ flowchart TB
 ```
 
 The 4-Law adaptive +0.25 is exact only for a closed synthetic candidate set, common initial state, uniform prior, B3 and terminal MAP law identification. This oracle has access to the declared candidate class and is **not** the public-only learned agent. 48 proposals are mainly role variations of 12 declared production recipes; 11 semantic role orbits are not independent family samples. Full historic Hplus_G closure, G0C-3 family power, G1/G2/G3 scientific gains: NOT_CERTIFIED/NOT_RUN. Refer [G0C spec](../specs/EXP-REP-005-G0C-V5.md) and [data contract](contracts.md).
+
+
+## EXP-REP-005-G0C3 — synthetic causal-family source boundary (Draft)
+
+```mermaid
+flowchart TD
+  A["CFAM-V1 private indexed root draw"] --> B["Typed Law / invalid kept"]
+  B --> C["One role permutation descendant per root"]
+  B --> D["Full 115680-cell invariant"]
+  D --> E{"Histograms differ?"}
+  E -->|yes| F["Certified NONALIAS under all role renamings"]
+  E -->|no| G["Exact G0C 120-role checker or NOT_CERTIFIED"]
+  B --> H["Fixed consecutive four-root panel"]
+  H --> I["Exact adaptive vs best open-loop terminal MAP"]
+  F --> J["Evaluator-only source JSON and evidence"]
+  G --> J
+  I --> J
+  B -.->|"No truth/seed/ancestry crossing"| L["Future learner NOT RUN"]
+```
+
+CFAM-V1 source is disclosed synthetic. Source roots/roles are not statistically independent scientific families. All invalids, duplicates and capped proofs preserve their attempted denominators. Requires unmerged PR #159; no adopted main implementation. [Spec](../specs/EXP-REP-005-G0C3.md) / [contract](contracts.md).

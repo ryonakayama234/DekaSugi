@@ -129,3 +129,7 @@ The implementation checks canonical same-task/4-100-budget search status/program
 - `rep005_g0c`: typed 5-bit finite causal constructors, exact full semantics and role orbit equivalence; `expressibility` certifies finite membership in old 61-model H0; `opportunity` finds best adaptive and best open-loop public inquiry for a **declared** tiny closed class. Source/evaluator PRIVATE only, not a learner dependency.
 - Experiment command: `python -m scripts.rep005_g0c_source_pilot --output /tmp/g0c-source.json`; [spec](../docs/specs/EXP-REP-005-G0C-V5.md), [run](../experiments/EXP-REP-005-G0C/runs/20261103-disclosed-source.md).
 - Not an integrated Wake-Sleep learner, not a full Hplus_G generator, not 11 independent families, not a scientific model promotion.
+
+
+## REP005 G0C-3 — CFAM-V1 source-only (Draft, #160)
+`packages.rep005_g0c3`: 48 indexed no-replacement root attempts + dependent role variants, full-domain role invariant, exact G0C orbit fallback, 12 preassigned B3 adaptive/open-loop panels. No learned policy or independently certified family count. Requires [G0C V5 Draft #159](https://github.com/ryonakayama234/DekaSugi/pull/159). [Spec](../docs/specs/EXP-REP-005-G0C3.md) / [plan](../experiments/EXP-REP-005-G0C3/plan.md) / [receipt](../experiments/EXP-REP-005-G0C3/runs/20261103-engineering.md).

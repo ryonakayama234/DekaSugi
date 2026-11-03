@@ -443,3 +443,10 @@
 - Engineering evidence: exact finite 5-bit/15-action/history2 semantics (115,680 cells/law), all 120 role-renaming opportunities for exact pairwise alias/nonalias proof, old 61-candidate H0 checks, closed-class adaptive vs best open-loop exact inquiry with declared uniform prior. Incomplete proof/plan limits are `NOT_CERTIFIED`, never `UNID`.
 - Roles, seeds, 48 proposals, 12 human-authored production labels and 11 semantic role orbits **are not 11 or 48 statistically independent causal families**. Do not translate oracle +0.25 into learned inquiry gain; real paid TRAIN count is zero. G0C-3 ancestry/power and subsequent G1/G2/G3 remain STOP/NOT_RUN until separate review/freeze.
 - Same-PR ARCH-001/ARCH-002, [spec](docs/specs/EXP-REP-005-G0C-V5.md), [plan](experiments/EXP-REP-005-G0C/plan.md), [disclosed source receipt](experiments/EXP-REP-005-G0C/runs/20261103-disclosed-source.md), CI and negative tests are mandatory. Do not run any historic protected DEV/FINAL; no auto-merge or model promotion. Tests, CI, head-specific method/security review are separate quality gates.
+
+
+## EXP-REP-005-G0C3 — source-only delegated engineering (Issue #160)
+- Dependency: Draft #159 exact original head `afed85765f0b419bd617635fe8bf85422d7bf513`. Use stacked Draft PR, never rewrite #159/main, protected historical DEV/FINAL, older scored PRs or freeze manifests.
+- Version CFAM-V1 root distribution before observations. 48 draws plus dependent role variants, no success-conditioned rerolls. All 12 predetermined four-law panels count; INVALID and NOT_CERTIFIED are NOT positive or zero.
+- Complete 115680-cell invariant differs => role-NONALIAS; equal invariant demands exact G0C role equivalence. No claims of independent scientific family N, new learner, Wake/Sleep or model promotion. Source Law/ancestry never enters a learner.
+- Same PR tests, safe CI, AGENTS/INDEX/ARCH-001 Mermaid/ARCH-002/spec/plan/append-only record; separate exact-head method/security review needed before merging.
