@@ -35,6 +35,7 @@ tags: navigation, architecture, research, experiments
 | ARCH-UI-001 | Research Consoleパネル→module→data正本 | proposed interface contract, UI not implemented | [UI responsibility map](architecture/ui-panels.md) |
 | RSRCH-INDEX | 研究資料の検索入口 | collecting | [research](research/INDEX.md) |
 | RSRCH-001 | プログラム合成・抽象化 | notes | [program synthesis](research/program-synthesis.md) |
+| DIAG-Q-20261104-01 | 外部監督者による診断質問票（GATE-R0への入力） | open / awaiting response | [questionnaire](research/Q-20261104-01-external-diagnosis.md) |
 | TPL-SPEC | 仕様書テンプレート | active | [template](templates/spec.md) |
 | TPL-EXP | 実験テンプレート | active | [template](templates/experiment.md) |
 | PKG-INDEX | packages責務の一覧 | proposed | [packages](../packages/README.md) |
