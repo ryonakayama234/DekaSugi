@@ -1039,3 +1039,15 @@ flowchart LR
   HOLDOUT["Evaluator-only answers"] -.->|"Never exposed"| RECON
 ~~~
 **Canonical storage contract:** `QuerySession.class_ids` is exactly `tuple` whose entries are exactly `str`, never a tuple or string subclass, because equality can differ from iteration. The compact `answers` tuple contains exact 3-tuples of (int ID, str output, str local receipt). The `trace` container is exactly tuple; each ordered entry is an exact tuple of typed `QueryProposal` and `QueryAnswer`. Session status, pool/world/split digest fields, and proposal and answer primitive fields must have exact builtin types; bool is rejected when int is required. Exact types are checked at the public boundary **before** Gini, random policy, history revalidation, or final-program selection. Per-prefix policy/receipt semantics and the active-query/2 schema remain unchanged. Hashes remain local consistency checks, NOT independent Oracle authentication. [Run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## R1-ENG-2BIT — engineering-only public and Snapshot contracts (2026-11-04)
+
+**First invariant:** body OFF retains nonlearned same-Snapshot routes (episodic lookup and the six H0_object predicates, with the same fixed dispatch policy); STATIC-H+ and fixed macro are separate future scientific control arms, not OFF fallbacks.
+
+- Public observation: sequence number, exact 2-bit input, 0/1 answer, paid-Q charge, digest of legal Q and remaining budget, pre-observation prediction-commit digest. Private target law, target AST, variant, hidden family, seed and future answer MUST NOT enter the learner or Snapshot.
+- Hypothesis: typed pure Bool AST on x,z,NOT,AND,OR; node limit nine, deterministic canonical ordering and public-evidence-only candidate synthesis. Independent validator reinterprets only public examples with its own pure evaluator.
+- Snapshot/v1: parent/grammar/policy/registry versions and digests, ordered public observations, canonical body if present, independent validator receipt digest, whole-payload SHA256. Exclusive-create and verified readback are mandatory; SHA is not independent oracle provenance.
+- UseTrace/v1 engineering fields: fresh process ID, same Snapshot, body ON/OFF, available/selected/executed/finished, prediction or ABSTAIN, legal action, route, prediction/action delta. A route-only difference does not certify M_use. R has all four inputs public; if OFF episodic lookup agrees with ON, leave M_use unrecognized rather than weakening OFF.
+- Paid inquiry: one per legal Q, fixed nonlearned query policy only. E permits five enumerated H0 candidates, not a complete H0 elimination. N forbids Q(1,1). INVALID on illegal query, missing precommit, public/private boundary failure or tampered Snapshot.
+- No actual research ScoreReceipt or lifecycle score: M_gap, N_rep, U and T remain NOT_EVALUATED. R fresh-use does not create new family, unseen inputs or formal science grade. The complete case table and code entry points are in [R1-ENG specification](../specs/R1-ENG-2BIT.md); authority is [PR #170 Owner decision](https://github.com/ryonakayama234/DekaSugi/pull/170#issuecomment-6629702043).
