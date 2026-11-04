@@ -35,11 +35,14 @@ class Stage1BoundaryTests(unittest.TestCase):
                 tree = ast.parse((root / (name + ".py")).read_text(encoding="utf-8"))
                 for node in ast.walk(tree):
                     if isinstance(node, ast.ImportFrom):
-                        self.assertNotIn(node.module, ("source_gateway", "fixture",
-                                                       "private_source", "evaluator"))
+                        components = set((node.module or "").split("."))
+                        components.update(alias.name for alias in node.names)
+                        self.assertFalse(components.intersection({
+                            "source_gateway", "fixture", "private_source",
+                            "evaluator"}))
                     if isinstance(node, ast.Import):
                         for alias in node.names:
-                            self.assertNotIn("source_gateway", alias.name)
+                            self.assertNotIn("source_gateway", alias.name.split("."))
         # Expose public API only: importing the package must not import source.
         import sys
         # The module may have been explicitly imported by these tests, so inspect
