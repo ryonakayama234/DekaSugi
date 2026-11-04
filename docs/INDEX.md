@@ -291,3 +291,4 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 
 ## R2-M-PAPER — 後継方法v2・単一文書案（2026-11-04; 未採用）
 - [R2-M-20261104-SINGLE-METHOD-V2-PROPOSAL](research/R2-M-20261104-single-method-v2-proposal.md) — [PR #173のOwner決定](https://github.com/ryonakayama234/DekaSugi/pull/173#issuecomment-6632141518)を正本とするW-A3-AFF後継方法案。Domain / Hypothesis / Identification / Arms / Claims / Execution、H0_effective閉包のUNKNOWN宣言、F_aff事前仮定、版固定対照、R1 P2を一文書に統合。**Claude精査・Ownerの方法v2採用待ち**。正本v1はPR #170の凍結方法のまま。R2-M-ENG・実験・採点・旧PRのmergeは未許可。
+- [R-20261104-07 Claude精査](research/R-20261104-07-muse-review.md) — 方法v2案は指示7項目＋条件2件を全て満たし**合格（未解決条件なし）**。方法v2の採用はOwner別途決定、R2-M-ENG・実験・採点は未許可のまま。
