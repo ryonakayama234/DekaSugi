@@ -6,9 +6,12 @@ malicious same-process isolation guarantee. No real sealed source is accepted.
 """
 from __future__ import annotations
 
+import os
+from pathlib import Path
+
 from .records import (
     FAMILY_VERSION, PUBLIC_POINTS, PublicObservation, PublicStep,
-    check_bit, check_point, check_sha, digest, public_evidence_digest,
+    check_bit, check_point, check_sha, canonical, digest, public_evidence_digest,
 )
 
 Q001 = (0, 0, 1)
@@ -34,19 +37,29 @@ class PublicGateway:
     """Release P initially; one paid Q001 only after an immutable precommit.
 
     The in-memory journal is append-only from the public API perspective.
-    Durable fsync and evaluator custody are intentionally deferred to stage 2/3.
+    Optional file-backed journal uses fsync for every event; evaluator custody and
+    immutable Snapshot publication belong to the later stages.
     """
     __slots__ = ("__source", "_expires_at", "_observations", "_events",
-                 "_pending", "_budget", "_invalid", "_last_tick")
+                 "_pending", "_budget", "_invalid", "_last_tick", "_journal_path")
 
     def __init__(self, source: SyntheticPrivateSource, *, opened_at: int = 0,
-                 expires_at: int = 100):
+                 expires_at: int = 100, journal_path: Path | None = None):
         if type(source) is not SyntheticPrivateSource:
             raise ValueError("INVALID: synthetic evaluator source required")
         if (type(opened_at) is not int or type(expires_at) is not int or
                 opened_at < 0 or expires_at < opened_at):
             raise ValueError("INVALID: deadline")
         self.__source = source
+        self._journal_path = None if journal_path is None else Path(journal_path).resolve()
+        if self._journal_path is not None:
+            try:
+                # Exclusive creation: no truncation or appending to a prior run.
+                with self._journal_path.open("x", encoding="utf-8") as stream:
+                    stream.flush()
+                    os.fsync(stream.fileno())
+            except OSError as exc:
+                raise ValueError("INVALID: journal must be newly created") from exc
         self._expires_at = expires_at
         self._budget = 1
         self._pending: tuple[tuple[int, int, int], str, int] | None = None
@@ -59,8 +72,20 @@ class PublicGateway:
             answer = source._answer(point)
             row = PublicObservation(i, point, answer, 0, legal_hash, None, opened_at)
             self._observations.append(row)
-            self._events.append(PublicStep("initial", i, point, legal, legal_hash,
+            self._append(PublicStep("initial", i, point, legal, legal_hash,
                                            opened_at, answer=answer))
+
+    def _append(self, step: PublicStep) -> None:
+        if self._journal_path is not None:
+            try:
+                with self._journal_path.open("a", encoding="utf-8") as stream:
+                    stream.write(canonical(step.as_dict()) + "\n")
+                    stream.flush()
+                    os.fsync(stream.fileno())
+            except OSError as exc:
+                self._invalid = True
+                raise ValueError("INVALID: journal fsync failed") from exc
+        self._events.append(step)
 
     def _legality(self, now: int) -> tuple[tuple[tuple[int, int, int], ...], str]:
         legal = (Q001,) if self._budget and now <= self._expires_at else ()
@@ -116,7 +141,7 @@ class PublicGateway:
                                  tuple(self._observations)),
                              "event_at": now})
         self._pending = (point, commitment, now)
-        self._events.append(PublicStep("precommit", 3, point, legal, legal_hash, now,
+        self._append(PublicStep("precommit", 3, point, legal, legal_hash, now,
                                        precommit=commitment, prediction=prediction))
         return commitment
 
@@ -137,7 +162,7 @@ class PublicGateway:
         row = PublicObservation(3, point, self.__source._answer(point), 1,
                                 legal_hash, precommit, now)
         self._observations.append(row)
-        self._events.append(PublicStep("answer", 3, point, legal, legal_hash, now,
+        self._append(PublicStep("answer", 3, point, legal, legal_hash, now,
                                        answer=row.answer, paid_cost=1,
                                        precommit=precommit))
         self._pending = None
