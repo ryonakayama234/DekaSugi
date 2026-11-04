@@ -45,11 +45,11 @@ N/Sのlaw候補とRの真理値表は**operator/evaluator側の有限証明fixtu
 
 ## 型・API・不変条件
 
-- Public observation: seq, point [x,z], answer 0|1, paid 0|1, legal_digest, precommit。初期公開分はpaid=0、照会は事前commit・予算・合法集合・一意性必須。禁止Q、未来回答、未commit照会はINVALID停止。target AST・seed・private law・variant・hidden familyは公開recordに置かない。
+- Public observation: seq, point [x,z], answer 0|1, paid 0|1, legal_digest, precommit。固定照会では precommit eventを公開回答より前にfsync済みappend-only JSONLへ記録し、続いてanswer eventを追記する。初期公開分はpaid=0、照会は事前commit・予算・合法集合・一意性必須。禁止Q、未来回答、未commit照会はINVALID停止。target AST・seed・private law・variant・hidden familyは公開recordに置かない。
 - Bool AST: type=Bool, op∈{x,z,NOT,AND,OR}、NOT単項、AND/OR二項、最大9 nodes、候補最大10,000。pure operationsのみ、任意Python実行なし。合成は公開recordの一致による候補探索であり、XOR/ORのtarget ASTや事前macroを注入しない。
 - Independent validator: 別実装の純粋Boolean interpreterが公開点への一致・型・node boundsを検査。Sleep-liteはAND/OR引数の可換順序正規化のみ。意味の異なる候補の採否は行わず、receipt/digestを保存する。
 - Snapshot/v1: parent、grammar、H0 registry、policyの版・digest、公開観測、canonical AST、validator receipt、内容SHA-256。ファイルはexclusive-createで上書き拒否、復元時hash・schema・型・public validation再照合。ハッシュはローカル整合性を保証するが独立custodyやtrusted timestampではない。
-- USE: 同じSnapshotをfresh Python processでON/OFF読込。available/selected/executed/finishedを区別。ONが登録bodyを実行、OFFは**同じrecordsのepisodic lookupを優先**し、次に全H0一致候補を維持、最後にABSTAIN。両条件ともactionとprediction、routeを記録。route差だけではM_use陽性にしない。
+- USE: 同じSnapshotをfresh Python processでON/OFF読込。available/selected/executed/finishedは**learned body自体の状態**として区別し、OFF時はavailable=trueでもselected/executed/finished=falseとする。fallback側のselected/executed/finishedは別フィールド。ONが登録bodyを実行、OFFは**同じrecordsのepisodic lookupを優先**し、次に全H0一致候補を維持、最後にABSTAIN。両条件ともactionとprediction、routeを記録。route差だけではM_use陽性にしない。
 - M_use_engineeringは予測・合法行動の差がなければ not_certified_no_prediction_or_action_delta と記載。**Rでは全4点のepisodic lookupが利用可能であり、ONとOFFの予測差は発生しない想定**。これを隠したりfallbackを削ったりしない。科学的M_useの合格宣言ではなく工学動作診断である。
 - paid Qは各1。候補列挙数、validatorの公開一致、Snapshot SHAを個別記録。CPU/生涯総費用、STATIC-H+、fixed macro、独立family対照などは本PRでは**NOT_EVALUATED**。固定queryは学習型Active Learningではない。
 - Rのfresh USEは同じ2bit入力全4点の再提示。永続化とdispatchの工学確認に過ぎず、heldout、fresh generalization、独立family転移、科学的採点ではない。過去の封印評価・TRAIN/DEV/FINALと旧評価器を一切用いない。
@@ -57,7 +57,7 @@ N/Sのlaw候補とRの真理値表は**operator/evaluator側の有限証明fixtu
 ## 工学テスト（科学採点ではない）
 
 ~~~bash
-python -m unittest tests.test_r1_eng_2bit -v
+python -m unittest discover -s tests -p 'test_r1_eng_2bit.py' -v
 python scripts/check_docs.py
 ~~~
 
