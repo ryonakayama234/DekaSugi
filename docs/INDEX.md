@@ -2,7 +2,7 @@
 
 id: DOC-INDEX
 status: active
-updated: 2026-10-28
+updated: 2026-11-04
 tags: navigation, architecture, research, experiments
 
 **探す → 該当する小さな文書を読む → 必要な依存文書だけを辿る。**
@@ -35,6 +35,18 @@ tags: navigation, architecture, research, experiments
 | ARCH-UI-001 | Research Consoleパネル→module→data正本 | proposed interface contract, UI not implemented | [UI responsibility map](architecture/ui-panels.md) |
 | RSRCH-INDEX | 研究資料の検索入口 | collecting | [research](research/INDEX.md) |
 | RSRCH-001 | プログラム合成・抽象化 | notes | [program synthesis](research/program-synthesis.md) |
+| DIAG-Q-20261104-01 | 外部監督者Museの診断質問票（GATE-R0） | Muse review submitted / owner decision pending | [questionnaire](research/Q-20261104-01-external-diagnosis.md) |
+| DIAG-R-20261104-01 | QD1〜QD8への証拠・見直し条件を伴う正式回答 | proposed / submitted for Muse review | [response](research/R-20261104-01-response.md) |
+| GATE-R0-DESIGN-PRECISION-20261104 | H0/H+、3ペア、強い静的対照、アーキテクチャの紙上精密設計 | proposed / paper-only | [design dossier](research/GATE-R0-20261104-design-precision.md) |
+| DIAG-Q-20261104-02-TO-MUSE | 回答者からMuseへのP0逆質問MQ1〜MQ6と合意条件 | answered in DIAG-R-20261104-02 | [reverse questionnaire](research/Q-20261104-02-to-Muse.md) |
+| DIAG-R-20261104-02 | Muse精査: QD判定・MQ1〜MQ6回答・R0-E勧告（REDESIGN） | review submitted / owner decision pending | [claude-review](research/R-20261104-02-muse-review.md) |
+| DIAG-Q-20261104-03-DEVELOPMENT-DIRECTION | REDESIGN後のAI開発方針に関する協議質問票（開発ルート候補A〜C、質問DV1〜DV10） | answered in DIAG-R-20261104-03 / Muse review submitted | [development-direction questionnaire](research/Q-20261104-03-development-direction.md) |
+| DIAG-R-20261104-03-DEVELOPMENT-DIRECTION | Research Lead回答: DV1〜DV10、独立主ルートD・M/U分離・実装GO条件 | proposed / Muse review submitted / Owner pending / docs-only | [development-direction response](research/R-20261104-03-development-direction.md) |
+| GATE-R0-D-20261104-CAUSAL-ARCHITECTURE | D主ルートのH0実効閉包、M/N/U/T区分、型付き証拠・信頼境界の精密化 | proposed / paper-only / Muse review submitted | [architecture note](research/R0-D-20261104-causal-architecture-note.md) |
+| DIAG-Q-20261104-04-TO-MUSE-DEVELOPMENT | MuseへのMQ7〜MQ11: D主ルートと公平なH0、Sleep、機構M、R0終了条件、STOPの反証質問 | answered in DIAG-R-20261104-04 | [adversarial questionnaire](research/Q-20261104-04-to-Muse-development.md) |
+| DIAG-R-20261104-04 | Muse査読: DV判定・MQ7〜MQ11回答・D条件付き支持（M_use/M_gap分離） | review submitted / owner decision pending | [claude-review](research/R-20261104-04-muse-review.md) |
+| GATE-R0-20261104-SINGLE-METHOD | Owner条件付きD採用に基づく単一R0方法正本候補（P0/P1統合・紙上・R0-E未決定） | Muse re-review passed / owner R0-E pending / R1 not authorized | [single R0 method](research/GATE-R0-20261104-single-method.md) |
+| DIAG-R-20261104-05 | Claude再査読: 単一方法文書はP0/P1合格・未解決条件なし（R0-E勧告GO、R1は別途許可） | rereview passed / owner R0-E pending | [claude-rereview](research/R-20261104-05-muse-rereview.md) |
 | TPL-SPEC | 仕様書テンプレート | active | [template](templates/spec.md) |
 | TPL-EXP | 実験テンプレート | active | [template](templates/experiment.md) |
 | PKG-INDEX | packages責務の一覧 | proposed | [packages](../packages/README.md) |
