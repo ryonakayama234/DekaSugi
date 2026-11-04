@@ -288,3 +288,7 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 ## R1-ENG — Owner-authorized 2bit M_use engineering fixture (2026-11-04)
 - [Scope, OFF fallback and N/S/R/E contracts](specs/R1-ENG-2BIT.md) / [isolated implementation](../packages/r1_eng/core.py) / [independent validator](../packages/r1_eng/validator.py) / [artificial tests](../tests/test_r1_eng_2bit.py).
 - Authority: [PR #170 Owner R0-E GO / R1-ENG limited authorization](https://github.com/ryonakayama234/DekaSugi/pull/170#issuecomment-6629702043) and the single frozen R0 method on PR #170. Distinct branch/PR, never an implicit merge of #170. M_use **engineering diagnostic only**; M_gap, N_rep, U and T not evaluated; no sealed scoring or independent-family transfer.
+
+
+## Next-gate design questionnaire — causal gap world (2026-11-04)
+- [DIAG-Q-20261104-05: fallbackが全域を覆えない世界で作った操作の因果差をどう確かめるか](research/Q-20261104-05-causal-gap-world.md) — Owner指示による次ゲート設計質問票（候補W-A/W-B/W-C、質問QR1〜QR8）。設計質問であり、ゲート承認・実装・採点の許可ではない。回答はResearch Leadが別Draft PRで提出し、Claude精査とOwner決定を経る。
