@@ -42,6 +42,8 @@ tags: navigation, architecture, research, experiments
 | DIAG-R-20261104-02 | Muse精査: QD判定・MQ1〜MQ6回答・R0-E勧告（REDESIGN） | review submitted / owner decision pending | [claude-review](research/R-20261104-02-muse-review.md) |
 | DIAG-Q-20261104-03-DEVELOPMENT-DIRECTION | REDESIGN後のAI開発方針に関する協議質問票（開発ルート候補A〜C、質問DV1〜DV10） | submitted / ChatGPT response pending | [development-direction questionnaire](research/Q-20261104-03-development-direction.md) |
 | DIAG-R-20261104-03-DEVELOPMENT-DIRECTION | Research Lead回答: DV1〜DV10、独立主ルートD・M/U分離・実装GO条件 | proposed / Muse review pending / Owner pending / docs-only | [development-direction response](research/R-20261104-03-development-direction.md) |
+| GATE-R0-D-20261104-CAUSAL-ARCHITECTURE | D主ルートのH0実効閉包、M/N/U/T区分、型付き証拠・信頼境界の精密化 | proposed / paper-only / Muse review pending | [architecture note](research/R0-D-20261104-causal-architecture-note.md) |
+| DIAG-Q-20261104-04-TO-MUSE-DEVELOPMENT | MuseへのMQ7〜MQ11: D主ルートと公平なH0、Sleep、機構M、R0終了条件、STOPの反証質問 | submitted / Muse answer pending / Owner pending | [adversarial questionnaire](research/Q-20261104-04-to-Muse-development.md) |
 | TPL-SPEC | 仕様書テンプレート | active | [template](templates/spec.md) |
 | TPL-EXP | 実験テンプレート | active | [template](templates/experiment.md) |
 | PKG-INDEX | packages責務の一覧 | proposed | [packages](../packages/README.md) |
