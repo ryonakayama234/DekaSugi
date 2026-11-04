@@ -35,10 +35,11 @@ tags: navigation, architecture, research, experiments
 | ARCH-UI-001 | Research Consoleパネル→module→data正本 | proposed interface contract, UI not implemented | [UI responsibility map](architecture/ui-panels.md) |
 | RSRCH-INDEX | 研究資料の検索入口 | collecting | [research](research/INDEX.md) |
 | RSRCH-001 | プログラム合成・抽象化 | notes | [program synthesis](research/program-synthesis.md) |
-| DIAG-Q-20261104-01 | 外部監督者Museの診断質問票（GATE-R0） | response submitted / Muse review pending | [questionnaire](research/Q-20261104-01-external-diagnosis.md) |
+| DIAG-Q-20261104-01 | 外部監督者Museの診断質問票（GATE-R0） | Muse review submitted / owner decision pending | [questionnaire](research/Q-20261104-01-external-diagnosis.md) |
 | DIAG-R-20261104-01 | QD1〜QD8への証拠・見直し条件を伴う正式回答 | proposed / submitted for Muse review | [response](research/R-20261104-01-response.md) |
 | GATE-R0-DESIGN-PRECISION-20261104 | H0/H+、3ペア、強い静的対照、アーキテクチャの紙上精密設計 | proposed / paper-only | [design dossier](research/GATE-R0-20261104-design-precision.md) |
-| DIAG-Q-20261104-02-TO-MUSE | 回答者からMuseへのP0逆質問MQ1〜MQ6と合意条件 | open / awaiting Muse review | [reverse questionnaire](research/Q-20261104-02-to-Muse.md) |
+| DIAG-Q-20261104-02-TO-MUSE | 回答者からMuseへのP0逆質問MQ1〜MQ6と合意条件 | answered in DIAG-R-20261104-02 | [reverse questionnaire](research/Q-20261104-02-to-Muse.md) |
+| DIAG-R-20261104-02 | Muse精査: QD判定・MQ1〜MQ6回答・R0-E勧告（REDESIGN） | review submitted / owner decision pending | [claude-review](research/R-20261104-02-muse-review.md) |
 | TPL-SPEC | 仕様書テンプレート | active | [template](templates/spec.md) |
 | TPL-EXP | 実験テンプレート | active | [template](templates/experiment.md) |
 | PKG-INDEX | packages責務の一覧 | proposed | [packages](../packages/README.md) |
