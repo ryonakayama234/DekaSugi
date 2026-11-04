@@ -160,6 +160,37 @@ tags: gate-r2-m, diag-q-20261104-05, causal-identification, effective-h0, m-use,
 4. **意味・コストを分離**: 予測差がなくてもコード短縮/復元速度差はUの話であり、M_gapの代替ではない。生涯費用は凍結方法§5の式を継承し、STATIC側にも構築・保存/再実行費を計上する。
 5. **開かれた研究への接続**: 事前仮説族が誤っていることを検出し、追加の述語や条件分岐を必要とするかを判断する「表現修復」を長期研究軸に置く。今回のsource設計でこのメタ能力まで検証したかのように書かない。
 
+### 10.1. 提案アーキテクチャ（R2-M-PAPER内の紙上構成のみ）
+
+~~~mermaid
+flowchart TB
+    Lock["Owner-approved future Source/Family/Split lock (not yet approved)"] --> S["Evaluator-private law and heldout answers"]
+    Lock --> Spec["Public versioned family, allowed Q, budgets, comparator manifests"]
+    S --> Gate["PublicGateway: disclose P and paid Q response only"]
+    Spec --> Gate
+    Gate --> H["Public history + pre-answer commits"]
+    H --> Audit["H0_effective(B) closure proof or UNKNOWN"]
+    H --> Synth["Public-only H+ typed body construction"]
+    Synth --> V["Independent public-only validator"]
+    V --> Lite["Sleep-lite: semantic-preserving canonicalization"]
+    Lite --> Snap["Immutable Snapshot + digest"]
+    Snap --> ON["Fresh BODY ON"]
+    Snap --> OFF["Fresh BODY OFF: all legal fallback retained"]
+    H --> Ctrl["Separate STATIC-H+ / fixed macro / rank-only / episodic comparators"]
+    ON --> Commit["Pre-evaluation prediction and legal-action commit"]
+    OFF --> Commit
+    Ctrl --> Commit
+    Commit --> Eval["Evaluator-only private comparison after commits"]
+    Audit --> Cert["Claim certificates: M_use, M_gap or UNKNOWN"]
+    Eval --> Cert
+~~~
+
+- **Control plane**: Owner authorizes the method version and freeze; the independent reviewer certifies fairness/source boundaries; the Research Lead specifies the scientific claim. None is replaced by the learner's self-report.
+- **Data plane**: Source-private truth never enters learner, candidate synthesizer, Snapshot, public validator, or comparator. The family specification and prior are public to every arm; the particular source draw, USE labels and any independent family group remain evaluator-only.
+- **Use-level intervention**: For each fresh USE point u, define D_use(u)=1 if the ordered pair (prediction, legal_action) differs between ON and OFF with identical Snapshot, public history, policy and budget. D_use=0 on every point is M_use non-certification, regardless of path trace. A difference can be mechanically genuine yet insufficient to show capability growth.
+- **Gap-level proof**: M_gap additionally requires a pre-target complete enumeration of the legal H0_effective(B), its best loss and the H+ counterpart under the *same* public information and resource contract. A missing closure certificate forces UNKNOWN rather than a manufactured gap.
+- **Counterfactual validity**: If OFF can legally reproduce a prediction from memory, an installed program or a conditional policy, it must do so. If STATIC-H+ reaches the same performance, record it. The evaluator releases heldout outcomes only after every affected arm has committed. No future score is asserted by this diagram.
+
 外部知識の位置づけ: 「Synthesis from Examples」（Gulwani, 2012; https://www.microsoft.com/en-us/research/publication/synthesis-from-examples/）は入出力例の曖昧性と探索/対話設計を、CEGISに関するMIT講義（https://people.csail.mit.edu/asolar/SynthesisCourse2020/Lecture10.htm）は候補・反例・検証の分離を説明する。これらは**本企画の設計を支持する一般的背景**であり、本プロジェクトの学習成功や現在の固定方法改訂権限を与えるものではない。
 
 ## 11. Muse/Claudeへの逆質問票 — DIAG-RQ-20261104-05（独立回答依頼）
