@@ -83,6 +83,17 @@ class Stage1BoundaryTests(unittest.TestCase):
                                       "status": "NOT_EVALUATED"}).payload["status"],
                          "NOT_EVALUATED")
 
+    def test_schema_frames_revalidate_mutated_nested_public_values(self):
+        frame = SchemaFrame("ConceptBody/v2", "public", {"origin": {"public": True}})
+        frame.payload["origin"]["seed"] = 7
+        with self.assertRaisesRegex(ValueError, "INVALID"):
+            frame.public_dict()
+        closure = SchemaFrame("Snapshot/v2", "public",
+                              {"closure_status": "UNKNOWN"})
+        closure.payload["closure_status"] = "COMPLETE"
+        with self.assertRaisesRegex(ValueError, "INVALID"):
+            closure.public_dict()
+
     def test_validator_rejects_dag_untyped_unbounded_and_unknown_ops(self):
         leaf = Node("x")
         for invalid in (
