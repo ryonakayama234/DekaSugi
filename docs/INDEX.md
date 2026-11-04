@@ -41,6 +41,7 @@ tags: navigation, architecture, research, experiments
 | DIAG-Q-20261104-02-TO-MUSE | 回答者からMuseへのP0逆質問MQ1〜MQ6と合意条件 | answered in DIAG-R-20261104-02 | [reverse questionnaire](research/Q-20261104-02-to-Muse.md) |
 | DIAG-R-20261104-02 | Muse精査: QD判定・MQ1〜MQ6回答・R0-E勧告（REDESIGN） | review submitted / owner decision pending | [claude-review](research/R-20261104-02-muse-review.md) |
 | DIAG-Q-20261104-03-DEVELOPMENT-DIRECTION | REDESIGN後のAI開発方針に関する協議質問票（開発ルート候補A〜C、質問DV1〜DV10） | submitted / ChatGPT response pending | [development-direction questionnaire](research/Q-20261104-03-development-direction.md) |
+| DIAG-R-20261104-03-DEVELOPMENT-DIRECTION | Research Lead回答: DV1〜DV10、独立主ルートD・M/U分離・実装GO条件 | proposed / Muse review pending / Owner pending / docs-only | [development-direction response](research/R-20261104-03-development-direction.md) |
 | TPL-SPEC | 仕様書テンプレート | active | [template](templates/spec.md) |
 | TPL-EXP | 実験テンプレート | active | [template](templates/experiment.md) |
 | PKG-INDEX | packages責務の一覧 | proposed | [packages](../packages/README.md) |
