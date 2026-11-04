@@ -288,3 +288,12 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 ## R1-ENG — Owner-authorized 2bit M_use engineering fixture (2026-11-04)
 - [Scope, OFF fallback and N/S/R/E contracts](specs/R1-ENG-2BIT.md) / [isolated implementation](../packages/r1_eng/core.py) / [independent validator](../packages/r1_eng/validator.py) / [artificial tests](../tests/test_r1_eng_2bit.py).
 - Authority: [PR #170 Owner R0-E GO / R1-ENG limited authorization](https://github.com/ryonakayama234/DekaSugi/pull/170#issuecomment-6629702043) and the single frozen R0 method on PR #170. Distinct branch/PR, never an implicit merge of #170. M_use **engineering diagnostic only**; M_gap, N_rep, U and T not evaluated; no sealed scoring or independent-family transfer.
+
+## R2-M-ENG — 方法v2採用後の工学実装範囲案（2026-11-04、docs-only）
+
+| ID | テーマ | 状態 | 文書 |
+|---|---|---|---|
+| R2-M-ENG-SCOPE-20261104 | 方法v2に基づく隔離R2-M-ENG（公開境界・decoder/AST・対照・Snapshot/3メータ・closure UNKNOWN）の範囲と人工fixture/受入案 | proposed scope only; Claude review and separate Owner implementation GO pending; no code/no experiment/no scoring | [scope proposal](specs/R2-M-ENG-SCOPE.md) / [Owner authority PR #174](https://github.com/ryonakayama234/DekaSugi/pull/174#issuecomment-6632937532) / [adopted method v2 PR #174](https://github.com/ryonakayama234/DekaSugi/pull/174) |
+
+- 方法v2はOwnerにより後継方法として採用済み。ただし本scopeと将来の実装・科学実験・採点は未許可。凍結v1とR1-ENG結果は維持し、旧sealed/heldoutは使用しない。
+- [R-20261104-08 Claude精査](research/R-20261104-08-muse-review.md) — R2-M-ENG範囲案は指示6項目を全て満たし**合格**。実装GOには条件A（段階分割）・B（source境界はモジュール分離水準）・C（閉包UNKNOWN固定）・D（F01/F11・ORACLEはschema枠のみ）を付すことを勧告。GO自体はOwner別途決定。
