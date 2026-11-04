@@ -24,7 +24,7 @@ def check_ast(root: Node) -> int:
 
     def visit(node: Node) -> None:
         nonlocal count
-        if type(node) is not Node or node.dtype != "Bool":
+        if type(node) is not Node or type(node.dtype) is not str or node.dtype != "Bool":
             raise ValueError("VALIDATION_FAILED: untyped AST node")
         if id(node) in visited:
             raise ValueError("VALIDATION_FAILED: shared DAG subtree")
