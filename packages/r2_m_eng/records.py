@@ -6,6 +6,7 @@ are SCHEMA FRAMES, not evidence of an executed experiment.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from copy import deepcopy
 from hashlib import sha256
 import json
 from typing import Any
@@ -202,7 +203,9 @@ class SchemaFrame:
     def public_dict(self) -> dict[str, object]:
         if self.role != "public":
             raise ValueError("INVALID: evaluator-only record")
-        return {"schema": self.schema, "role": self.role, "payload": self.payload.copy()}
+        # Revalidate at export: callers may mutate a nested dict after construction.
+        self.__post_init__()
+        return {"schema": self.schema, "role": self.role, "payload": deepcopy(self.payload)}
 
 
 def h0_predict(name: str, point: tuple[int, int, int]) -> int:
