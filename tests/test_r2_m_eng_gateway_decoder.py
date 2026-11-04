@@ -3,6 +3,10 @@ from __future__ import annotations
 
 from dataclasses import replace
 from itertools import product
+import json
+from pathlib import Path
+import tempfile
+from unittest.mock import patch
 import unittest
 
 from packages.r2_m_eng.decoder import compile_affine, decode_public
@@ -110,6 +114,44 @@ class GatewayDecoderTests(unittest.TestCase):
         self.assertEqual(paid.precommit, commitment)
         self.assertEqual(gateway.public_journal()[-1]["precommit"], commitment)
         self.assertEqual(gateway.public_journal()[-1]["paid_cost"], 1)
+
+    def test_exclusive_fsynced_journal_orders_precommit_before_response(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "public.jsonl"
+            gateway = PublicGateway(SyntheticPrivateSource((1, 0, 1, 0)),
+                                    expires_at=10, journal_path=path)
+            lines = lambda: [json.loads(v) for v in path.read_text().splitlines()]
+            self.assertEqual(len(lines()), 3)
+            state = gateway.public_state(now=0)
+            pre = gateway.precommit((0, 0, 1),
+                                    expected_legal_digest=state["legal_digest"],
+                                    prediction=1, now=1)
+            self.assertEqual([v["event"] for v in lines()],
+                             ["initial", "initial", "initial", "precommit"])
+            self.assertEqual(lines()[-1]["precommit"], pre)
+            gateway.answer((0, 0, 1), precommit=pre, now=2)
+            self.assertEqual([v["event"] for v in lines()][-2:],
+                             ["precommit", "answer"])
+            self.assertEqual(lines()[-1]["paid_cost"], 1)
+            self.assertEqual(lines(), list(gateway.public_journal()))
+            with self.assertRaisesRegex(ValueError, "INVALID"):
+                PublicGateway(SyntheticPrivateSource((1, 0, 1, 0)),
+                              journal_path=path)
+
+    def test_precommit_fsync_failure_quarantines_before_private_answer(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            gateway = PublicGateway(
+                SyntheticPrivateSource((1, 0, 1, 0)),
+                journal_path=Path(tmp) / "fail.jsonl")
+            state = gateway.public_state(now=0)
+            with patch("packages.r2_m_eng.source_gateway.os.fsync",
+                       side_effect=OSError("synthetic fsync failure")):
+                with self.assertRaisesRegex(ValueError, "INVALID"):
+                    gateway.precommit((0, 0, 1),
+                                      expected_legal_digest=state["legal_digest"],
+                                      prediction=None, now=1)
+            with self.assertRaisesRegex(ValueError, "INVALID"):
+                gateway.answer((0, 0, 1), precommit="0"*64, now=2)
 
     def test_reject_unauthorized_paid_query_and_quarantine(self):
         for illegal in ((1, 1, 1), (0, 1, 1), (1, 0, 0)):
