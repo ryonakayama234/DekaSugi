@@ -305,28 +305,42 @@ def load_snapshot(path: Path) -> Snapshot:
 
 
 def dispatch(snapshot: Snapshot, point: tuple[int, int], *, body_on: bool) -> dict[str, Any]:
-    """Same Snapshot and policy. OFF has episodic and all six H0 routes."""
+    """Same Snapshot/policy. Activity flags refer to the learned body ONLY.
+
+    The separate fallback flags show that OFF truly executes a surviving
+    nonlearned path; "body available" does NOT mean selected or executed.
+    """
     from .validator import evaluate_independent
     check_snapshot(snapshot)
     check_point(point)
     if type(body_on) is not bool:
         raise ValueError("intervention flag must be boolean")
     available = snapshot.body is not None
+    base = {"condition": "ON" if body_on else "OFF", "available": available,
+            "selected": False, "executed": False, "finished": False,
+            "fallback_selected": False, "fallback_executed": False,
+            "fallback_finished": False}
     if body_on and available:
-        return {"action": "PREDICT", "prediction": evaluate_independent(snapshot.body, point),
-                "route": "learned_body", "available": True,
-                "selected": True, "executed": True, "finished": True}
+        return {**base, "action": "PREDICT",
+                "prediction": evaluate_independent(snapshot.body, point),
+                "route": "learned_body", "selected": True,
+                "executed": True, "finished": True,
+                "body_ast_nodes_executed": ast_size(snapshot.body),
+                "episodic_reads": 0}
     for obs in snapshot.observations:
         if obs.point == point:
-            return {"action": "PREDICT", "prediction": obs.answer,
-                    "route": "episodic_lookup", "available": available,
-                    "selected": True, "executed": True, "finished": True}
+            return {**base, "action": "PREDICT", "prediction": obs.answer,
+                    "route": "episodic_lookup", "fallback_selected": True,
+                    "fallback_executed": True, "fallback_finished": True,
+                    "body_ast_nodes_executed": 0, "episodic_reads": 1}
     choices = tuple(name for name in H0_ORDER
                     if all(h0_predict(name, item.point) == item.answer
                            for item in snapshot.observations))
     if choices:
-        return {"action": "PREDICT", "prediction": h0_predict(choices[0], point),
-                "route": "h0:" + choices[0], "available": available,
-                "selected": True, "executed": True, "finished": True}
-    return {"action": "ABSTAIN", "prediction": None, "route": "no_legal_fallback",
-            "available": available, "selected": False, "executed": False, "finished": True}
+        return {**base, "action": "PREDICT", "prediction": h0_predict(choices[0], point),
+                "route": "h0:" + choices[0], "fallback_selected": True,
+                "fallback_executed": True, "fallback_finished": True,
+                "body_ast_nodes_executed": 0, "episodic_reads": 0}
+    return {**base, "action": "ABSTAIN", "prediction": None,
+            "route": "no_legal_fallback", "body_ast_nodes_executed": 0,
+            "episodic_reads": 0}
