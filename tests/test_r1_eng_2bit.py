@@ -61,6 +61,16 @@ class R1EngFiniteEngineeringTests(unittest.TestCase):
                 snap = load_snapshot(Path(report["snapshot_path"]))
                 self.assertEqual(tuple(o.point for o in snap.observations), DOMAIN)
                 self.assertEqual(sum(o.paid for o in snap.observations), 1)
+                journal = [json.loads(line) for line in
+                           Path(report["public_journal_path"]).read_text().splitlines()]
+                self.assertEqual([e["kind"] for e in journal],
+                                 ["initial_public", "precommit", "public_answer",
+                                  "candidate_validated_public_only", "snapshot_immutable"])
+                self.assertEqual(journal[1]["digest"],
+                                 journal[2]["record"]["precommit"])
+                self.assertEqual(journal[-1]["digest"], report["snapshot_sha256"])
+                self.assertEqual(report["paid_query_total"], 1)
+                self.assertEqual(report["fresh_dispatch_count"], 8)
                 self.assertEqual(snap.body_digest, digest(ast_dict(snap.body)))
                 self.assertEqual(len(report["fresh_use"]), 4)
                 self.assertEqual(report["body_off_retains"], ["episodic_lookup", "H0_object"])
@@ -70,6 +80,18 @@ class R1EngFiniteEngineeringTests(unittest.TestCase):
                     self.assertEqual(row["on"]["prediction"], row["off"]["prediction"])
                     self.assertEqual(row["on"]["action"], "PREDICT")
                     self.assertEqual(row["off"]["action"], "PREDICT")
+                    self.assertEqual(row["on"]["condition"], "ON")
+                    self.assertEqual(row["off"]["condition"], "OFF")
+                    self.assertTrue(all(row["on"][k] for k in
+                                        ("available", "selected", "executed", "finished")))
+                    self.assertTrue(row["off"]["available"])
+                    self.assertFalse(any(row["off"][k] for k in
+                                         ("selected", "executed", "finished")))
+                    self.assertTrue(all(row["off"][k] for k in
+                                        ("fallback_selected", "fallback_executed",
+                                         "fallback_finished")))
+                    self.assertGreater(row["on"]["body_ast_nodes_executed"], 0)
+                    self.assertEqual(row["off"]["episodic_reads"], 1)
                     self.assertFalse(row["prediction_or_action_delta"])
                     self.assertNotEqual(row["on"]["fresh_process_id"], os.getpid())
                     self.assertNotEqual(row["off"]["fresh_process_id"], os.getpid())
