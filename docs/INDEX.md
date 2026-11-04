@@ -288,3 +288,7 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 ## R1-ENG — Owner-authorized 2bit M_use engineering fixture (2026-11-04)
 - [Scope, OFF fallback and N/S/R/E contracts](specs/R1-ENG-2BIT.md) / [isolated implementation](../packages/r1_eng/core.py) / [independent validator](../packages/r1_eng/validator.py) / [artificial tests](../tests/test_r1_eng_2bit.py).
 - Authority: [PR #170 Owner R0-E GO / R1-ENG limited authorization](https://github.com/ryonakayama234/DekaSugi/pull/170#issuecomment-6629702043) and the single frozen R0 method on PR #170. Distinct branch/PR, never an implicit merge of #170. M_use **engineering diagnostic only**; M_gap, N_rep, U and T not evaluated; no sealed scoring or independent-family transfer.
+
+## DIAG-R-20261104-05 — Research Lead next-gate response to Muse (2026-11-04)
+- [QR1–QR8回答・W-A/W-B/W-C選定・3bit affine識別の紙上例・別掲の方法改訂案・Muse逆質問](research/DIAG-R-20261104-05-nextgate-response.md) — [PR #172の質問票](https://github.com/ryonakayama234/DekaSugi/pull/172)へのdocs-only回答案。R2-M-PAPERの独立監督者精査とOwner決定待ち。**3bitは未承認、実装・実験・採点なし、M_use未認定、M_gap/N_rep/U/T=NOT_EVALUATED。**
+- [DIAG-R-20261104-06 Claude精査](research/R-20261104-06-muse-review.md) — QR1〜QR8全件採用（条件2件: 族の事前仮定の開示形式、対照マニフェストの方法v2側凍結）、RQ1〜RQ4回答、R2-M-PAPER採用と方法v2単一文書案の作成を勧告。Owner決定待ち。
