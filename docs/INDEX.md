@@ -45,7 +45,8 @@ tags: navigation, architecture, research, experiments
 | GATE-R0-D-20261104-CAUSAL-ARCHITECTURE | D主ルートのH0実効閉包、M/N/U/T区分、型付き証拠・信頼境界の精密化 | proposed / paper-only / Muse review submitted | [architecture note](research/R0-D-20261104-causal-architecture-note.md) |
 | DIAG-Q-20261104-04-TO-MUSE-DEVELOPMENT | MuseへのMQ7〜MQ11: D主ルートと公平なH0、Sleep、機構M、R0終了条件、STOPの反証質問 | answered in DIAG-R-20261104-04 | [adversarial questionnaire](research/Q-20261104-04-to-Muse-development.md) |
 | DIAG-R-20261104-04 | Muse査読: DV判定・MQ7〜MQ11回答・D条件付き支持（M_use/M_gap分離） | review submitted / owner decision pending | [claude-review](research/R-20261104-04-muse-review.md) |
-| GATE-R0-20261104-SINGLE-METHOD | Owner条件付きD採用に基づく単一R0方法正本候補（P0/P1統合・紙上・R0-E未決定） | proposed_method / Muse re-review pending / R1 not authorized | [single R0 method](research/GATE-R0-20261104-single-method.md) |
+| GATE-R0-20261104-SINGLE-METHOD | Owner条件付きD採用に基づく単一R0方法正本候補（P0/P1統合・紙上・R0-E未決定） | Muse re-review passed / owner R0-E pending / R1 not authorized | [single R0 method](research/GATE-R0-20261104-single-method.md) |
+| DIAG-R-20261104-05 | Claude再査読: 単一方法文書はP0/P1合格・未解決条件なし（R0-E勧告GO、R1は別途許可） | rereview passed / owner R0-E pending | [claude-rereview](research/R-20261104-05-muse-rereview.md) |
 | TPL-SPEC | 仕様書テンプレート | active | [template](templates/spec.md) |
 | TPL-EXP | 実験テンプレート | active | [template](templates/experiment.md) |
 | PKG-INDEX | packages責務の一覧 | proposed | [packages](../packages/README.md) |
