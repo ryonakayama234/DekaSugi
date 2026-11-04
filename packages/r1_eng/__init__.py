@@ -1,0 +1,1 @@
+"""R1-ENG isolated engineering fixture. No legacy scorer imports or scientific results."""

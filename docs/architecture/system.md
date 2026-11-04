@@ -962,3 +962,22 @@ flowchart TB
   OLD["Historically frozen scoring data"] -.->|"No import / rescore"| PICK
 ~~~
 `tuple` equality can be correct even when a subclass's `__iter__` fabricates additional class votes. The gateway checks **exact** types of classes and individual fields before using state as an authority; policy/receipt/history replay and internal catalogue trust still apply. This is synthetic engineering evidence, not an improvement in observed learning ability. [ARCH-002](contracts.md), [run](../../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## R1-ENG-2BIT — Owner-authorized isolated engineering diagnostic (2026-11-04)
+
+~~~mermaid
+flowchart LR
+  SRC["Evaluator-private finite 2bit law"] --> PUB["PublicGateway: legal Q, commit, paid answer"]
+  PUB --> L["Public-only typed AST synthesis / H0 scan"]
+  L --> V["Independent Bool validator"]
+  V --> SL["Sleep-lite: commutative canonicalization + receipt"]
+  SL --> SNAP["Immutable Snapshot/v1"]
+  SNAP --> ON["Fresh process: body ON real dispatch"]
+  SNAP --> OFF["Fresh process: body OFF / same policy"]
+  OFF --> FALL["Episodic lookup + H0 predicates + ABSTAIN"]
+  ON --> TRACE["UseTrace engineering comparison"]
+  FALL --> TRACE
+~~~
+
+**OFF fallback contract (fixed before implementation):** only the nonlearned paths within the SAME Snapshot survive body OFF, including the implemented episodic lookup and all H0 candidates. STATIC-H+ and fixed macro belong to separate comparison arms and are NOT spliced into the intervention. No claim that this subset exhausts H0_effective(B). No old Kernel, experimental scorer, frozen source, heldout or independent-family trial is imported. The newly introduced finite fixture supports only N/S/R/E and M_use engineering wiring checks, not M_gap, N_rep, U, T or scientific scoring. See [R1-ENG specification](../specs/R1-ENG-2BIT.md) and [PR #170 Owner scope](https://github.com/ryonakayama234/DekaSugi/pull/170#issuecomment-6629702043).
