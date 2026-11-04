@@ -283,3 +283,8 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 | Evidence ID | Question | Engineering receipt |
 |---|---|---|
 | ACTIVE-001-PR2-CONTAINERS | Can equality-preserving tuple/str/int subclasses launder forged semantic votes, answers or proposal fields through replay? Exact builtin types required before any learner calculation. | [Synthetic check](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md) / [Architecture](architecture/system.md) / [Contracts](architecture/contracts.md) / [PR #95](https://github.com/ryonakayama234/DekaSugi/pull/95) |
+
+
+## R1-ENG — Owner-authorized 2bit M_use engineering fixture (2026-11-04)
+- [Scope, OFF fallback and N/S/R/E contracts](specs/R1-ENG-2BIT.md) / [isolated implementation](../packages/r1_eng/core.py) / [independent validator](../packages/r1_eng/validator.py) / [artificial tests](../tests/test_r1_eng_2bit.py).
+- Authority: [PR #170 Owner R0-E GO / R1-ENG limited authorization](https://github.com/ryonakayama234/DekaSugi/pull/170#issuecomment-6629702043) and the single frozen R0 method on PR #170. Distinct branch/PR, never an implicit merge of #170. M_use **engineering diagnostic only**; M_gap, N_rep, U and T not evaluated; no sealed scoring or independent-family transfer.
