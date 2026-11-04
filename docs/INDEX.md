@@ -2,7 +2,7 @@
 
 id: DOC-INDEX
 status: active
-updated: 2026-10-28
+updated: 2026-11-04
 tags: navigation, architecture, research, experiments
 
 **探す → 該当する小さな文書を読む → 必要な依存文書だけを辿る。**
@@ -35,7 +35,10 @@ tags: navigation, architecture, research, experiments
 | ARCH-UI-001 | Research Consoleパネル→module→data正本 | proposed interface contract, UI not implemented | [UI responsibility map](architecture/ui-panels.md) |
 | RSRCH-INDEX | 研究資料の検索入口 | collecting | [research](research/INDEX.md) |
 | RSRCH-001 | プログラム合成・抽象化 | notes | [program synthesis](research/program-synthesis.md) |
-| DIAG-Q-20261104-01 | 外部監督者による診断質問票（GATE-R0への入力） | open / awaiting response | [questionnaire](research/Q-20261104-01-external-diagnosis.md) |
+| DIAG-Q-20261104-01 | 外部監督者Museの診断質問票（GATE-R0） | response submitted / Muse review pending | [questionnaire](research/Q-20261104-01-external-diagnosis.md) |
+| DIAG-R-20261104-01 | QD1〜QD8への証拠・見直し条件を伴う正式回答 | proposed / submitted for Muse review | [response](research/R-20261104-01-response.md) |
+| GATE-R0-DESIGN-PRECISION-20261104 | H0/H+、3ペア、強い静的対照、アーキテクチャの紙上精密設計 | proposed / paper-only | [design dossier](research/GATE-R0-20261104-design-precision.md) |
+| DIAG-Q-20261104-02-TO-MUSE | 回答者からMuseへのP0逆質問MQ1〜MQ6と合意条件 | open / awaiting Muse review | [reverse questionnaire](research/Q-20261104-02-to-Muse.md) |
 | TPL-SPEC | 仕様書テンプレート | active | [template](templates/spec.md) |
 | TPL-EXP | 実験テンプレート | active | [template](templates/experiment.md) |
 | PKG-INDEX | packages責務の一覧 | proposed | [packages](../packages/README.md) |
