@@ -1,0 +1,23 @@
+name: R2-M-ENG stage 1 (artificial-only)
+
+on:
+  pull_request:
+    paths:
+      - "packages/r2_m_eng/**"
+      - "tests/test_r2_m_eng_*.py"
+      - ".github/workflows/r2-m-eng-stage1-synthetic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  stage1-unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Stage 1 public/private boundary and synthetic negatives only
+        run: python -m unittest discover -s tests -p 'test_r2_m_eng_*.py' -v
