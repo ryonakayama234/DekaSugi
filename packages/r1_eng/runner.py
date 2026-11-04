@@ -2,17 +2,27 @@
 from __future__ import annotations
 
 from pathlib import Path
+from hashlib import sha256
 import json
+import os
 import subprocess
 import sys
 
-from .core import (DOMAIN, H0_ORDER, digest, dispatch, h0_predict, load_snapshot,
+from .core import (DOMAIN, H0_ORDER, canonical, digest, h0_predict, load_snapshot,
                    make_snapshot, save_snapshot, scan_h0, synthesize_public)
 from .fixture import LEGAL, PublicGateway, PrivateSource, finite_certificate
 from .validator import validate_public
 
 ROOT = Path(__file__).resolve().parents[2]
 FIXED_QUERY = {"N": (0, 0), "S": (0, 0), "R": (1, 1)}
+
+
+def append_public_event(path: Path, event: dict[str, object]) -> None:
+    """Append and fsync each event before the next observation is requested."""
+    with path.open("a", encoding="utf-8") as stream:
+        stream.write(canonical(event) + "\n")
+        stream.flush()
+        os.fsync(stream.fileno())
 
 
 def fresh_dispatch(snapshot_path: Path, point: tuple[int, int], mode: str) -> dict:
@@ -29,7 +39,19 @@ def run_fixture(case: str, variant: str, output_dir: Path) -> dict[str, object]:
     """Engineering-only runner. Fixture selection belongs to the operator, not learner."""
     source = PrivateSource(case, variant)
     gateway = PublicGateway(source)
-    initial, _, _ = gateway.public()
+    initial, legal, budget = gateway.public()
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    # The journal filename and bytes are derived only from publicly accessible data.
+    journal_path = output_dir / ("public-" + digest(
+        {"initial": [o.as_dict() for o in initial], "legal": legal,
+         "budget": budget})[:20] + ".jsonl")
+    with journal_path.open("x", encoding="utf-8") as stream:
+        stream.write(canonical({"kind": "initial_public",
+                                "records": [o.as_dict() for o in initial],
+                                "legal": legal, "budget": budget}) + "\n")
+        stream.flush()
+        os.fsync(stream.fileno())
     before = scan_h0(initial, 5 if case == "E" else 6) if initial else None
     if case in FIXED_QUERY:
         point = FIXED_QUERY[case]  # fixed; not a learned Active Learning policy
@@ -38,7 +60,11 @@ def run_fixture(case: str, variant: str, output_dir: Path) -> dict[str, object]:
                          if all(h0_predict(h, o.point) == o.answer for o in initial))
         prediction = h0_predict(eligible[0], point) if eligible else None
         precommit = gateway.precommit(point, prediction)
-        gateway.ask(point, precommit)
+        append_public_event(journal_path, {"kind": "precommit", "point": point,
+                                           "prediction": prediction, "digest": precommit})
+        answer = gateway.ask(point, precommit)
+        append_public_event(journal_path, {"kind": "public_answer",
+                                           "record": answer.as_dict()})
     public, remaining, budget = gateway.public()
     h0 = scan_h0(public, 5 if case == "E" else 6)
     source_side_proof = finite_certificate(case)
@@ -56,6 +82,10 @@ def run_fixture(case: str, variant: str, output_dir: Path) -> dict[str, object]:
         if body is None:
             raise AssertionError("public-only typed synthesis did not find an R body")
         validation = validate_public(body, public)
+        append_public_event(journal_path, {
+            "kind": "candidate_validated_public_only",
+            "public_digest": digest([o.as_dict() for o in public]),
+            "synthesis_candidates": considered, "validator": validation})
         if not validation["passed"]:
             raise AssertionError("independent public validator mismatch")
     if case == "E" and h0.status != "SEARCH_INCOMPLETE":
@@ -63,13 +93,13 @@ def run_fixture(case: str, variant: str, output_dir: Path) -> dict[str, object]:
     if h0.status != source_side_proof["status"] and case != "N":
         raise AssertionError("finite diagnostic does not match paper fixture")
     snap = make_snapshot(public, body)
-    output_dir = Path(output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
     path = output_dir / ("snapshot-" + digest(snap.payload())[:20] + ".json")
     save_snapshot(path, snap)  # refuses overwrite, even with identical bytes
     restored = load_snapshot(path)
     if restored != snap:
         raise AssertionError("immutable snapshot roundtrip failed")
+    append_public_event(journal_path, {"kind": "snapshot_immutable",
+                                       "digest": snap.as_dict()["sha256"]})
     use = []
     if body is not None:
         for point in DOMAIN:  # all four already public: NOT unknown inputs
@@ -86,6 +116,10 @@ def run_fixture(case: str, variant: str, output_dir: Path) -> dict[str, object]:
         "case": case, "variant": variant,  # operator report only; NOT in Snapshot
         "paper_certificate": source_side_proof,
         "public_records": [o.as_dict() for o in public],
+        "public_journal_path": str(journal_path),
+        "public_journal_sha256": sha256(journal_path.read_bytes()).hexdigest(),
+        "paid_query_total": sum(o.paid for o in public),
+        "fresh_dispatch_count": len(use) * 2,
         "h0_object": {"tested": list(h0.tested), "consistent": list(h0.consistent),
                       "complete": h0.complete, "status": h0.status},
         "synthesis": {"status": synthesis_status, "considered": considered,
