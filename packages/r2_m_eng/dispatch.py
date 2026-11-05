@@ -64,9 +64,16 @@ def predict_fixed(snapshot_path: str | Path, *, expected_sha256: str,
     entry["executed"] = True
 
     counters = AstCounts(0, 0, 0)
-    decoder_invocations = 0
-    candidates_generated = 0
-    validator_invocations = 1  # load_snapshot recomputes public validator
+    # Restoration independently rederives the public decoder body once and
+    # checks it with three public validator calls. These are real computations,
+    # not free work. Account for them separately from selected-route work.
+    restore_decoder_invocations = 1
+    restore_candidates_generated = 1
+    restore_validator_invocations = 3
+    restore_h0_predicates_scanned = 16  # decode_public scans H0 twice
+    route_decoder_invocations = 0
+    route_candidates_generated = 0
+    route_validator_invocations = 0
     if selected == "learned_body":
         metered = measure_ast(snap.body, point)
         prediction = metered.prediction
@@ -78,12 +85,12 @@ def predict_fixed(snapshot_path: str | Path, *, expected_sha256: str,
     else:
         # This legal pre-existing capability must not be disconnected from OFF.
         decoded = decode_public(snap.history)
-        decoder_invocations += decoded.decoder_invocations
-        candidates_generated += decoded.candidates_generated
+        route_decoder_invocations += decoded.decoder_invocations
+        route_candidates_generated += decoded.candidates_generated
         if decoded.body is None or decoded.concept is None:
             raise ValueError("UNIDENTIFIABLE: runtime decoder failed")
         receipt = validate_public(decoded.body, snap.history)
-        validator_invocations += 1
+        route_validator_invocations += 1
         if not receipt.passed:
             raise ValueError("VALIDATION_FAILED: runtime decoder public mismatch")
         metered = measure_ast(decoded.body, point)
@@ -97,17 +104,31 @@ def predict_fixed(snapshot_path: str | Path, *, expected_sha256: str,
     elapsed_wall = float(time.perf_counter() - start_wall)
     costs = cost_ledger(
         paid_inquiries=1, public_observations=len(snap.history),
-        decoder_invocations=decoder_invocations,
-        candidates_generated=candidates_generated,
-        validator_invocations=validator_invocations,
-        h0_predicates_scanned=len(H0_ORDER),
+        decoder_invocations=restore_decoder_invocations + route_decoder_invocations,
+        candidates_generated=restore_candidates_generated + route_candidates_generated,
+        validator_invocations=restore_validator_invocations + route_validator_invocations,
+        h0_predicates_scanned=restore_h0_predicates_scanned + len(H0_ORDER)
+                             + (16 if selected == "runtime_affine_decoder" else 0),
         ast_counts=counters, restore_bytes=snap.reference.size_bytes,
-        stored_bytes=snap.reference.size_bytes,
+        stored_bytes=0,  # Snapshot already exists: no store write during USE.
         cpu_seconds=elapsed_cpu, wall_seconds=elapsed_wall,
         process_peak_rss=peak_rss_bytes(),
     )
+    costs["breakdown"] = {
+        "restore": {"decoder_invocations": restore_decoder_invocations,
+                    "candidates_generated": restore_candidates_generated,
+                    "validator_invocations": restore_validator_invocations,
+                    "h0_predicates_scanned": restore_h0_predicates_scanned,
+                    "bytes_read": snap.reference.size_bytes},
+        "use": {"decoder_invocations": route_decoder_invocations,
+                "candidates_generated": route_candidates_generated,
+                "validator_invocations": route_validator_invocations,
+                "h0_predicates_scanned": len(H0_ORDER)
+                                        + (16 if selected == "runtime_affine_decoder" else 0)},
+    }
     payload: dict[str, object] = {
         "engineering_only": True,
+        "process_id": os.getpid(),
         "arm": arm, "status": "ENGINEERING_ONLY",
         "snapshot_sha256": snap.reference.sha256,
         "snapshot_path_absolute": snap.reference.path,
