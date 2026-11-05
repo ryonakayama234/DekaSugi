@@ -1,7 +1,8 @@
-"""R2-M-ENG stages 1-2: artificial engineering components only.
+"""R2-M-ENG stages 1-3: artificial engineering components only.
 
-No runner, scientific evaluator, private USE scoring, policy learning,
-Snapshot persistence, or closure certification is exposed here.
+Public exports remain minimal. The evaluator-facing synthetic runner exists
+as a separate explicit module, not a package-level export. No scientific
+scoring, learned policy or closure certification is exposed here.
 """
 from .records import (
     CANDIDATE_BUDGET, CLOSURE_STATUS, FAMILY_SIZE, FAMILY_VERSION,
