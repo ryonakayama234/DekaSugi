@@ -981,3 +981,21 @@ flowchart LR
 ~~~
 
 **OFF fallback contract (fixed before implementation):** only the nonlearned paths within the SAME Snapshot survive body OFF, including the implemented episodic lookup and all H0 candidates. STATIC-H+ and fixed macro belong to separate comparison arms and are NOT spliced into the intervention. No claim that this subset exhausts H0_effective(B). No old Kernel, experimental scorer, frozen source, heldout or independent-family trial is imported. The newly introduced finite fixture supports only N/S/R/E and M_use engineering wiring checks, not M_gap, N_rep, U, T or scientific scoring. See [R1-ENG specification](../specs/R1-ENG-2BIT.md) and [PR #170 Owner scope](https://github.com/ryonakayama234/DekaSugi/pull/170#issuecomment-6629702043).
+
+## R2-M-ENG Stage 2 — synthetic-only immutable replay (2026-11-05; Draft)
+
+~~~mermaid
+flowchart LR
+    PUB["Stage 1 public Q001 precommit/answer + typed body"] --> SNAP["Stage 2 immutable Snapshot/v2"]
+    SNAP --> FS["exclusive bytes SHA256 + pinned absolute path"]
+    FS --> OFF["fresh process F00: persisted body OFF"]
+    FS --> ON["fresh process F10: persisted body ON"]
+    OFF --> FALL["episodic exact / H0 scan / runtime affine decoder"]
+    ON --> BODY["validated persisted body"]
+    FALL --> METER["3 distinct AST execution meter units"]
+    BODY --> METER
+    METER --> TRACE["public UseTrace/v2 + exclusive local trace"]
+    TRACE -.-> FUTURE["Scientific private outcome scorer NOT IMPLEMENTED"]
+~~~
+
+The same frozen public Snapshot path, hash, fixed policy and lookup capacity are used for F00 and F10. OFF disables only persistent learned-body execution, **not** the stage-1 nonpersistent affine decoder (nor legal episodic or consistent H0 fallback). No all-route closure claim; `H0_effective(B)`, `M_gap` remain UNKNOWN, `M_use` NOT_CERTIFIED. Stage 3 controls / scientific runner are absent. See [stage-2 module contract](../specs/R2-M-ENG-STAGE2.md), [ARCH-002](contracts.md), [Owner gate](https://github.com/ryonakayama234/DekaSugi/pull/175#issuecomment-6633458178).
