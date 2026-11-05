@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 from hashlib import sha256
+from dataclasses import replace
+import ast
 from itertools import product
 import json
 import os
@@ -38,7 +40,7 @@ def create_snap(root: Path, coefficients=(1, 1, 0, 1)):
     history, journal = fixture(coefficients)
     decoded = decode_public(history)
     path = root / "snapshot.json"
-    ref = write_snapshot(path, history, journal, decoded.body)
+    ref = write_snapshot(path, history, journal, decoded.body, expires_at=20)
     return ref, history, journal, decoded
 
 
@@ -61,7 +63,7 @@ class SnapshotStage2Tests(unittest.TestCase):
                 self.assertEqual(len(journal), 5)
                 self.assertEqual(ref.size_bytes, Path(ref.path).stat().st_size)
                 with self.assertRaisesRegex(ValueError, "INVALID"):
-                    write_snapshot(ref.path, history, journal, decoded.body)
+                    write_snapshot(ref.path, history, journal, decoded.body, expires_at=20)
 
     def test_snapshot_requires_external_expected_sha_and_canonical_absolute_path(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -91,6 +93,7 @@ class SnapshotStage2Tests(unittest.TestCase):
                 ("receipt", lambda p: p["validator_receipt"].update(ast_nodes_static=999)),
                 ("journal", lambda p: p["public_journal"].pop(3)),
                 ("private", lambda p: p.update(private_labels=[0, 0, 0, 1])),
+                ("expiry", lambda p: p.update(expires_at=21)),
                 ("body", lambda p: p["body"].update(op="EXEC")),
             ):
                 with self.subTest(label=label):
@@ -120,18 +123,48 @@ class SnapshotStage2Tests(unittest.TestCase):
                     change(modified)
                     with self.assertRaisesRegex(ValueError, "INVALID"):
                         write_snapshot(Path(tmp) / (label + ".json"), history,
-                                       tuple(modified), body)
+                                       tuple(modified), body, expires_at=20)
+
+    def test_legal_digest_not_just_equal_to_forged_history(self):
+        history, journal = fixture()
+        forged_digest = "f" * 64
+        forged_history = tuple(replace(row, legal_digest=forged_digest)
+                               for row in history)
+        forged_journal = tuple(dict(step, legal_digest=forged_digest)
+                               for step in journal)
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaisesRegex(ValueError, "INVALID"):
+                write_snapshot(Path(tmp) / "forged.json", forged_history,
+                               forged_journal, decode_public(forged_history).body,
+                               expires_at=20)
+
+    def test_learner_side_stage2_modules_never_import_private_gateway(self):
+        root = Path(__file__).resolve().parents[1] / "packages" / "r2_m_eng"
+        for name in ("snapshot", "dispatch", "meter"):
+            source = (root / (name + ".py")).read_text(encoding="utf-8")
+            syntax = ast.parse(source)
+            for entry in ast.walk(syntax):
+                if isinstance(entry, ast.ImportFrom):
+                    parts = set((entry.module or "").split("."))
+                    parts.update(alias.name for alias in entry.names)
+                    self.assertFalse(parts & {"source_gateway", "evaluator",
+                                              "private_source", "fixture"})
+                if isinstance(entry, ast.Import):
+                    for alias in entry.names:
+                        self.assertNotIn("source_gateway", alias.name.split("."))
 
     def test_body_must_be_decoder_or_meaning_preserving_sleep(self):
         with tempfile.TemporaryDirectory() as tmp:
             history, journal = fixture()
             with self.assertRaises(ValueError):
-                write_snapshot(Path(tmp) / "wrong.json", history, journal, Node("0"))
+                write_snapshot(Path(tmp) / "wrong.json", history, journal,
+                               Node("0"), expires_at=20)
             # Correct public history, but non-decoder equivalent form is forbidden.
             from packages.r2_m_eng.sleep_lite import sleep_lite
             body = decode_public(history).body
             normalized, receipt = sleep_lite(body, history)
-            ref = write_snapshot(Path(tmp) / "sleep.json", history, journal, normalized)
+            ref = write_snapshot(Path(tmp) / "sleep.json", history, journal,
+                                 normalized, expires_at=20)
             self.assertEqual(load_snapshot(ref.path, expected_sha256=ref.sha256)
                              .payload["body_digest"], digest(
                                  load_snapshot(ref.path, expected_sha256=ref.sha256).payload["body"]))
