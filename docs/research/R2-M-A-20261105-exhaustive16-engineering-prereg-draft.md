@@ -1,11 +1,11 @@
 # R2-M-A-20261105 — 全16法則・事前登録つき工学費用測定（A / 起草稿）
 
 id: R2-M-A-20261105-EXHAUSTIVE16-ENGINEERING-PREREG
-status: draft_for_independent_review / docs_only / not_frozen / no_execution / no_implementation / no_scoring
+status: owner_adopted_numeric_caps_fixed / docs_only / not_frozen / no_execution / no_implementation / no_scoring
 updated: 2026-11-05
 tags: r2-m, preregistration-a, exhaustive-16, engineering-cost, route-audit, closure-unknown, owner-gate
 
-> **権限状態:** [PR #180 のOwner決定](https://github.com/ryonakayama234/DekaSugi/pull/180#issuecomment-6658438738) が許可したのは、**Aの前登録文書の起草だけ**である。本文の数値、監査手順、閾値はすべて**凍結前の提案**。本Draftの作成・査読・CI通過は実行GO、科学実行GO、runner実装許可、source選定、順序seal、真のUSE採点、方法v2変更のいずれでもない。旧sealed/heldout、過去の陰性結果、凍結v1/R1には触れない。
+> **権限状態:** [PR #180 Owner決定](https://github.com/ryonakayama234/DekaSugi/pull/180#issuecomment-6658438738) はAの前登録**起草のみ**を許可した。その後、[PR #181 Owner決定（G2）](https://github.com/ryonakayama234/DekaSugi/pull/181#issuecomment-6659347553) により**文書採用・wall/CPU/RSS上限と単回計測/リトライなしが確定、外部registry不使用**となった。**現時点はNOT_FROZEN**。凍結はmainへの採用稿merge後、確定main SHAと文書SHA-256を凍結receiptとしてPR #181とIssue #146に記録した時点で完了する。他の設計案・監査事項は未実施/提案のままであり、この決定は実行GO、runner実装許可、source選定、順序seal、真のUSE採点、方法v2変更を許可しない。旧sealed/heldout、過去の陰性結果、凍結v1/R1には触れない。
 
 ## 1. Authority、研究質問、主張上限、原本の同定
 
@@ -148,20 +148,21 @@ C_life,arm,d(n) =
 
 **表示ルール案:** 全16 law×全4点×全7armの行表、route数、K/16、INVALID/STOP/欠測数と分母、費用ベクトルの各law・arm別値およびmin/median/max。CPU/wallなど測定ノイズのある値は同条件での計測分散を明記し、single-runなら誤差未評価と明記する。費用の符号が交差するnは**記述的breakeven**のみとし、普遍的優位性、信頼区間、仮説検定、U認定へ昇格しない。法則は全数なのでlaw抽選に対する標本誤差はないが、実機時間測定ノイズには不確実性が残る。
 
-### 7.4 数値・予算上限（**すべて未承認の提案値**）
-| 項目 | 提案値・判定 | 承認・実装前の扱い |
+### 7.4 数値・予算上限（**Owner確定値を含む／実装・実行は未許可**）
+| 項目 | 確定値・提案値・判定 | 実施前の扱い |
 |---|---|---|
 | law網羅 | 16/16、各USE4点、全7arm | 欠けた観測を成功として補完しない |
 | Kの配線期待 | 0/16 | K>0は監査トリガー、陽性判定ではない |
 | paid query | 法則あたりQ001を1回、全16回 | Q前commitが欠落したらINVALID |
-| process wall hard cap | **5秒/child（暫定）** | 科学用4点runner完成・無害fixture計測・Muse査読・Owner採用まで未確定 |
+| process wall hard cap | **5秒/child（Owner確定）** | 暴走停止用の上限であり、性能目標ではない。停止実装の監査はG3/G4 |
 | child上限 | 28/law、448/全16 | 試行の再実行/追加分は自動で認めない |
 | child wallの単純算術上限 | 140秒/law、**2,240秒（37分20秒）/全16** | 直列のchild時間上限の和であり、準備・監査・queue・I/O・人手・実際の総所要時間**ではない** |
-| CPU/RSS hard cap | **TBD（単位と測定方式を先に定義）** | 値を捏造してGOしない。凍結までブロッカー |
-| 計測ばらつき/反復 | **TBD（測定回数、ウォームアップ、順序対称化、CPU/OS/Python環境）** | 未凍結なら信頼性あるwall/CPU差の結論を保留 |
+| process CPU hard cap | **5秒/child（Owner確定）** | 単一スレッド前提の二重ガード。CPU実測値は別途記録 |
+| process RSS hard cap | **512 MB/child（Owner確定）** | 上限値のみ確定。RSS測定方式はG3/G4で確定 |
+| 計測ばらつき/反復 | **各child単回計測・自動リトライなし（Owner確定）** | 法則別の生値・arm別の中央値を報告し、誤差未評価と明記。CPU/OS/Python版をreceiptに記録。費用差の優劣主張はしない |
 | 生涯利用回数 | n={1,4,16,64}（記述的モデル） | 追加の実行許可を意味しない |
 
-**数値決定の規則:** Museが実際の4点runnerに対する無害な計測計画（同CPU、OS、Python、負荷、起動順、単調時計、RSS定義、タイムアウト、重複実行なし）を独立査読し、Ownerが**測定前**に数値を凍結するまでは実行不可。必要なコスト閾値を結果後に都合よく置かない。経済的成功の単一「合格閾値」は置かず、各次元の絶対値と符号を全開示する。
+**数値決定と実行前ゲート:** [PR #181 Owner決定](https://github.com/ryonakayama234/DekaSugi/pull/181#issuecomment-6659347553) によりwall/CPU/RSS hard capと単回計測・自動リトライなしは測定前に確定済み。ただしG2の文書凍結はmain確定SHA＋文書digest receipt記録まで未完了。実装・実行は未許可であり、RSS測定方式を含む実測計画（同CPU、OS、Python、負荷、起動順、単調時計、タイムアウト、重複実行なし）はG3/G4で監査する。必要なコスト閾値を結果後に都合よく置かない。経済的成功の単一「合格閾値」は置かず、各次元の絶対値と符号を全開示する。
 
 ## 8. INVALID → STOP / 診断 → NULL、事後修正禁止
 
@@ -188,8 +189,8 @@ prereg_id: R2-M-A-20261105-EXHAUSTIVE16-ENGINEERING-PREREG
 prereg_status: NOT_FROZEN
 prereg_main_sha: TBD
 prereg_file_sha256: TBD
-external_registry: NOT_REGISTERED
-owner_document_adoption: PENDING
+external_registry: "NONE — GitHub-only; no external timestamp or independent custody"
+owner_document_adoption: ADOPTED_NUMERICS_FIXED_NOT_FROZEN
 owner_implementation_go: NOT_GRANTED
 owner_execution_go: NOT_GRANTED
 runner_exact_head_sha: TBD
@@ -203,7 +204,7 @@ n_valid_pairs: NOT_RUN
 k_full: NOT_EVALUATED
 invalid_count: NOT_RUN
 stop_count: NOT_RUN
-cpu_rss_caps: TBD
+cpu_rss_caps: {cpu_seconds_per_child: 5, rss_mb_per_child: 512}
 observed_costs: NOT_MEASURED
 claim: {m_use: NOT_CERTIFIED, m_gap: UNKNOWN, n_rep: NOT_EVALUATED, u: NOT_EVALUATED, t: NOT_EVALUATED}
 ```
@@ -216,7 +217,7 @@ claim: {m_use: NOT_CERTIFIED, m_gap: UNKNOWN, n_rep: NOT_EVALUATED, u: NOT_EVALU
 |---|---|---|
 | G0 起草 | Owner [PR #180決定](https://github.com/ryonakayama234/DekaSugi/pull/180#issuecomment-6658438738) によるA docs-only起草許可 | **GRANTED（起草のみ）** |
 | G1 文書独立精査 | Museが本A文書の10章・数値提案・費用配賦・NULL/INVALID・method-v2整合を確認 | **PENDING** |
-| G2 Owner文書採用/凍結 | Muse指摘を踏まえ、Ownerが採否・数値・外部registry方式を決め、main確定SHA/文書digestを登録 | **PENDING / NOT_FROZEN** |
+| G2 Owner文書採用/凍結 | [PR #181 Owner決定](https://github.com/ryonakayama234/DekaSugi/pull/181#issuecomment-6659347553) で文書採用、wall 5秒/child・CPU 5秒/child・RSS 512 MB/child・単回計測/リトライなしを確定、外部registry不使用。凍結完了はmain merge後の確定SHA＋文書digest receiptを本PRとIssue #146に記録した時点 | **OWNER_ADOPTED / NUMERICS_FIXED / NOT_FROZEN（receipt待ち）** |
 | G3 実装（別許可） | 4点runner/費用計測/receipt等の実装計画→Owner別GO→docs以外の別PR→独立テスト/査読 | **NOT_GRANTED** |
 | G4 実経路・再現監査 | exact runner SHA、全合法F00/F10復元/dispatch・7arm・全16law・閾値・データ隔離をMuseが独立監査 | **NOT_PERFORMED** |
 | G5 順序manifest/原本保全 | Ownerによる全数順序fix/必要ならseal、receipt原本と事前commit準備（方法凍結後） | **NOT_PERFORMED** |
