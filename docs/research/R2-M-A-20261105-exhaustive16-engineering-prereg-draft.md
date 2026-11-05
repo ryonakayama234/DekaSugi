@@ -216,7 +216,7 @@ claim: {m_use: NOT_CERTIFIED, m_gap: UNKNOWN, n_rep: NOT_EVALUATED, u: NOT_EVALU
 | Gate | 責任主体・判定素材 | 本稿時点 |
 |---|---|---|
 | G0 起草 | Owner [PR #180決定](https://github.com/ryonakayama234/DekaSugi/pull/180#issuecomment-6658438738) によるA docs-only起草許可 | **GRANTED（起草のみ）** |
-| G1 文書独立精査 | Museが本A文書の10章・数値提案・費用配賦・NULL/INVALID・method-v2整合を確認 | **PENDING** |
+| G1 文書独立精査 | Museが本A文書の10章・数値提案・費用配賦・NULL/INVALID・method-v2整合を確認 | **PASSED（R-20261105-09、修正なし・注記3件／完了）** |
 | G2 Owner文書採用/凍結 | [PR #181 Owner決定](https://github.com/ryonakayama234/DekaSugi/pull/181#issuecomment-6659347553) で文書採用、wall 5秒/child・CPU 5秒/child・RSS 512 MB/child・単回計測/リトライなしを確定、外部registry不使用。凍結完了はmain merge後の確定SHA＋文書digest receiptを本PRとIssue #146に記録した時点 | **OWNER_ADOPTED / NUMERICS_FIXED / NOT_FROZEN（receipt待ち）** |
 | G3 実装（別許可） | 4点runner/費用計測/receipt等の実装計画→Owner別GO→docs以外の別PR→独立テスト/査読 | **NOT_GRANTED** |
 | G4 実経路・再現監査 | exact runner SHA、全合法F00/F10復元/dispatch・7arm・全16law・閾値・データ隔離をMuseが独立監査 | **NOT_PERFORMED** |
@@ -230,5 +230,5 @@ claim: {m_use: NOT_CERTIFIED, m_gap: UNKNOWN, n_rep: NOT_EVALUATED, u: NOT_EVALU
 
 ### 変更履歴・決定待ち
 - 2026-11-05: QS7 10章に従いAの**起草稿**を新規main基点docs-only Draftとして追加。法則12抽選ではなく**全16法則網羅**。文書採用・freeze・source順序fix・science/engineering executionは未実施。
-- **凍結待ち:** 5秒の妥当性、CPU/RSS hard cap、measurement repetitions/order、C_life投影会計、manifest/order canonicalization、外部registry選定、独立監査対象exact head、G3/G6の別Owner決定。
+- **後段の未決事項（G3–G6）:** C_life投影会計の監査確定、manifest/order canonicalization、実経路監査対象exact headの固定、G3/G6の別Owner決定。G2凍結はmain merge後の確定main SHA＋文書SHA-256 receiptの記録待ち。
 - **成功・失敗いずれも未観測:** K、費用優位、プロセス実測、論文上の科学的証拠は現段階で存在しない。
