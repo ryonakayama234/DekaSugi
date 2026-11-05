@@ -306,3 +306,4 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 
 - [DIAG-R-20261105-06 QS1〜QS8回答・追加精緻化](research/R-20261105-06-science-preregistration-response.md) — [質問票 PR #179](https://github.com/ryonakayama234/DekaSugi/pull/179)への回答。現行合法decoderを保持するA（費用・経路限定）と、新方法・別前登録を要するBを分けた条件付き二段構え。closure UNKNOWNとM_use未認定を保持し、監督者精査・Owner判断前の科学実験・source選定・封印・採点は禁止。
 - [DIAG-Q-20261105-07 Muse独立精査への逆質問4件](research/Q-20261105-07-preregistration-review-to-muse.md) — Aの科学的価値、Bの公平性、独立sourceと有限16法則の限界、次の概念獲得研究への最小ポインタ。**質問であり合意・GOではない**。
+- [R-20261105-08 Claude精査](research/R-20261105-08-muse-review.md) — 設計回答は修正1件（QS4: 抽選12→全16法則の網羅）・注記2件を条件に**合格**。MQ1〜MQ4へ回答（Aは網羅的工学費用測定として実施可、Bは照会ごと計算予算による構成可能性を提示するも既定NO-GO維持、次の最小仮説は族の不十分さの検出）。事前登録の採用と実験許可はOwnerの別途決定。
