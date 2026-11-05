@@ -33,7 +33,7 @@ class Stage3FixtureTests(unittest.TestCase):
             self.assertEqual(result["F01"], "NOT_EVALUATED")
             self.assertEqual(result["F11"], "NOT_EVALUATED")
             self.assertEqual(result["scientific_scoring"], "NOT_AUTHORIZED")
-            self.assertEqual(result["oracle_ref"], "EVALUATOR_ONLY_NOT_EXECUTED")
+            self.assertEqual(result["evaluator_reference"], "EVALUATOR_ONLY_NOT_EXECUTED")
             self.assertTrue(Path(result["snapshot_path_absolute"]).is_absolute())
             self.assertEqual(result["control_manifest_digest"], CONTROL_DIGEST)
             snap = load_snapshot(result["snapshot_path_absolute"],
