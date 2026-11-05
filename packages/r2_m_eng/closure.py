@@ -64,7 +64,7 @@ def audit_closure(snapshot_path: str | Path, *,
         "pending_learned_policy_arms": {
             "F01": "NOT_EVALUATED", "F11": "NOT_EVALUATED",
         },
-        "oracle_ref": "EVALUATOR_ONLY_NOT_EXECUTED",
+        "evaluator_reference": "EVALUATOR_ONLY_NOT_EXECUTED",
         "inventory_scope": "isolated_r2_m_eng_stage3_engineering_only",
         "all_legal_history_enumeration": "NOT_PROVEN",
         "effective_h0_reachability": "UNKNOWN",
