@@ -207,7 +207,7 @@ def _make_payload(history: tuple[PublicObservation, ...],
         "validator_receipt": receipt, "validator_receipt_digest": digest(receipt),
         "arm_manifest": {"F00": "BODY_OFF_FIXED", "F10": "BODY_ON_FIXED",
                          "F01": "NOT_EVALUATED", "F11": "NOT_EVALUATED",
-                         "ORACLE-REF": "EVALUATOR_ONLY"},
+                         },
     }
     SchemaFrame(SNAPSHOT_VERSION, "public", payload).public_dict()
     return payload
