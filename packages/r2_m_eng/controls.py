@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 from itertools import product
 import json
+import os
 from pathlib import Path
 import time
 
@@ -207,7 +208,8 @@ def predict_control(snapshot_path: str | Path, *, expected_sha256: str,
     )
     cost["comparator_manifest_digest"] = CONTROL_DIGEST
     payload = {
-        "engineering_only": True, "arm": arm, "status": "ENGINEERING_ONLY",
+        "engineering_only": True, "process_id": os.getpid(),
+        "arm": arm, "status": "ENGINEERING_ONLY",
         "snapshot_path_absolute": snap.reference.path,
         "snapshot_sha256": snap.reference.sha256,
         "public_digest": snap.payload["public_digest"],
