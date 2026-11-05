@@ -5,7 +5,7 @@ timestamp. Loading always requires the out-of-band expected file SHA-256.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from hashlib import sha256
 import json
 import os
@@ -91,11 +91,17 @@ def _public_history(data: object) -> tuple[PublicObservation, ...]:
     return validate_public_history(tuple(rows), complete=True)
 
 
-def _journal_checked(data: object, history: tuple[PublicObservation, ...]
-                     ) -> tuple[dict[str, object], ...]:
+def _journal_checked(data: object, history: tuple[PublicObservation, ...],
+                     expires_at: int) -> tuple[dict[str, object], ...]:
     """Verify public precommit precedes its public answer; no source import."""
+    if type(expires_at) is not int or expires_at < 0:
+        raise ValueError("INVALID: public query deadline")
     if type(data) not in (tuple, list) or len(data) != 5:
         raise ValueError("INVALID: public journal length")
+    expected_legal = digest({
+        "family": FAMILY_VERSION, "legal_actions": [[0, 0, 1]],
+        "paid_budget_remaining": 1, "expires_at": expires_at,
+    })
     keys = {"schema", "event", "seq", "point", "legal_actions",
             "legal_digest", "event_at", "answer", "paid_cost",
             "precommit", "prediction"}
@@ -115,8 +121,10 @@ def _journal_checked(data: object, history: tuple[PublicObservation, ...]
         if (type(step["event_at"]) is not int or step["event_at"] < 0 or
                 (events and step["event_at"] < events[-1]["event_at"])):
             raise ValueError("INVALID: journal time")
-        if step["legal_digest"] != history[expected_seq].legal_digest:
-            raise ValueError("INVALID: public journal legal digest")
+        if (step["legal_digest"] != history[expected_seq].legal_digest or
+                step["legal_digest"] != expected_legal or
+                step["event_at"] > expires_at):
+            raise ValueError("INVALID: public journal legal digest/deadline")
         if i < 3:
             if (step["answer"] != history[i].answer or
                     step["event_at"] != history[i].received_at or
@@ -181,15 +189,14 @@ def _check_body(body: Node, history: tuple[PublicObservation, ...]) -> dict[str,
         "decoder_invocations_at_creation": result.decoder_invocations,
         "candidates_generated_at_creation": result.candidates_generated,
         "candidate_budget": result.candidate_budget, "family_size": result.family_size,
-        "sleep_lite_digest": digest(sleep_receipt.__dict__) if hasattr(sleep_receipt, "__dict__")
-                             else digest({"before": sleep_receipt.before_digest,
-                                          "after": sleep_receipt.after_digest}),
+        "sleep_lite_receipt": asdict(sleep_receipt),
+        "sleep_lite_receipt_digest": digest(asdict(sleep_receipt)),
     }
 
 
 def _make_payload(history: tuple[PublicObservation, ...],
                   journal: tuple[dict[str, object], ...], body: Node,
-                  parent_digest: str | None) -> dict[str, object]:
+                  parent_digest: str | None, expires_at: int) -> dict[str, object]:
     if parent_digest is not None:
         check_sha(parent_digest)
     public_digest = public_evidence_digest(history)
@@ -200,7 +207,8 @@ def _make_payload(history: tuple[PublicObservation, ...],
         "closure": CLOSURE_MANIFEST, "closure_digest": digest(CLOSURE_MANIFEST),
         "policy": FIXED_POLICY, "policy_digest": digest(FIXED_POLICY),
         "route_manifest_digest": digest(ROUTE_VERSIONS),
-        "parent_digest": parent_digest, "public_observations": [r.as_dict() for r in history],
+        "parent_digest": parent_digest, "expires_at": expires_at,
+        "public_observations": [r.as_dict() for r in history],
         "public_digest": public_digest, "public_journal": list(journal),
         "public_journal_digest": digest(list(journal)),
         "body": ast_dict(body), "body_digest": digest(ast_dict(body)),
@@ -215,12 +223,12 @@ def _make_payload(history: tuple[PublicObservation, ...],
 
 def write_snapshot(path: str | Path, history: tuple[PublicObservation, ...],
                    journal: tuple[dict[str, object], ...], body: Node, *,
-                   parent_digest: str | None = None) -> SnapshotRef:
+                   expires_at: int, parent_digest: str | None = None) -> SnapshotRef:
     """Create once; payload contains public evidence ONLY."""
     dest = Path(path).resolve()  # Capture absolute path at creation, not at child cwd.
     validate_public_history(history, complete=True)
-    checked = _journal_checked(journal, history)
-    payload = _make_payload(history, checked, body, parent_digest)
+    checked = _journal_checked(journal, history, expires_at)
+    payload = _make_payload(history, checked, body, parent_digest, expires_at)
     envelope = {"schema": SNAPSHOT_VERSION, "role": "public",
                 "payload": payload, "payload_digest": digest(payload)}
     data = (canonical(envelope) + "\n").encode("utf-8")
@@ -265,9 +273,11 @@ def load_snapshot(path: str | Path, *, expected_sha256: str) -> LoadedSnapshot:
         raise ValueError("INVALID: snapshot payload hash")
     SchemaFrame(SNAPSHOT_VERSION, "public", payload).public_dict()
     history = _public_history(payload.get("public_observations"))
-    journal = _journal_checked(payload.get("public_journal"), history)
+    journal = _journal_checked(payload.get("public_journal"), history,
+                               payload.get("expires_at"))
     body = _body_from_dict(payload.get("body"))
-    recalculated = _make_payload(history, journal, body, payload.get("parent_digest"))
+    recalculated = _make_payload(history, journal, body,
+                                 payload.get("parent_digest"), payload["expires_at"])
     if payload != recalculated:
         raise ValueError("INVALID: snapshot public or manifest mismatch")
     return LoadedSnapshot(SnapshotRef(str(src), expected_sha256, len(raw)),
