@@ -1,4 +1,4 @@
-"""R2-M-ENG stage 1: artificial engineering components only.
+"""R2-M-ENG stages 1-2: artificial engineering components only.
 
 No runner, scientific evaluator, private USE scoring, policy learning,
 Snapshot persistence, or closure certification is exposed here.
