@@ -999,3 +999,21 @@ flowchart LR
 ~~~
 
 The same frozen public Snapshot path, hash, fixed policy and lookup capacity are used for F00 and F10. OFF disables only persistent learned-body execution, **not** the stage-1 nonpersistent affine decoder (nor legal episodic or consistent H0 fallback). No all-route closure claim; `H0_effective(B)`, `M_gap` remain UNKNOWN, `M_use` NOT_CERTIFIED. Stage 3 controls / scientific runner are absent. See [stage-2 module contract](../specs/R2-M-ENG-STAGE2.md), [ARCH-002](contracts.md), [Owner gate](https://github.com/ryonakayama234/DekaSugi/pull/175#issuecomment-6633458178).
+
+
+## R2-M-ENG Stage 3 — artificial controls, closure and runner (2026-11-05; Draft)
+
+~~~mermaid
+flowchart LR
+    G["Evaluator-side synthetic gateway: known law -> public P/Q001"] --> S["One immutable Snapshot/v2"]
+    S --> C["Closure inventory: UNKNOWN-only"]
+    S --> R["Synthetic runner: 7 fresh processes, different cwd"]
+    R --> D["Unchanged F00/F10"]
+    R --> A["Five separate frozen comparator arms"]
+    D --> T["Public-only UseTrace/v2 receipts"]
+    A --> T
+    T --> M["Public fixture manifest; no scientific score"]
+    C --> M
+~~~
+
+Stage 3 adds controls.py, closure.py, runner.py and artificial tests, not new capabilities on F00's fixed policy. In particular F00 retains the runtime affine decoder. The comparator arms are STATIC-H+, FIXED-MACRO16, EPISODIC-EXACT (all 4 public entries; capacity 8), NEAREST-1NN (all minimum distance voters, half-tie abstains) and STUMP-1 (14 frozen candidates; first minimum-error tie). F01/F11 are NOT_EVALUATED and ORACLE-REF is evaluator-only. Learner-side controls/closure never import the artificial private gateway; only evaluator-facing runner does. Snapshot SHA and absolute path are externally pinned and passed identically to each child; local hashes and exclusive files are not independent custody. H0_effective(B) is not proven, closure remains UNKNOWN, M_gap UNKNOWN, M_use NOT_CERTIFIED and N_rep/U/T NOT_EVALUATED. See [Stage 3 specification](../specs/R2-M-ENG-STAGE3.md) and [ARCH-002](contracts.md).
