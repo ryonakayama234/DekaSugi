@@ -191,7 +191,7 @@ class ClosureStage3Tests(unittest.TestCase):
             self.assertEqual(p["control_manifest_digest"], CONTROL_DIGEST)
             self.assertEqual(p["known_public_observations"], 4)
             self.assertGreater(len(p["unresolved"]), 0)
-            self.assertEqual(p["oracle_ref"], "EVALUATOR_ONLY_NOT_EXECUTED")
+            self.assertEqual(p["evaluator_reference"], "EVALUATOR_ONLY_NOT_EXECUTED")
 
     def test_rehashed_closure_escalation_route_delete_and_misstatement_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
