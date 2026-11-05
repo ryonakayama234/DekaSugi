@@ -1,4 +1,4 @@
-name: R2-M-ENG stage 1 (artificial-only)
+name: R2-M-ENG stages 1-2 (artificial-only)
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 jobs:
-  stage1-unit:
+  synthetic-unit:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -19,5 +19,5 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Stage 1 public/private boundary and synthetic negatives only
+      - name: Stages 1-2 public boundary, snapshot, dispatch and synthetic negative tests
         run: python -m unittest discover -s tests -p 'test_r2_m_eng_*.py' -v
