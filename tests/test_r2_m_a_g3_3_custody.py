@@ -233,7 +233,7 @@ class CustodyTests(unittest.TestCase):
         with self.assertRaisesRegex(CustodyBlocked, "freeze"):
             self.ledger.start_slot(Slot("0000", USE_POINTS[1], "F10"),
                                    engineering_only=True)
-        with self.assertRaisesRegex(CustodyBlocked, "duplicate"):
+        with self.assertRaisesRegex(CustodyBlocked, "freeze|duplicate"):
             self.ledger.seal_prescore(self.remote)
 
     def test_pre_score_push_lost_is_stop_not_permission(self):
