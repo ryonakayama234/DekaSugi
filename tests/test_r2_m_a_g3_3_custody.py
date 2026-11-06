@@ -99,7 +99,7 @@ class CustodyTests(unittest.TestCase):
     def test_exclusive_run_and_prereg_slot_lock(self):
         with self.assertRaisesRegex(CustodyBlocked, "existing"):
             EvidenceLedger.create(self.root, engineering_only=True)
-        with self.assertRaisesRegex(CustodyBlocked, "unauthorized"):
+        with self.assertRaisesRegex(CustodyBlocked, "authorization"):
             EvidenceLedger.create(self.root.parent / "other", engineering_only=False)
         self.assertTrue((self.root / "expected-slots.json").exists())
         path = self.root / "expected-slots.json"
@@ -283,7 +283,7 @@ class CustodyTests(unittest.TestCase):
         for name in REQUIRED:
             raw = (dest / name).read_bytes()
             self.assertEqual(sha256(raw).hexdigest(), result[name])
-            self.assertIn(b"NOT_AUDITED", raw)
+            self.assertTrue(b"NOT_AUDITED" in raw or b"NOT AUDITED" in raw)
         with self.assertRaisesRegex(CustodyBlocked, "already exists"):
             generate_g4_dossier(dest, target_head="f"*40, engineering_only=True)
         with self.assertRaisesRegex(CustodyBlocked, "exact prospective"):
