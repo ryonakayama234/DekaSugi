@@ -136,3 +136,7 @@ The implementation checks canonical same-task/4-100-budget search status/program
 - `r2_m_a.child_supervisor`: canonical snapshot SHA, one-attempt trace marker, isolated session/process group/cwd, delegated cgroup v2 memory+swap fail-closed, parent watchdog + wait4 per-child CPU/peak RSS, killpg and cgroup.kill, no retry.
 - `r2_m_a.cost_accounting`: parent raw process totals; child import/catalog only descriptive sub-components, one-off UNMEASURED; cgroup peak distinct from process RSS. Synthetic fault tests include SIGXCPU-ignored spin, group descendant, and killed-parent survivor negative.
 - This is NOT a G3-3 remote ledger, a G4 audit, G5 order or G6/448-child science execution. [G3-2 specification](../docs/specs/R2-M-A-G3-2.md) / [Owner GO](https://github.com/ryonakayama234/DekaSugi/pull/183#issuecomment-6675971478).
+
+### r2_m_a G3-3 — custody and audit materials (engineering only)
+
+The parent-only [append-only ledger](r2_m_a/evidence_ledger.py) and [GitHub remote seal](r2_m_a/remote_custody.py) enforce pre-answer and pre-score digest boundaries with explicit 448-slot missingness. [Evaluator gate](r2_m_a/evaluator_gate.py) denies scoring while G4/G5/G6 are unauthorized; [G4 dossier generator](r2_m_a/g4_dossier.py) produces NOT_AUDITED templates, not findings. There is no scientific 448-child run entry point. [G3-3 specification](../docs/specs/R2-M-A-G3-3.md).
