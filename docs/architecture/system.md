@@ -1034,3 +1034,25 @@ flowchart LR
 ~~~
 
 **Implemented on this PR branch, not yet on main:** \`packages/r2_m_a/{contracts,public_pipeline,import_guard}.py\`. Public pipeline is **synthetic evaluator-side only**, and a local fixture receipt is not a real GitHub remote custody proof. No child processes, scientific run entry point or metric gathering. The eventual child path must install the import hook before other application imports, plus process-group/PDEATHSIG, cgroup and parent wait4 enforcement in G3-2. See [G3-1 specification](../specs/R2-M-A-G3-1.md), [ARCH-002](contracts.md), and [Owner approval](https://github.com/ryonakayama234/DekaSugi/pull/183#issuecomment-6675971478).
+
+
+## R2-M-A G3-2 — Linux fresh-child supervisory seam (candidate, 2026-11-06)
+
+~~~mermaid
+flowchart LR
+    P["Parent: five-field public payload / validated Snapshot bytes"] --> C{"Delegated cgroup v2 memory available?"}
+    C -->|No| B["RUN_BLOCK; do not spawn"]
+    C -->|Yes| S["Popen fresh cwd + new session/process group"]
+    S --> D["Child PDEATHSIG + parent PID check + release gate"]
+    S --> A["Parent attach PID, verify memory.max SI + swap.max 0"]
+    A --> D
+    D --> I["Audit/meta_path hook before seven-arm imports"]
+    I --> T["Unmodified fixed dispatch/controls + exclusive trace"]
+    S --> W["Parent monotonic wall and live /proc CPU watchdog"]
+    W --> V["wait4 individual CPU and peak RSS"]
+    V --> K["killpg and cgroup.kill including descendants"]
+    K --> L["Raw ledger: imports are sub-components, one_off UNMEASURED"]
+    L -.-> F["G3-3 remote custody / G4-G6: NOT IMPLEMENTED"]
+~~~
+
+G3-2 is an engineering-only implementation seam; `engineering_only=False` is explicitly rejected. An OS capability failure is RUN_BLOCK, not a fallback to RLIMIT_AS or a fabricated zero. The process peak RSS from Linux wait4 (KiB ×1024) and cgroup memory.peak are distinct. Exact-head G4 audits, G5 authorized order, G6 scientific execution and scoring are not performed. [Specification](../specs/R2-M-A-G3-2.md), [G3-1](../specs/R2-M-A-G3-1.md), [Owner gate](https://github.com/ryonakayama234/DekaSugi/pull/183#issuecomment-6675971478).
