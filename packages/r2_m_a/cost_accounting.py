@@ -41,22 +41,22 @@ class RawProcessCost:
             },
             "per_fresh_process": {
                 "actual_import_cpu_s": (
-                    self.import_receipt.get("import_cpu_seconds")
+                    self.import_receipt.get("import_cpu_seconds", UNMEASURED)
                     if self.import_receipt is not None else UNMEASURED),
                 "actual_import_wall_s": (
-                    self.import_receipt.get("import_wall_seconds")
+                    self.import_receipt.get("import_wall_seconds", UNMEASURED)
                     if self.import_receipt is not None else UNMEASURED),
                 "catalog_preparation_cpu_s": (
-                    self.import_receipt.get("catalog_preparation_cpu_seconds")
+                    self.import_receipt.get("catalog_preparation_cpu_seconds", UNMEASURED)
                     if self.import_receipt is not None else UNMEASURED),
                 "catalog_preparation_wall_s": (
-                    self.import_receipt.get("catalog_preparation_wall_seconds")
+                    self.import_receipt.get("catalog_preparation_wall_seconds", UNMEASURED)
                     if self.import_receipt is not None else UNMEASURED),
                 "catalog_serialized_bytes": (
-                    self.import_receipt.get("catalog_serialized_bytes")
+                    self.import_receipt.get("catalog_serialized_bytes", UNMEASURED)
                     if self.import_receipt is not None else UNMEASURED),
                 "catalog_entries": (
-                    self.import_receipt.get("catalog_entries")
+                    self.import_receipt.get("catalog_entries", UNMEASURED)
                     if self.import_receipt is not None else UNMEASURED),
                 "import_cost_in_parent_process_total": True,
                 "catalog_cost_is_part_of_import_not_extra": True,
