@@ -71,7 +71,7 @@ class G31PublicBoundaryTests(unittest.TestCase):
                 self.assertTrue(ref.path.startswith(str(Path(tmp).resolve())))
                 self.assertFalse(any(k in loaded.payload for k in (
                     "source_law", "true_use_labels", "seed", "score_outcome")))
-                with self.assertRaisesRegex(ValueError, "INVALID"):
+                with self.assertRaisesRegex(ValueError, "RUN_BLOCK"):
                     prepare_synthetic_snapshot(
                         gateway, snapshot_path=ref.path,
                         precommit_at=8, answer_at=9, barrier=fixture_barrier,
