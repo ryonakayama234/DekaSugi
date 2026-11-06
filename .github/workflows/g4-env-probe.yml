@@ -1,0 +1,144 @@
+name: G4 environment capability probe (synthetic only)
+
+# Issue #146, Owner decision (a). Evidence only; auditor decides PASS/STOP.
+on:
+  push:
+    branches: [probe/g4-env-20261106]
+
+jobs:
+  cgroup-and-supervisor:
+    if: github.ref == 'refs/heads/probe/g4-env-20261106'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify frozen production sources and supervisor-owned probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 4e8a0c2d68ba431a8446720b314fd205babe2ac3 HEAD
+          git diff --quiet 4e8a0c2d68ba431a8446720b314fd205babe2ac3 HEAD -- packages/
+          git diff --quiet 72f6020fbc299417a4b676c91f777f12186b2937 HEAD -- probe/g4-env/probe.py
+          git rev-parse HEAD
+      - name: Prepare a real delegated cgroup v2 subtree (best effort)
+        shell: bash
+        run: |
+          set -u
+          root=/sys/fs/cgroup
+          candidate="/sys/fs/cgroup/g4-env-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          {
+            uname -a
+            echo "root_controllers=$(cat /sys/fs/cgroup/cgroup.controllers 2>&1)"
+            echo "root_subtree_control=$(cat /sys/fs/cgroup/cgroup.subtree_control 2>&1)"
+          } > cgroup-setup.txt
+          if [[ -f /sys/fs/cgroup/cgroup.controllers ]] &&
+             sudo mkdir "$candidate" >> cgroup-setup.txt 2>&1; then
+            root="$candidate"
+            sudo chown "$(id -u):$(id -g)" "$root" \
+              "$root/cgroup.procs" "$root/cgroup.subtree_control" \
+              >> cgroup-setup.txt 2>&1 || true
+            printf '+memory +cpu\n' | sudo tee "$root/cgroup.subtree_control" \
+              >> cgroup-setup.txt 2>&1 || true
+            if mkdir "$root/controller-check" >> cgroup-setup.txt 2>&1; then
+              if printf '536870912\n' > "$root/controller-check/memory.max" 2>> cgroup-setup.txt; then
+                echo "memory.max=$(cat "$root/controller-check/memory.max")" >> cgroup-setup.txt
+              else
+                echo 'memory.max not writable' >> cgroup-setup.txt
+              fi
+              if printf '50000 100000\n' > "$root/controller-check/cpu.max" 2>> cgroup-setup.txt; then
+                echo "cpu.max=$(cat "$root/controller-check/cpu.max")" >> cgroup-setup.txt
+              else
+                echo 'cpu.max not writable' >> cgroup-setup.txt
+              fi
+              rmdir "$root/controller-check" >> cgroup-setup.txt 2>&1 || true
+            fi
+          else
+            echo 'No writable delegated subtree; test actual root without emulation' >> cgroup-setup.txt
+          fi
+          echo "delegated_root=$root" >> cgroup-setup.txt
+          echo "delegated_controllers=$(cat "$root/cgroup.controllers" 2>&1)" >> cgroup-setup.txt
+          echo "delegated_subtree_control=$(cat "$root/cgroup.subtree_control" 2>&1)" >> cgroup-setup.txt
+          echo "G4_DELEGATED_ROOT=$root" >> "$GITHUB_ENV"
+          cat cgroup-setup.txt
+      - name: Run production supervisor and synthetic OOM child
+        run: python probe/g4-env/probe.py
+      - name: Remove temporary cgroup subtree
+        if: always()
+        shell: bash
+        run: |
+          if [[ "$G4_DELEGATED_ROOT" == /sys/fs/cgroup/g4-env-* ]]; then
+            sudo rmdir "$G4_DELEGATED_ROOT" >> cgroup-setup.txt 2>&1 || true
+          fi
+        env:
+          G4_DELEGATED_ROOT: ${{ env.G4_DELEGATED_ROOT }}
+      - name: Archive unjudged environment evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4-environment-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            cgroup-setup.txt
+            probe-result.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  git-push-capability:
+    if: github.ref == 'refs/heads/probe/g4-env-20261106'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify unchanged production sources and probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 4e8a0c2d68ba431a8446720b314fd205babe2ac3 HEAD
+          git diff --quiet 4e8a0c2d68ba431a8446720b314fd205babe2ac3 HEAD -- packages/
+          git diff --quiet 72f6020fbc299417a4b676c91f777f12186b2937 HEAD -- probe/g4-env/probe.py
+      - name: Prove GitHub push and clean up isolated temporary ref
+        shell: bash
+        run: |
+          set -uo pipefail
+          ref="refs/heads/probe/g4-env-auth-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          pushed=false
+          deleted=false
+          if git push origin "HEAD:$ref" > git-push.log 2>&1; then
+            pushed=true
+            if git push origin ":$ref" >> git-push.log 2>&1; then
+              deleted=true
+            fi
+          fi
+          cat > git-push-result.json <<EOF
+          {
+            "credential_kind": "GITHUB_TOKEN",
+            "temporary_ref": "$ref",
+            "push_succeeded": $pushed,
+            "cleanup_succeeded": $deleted,
+            "source_commit": "$GITHUB_SHA"
+          }
+          EOF
+          cat git-push.log
+          cat git-push-result.json
+          [[ "$pushed" == true && "$deleted" == true ]]
+      - name: Archive GitHub push capability evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4-git-push-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            git-push.log
+            git-push-result.json
+          if-no-files-found: warn
+          retention-days: 30
