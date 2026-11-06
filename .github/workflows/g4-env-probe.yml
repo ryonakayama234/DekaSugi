@@ -1,15 +1,12 @@
 name: G4 environment capability probe (synthetic only)
-
-# Issue #146, Owner decision (a). Evidence only; auditor decides PASS/STOP.
 on:
   push:
     branches: [probe/g4-env-20261106]
-
 jobs:
   cgroup-and-supervisor:
     if: github.ref == 'refs/heads/probe/g4-env-20261106'
     runs-on: ubuntu-24.04
-    timeout-minutes: 8
+    timeout-minutes: 10
     permissions:
       contents: read
     steps:
@@ -20,94 +17,28 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Verify frozen production sources and supervisor-owned probe
+      - name: Verify frozen production sources and auditor probe files
         shell: bash
         run: |
           set -euo pipefail
           git merge-base --is-ancestor 4e8a0c2d68ba431a8446720b314fd205babe2ac3 HEAD
           git diff --quiet 4e8a0c2d68ba431a8446720b314fd205babe2ac3 HEAD -- packages/
-          git diff --quiet 72f6020fbc299417a4b676c91f777f12186b2937 HEAD -- probe/g4-env/probe.py
-          git rev-parse HEAD
-      - name: Prepare a real delegated cgroup v2 subtree (best effort)
+          git diff --quiet 25e01e12b723c51d65e4bc3a0209f0a88d0b22e5 HEAD -- probe/g4-env/
+      - name: Run G4 environment diagnostics v2
         shell: bash
-        run: |
-          set -u
-          root=/sys/fs/cgroup
-          candidate="/sys/fs/cgroup/g4-env-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
-          {
-            uname -a
-            echo "root_controllers=$(cat /sys/fs/cgroup/cgroup.controllers 2>&1)"
-            echo "root_subtree_control=$(cat /sys/fs/cgroup/cgroup.subtree_control 2>&1)"
-          } > cgroup-setup.txt
-          if [[ -f /sys/fs/cgroup/cgroup.controllers ]] &&
-             sudo mkdir "$candidate" >> cgroup-setup.txt 2>&1; then
-            root="$candidate"
-            sudo chown "$(id -u):$(id -g)" "$root" \
-              "$root/cgroup.procs" "$root/cgroup.subtree_control" \
-              >> cgroup-setup.txt 2>&1 || true
-            printf '+memory +cpu\n' | sudo tee "$root/cgroup.subtree_control" \
-              >> cgroup-setup.txt 2>&1 || true
-            if mkdir "$root/controller-check" >> cgroup-setup.txt 2>&1; then
-              if printf '536870912\n' > "$root/controller-check/memory.max" 2>> cgroup-setup.txt; then
-                echo "memory.max=$(cat "$root/controller-check/memory.max")" >> cgroup-setup.txt
-              else
-                echo 'memory.max not writable' >> cgroup-setup.txt
-              fi
-              if printf '50000 100000\n' > "$root/controller-check/cpu.max" 2>> cgroup-setup.txt; then
-                echo "cpu.max=$(cat "$root/controller-check/cpu.max")" >> cgroup-setup.txt
-              else
-                echo 'cpu.max not writable' >> cgroup-setup.txt
-              fi
-              rmdir "$root/controller-check" >> cgroup-setup.txt 2>&1 || true
-            fi
-          else
-            echo 'No writable delegated subtree; test actual root without emulation' >> cgroup-setup.txt
-          fi
-          echo "delegated_root=$root" >> cgroup-setup.txt
-          echo "delegated_controllers=$(cat "$root/cgroup.controllers" 2>&1)" >> cgroup-setup.txt
-          echo "delegated_subtree_control=$(cat "$root/cgroup.subtree_control" 2>&1)" >> cgroup-setup.txt
-          echo "G4_DELEGATED_ROOT=$root" >> "$GITHUB_ENV"
-          cat cgroup-setup.txt
-      - name: Run production supervisor from inside the delegated subtree
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [[ "$G4_DELEGATED_ROOT" == /sys/fs/cgroup/g4-env-* ]]; then
-            # A non-root process cannot migrate a child from outside its
-            # delegated subtree into a sibling cgroup. Start the supervisor
-            # in a leaf cgroup; its production lease remains unchanged.
-            launcher="$G4_DELEGATED_ROOT/launcher"
-            sudo mkdir "$launcher"
-            sudo chown "$(id -u):$(id -g)" "$launcher" "$launcher/cgroup.procs"
-            python_bin="$(command -v python)"
-            sudo --preserve-env=G4_DELEGATED_ROOT bash -c '
-              printf "%s\n" "$" > "$G4_DELEGATED_ROOT/launcher/cgroup.procs"
-              exec /usr/bin/setpriv --reuid "$SUDO_UID" --regid "$SUDO_GID" --init-groups "$1" probe/g4-env/probe.py
-            ' bash "$python_bin"
-          else
-            python probe/g4-env/probe.py
-          fi
-      - name: Remove temporary cgroup subtree
-        if: always()
-        shell: bash
-        run: |
-          if [[ "$G4_DELEGATED_ROOT" == /sys/fs/cgroup/g4-env-* ]]; then
-            sudo rmdir "$G4_DELEGATED_ROOT/launcher" >> cgroup-setup.txt 2>&1 || true
-            sudo rmdir "$G4_DELEGATED_ROOT" >> cgroup-setup.txt 2>&1 || true
-          fi
-        env:
-          G4_DELEGATED_ROOT: ${{ env.G4_DELEGATED_ROOT }}
+        run: bash probe/g4-env/diag.sh
       - name: Archive unjudged environment evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: g4-environment-${{ github.run_id }}-${{ github.run_attempt }}
+          name: g4-environment-v2-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            cgroup-setup.txt
-            probe-result.json
+            diag-report.txt
+            probe-result-runner.json
+            probe-result-root.json
+            probe-result-systemd.json
           if-no-files-found: warn
           retention-days: 30
-
   git-push-capability:
     if: github.ref == 'refs/heads/probe/g4-env-20261106'
     runs-on: ubuntu-24.04
