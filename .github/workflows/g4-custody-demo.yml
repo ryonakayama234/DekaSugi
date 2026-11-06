@@ -1,0 +1,38 @@
+name: G4 custody demonstration (synthetic only)
+on:
+  push:
+    branches: [audit/r2ma/g4-actions-20261106]
+jobs:
+  custody-demo:
+    if: github.ref == 'refs/heads/audit/r2ma/g4-actions-20261106'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify frozen production sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 4e8a0c2d68ba431a8446720b314fd205babe2ac3 HEAD
+          git diff --quiet 4e8a0c2d68ba431a8446720b314fd205babe2ac3 HEAD -- packages/
+      - name: Configure git identity
+        run: |
+          git config user.name "Muse G4 Custody Demo"
+          git config user.email "g4-custody@localhost"
+      - name: Run real remote custody seals (synthetic)
+        run: python3 probe/g4-env/custody_demo.py
+      - name: Archive custody demonstration result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4-custody-demo-${{ github.run_id }}-${{ github.run_attempt }}
+          path: custody-demo-result.json
+          if-no-files-found: warn
+          retention-days: 30
