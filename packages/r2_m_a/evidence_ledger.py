@@ -96,8 +96,8 @@ def _chronology(events: list[dict]) -> None:
     for entry in events:
         k, data = entry["kind"], entry["data"]
         law = data.get("law_id")
-        if prescore_remote:
-            raise CustodyBlocked("INVALID: event after remote pre-score freeze")
+        if prescore_remote or (prescore_local and k != "PRE_SCORE_REMOTE"):
+            raise CustodyBlocked("INVALID: event after local/remote pre-score freeze")
         if k == "Q_PRECOMMIT":
             if law in q_pre or law in q_remote or law not in {s.law_id for s in expected_slot_set()}:
                 raise CustodyBlocked("INVALID: duplicate/unknown Q precommit")
@@ -390,4 +390,17 @@ class EvidenceLedger:
         self._remote_check(remote, RemoteReceipt(**verified[0]["data"]["receipt"]), path)
         if verified[0]["data"]["manifest_sha256"] != sha256(raw).hexdigest():
             raise CustodyBlocked("INVALID: prescore receipt mismatch")
+        # The published manifest must match the *actual* earlier journal
+        # state, not a later reconstructed/altered event sequence.
+        recreated = self.manifest()
+        recreated["journal_tip_sha256"] = local[0]["prev_sha256"]
+        if canonical(recreated) != raw:
+            raise CustodyBlocked("INVALID: journal changed after pre-score lock")
+        # A pre-score GitHub commit cannot stand in for the individual Q seals.
+        for event in events:
+            if event["kind"] == "Q_REMOTE":
+                law = event["data"]["law_id"]
+                receipt = RemoteReceipt(**event["data"]["receipt"])
+                self._remote_check(remote, receipt,
+                    self._path("public", "q-" + law + "-precommit.json"))
         return json.loads(raw)
