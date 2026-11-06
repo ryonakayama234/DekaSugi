@@ -7,6 +7,7 @@ wait4 metering, and proactive /proc child CPU watch. Never run an evaluator.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import ctypes
 from hashlib import sha256
 import json
 import os
@@ -40,6 +41,18 @@ def _linux_required() -> None:
             raise ValueError
     except (OSError, ValueError):
         raise RunBlocked("RUN_BLOCK: unavailable /proc CPU clock")
+
+
+def _require_real_cgroup2(path: Path) -> None:
+    """Verify kernel cgroup2 statfs magic, not just cgroup-like file names."""
+    libc = ctypes.CDLL(None, use_errno=True)
+    libc.statfs.argtypes = (ctypes.c_char_p, ctypes.c_void_p)
+    libc.statfs.restype = ctypes.c_int
+    buffer = ctypes.create_string_buffer(256)
+    if libc.statfs(os.fsencode(path), ctypes.byref(buffer)) != 0:
+        raise RunBlocked("RUN_BLOCK: statfs on cgroup root failed")
+    if ctypes.c_long.from_buffer(buffer).value != 0x63677270:
+        raise RunBlocked("RUN_BLOCK: delegated root is not a cgroup2 filesystem")
 
 
 def _integer_file(path: Path) -> int:
@@ -77,6 +90,7 @@ class CgroupV2Lease:
         if (not base.is_absolute() or base.is_symlink()
                 or str(base.resolve()) != str(base) or not base.is_dir()):
             raise RunBlocked("RUN_BLOCK: canonical delegated cgroup v2 root required")
+        _require_real_cgroup2(base)
         try:
             if "memory" not in (base / "cgroup.controllers").read_text().split():
                 raise RunBlocked("RUN_BLOCK: cgroup memory controller unavailable")
