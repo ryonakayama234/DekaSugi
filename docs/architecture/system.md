@@ -1029,7 +1029,7 @@ flowchart LR
     C["r2_m_a.contracts: G2 anchor, unordered 448 slots, G5 order seam"] --> S
     S --> H["Future G3-2 child supervisor: NOT IMPLEMENTED"]
     I["r2_m_a.import_guard: static graph + audit/meta_path hooks"] --> H
-    P -. "forbidden import" .-> H
+    P -.->|forbidden / blocked| H
     H --> E["Future G3-3 custody / evaluation gate: NOT IMPLEMENTED"]
 ~~~
 
