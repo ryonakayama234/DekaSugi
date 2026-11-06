@@ -99,6 +99,7 @@ class G32FaultTests(unittest.TestCase):
             result = _wait_with_watchdog(
                 p.pid, start=start, cgroup=cg, wall_cap=2.0, cpu_cap=0.20)
             self.assertTrue(result.reaped)
+            p.returncode = os.waitstatus_to_exitcode(result.wait_status)
             self.assertEqual(result.stopped_for, "CPU")
             self.assertGreater(cg.kill_calls, 0)
             self.assertIsNotNone(result.cpu_seconds)
@@ -131,6 +132,7 @@ class G32FaultTests(unittest.TestCase):
                     p.pid, start=time.monotonic(), cgroup=cg,
                     wall_cap=1.5, cpu_cap=0.20)
                 self.assertTrue(result.reaped)
+                p.returncode = os.waitstatus_to_exitcode(result.wait_status)
                 # Production supervisor also invokes this cleanup on normal exit.
                 try:
                     os.killpg(p.pid, signal.SIGKILL)
@@ -197,6 +199,53 @@ class G32FaultTests(unittest.TestCase):
                             os.killpg(child_pid, signal.SIGKILL)
                         except ProcessLookupError:
                             pass
+
+    def test_single_artificial_public_child_with_test_only_cgroup_mock(self):
+        """One synthetic integration smoke; no real cgroup or science claim."""
+        from packages.r2_m_a.public_pipeline import (
+            SyntheticPrecommitReceipt, prepare_synthetic_snapshot,
+        )
+        from packages.r2_m_eng.source_gateway import (
+            PublicGateway, SyntheticPrivateSource,
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            gw = PublicGateway(SyntheticPrivateSource((1, 0, 1, 0)),
+                               opened_at=5, expires_at=20)
+            ref = prepare_synthetic_snapshot(
+                gw, snapshot_path=root / "snapshot.json",
+                precommit_at=6, answer_at=7,
+                barrier=lambda intent: SyntheticPrecommitReceipt(intent.commitment),
+                engineering_only=True)
+            request = ChildRequest(ref.path, ref.sha256, "F00", (0, 1, 1),
+                                   str((root / "opaque-trace.json").resolve()))
+
+            class TestOnlyLease:
+                initial_events = {"oom": 0, "oom_kill": 0}
+                attached = None
+                cleaned = False
+                def attach(self, pid):
+                    self.attached = pid
+                def kill(self):
+                    pass
+                def cleanup(self):
+                    self.cleaned = True
+                def memory_observation(self):
+                    return 1234, {"oom": 0, "oom_kill": 0}
+
+            fake = TestOnlyLease()
+            with patch.object(CgroupV2Lease, "create", return_value=fake):
+                result = supervise_synthetic_child(
+                    request, delegated_cgroup_root=root, engineering_only=True)
+            self.assertIsNotNone(fake.attached)
+            self.assertTrue(fake.cleaned)
+            self.assertEqual(result["status"], "ENGINEERING_ONLY", result)
+            self.assertTrue(result["reaped"])
+            self.assertEqual(result["exit_code"], 0)
+            self.assertEqual(result["raw_cost"]["per_fresh_process"]["catalog_entries"], 16)
+            self.assertIsNotNone(result["trace_sha256"])
+            self.assertEqual(result["raw_cost"]["one_off_preparation"]["actual_cpu_s"],
+                             UNMEASURED)
 
     def test_child_entry_no_parent_gate_never_dispatches(self):
         repo = Path(__file__).resolve().parents[1]
