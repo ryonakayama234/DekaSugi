@@ -47,12 +47,12 @@ def _dirsync(path: Path) -> None:
         os.close(fd)
 
 
-def _write_once(path: Path, raw: bytes) -> None:
+def _write_once(path: Path, raw: bytes, *, mode: int = 0o400) -> None:
     if path.is_symlink() or not path.parent.is_dir() or path.parent.is_symlink():
         raise CustodyBlocked("RUN_BLOCK: custody directory unsafe")
     try:
         fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY | os.O_NOFOLLOW,
-                     0o400)
+                     mode)
         with os.fdopen(fd, "wb") as f:
             f.write(raw)
             f.flush()
@@ -181,7 +181,7 @@ class EvidenceLedger:
             "enumeration_not_execution_order": True,
             "slots": [s.as_dict() for s in sorted(expected_slot_set(), key=_key)],
         }))
-        _write_once(root / "journal" / "events.jsonl", b"")
+        _write_once(root / "journal" / "events.jsonl", b"", mode=0o600)
         return cls(root)
 
     def events(self) -> tuple[dict, ...]:
