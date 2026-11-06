@@ -68,13 +68,31 @@ jobs:
           echo "delegated_subtree_control=$(cat "$root/cgroup.subtree_control" 2>&1)" >> cgroup-setup.txt
           echo "G4_DELEGATED_ROOT=$root" >> "$GITHUB_ENV"
           cat cgroup-setup.txt
-      - name: Run production supervisor and synthetic OOM child
-        run: python probe/g4-env/probe.py
+      - name: Run production supervisor from inside the delegated subtree
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$G4_DELEGATED_ROOT" == /sys/fs/cgroup/g4-env-* ]]; then
+            # A non-root process cannot migrate a child from outside its
+            # delegated subtree into a sibling cgroup. Start the supervisor
+            # in a leaf cgroup; its production lease remains unchanged.
+            launcher="$G4_DELEGATED_ROOT/launcher"
+            sudo mkdir "$launcher"
+            sudo chown "$(id -u):$(id -g)" "$launcher" "$launcher/cgroup.procs"
+            python_bin="$(command -v python)"
+            sudo --preserve-env=G4_DELEGATED_ROOT bash -c '
+              printf "%s\n" "$" > "$G4_DELEGATED_ROOT/launcher/cgroup.procs"
+              exec /usr/bin/setpriv --reuid "$SUDO_UID" --regid "$SUDO_GID" --init-groups "$1" probe/g4-env/probe.py
+            ' bash "$python_bin"
+          else
+            python probe/g4-env/probe.py
+          fi
       - name: Remove temporary cgroup subtree
         if: always()
         shell: bash
         run: |
           if [[ "$G4_DELEGATED_ROOT" == /sys/fs/cgroup/g4-env-* ]]; then
+            sudo rmdir "$G4_DELEGATED_ROOT/launcher" >> cgroup-setup.txt 2>&1 || true
             sudo rmdir "$G4_DELEGATED_ROOT" >> cgroup-setup.txt 2>&1 || true
           fi
         env:
