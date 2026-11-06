@@ -122,3 +122,10 @@ The implementation checks canonical same-task/4-100-budget search status/program
 ## OPPORTUNITY-001 Issue #74 private original capture preflight (no scored experiments)
 - New read-only verified preflight + private output CLI: [capture_opportunity_private_original.py](../scripts/capture_opportunity_private_original.py), [synthetic-only negatives](../tests/test_opportunity_private_original_capture.py), [data flow and scope](../docs/specs/OPPORTUNITY-001-PRIVATE-CAPTURE.md).
 - The CLI never runs search, an old DEV/FINAL generator, real OFF/ON scorer or policy chooser. Capturing future evaluator-only third-audit originals and making two local SHA-verified copies is not independent offsite custody proof; actual new TRAIN64 scoring and skill promotion remain forbidden.
+
+
+## R2-M-A G3-1 (2026-11-06, implementation candidate)
+- \`r2_m_a/contracts.py\`: immutable G2 SHA anchors, unordered 448 Slot schema and G5 input seam, exact five-field child payload, SI RSS boundary reporting contract.
+- \`r2_m_a/public_pipeline.py\`: **evaluator-side synthetic fixture only**; gated Q001 then r2_m_eng public decoder/validator/Sleep-lite/Snapshot. NOT a real remote custody implementation.
+- \`r2_m_a/import_guard.py\`: child import graph check and future child startup audit/meta_path hooks. No supervisor/child spawn, experiment, scorer or G4/G5/G6.
+- [Specification](../docs/specs/R2-M-A-G3-1.md) / [Owner scope](https://github.com/ryonakayama234/DekaSugi/pull/183#issuecomment-6675971478).

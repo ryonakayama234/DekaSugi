@@ -306,3 +306,12 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 
 - [R2-M-A-20261105 A前登録採用稿（凍結待ち）](research/R2-M-A-20261105-exhaustive16-engineering-prereg-draft.md) — [PR #180のOwner起草許可](https://github.com/ryonakayama234/DekaSugi/pull/180#issuecomment-6658438738)に基づき起草し、[PR #181 Owner G2決定](https://github.com/ryonakayama234/DekaSugi/pull/181#issuecomment-6659347553)で**文書採用・wall 5秒/child・CPU 5秒/child・RSS 512 MB/child・各child単回計測/自動リトライなしが確定、外部registry不使用**。既知F_aff全16法則×各4 USE点×7固定arm（設計448 fresh subprocess）の事前登録つき工学費用・経路測定。**NOT_FROZEN**（main merge後、確定SHA＋文書SHA-256の凍結receiptをPR #181とIssue #146に記録して完了）。実装・実行・source選定・採点・科学GOなし。K=0は配線整合性検査で仮説検定ではない。closure UNKNOWN、M_use NOT_CERTIFIED、M_gap UNKNOWN、N_rep/U/T NOT_EVALUATED、F01/F11 NOT_EVALUATED、B NO-GOを保持。
 - [R-20261105-09 Claude精査](research/R-20261105-09-muse-review.md) — A事前登録起草稿への独立精査。**合格（修正なし・注記3件）**。網羅16・K=完全性検査・対象commit固定の実経路監査・凍結手続きの適合と算術・文書検証を独立確認。注記は凍結（G2）時に確定すべき事項（§7.4のTBD解消、FIXED-MACRO会計の監査確定、Actions最終確認）。[PR #181 Owner決定](https://github.com/ryonakayama234/DekaSugi/pull/181#issuecomment-6659347553)により文書採用・数値確定済み。main確定SHA＋文書digest receipt未記録のためNOT_FROZENで、実装・実行は依然未許可。
+
+
+## R2-M-A G3-1 — approved implementation scope, contract/separation code PR (2026-11-06)
+
+| ID | テーマ | 状態 | 文書 |
+|---|---|---|---|
+| R2-M-A-G3-1-CONTRACT-20261106 | G2 frozen anchor, synthetic-only Q001 precommit boundary, reusable Snapshot/v2, unordered 448-slot design, G5 manifest seam, child allowlist and live import hooks | implementation candidate / supervisor acceptance and Owner merge pending; G3-2/3/G4/G5/G6 unexecuted | [G3-1 specification](specs/R2-M-A-G3-1.md) / [contracts](../packages/r2_m_a/contracts.py) / [synthetic evaluator boundary](../packages/r2_m_a/public_pipeline.py) / [import guard](../packages/r2_m_a/import_guard.py) / [contracts tests](../tests/test_r2_m_a_contracts.py) / [boundary tests](../tests/test_r2_m_a_boundary.py) |
+
+[Owner G3 implementation GO](https://github.com/ryonakayama234/DekaSugi/pull/183#issuecomment-6675971478) は独立した段階PRの実装に限る。G3-1は人工fixture契約・分離のみであり、448 child 測定、G4監査、G5順序、G6実行、B・科学研究、凍結本文改訂は行わない。G3-2以降は前段の監督者受入とOwnerマージ承認まで開始しない。
