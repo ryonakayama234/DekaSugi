@@ -129,3 +129,10 @@ The implementation checks canonical same-task/4-100-budget search status/program
 - \`r2_m_a/public_pipeline.py\`: **evaluator-side synthetic fixture only**; gated Q001 then r2_m_eng public decoder/validator/Sleep-lite/Snapshot. NOT a real remote custody implementation.
 - \`r2_m_a/import_guard.py\`: child import graph check and future child startup audit/meta_path hooks. No supervisor/child spawn, experiment, scorer or G4/G5/G6.
 - [Specification](../docs/specs/R2-M-A-G3-1.md) / [Owner scope](https://github.com/ryonakayama234/DekaSugi/pull/183#issuecomment-6675971478).
+
+
+## R2-M-A G3-2 — synthetic fresh-child OS supervision (candidate)
+- `r2_m_a.child_entry`: five public inputs, immediate Linux PDEATHSIG parent check, cgroup attachment gate, G3-1 live import guard, unchanged seven-arm dispatch; existing `CATALOG_PREPARATION_*` used as recorded, not remeasured.
+- `r2_m_a.child_supervisor`: canonical snapshot SHA, one-attempt trace marker, isolated session/process group/cwd, delegated cgroup v2 memory+swap fail-closed, parent watchdog + wait4 per-child CPU/peak RSS, killpg and cgroup.kill, no retry.
+- `r2_m_a.cost_accounting`: parent raw process totals; child import/catalog only descriptive sub-components, one-off UNMEASURED; cgroup peak distinct from process RSS. Synthetic fault tests include SIGXCPU-ignored spin, group descendant, and killed-parent survivor negative.
+- This is NOT a G3-3 remote ledger, a G4 audit, G5 order or G6/448-child science execution. [G3-2 specification](../docs/specs/R2-M-A-G3-2.md) / [Owner GO](https://github.com/ryonakayama234/DekaSugi/pull/183#issuecomment-6675971478).
