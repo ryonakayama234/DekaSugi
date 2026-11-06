@@ -320,3 +320,9 @@ The initial PR7 pretrial code unintentionally invoked historical `verify_frozen`
 ## R2-M-A G3-2 — fresh child / raw costs (2026-11-06)
 | R2-M-A-G3-2-FRESH-CHILD-COST-20261106 | cgroup v2 fail-closed, child's own process group + PDEATHSIG, parent monotonic + wait4 5s CPU/wall guard, process-group kill, raw catalog/import accounting, synthetic negative tests | engineering-only implementation candidate; G3-3/G4/G5/G6 NOT AUTHORIZED | [G3-2 specification](specs/R2-M-A-G3-2.md) / [child entry](../packages/r2_m_a/child_entry.py) / [supervisor](../packages/r2_m_a/child_supervisor.py) / [raw accounting](../packages/r2_m_a/cost_accounting.py) / [fault tests](../tests/test_r2_m_a_g3_2_supervisor.py) |
 G3-2 starts at G3-1 merge main `028ad73049a3fe07143c0e1663130129e1da286d`, pursuant to [PR #183 Owner GO](https://github.com/ryonakayama234/DekaSugi/pull/183#issuecomment-6675971478). No scientific measurements, new experiment order/seed, remote custody, or scoring.
+
+## R2-M-A G3-3 — remote custody / pre-score / G4 scaffolding (2026-11-06)
+
+| R2-M-A-G3-3-CUSTODY-20261106 | fsynced hash-linked append-only events, GitHub remote Q-before-answer and pre-score digest locks, complete 448-slot missingness, deny-by-default score gate, eight NOT_AUDITED G4 templates | G3-3 engineering candidate; G4/G5/G6 and measurements NOT AUTHORIZED | [Spec](specs/R2-M-A-G3-3.md) / [Ledger](../packages/r2_m_a/evidence_ledger.py) / [Remote](../packages/r2_m_a/remote_custody.py) / [Gate](../packages/r2_m_a/evaluator_gate.py) / [Dossier](../packages/r2_m_a/g4_dossier.py) / [Tests](../tests/test_r2_m_a_g3_3_custody.py) |
+
+G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 448 measurement, G4 audit, G5 order or G6 scoring is permitted.
