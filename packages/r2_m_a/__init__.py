@@ -1,5 +1,5 @@
-"""R2-M-A: scientific-runner contracts (G3-1 only; execution NOT authorized).
+"""R2-M-A G3-1/2/3 engineering contracts, NOT a scientific runner.
 
-There is deliberately no CLI, scientific scorer or executable run entry point.
-The evaluator-side synthetic adapter is not imported by this package.
+Evaluator/custody modules are not imported here or by the fresh child.
+G4 audit, G5 order, G6 execution/score, and all 448 measurements are blocked.
 """
