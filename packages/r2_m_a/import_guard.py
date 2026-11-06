@@ -19,6 +19,8 @@ FORBIDDEN_CHILD_MODULES = (
     "packages.r2_m_a.public_pipeline",
     "packages.r2_m_a.evaluator_gate",
     "packages.r2_m_a.evidence_ledger",
+    "packages.r2_m_a.remote_custody",
+    "packages.r2_m_a.g4_dossier",
     "packages.r2_m_a.orchestrator",
 )
 

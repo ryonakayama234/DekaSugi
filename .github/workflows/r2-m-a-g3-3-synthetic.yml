@@ -1,0 +1,30 @@
+name: R2-M-A G3-3 synthetic custody (no science)
+on:
+  pull_request:
+    paths:
+      - 'packages/r2_m_a/**'
+      - 'tests/test_r2_m_a_*.py'
+      - 'docs/specs/R2-M-A-G3-3.md'
+      - '.github/workflows/r2-m-a-g3-3-synthetic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: G3-3 fault-injection and G3-1/G3-2 contracts (no real remote)
+        run: |
+          python -m unittest -v tests.test_r2_m_a_g3_3_custody tests.test_r2_m_a_contracts tests.test_r2_m_a_boundary tests.test_r2_m_a_g3_2_supervisor
+      - name: R2-M-ENG unchanged regression
+        run: |
+          python -m unittest discover -s tests -p 'test_r2_m_eng_*.py'
+      - name: Documentation links only
+        run: python scripts/check_docs.py

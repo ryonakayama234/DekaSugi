@@ -1056,3 +1056,23 @@ flowchart LR
 ~~~
 
 G3-2 is an engineering-only implementation seam; `engineering_only=False` is explicitly rejected. An OS capability failure is RUN_BLOCK, not a fallback to RLIMIT_AS or a fabricated zero. The process peak RSS from Linux wait4 (KiB ×1024) and cgroup memory.peak are distinct. Exact-head G4 audits, G5 authorized order, G6 scientific execution and scoring are not performed. [Specification](../specs/R2-M-A-G3-2.md), [G3-1](../specs/R2-M-A-G3-1.md), [Owner gate](https://github.com/ryonakayama234/DekaSugi/pull/183#issuecomment-6675971478).
+
+
+## R2-M-A G3-3 — GitHub-only custody and fail-closed evaluator gate (candidate)
+
+~~~mermaid
+flowchart TD
+  L["Frozen G2 + unordered 448 Slot census"] --> J["O_APPEND/flock/fsync hash-chain journal"]
+  J --> Q["Q001 pre-answer intent and immutable raw artifact"]
+  Q --> GH["GitHub audit branch: push + remote SHA-pinned byte readback"]
+  GH -->|"fail"| X["RUN_BLOCK / no answer"]
+  GH -->|"verified"| A["Synthetic-only Q answer and Snapshot lock"]
+  A --> S["Global one-shot slot START/END; missingness preserved"]
+  S --> P["448-slot pre-score manifest and journal root"]
+  P --> GH2["GitHub pre-score commit + pinned readback"]
+  GH2 --> G["Evaluator gate: G4/G5/G6 all unapproved"]
+  G --> X
+  G -.-> D["Eight NOT_AUDITED dossier templates; G4 requires separate GO"]
+~~~
+
+G3-3 is a parent/evaluator-side **engineering interface**, not an actual scientific runner. The remote adapter's real GitHub push/readback is not invoked in CI (fake remote only). Child import guard forbids evaluator/gate/ledger/remote/dossier modules. GitHub-only custody cannot prove an independent timestamp or absolute WORM; anchored hashes support subsequent audit. There is no 448 measurement, G5 order, G6 score or scientific M_use certification. [Specification](../specs/R2-M-A-G3-3.md) / [ARCH-002](contracts.md).
