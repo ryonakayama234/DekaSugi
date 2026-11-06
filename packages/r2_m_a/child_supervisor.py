@@ -334,6 +334,10 @@ def supervise_synthetic_child(
                     pass  # child might have failed; wait4 preserves exit evidence
                 observation = _wait_with_watchdog(proc.pid, start=started,
                                                    cgroup=cgroup)
+                if observation.reaped and observation.wait_status is not None:
+                    # wait4, not Popen.wait, is the single reaper. Synchronize
+                    # Popen's bookkeeping to avoid a false live-child warning.
+                    proc.returncode = os.waitstatus_to_exitcode(observation.wait_status)
                 # Always terminate any descendant in the same process group.
                 _kill_group(proc.pid)
                 cgroup_peak, cgroup_events = cgroup.memory_observation()
