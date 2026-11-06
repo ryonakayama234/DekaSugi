@@ -15,14 +15,25 @@ from pathlib import Path
 sys.path.insert(0, os.getcwd())
 RESULT = {"environment": {}, "supervisor_run": None, "rss_enforcement": None}
 
+def err_text(exc):
+    parts, seen = [], set()
+    while exc is not None and id(exc) not in seen:
+        seen.add(id(exc))
+        extra = f" (errno={exc.errno})" if isinstance(exc, OSError) and exc.errno else ""
+        parts.append(f"{type(exc).__name__}: {exc}{extra}")
+        exc = exc.__cause__ or exc.__context__
+    return " <- ".join(parts)[:600]
+
 def report():
-    Path("probe-result.json").write_text(json.dumps(RESULT, indent=1, sort_keys=True, default=str))
+    name = os.environ.get("G4_RESULT_NAME", "probe-result.json")
+    Path(name).write_text(json.dumps(RESULT, indent=1, sort_keys=True, default=str))
     print("PROBE_RESULT " + json.dumps(RESULT, sort_keys=True, default=str))
 
 def main():
     import platform
     RESULT["environment"] = {
         "platform": platform.platform(), "python": sys.version.split()[0],
+        "uid": os.getuid(), "self_cgroup": Path("/proc/self/cgroup").read_text().strip(),
         "cgroup_controllers_root": Path("/sys/fs/cgroup/cgroup.controllers").read_text().strip(),
     }
     root = os.environ["G4_DELEGATED_ROOT"]
@@ -51,7 +62,7 @@ def main():
                                             engineering_only=True)
             RESULT["supervisor_run"] = {"ok": True, "result": out}
         except Exception as exc:
-            RESULT["supervisor_run"] = {"ok": False, "error": f"{type(exc).__name__}: {exc}"[:300]}
+            RESULT["supervisor_run"] = {"ok": False, "error": err_text(exc)}
             report(); return
 
     # RSS enforcement: hog inside a production lease must die at the cap.
