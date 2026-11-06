@@ -1017,3 +1017,20 @@ flowchart LR
 ~~~
 
 Stage 3 adds controls.py, closure.py, runner.py and artificial tests, not new capabilities on F00's fixed policy. In particular F00 retains the runtime affine decoder. The comparator arms are STATIC-H+, FIXED-MACRO16, EPISODIC-EXACT (all 4 public entries; capacity 8), NEAREST-1NN (all minimum distance voters, half-tie abstains) and STUMP-1 (14 frozen candidates; first minimum-error tie). F01/F11 are NOT_EVALUATED and ORACLE-REF is evaluator-only. Learner-side controls/closure never import the artificial private gateway; only evaluator-facing runner does. Snapshot SHA and absolute path are externally pinned and passed identically to each child; local hashes and exclusive files are not independent custody. H0_effective(B) is not proven, closure remains UNKNOWN, M_gap UNKNOWN, M_use NOT_CERTIFIED and N_rep/U/T NOT_EVALUATED. See [Stage 3 specification](../specs/R2-M-ENG-STAGE3.md) and [ARCH-002](contracts.md).
+
+
+## R2-M-A G3-1 — scientific runner contract and evaluator/child split (candidate, 2026-11-06)
+
+~~~mermaid
+flowchart LR
+    G["Evaluator-side synthetic PublicGateway P3/Q001"] --> P["r2_m_a.public_pipeline synthetic barrier"]
+    P --> D["Reused r2_m_eng decoder / independent validator / Sleep-lite"]
+    D --> S["Immutable Snapshot/v2 + expected bytes SHA"]
+    C["r2_m_a.contracts: G2 anchor, unordered 448 slots, G5 order seam"] --> S
+    S --> H["Future G3-2 child supervisor: NOT IMPLEMENTED"]
+    I["r2_m_a.import_guard: static graph + audit/meta_path hooks"] --> H
+    P -.->|forbidden / blocked| H
+    H --> E["Future G3-3 custody / evaluation gate: NOT IMPLEMENTED"]
+~~~
+
+**Implemented on this PR branch, not yet on main:** \`packages/r2_m_a/{contracts,public_pipeline,import_guard}.py\`. Public pipeline is **synthetic evaluator-side only**, and a local fixture receipt is not a real GitHub remote custody proof. No child processes, scientific run entry point or metric gathering. The eventual child path must install the import hook before other application imports, plus process-group/PDEATHSIG, cgroup and parent wait4 enforcement in G3-2. See [G3-1 specification](../specs/R2-M-A-G3-1.md), [ARCH-002](contracts.md), and [Owner approval](https://github.com/ryonakayama234/DekaSugi/pull/183#issuecomment-6675971478).
