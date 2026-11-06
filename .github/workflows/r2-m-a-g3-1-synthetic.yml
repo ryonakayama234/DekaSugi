@@ -1,0 +1,28 @@
+name: R2-M-A G3-1 synthetic contract and boundary
+
+on:
+  pull_request:
+    paths:
+      - "packages/r2_m_a/**"
+      - "tests/test_r2_m_a_*.py"
+      - "docs/specs/R2-M-A-G3-1.md"
+      - ".github/workflows/r2-m-a-g3-1-synthetic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  g3-1-synthetic-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: G3-1 contracts, 16 known-law synthetic Q001 snapshots and negative import tests only
+        run: python -m unittest discover -s tests -p 'test_r2_m_a_*.py' -v
+      - name: Unchanged engineering R2-M-ENG synthetic regression
+        run: python -m unittest discover -s tests -p 'test_r2_m_eng_*.py' -v
+      - name: Documentation integrity
+        run: python scripts/check_docs.py
