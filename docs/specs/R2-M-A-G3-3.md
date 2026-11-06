@@ -3,6 +3,7 @@
 id: R2-M-A-G3-3-CUSTODY-20261106
 status: implementation_candidate / engineering_only / no_G4_G5_G6_GO
 updated: 2026-11-06
+tags: r2-m-a, g3-3, custody, synthetic-only, audit-scaffolding, owner-gate
 
 ## Authority and frozen boundary
 
