@@ -135,6 +135,7 @@ def replay(raw: tuple[bytes, ...], g5: SealedG5) -> RunState:
     finishes = {}
     missing = set()
     stopped = set()
+    checkpoints = set()
     events = []
     previous = ZERO
     lock = None
@@ -167,6 +168,11 @@ def replay(raw: tuple[bytes, ...], g5: SealedG5) -> RunState:
             if law not in law_ids:
                 raise G6Blocked("RUN_BLOCK: unknown law")
             seen = stages.setdefault(law, set())
+            if kind == "Q_ATTEMPT":
+                n = len(checkpoints) * 4 * len(ARMS)
+                if (n >= EXPECTED_SLOTS or g5.ordered[n].law_id != law
+                        or len(reservations) != n or len(finishes) != n):
+                    raise G6Blocked("RUN_BLOCK: Q law order/checkpoint violated")
             prerequisite = {"Q_ATTEMPT": None, "Q_PRECOMMIT": "Q_ATTEMPT",
                             "Q_ANSWER": "Q_PRECOMMIT", "SNAPSHOT_LOCK": "Q_ANSWER",
                             "STOPPED_PRECOMMIT_UNKNOWN": "Q_ATTEMPT",
@@ -218,6 +224,8 @@ def replay(raw: tuple[bytes, ...], g5: SealedG5) -> RunState:
                 raise G6Blocked("RUN_BLOCK: bad slot index")
             if kind == "SLOT_RESERVED":
                 if (stopped or n != len(reservations) or len(finishes) != len(reservations)
+                        or (n > 0 and n % (4 * len(ARMS)) == 0
+                            and g5.ordered[n - 1].law_id not in checkpoints)
                         or n in reservations or set(d) != {"ordinal", "slot", "journal_tip_before", "run_lock_sha256"}
                         or checked_slot(d["slot"]) != g5.ordered[n]
                         or d["journal_tip_before"] != previous
@@ -246,11 +254,14 @@ def replay(raw: tuple[bytes, ...], g5: SealedG5) -> RunState:
             if (set(d) != {"law_id", "root_sha256", "counts"}
                     or not count or count % (4 * len(ARMS)) != 0
                     or len(reservations) != count
+                    or count != (len(checkpoints) + 1) * 4 * len(ARMS)
+                    or d["law_id"] in checkpoints
                     or d["law_id"] != g5.ordered[count - 1].law_id
                     or d["root_sha256"] != root
                     or d["counts"] != {"reserved": len(reservations),
                                        "finished": count, "missing": len(missing)}):
                 raise G6Blocked("RUN_BLOCK: full-run law checkpoint mismatch")
+            checkpoints.add(d["law_id"])
         previous = e["entry_sha256"]
         events.append(e)
     return RunState(g5, lock, tuple(events), previous, stages,
