@@ -660,6 +660,10 @@ class G6Orchestrator:
         if type(self.remote) is not remote_type or self.scope != scope:
             raise G6Blocked("RUN_BLOCK: formal executor scope mismatch")
         permit = self.authorize(owner_go)
+        from .g6_measurement import ProductionPermit
+        required = ProductionPermit if scope == "production" else RehearsalPermit
+        if type(permit) is not required or permit.lock_sha256 != sha(canonical(self.lock_data)):
+            raise G6Blocked("RUN_BLOCK: formal permit crossed scope")
         if delegated_cgroup_root is None:
             raise G6Blocked("RUN_BLOCK: real delegated cgroup is mandatory")
         slot, request = self._reserve(ordinal, trace_token=trace_token)
