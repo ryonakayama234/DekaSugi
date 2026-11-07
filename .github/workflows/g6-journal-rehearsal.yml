@@ -1,0 +1,43 @@
+name: G6 journal live rehearsal (synthetic only)
+on:
+  push:
+    branches: [audit/r2ma/g6-rehearsal-20261107]
+concurrency:
+  group: r2ma-g6-run-single
+  cancel-in-progress: false
+jobs:
+  journal-rehearsal:
+    if: github.ref == 'refs/heads/audit/r2ma/g6-rehearsal-20261107'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify frozen production sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 5312672bf593f65d5d6dbbce2d7ff3729dd588ef HEAD
+          git diff --quiet 5312672bf593f65d5d6dbbce2d7ff3729dd588ef HEAD -- packages/
+      - name: Configure git identity
+        run: |
+          git config user.name "Muse G6 Journal Rehearsal"
+          git config user.email "g6-rehearsal@localhost"
+      - name: Phase A (append through simulated crash point)
+        run: python3 probe/g6-rehearsal/rehearse.py A
+      - name: Phase B (restart from remote, recovery checks)
+        run: python3 probe/g6-rehearsal/rehearse.py B
+      - name: Archive rehearsal result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: g6-journal-rehearsal-${{ github.run_id }}-${{ github.run_attempt }}
+          path: rehearsal-result.json
+          if-no-files-found: warn
+          retention-days: 30
