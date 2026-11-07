@@ -288,6 +288,56 @@ class G6ExecutorScopeTests(unittest.TestCase):
                 now=6, artifacts=files)
         self.assertEqual(len(orch.state().events), 1)
 
+    def test_driver_start_first_law_cost_only_and_explicit_resume(self):
+        from packages.r2_m_a.g6_driver import G6Driver
+        orch, backend, permit, name = self.orch("rehearsal")
+        files = QArtifactFiles(
+            Path(__file__), Path(__file__).resolve().parent / "test_r2_m_a_g6_1.py")
+        def driver():
+            return G6Driver(
+                orch, owner_go=None, delegated_cgroup_root="/test-only",
+                q_artifacts=files)
+        with patch(name, return_value=permit), patch(
+            "packages.r2_m_a.child_supervisor.supervise_formal_child",
+            side_effect=lambda request, **kwargs: fake_supervisor()):
+            result = driver().start(max_laws=1)
+            self.assertEqual(result.laws_checkpointed, 1)
+            self.assertEqual(result.slots_finished, 28)
+            self.assertEqual(result.status, "BOUNDARY_PAUSE")
+            report = json.loads(Path(result.first_law_cost_report).read_bytes())
+            self.assertEqual(report["observed_receipts"], 28)
+            self.assertEqual(report["wall_seconds"]["observed"], 28)
+            self.assertEqual(report["cpu_seconds"]["unmeasured"], 0)
+            self.assertTrue(report["no_scoring"])
+            self.assertFalse(set(report) & {"prediction", "truth", "score",
+                                            "legal_action", "route"})
+            tip = orch.state().tip
+            resumed = driver().resume(max_laws=1)
+            self.assertEqual(resumed.laws_checkpointed, 1)
+            self.assertEqual(orch.state().tip, tip)
+            with self.assertRaisesRegex(G6Blocked, "already sealed"):
+                driver().start(max_laws=1)
+
+    def test_driver_crash_at_child_stops_law_and_never_advances(self):
+        from packages.r2_m_a.g6_driver import G6Driver
+        orch, backend, permit, name = self.orch("rehearsal")
+        files = QArtifactFiles(
+            Path(__file__), Path(__file__).resolve().parent / "test_r2_m_a_g6_1.py")
+        driver = G6Driver(
+            orch, owner_go=None, delegated_cgroup_root="/test-only",
+            q_artifacts=files)
+        with patch(name, return_value=permit), patch(
+            "packages.r2_m_a.child_supervisor.supervise_formal_child",
+            side_effect=SystemExit("injected crash")):
+            with self.assertRaises(SystemExit):
+                driver.start(max_laws=2)
+            self.assertEqual(orch.state().slot_status(0), "RESERVED")
+            with self.assertRaisesRegex(G6Blocked, "STARTED_MISSING"):
+                driver.resume(max_laws=2)
+        self.assertNotIn(1, orch.state().reservations)
+        self.assertEqual(
+            sum(e["kind"] == "LAW_CHECKPOINT" for e in orch.state().events), 0)
+
     def test_rehearsal_q_uses_real_gateway_precommit_and_public4(self):
         orch, _, permit, name = self.orch("rehearsal")
         self.initialize_with_fixture(orch, permit, name)
