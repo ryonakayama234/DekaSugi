@@ -685,6 +685,8 @@ class G6Orchestrator:
                             delegated_cgroup_root: str | Path | None = None) -> RunState:
         """Production is blocked until all three authentic Owner GO checks pass."""
         if measurement_executor is not None:
+            # Preserve G6-1's Owner-GO-first rejection, even with a fake callback.
+            authorize_g6(self.g5, run_lock(self.g5), owner_go)
             raise G6Blocked("RUN_BLOCK: injected production executor prohibited")
         return self._run_formal_slot(
             ordinal, trace_token=trace_token, owner_go=owner_go,
