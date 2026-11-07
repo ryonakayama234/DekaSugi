@@ -13,7 +13,7 @@ from .g6_order import G6Blocked, canonical, sha
 from .g6_measurement import MeasurementReceipt, ProductionPermit
 from .g6_scope import RehearsalPermit
 
-TOKEN = re.compile(r"[0-9a-f]{32}\\Z")
+TOKEN = re.compile(r"[0-9a-f]{32}\Z")
 FORMAL_STATUSES = frozenset({
     "TRACE_PRESENT", "INVALID", "RESOURCE_STOP",
     "RUN_BLOCK", "UNMEASURED", "BOUNDARY_REVIEW",
