@@ -3,6 +3,7 @@
 id: R2-M-A-G6-1-20261107
 status: draft_implementation / synthetic_only / G6-3_NOT_AUTHORIZED / no_scoring
 updated: 2026-11-07
+tags: r2-m-a, g6-1, remote-custody, slot-first, synthetic-only, recovery, owner-gate
 
 ## Authority
 
