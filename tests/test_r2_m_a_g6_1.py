@@ -230,6 +230,24 @@ class G61Tests(unittest.TestCase):
         with self.assertRaises(G6Blocked):
             replay((bytes(bad), *self.remote.load()[1:]), self.g5)
 
+    def test_law_root_checkpoint_exactly_once_before_next_law(self):
+        self.orch.initialize()
+        controller = self.ready_after_lock()
+        terminal = {"status": "UNMEASURED", "receipt_sha256": "c" * 64}
+        # Exactly one completed law = four USE points times seven arms.
+        for ordinal in range(28):
+            controller.run_synthetic_slot(
+                ordinal, trace_token=f"{ordinal + 100:032x}",
+                fake_spawn=lambda request: terminal)
+        _, intent, _ = self._public_fixture()
+        with self.assertRaisesRegex(G6Blocked, "checkpoint"):
+            controller.precommit_synthetic("1001", intent)
+        controller.checkpoint_law("1100")
+        with self.assertRaisesRegex(G6Blocked, "checkpoint"):
+            controller.checkpoint_law("1100")
+        controller.precommit_synthetic("1001", intent)
+        self.assertIn("Q_PRECOMMIT", self.fresh().state().stages["1001"])
+
     def test_production_no_owner_GO_blocks_before_reservation(self):
         self.orch.initialize()
         fresh = self.ready_after_lock()
