@@ -63,7 +63,12 @@ class G6QStage:
         from .g6_orchestrator import GitRunJournal, RehearsalGitRunJournal
         expected = (GitRunJournal if self.orch.scope == "production"
                     else RehearsalGitRunJournal)
-        if type(self.orch.remote) is not expected or self.orch._production_permit is None:
+        from .g6_measurement import ProductionPermit
+        from .g6_scope import RehearsalPermit
+        permit_type = (ProductionPermit if self.orch.scope == "production"
+                       else RehearsalPermit)
+        if (type(self.orch.remote) is not expected
+                or type(self.orch._production_permit) is not permit_type):
             raise G6Blocked("RUN_BLOCK: formal Q scope not authenticated")
 
     def precommit(self, law: str, gateway, *, now: int,
