@@ -22,6 +22,9 @@ FORBIDDEN_CHILD_MODULES = (
     "packages.r2_m_a.remote_custody",
     "packages.r2_m_a.g4_dossier",
     "packages.r2_m_a.orchestrator",
+    "packages.r2_m_a.g6_order",
+    "packages.r2_m_a.g6_orchestrator",
+    "packages.r2_m_a.g6_measurement",
 )
 
 

@@ -1,0 +1,36 @@
+name: R2-M-A G6-1 synthetic-only (no GO)
+on:
+  pull_request:
+    paths:
+      - 'packages/r2_m_a/g6_*.py'
+      - 'packages/r2_m_a/import_guard.py'
+      - 'tests/test_r2_m_a_g6_1.py'
+      - 'docs/specs/R2-M-A-G6-1.md'
+      - '.github/workflows/r2-m-a-g6-1-synthetic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One group for all G6-related runs; future G6 production workflow must reuse it.
+concurrency:
+  group: r2ma-g6-run-single
+  cancel-in-progress: false
+
+jobs:
+  synthetic-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: G6-1 negative tests (mock remote and artificial Q only)
+        run: python -m unittest -v tests.test_r2_m_a_g6_1
+      - name: Existing G3 + R2-M-ENG regression
+        run: |
+          python -m unittest -v tests.test_r2_m_a_contracts tests.test_r2_m_a_g3_3_custody
+          python -m unittest discover -s tests -p 'test_r2_m_eng_*.py'
+      - name: Documentation validation
+        run: python scripts/check_docs.py
