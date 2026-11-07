@@ -1,6 +1,6 @@
-"""G6-1 fail-closed remote-first orchestration, recovery and synthetic tests.
+"""G6 remote-first orchestration: pinned journals, one-shot formal execution.
 
-No scientific run or score entrypoint. G3 engineering-only paths are unchanged.
+G3 engineering-only and G6-4 scoring contracts are preserved.
 """
 from __future__ import annotations
 
@@ -284,7 +284,7 @@ class GitRunJournal:
                  repo: str = "ryonakayama234/DekaSugi"):
         self.root = Path(checkout).resolve(strict=True)
         if type(self) is GitRunJournal:
-            self.ref, self.journal_root, self.scope = RUN_BRANCH, self.journal_root, "production"
+            self.ref, self.journal_root, self.scope = RUN_BRANCH, ROOT, "production"
         elif type(self) is RehearsalGitRunJournal:
             self.ref, self.journal_root, self.scope = (
                 REHEARSAL_BRANCH, REHEARSAL_ROOT, "rehearsal")
@@ -345,7 +345,7 @@ class GitRunJournal:
         return data
 
     def _check_scope(self) -> None:
-        expected = ((RUN_BRANCH, self.journal_root, "production") if type(self) is GitRunJournal
+        expected = ((RUN_BRANCH, ROOT, "production") if type(self) is GitRunJournal
                     else (REHEARSAL_BRANCH, REHEARSAL_ROOT, "rehearsal")
                     if type(self) is RehearsalGitRunJournal else None)
         if (expected is None
