@@ -408,6 +408,10 @@ def _supervise_child(
         "BOUNDARY_REVIEW" if rss_boundary_status(observation.peak_rss_bytes)
         == "BOUNDARY_REVIEW" else ("TRACE_PRESENT" if formal else "ENGINEERING_ONLY")
     )
+    if (formal and cgroup_peak is not None and cgroup_peak >= RSS_BYTES_CAP
+            and status == "TRACE_PRESENT"):
+        status = ("BOUNDARY_REVIEW" if cgroup_peak <= 536_870_912
+                  else "RESOURCE_STOP")
     return {
         "engineering_only": not formal, "status": status,
         "reason": failure or observation.stopped_for,
