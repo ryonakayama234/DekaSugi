@@ -21,6 +21,8 @@ from .contracts import (ARMS, EXPECTED_SLOTS, G2_MAIN_SHA, G2_PREREG_SHA256,
 from .g6_order import (G5_COMMIT, G5_SHA256, G5_TARGET, G6Blocked, SealedG5,
                        canonical, sha, load_pinned_g5)
 from .g6_measurement import OwnerGOReference, MeasurementReceipt, authorize_g6
+from .g6_scope import (REHEARSAL_BRANCH, REHEARSAL_ROOT, RehearsalPermit,
+                       authorize_rehearsal_g6, rehearsal_run_lock)
 from packages.r2_m_eng.records import (PublicObservation, public_evidence_digest,
                                         validate_public_history)
 from packages.r2_m_eng.snapshot import write_snapshot, load_snapshot, _journal_checked
@@ -126,10 +128,14 @@ class RunState:
         return None
 
 
-def replay(raw: tuple[bytes, ...], g5: SealedG5) -> RunState:
+def replay(raw: tuple[bytes, ...], g5: SealedG5, *,
+           scope: str = "production") -> RunState:
     """Rebuild exclusively from pinned remote canonical bytes, no workspace state."""
     if type(raw) is not tuple or type(g5) is not SealedG5:
         raise G6Blocked("RUN_BLOCK: missing remote journal")
+    if scope not in ("production", "rehearsal"):
+        raise G6Blocked("RUN_BLOCK: unknown journal scope")
+    expected_lock = run_lock(g5) if scope == "production" else rehearsal_run_lock(g5)
     stages = {}
     reservations = {}
     finishes = {}
@@ -157,7 +163,7 @@ def replay(raw: tuple[bytes, ...], g5: SealedG5) -> RunState:
             raise G6Blocked("RUN_BLOCK: altered remote chain/sequence")
         kind, d = e["kind"], e["data"]
         if ordinal == 1:
-            if kind != "RUN_LOCK" or d != run_lock(g5):
+            if kind != "RUN_LOCK" or d != expected_lock:
                 raise G6Blocked("RUN_BLOCK: run-lock mismatch")
             lock = d
         elif kind == "RUN_LOCK":
@@ -229,7 +235,7 @@ def replay(raw: tuple[bytes, ...], g5: SealedG5) -> RunState:
                         or n in reservations or set(d) != {"ordinal", "slot", "journal_tip_before", "run_lock_sha256"}
                         or checked_slot(d["slot"]) != g5.ordered[n]
                         or d["journal_tip_before"] != previous
-                        or d["run_lock_sha256"] != sha(canonical(run_lock(g5)))
+                        or d["run_lock_sha256"] != sha(canonical(expected_lock))
                         or "SNAPSHOT_LOCK" not in stages.get(g5.ordered[n].law_id, set())):
                     raise G6Blocked("RUN_BLOCK: duplicate/early reservation")
                 reservations[n] = e
@@ -247,7 +253,7 @@ def replay(raw: tuple[bytes, ...], g5: SealedG5) -> RunState:
                 missing.add(n)
         elif kind == "LAW_CHECKPOINT":
             count = len(finishes)
-            root = sha(canonical({"run_lock": run_lock(g5), "prior_tip": previous,
+            root = sha(canonical({"run_lock": expected_lock, "prior_tip": previous,
                                   "reserved": sorted(reservations),
                                   "finished": sorted(finishes),
                                   "missing": sorted(missing)}))
@@ -277,7 +283,13 @@ class GitRunJournal:
     def __init__(self, checkout: str | Path, *,
                  repo: str = "ryonakayama234/DekaSugi"):
         self.root = Path(checkout).resolve(strict=True)
-        self.ref = RUN_BRANCH
+        if type(self) is GitRunJournal:
+            self.ref, self.journal_root, self.scope = RUN_BRANCH, self.journal_root, "production"
+        elif type(self) is RehearsalGitRunJournal:
+            self.ref, self.journal_root, self.scope = (
+                REHEARSAL_BRANCH, REHEARSAL_ROOT, "rehearsal")
+        else:
+            raise G6Blocked("RUN_BLOCK: unknown remote journal implementation")
         self.repo = repo
         if (self.git("rev-parse", "--show-toplevel").strip() != str(self.root)
                 or self.git("symbolic-ref", "HEAD").strip() != self.ref):
@@ -332,17 +344,27 @@ class GitRunJournal:
             raise G6Blocked("RUN_BLOCK: G5 ref moved during readback")
         return data
 
+    def _check_scope(self) -> None:
+        expected = ((RUN_BRANCH, self.journal_root, "production") if type(self) is GitRunJournal
+                    else (REHEARSAL_BRANCH, REHEARSAL_ROOT, "rehearsal")
+                    if type(self) is RehearsalGitRunJournal else None)
+        if (expected is None
+                or (self.ref, self.journal_root, self.scope) != expected
+                or self.git("symbolic-ref", "HEAD").strip() != self.ref):
+            raise G6Blocked("RUN_BLOCK: journal scope escaped isolated branch/root")
+
     def load(self) -> tuple[bytes, ...]:
         """Never trust unpushed local events or workspace-derived state."""
+        self._check_scope()
         head = self.head(self.ref)
         self.fetch(head)
-        paths = self.git("ls-tree", "-r", "--name-only", head, "--", ROOT).splitlines()
+        paths = self.git("ls-tree", "-r", "--name-only", head, "--", self.journal_root).splitlines()
         if self.head(self.ref) != head:
             raise G6Blocked("RUN_BLOCK: remote changed during load")
-        event_files = sorted(p for p in paths if p.startswith(ROOT + "/events/"))
-        markers = {p for p in paths if p.startswith(ROOT + "/reservations/")}
+        event_files = sorted(p for p in paths if p.startswith(self.journal_root + "/events/"))
+        markers = {p for p in paths if p.startswith(self.journal_root + "/reservations/")}
         if (set(paths) != set(event_files) | markers
-                or any(p != f"{ROOT}/events/{i:06d}.json"
+                or any(p != f"{self.journal_root}/events/{i:06d}.json"
                        for i, p in enumerate(event_files, 1))):
             raise G6Blocked("RUN_BLOCK: missing/unexpected remote journal files")
         events = tuple(self.object(head, p) for p in event_files)
@@ -354,31 +376,32 @@ class GitRunJournal:
                 if type(n) is not int or n in expected:
                     raise G6Blocked("RUN_BLOCK: malformed write-once slot")
                 expected[n] = raw
-        required = {f"{ROOT}/reservations/{n:03d}.json" for n in expected}
+        required = {f"{self.journal_root}/reservations/{n:03d}.json" for n in expected}
         if markers != required:
             raise G6Blocked("RUN_BLOCK: missing or extra remote reservation")
         for n, raw in expected.items():
-            if self.object(head, f"{ROOT}/reservations/{n:03d}.json") != raw:
+            if self.object(head, f"{self.journal_root}/reservations/{n:03d}.json") != raw:
                 raise G6Blocked("RUN_BLOCK: reservation pinned bytes changed")
         return events
 
     def append(self, kind: str, data: dict, *, expected_tip: str,
                g5: SealedG5) -> dict:
+        self._check_scope()
         rows = self.load()
-        state = replay(rows, g5)
+        state = replay(rows, g5, scope=self.scope)
         if state.tip != expected_tip:
             raise G6Blocked("RUN_BLOCK: remote CAS journal tip moved")
         event = make_event(len(rows) + 1, kind, data, state.tip)
-        replay((*rows, canonical(event)), g5)
+        replay((*rows, canonical(event)), g5, scope=self.scope)
         head = self.head(self.ref)
         if self.git("rev-parse", "HEAD").strip() != head:
             raise G6Blocked("RUN_BLOCK: checkout and remote diverged")
         if self.git("diff", "--cached", "--name-only").strip():
             raise G6Blocked("RUN_BLOCK: dirty Git index")
-        rel = f"{ROOT}/events/{event['seq']:06d}.json"
+        rel = f"{self.journal_root}/events/{event['seq']:06d}.json"
         files = {rel: canonical(event)}
         if kind == "SLOT_RESERVED":
-            files[f"{ROOT}/reservations/{data['ordinal']:03d}.json"] = canonical(event)
+            files[f"{self.journal_root}/reservations/{data['ordinal']:03d}.json"] = canonical(event)
         try:
             for rel, raw in files.items():
                 target = self.root / rel
@@ -405,6 +428,10 @@ class GitRunJournal:
             return event
         except (G6Blocked, OSError) as exc:
             raise G6Blocked("RUN_BLOCK: remote push/readback outcome unknown") from exc
+
+
+class RehearsalGitRunJournal(GitRunJournal):
+    """Same byte-custody machinery, rigidly bound to the rehearsal ref/root."""
 
 
 def restore_locked_snapshot(answer: dict, lock: dict,
@@ -446,24 +473,47 @@ def restore_locked_snapshot(answer: dict, lock: dict,
 
 
 class G6Orchestrator:
-    """Remote-first finite-state controller. No built-in scientific executor."""
+    """Remote-first finite-state controller with separately gated formal scopes."""
 
     def __init__(self, remote, g5: SealedG5, artifact_dir: str | Path):
         if type(g5) is not SealedG5 or len(g5.ordered) != EXPECTED_SLOTS:
             raise G6Blocked("RUN_BLOCK: G5 expansion absent")
-        if type(remote) is GitRunJournal:
+        if type(remote) in (GitRunJournal, RehearsalGitRunJournal):
             if load_pinned_g5(remote.pinned_g5) != g5:
                 raise G6Blocked("RUN_BLOCK: G5 remote readback mismatch")
         self.remote = remote
         self.g5 = g5
+        self.scope = ("rehearsal" if type(remote) is RehearsalGitRunJournal
+                      else "production")
         self.artifact_dir = Path(artifact_dir).resolve(strict=True)
+        if type(remote) is RehearsalGitRunJournal:
+            isolated = remote.root / REHEARSAL_ROOT / "artifacts"
+            if (not self.artifact_dir.is_relative_to(isolated)
+                    or self.artifact_dir == isolated):
+                raise G6Blocked("RUN_BLOCK: rehearsal artifacts outside dedicated root")
         self._production_permit = None
 
+    @property
+    def lock_data(self) -> dict:
+        return (run_lock(self.g5) if self.scope == "production"
+                else rehearsal_run_lock(self.g5))
+
+    def authorize(self, owner_go: object):
+        """Always re-check remote Owner approval at an explicit start/resume boundary."""
+        if type(self.remote) is GitRunJournal:
+            self._production_permit = authorize_g6(self.g5, self.lock_data, owner_go)
+        elif type(self.remote) is RehearsalGitRunJournal:
+            self._production_permit = authorize_rehearsal_g6(
+                self.g5, self.lock_data, owner_go)
+        else:
+            raise G6Blocked("RUN_BLOCK: synthetic remote cannot authorize formal mode")
+        return self._production_permit
+
     def state(self) -> RunState:
-        return replay(self.remote.load(), self.g5)
+        return replay(self.remote.load(), self.g5, scope=self.scope)
 
     def _append(self, kind: str, data: dict) -> RunState:
-        if type(self.remote) is GitRunJournal and self._production_permit is None:
+        if type(self.remote) in (GitRunJournal, RehearsalGitRunJournal) and self._production_permit is None:
             raise G6Blocked("RUN_BLOCK: G6-3 Owner GO required for remote writes")
         before = self.state()
         self.remote.append(kind, data, expected_tip=before.tip, g5=self.g5)
@@ -475,11 +525,16 @@ class G6Orchestrator:
         return after
 
     def initialize(self, *, owner_go=None) -> RunState:
-        if type(self.remote) is GitRunJournal:
-            self._production_permit = authorize_g6(self.g5, run_lock(self.g5), owner_go)
+        if type(self.remote) in (GitRunJournal, RehearsalGitRunJournal):
+            self.authorize(owner_go)
         if self.state().lock is not None:
             raise G6Blocked("RUN_BLOCK: run-lock already sealed")
-        return self._append("RUN_LOCK", run_lock(self.g5))
+        return self._append("RUN_LOCK", self.lock_data)
+
+    def resume_authorized(self, *, owner_go: object) -> RunState:
+        """Explicit post-lock entry point; authorization is never inherited by restart."""
+        self.authorize(owner_go)
+        return self.resume()
 
     def resume(self) -> RunState:
         """Any reserved slot missing terminal evidence is permanently nonspawnable."""
@@ -565,22 +620,24 @@ class G6Orchestrator:
                      if e["kind"] == "SNAPSHOT_LOCK" and e["data"]["law_id"] == slot.law_id), None)
         if answer is None or lock is None:
             raise G6Blocked("RUN_BLOCK: missing public4 or snapshot lock")
-        snap = restore_locked_snapshot(answer, lock, self.artifact_dir)
+        snap = self.artifact_dir / ("snapshot-" + lock["token"] + ".json")
         trace = self.artifact_dir / ("trace-" + trace_token + ".json")
         if trace.exists() or trace.is_symlink():
             raise G6Blocked("RUN_BLOCK: trace target not fresh")
         request = ChildRequest(str(snap), lock["sha256"], slot.arm, slot.point, str(trace))
         self._append("SLOT_RESERVED", {"ordinal": ordinal,
                      "slot": slot.as_dict(), "journal_tip_before": state.tip,
-                     "run_lock_sha256": sha(canonical(run_lock(self.g5)))})
-        # A second pinned readback confirms remote state before any spawn.
+                     "run_lock_sha256": sha(canonical(self.lock_data))})
+        # Reservation is irrevocable BEFORE restoration and BEFORE child spawn.
+        # Any later failure remains unfinished and resumes as STARTED_MISSING.
         if ordinal not in self.state().reservations:
             raise G6Blocked("RUN_BLOCK: slot not remotely confirmed; no spawn")
+        restore_locked_snapshot(answer, lock, self.artifact_dir)
         return slot, request
 
     def run_synthetic_slot(self, ordinal: int, *, trace_token: str,
                            fake_spawn: Callable[[ChildRequest], dict]) -> RunState:
-        if type(self.remote) is GitRunJournal or not callable(fake_spawn):
+        if type(self.remote) in (GitRunJournal, RehearsalGitRunJournal) or not callable(fake_spawn):
             raise G6Blocked("RUN_BLOCK: synthetic callback not allowed on real audit ref")
         slot, request = self._reserve(ordinal, trace_token=trace_token)
         # Faults at this boundary are irreversible. No try/retry wrapper.
@@ -594,20 +651,55 @@ class G6Orchestrator:
         return self._append("SLOT_FINISHED", {"ordinal": ordinal,
                             "reservation_tip": reserved["entry_sha256"], **result})
 
+    def _run_formal_slot(self, ordinal: int, *, trace_token: str,
+                         owner_go: object, delegated_cgroup_root: str | Path,
+                         scope: str) -> RunState:
+        from .child_supervisor import supervise_formal_child
+        from .g6_executor import make_formal_receipt, seal_local_receipt
+        remote_type = GitRunJournal if scope == "production" else RehearsalGitRunJournal
+        if type(self.remote) is not remote_type or self.scope != scope:
+            raise G6Blocked("RUN_BLOCK: formal executor scope mismatch")
+        permit = self.authorize(owner_go)
+        if delegated_cgroup_root is None:
+            raise G6Blocked("RUN_BLOCK: real delegated cgroup is mandatory")
+        slot, request = self._reserve(ordinal, trace_token=trace_token)
+        # Everything after SLOT_RESERVED is a single irreversible attempt:
+        # no exception handler, finish-on-error, re-query or automatic retry.
+        result = supervise_formal_child(
+            request, delegated_cgroup_root=delegated_cgroup_root, g5=self.g5,
+            lock=self.lock_data, owner_go=owner_go, scope=scope)
+        receipt = make_formal_receipt(slot, request, permit, result)
+        receipt.verify(slot, request, permit)
+        seal_local_receipt(self.artifact_dir, trace_token, receipt)
+        reserved = self.state().reservations[ordinal]
+        return self._append("SLOT_FINISHED", {
+            "ordinal": ordinal, "reservation_tip": reserved["entry_sha256"],
+            "status": receipt.status, "receipt_sha256": receipt.digest})
+
     def run_production_slot(self, ordinal: int, *, trace_token: str,
-                            owner_go: object = None, measurement_executor=None):
-        # G6-1 cannot open the executable path: no audited G6 measurement
-        # executor has been installed. Even if approval is later published,
-        # a separately reviewed G6-3 implementation is required to enable it.
-        authorize_g6(self.g5, run_lock(self.g5), owner_go)
-        raise G6Blocked("RUN_BLOCK: audited G6 measurement executor not installed")
+                            owner_go: object = None, measurement_executor=None,
+                            delegated_cgroup_root: str | Path | None = None) -> RunState:
+        """Production is blocked until all three authentic Owner GO checks pass."""
+        if measurement_executor is not None:
+            raise G6Blocked("RUN_BLOCK: injected production executor prohibited")
+        return self._run_formal_slot(
+            ordinal, trace_token=trace_token, owner_go=owner_go,
+            delegated_cgroup_root=delegated_cgroup_root, scope="production")
+
+    def run_rehearsal_slot(self, ordinal: int, *, trace_token: str,
+                           owner_go: object = None,
+                           delegated_cgroup_root: str | Path | None = None) -> RunState:
+        """Real child/receipt, separate branch/root/lock/GO, never production."""
+        return self._run_formal_slot(
+            ordinal, trace_token=trace_token, owner_go=owner_go,
+            delegated_cgroup_root=delegated_cgroup_root, scope="rehearsal")
 
     def checkpoint_law(self, law: str) -> RunState:
         """Additional per-law full-run root seal; does not replace slot seals."""
         state = self.state()
         if law not in {slot.law_id for slot in self.g5.ordered}:
             raise G6Blocked("RUN_BLOCK: unknown law")
-        root = {"run_lock": run_lock(self.g5), "prior_tip": state.tip,
+        root = {"run_lock": self.lock_data, "prior_tip": state.tip,
                 "reserved": sorted(state.reservations),
                 "finished": sorted(state.finishes), "missing": sorted(state.missing)}
         return self._append("LAW_CHECKPOINT", {"law_id": law,
