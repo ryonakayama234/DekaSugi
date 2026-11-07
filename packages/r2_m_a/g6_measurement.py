@@ -115,10 +115,10 @@ class MeasurementReceipt:
     trace_sha256: str | None
     stdout_sha256: str | None
     stderr_sha256: str | None
-    wall_seconds: float
-    cpu_seconds: float
-    peak_rss_bytes: int
-    cgroup_peak_bytes: int
+    wall_seconds: float | None
+    cpu_seconds: float | None
+    peak_rss_bytes: int | None
+    cgroup_peak_bytes: int | None
     exit_code: int | None
     reaped: bool
     stop_reason: str | None
@@ -130,8 +130,9 @@ class MeasurementReceipt:
         return sha(canonical(asdict(self)))
 
     def verify(self, slot: Slot, request: ChildRequest, permit: ProductionPermit) -> None:
+        from .g6_scope import RehearsalPermit
         if (type(slot) is not Slot or type(request) is not ChildRequest
-                or type(permit) is not ProductionPermit
+                or type(permit) not in (ProductionPermit, RehearsalPermit)
                 or self.schema != RECEIPT_SCHEMA
                 or self.slot != slot.as_dict()
                 or self.request_sha256 != sha(canonical(request.as_dict()))
@@ -141,18 +142,16 @@ class MeasurementReceipt:
             if digest is not None and (type(digest) is not str
                                        or not SHA64.fullmatch(digest)):
                 raise G6Blocked("RUN_BLOCK: invalid trace/output SHA")
-        if (type(self.wall_seconds) not in (int, float)
-                or type(self.cpu_seconds) not in (int, float)
-                or not math.isfinite(self.wall_seconds)
-                or not math.isfinite(self.cpu_seconds)
-                or self.wall_seconds < 0 or self.cpu_seconds < 0
-                or type(self.peak_rss_bytes) is not int
-                or self.peak_rss_bytes < 0
-                or type(self.cgroup_peak_bytes) is not int
-                or self.cgroup_peak_bytes < 0
-                or type(self.reaped) is not bool
-                or type(self.environment) is not dict
-                or not {"runner_os", "python", "cgroup_v2"} <= set(self.environment)):
+        for val in (self.wall_seconds, self.cpu_seconds):
+            if (val is not None and (type(val) not in (int, float)
+                    or not math.isfinite(val) or val < 0)):
+                raise G6Blocked("RUN_BLOCK: invalid process time")
+        for val in (self.peak_rss_bytes, self.cgroup_peak_bytes):
+            if val is not None and (type(val) is not int or val < 0):
+                raise G6Blocked("RUN_BLOCK: invalid memory observation")
+        if (type(self.reaped) is not bool or type(self.environment) is not dict
+                or not {"runner_os", "python", "cgroup_v2"} <= set(self.environment)
+                or type(self.environment["cgroup_v2"]) is not bool):
             raise G6Blocked("RUN_BLOCK: invalid raw metrology")
         if self.status not in {"TRACE_PRESENT", "INVALID", "RESOURCE_STOP",
                                "RUN_BLOCK", "UNMEASURED", "BOUNDARY_REVIEW"}:
@@ -160,6 +159,8 @@ class MeasurementReceipt:
         if self.status == "TRACE_PRESENT":
             if (not self.reaped or self.exit_code != 0
                     or self.trace_sha256 is None or self.stop_reason is not None
+                    or self.wall_seconds is None or self.cpu_seconds is None
+                    or self.peak_rss_bytes is None or self.cgroup_peak_bytes is None
                     or self.peak_rss_bytes >= RSS_BYTES_CAP
                     or self.cgroup_peak_bytes >= RSS_BYTES_CAP
                     or self.wall_seconds > WALL_SECONDS_CAP
@@ -167,7 +168,7 @@ class MeasurementReceipt:
                 raise G6Blocked("RUN_BLOCK: false clean measurement")
         elif not self.stop_reason:
             raise G6Blocked("RUN_BLOCK: incomplete failure reason")
-        if (self.peak_rss_bytes >= RSS_BYTES_CAP
-                or self.cgroup_peak_bytes >= RSS_BYTES_CAP):
+        if any(v is not None and v >= RSS_BYTES_CAP
+               for v in (self.peak_rss_bytes, self.cgroup_peak_bytes)):
             if self.status not in {"RESOURCE_STOP", "BOUNDARY_REVIEW", "RUN_BLOCK"}:
                 raise G6Blocked("RUN_BLOCK: RSS cap breach hidden")
