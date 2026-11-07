@@ -32,6 +32,11 @@ def sha(raw: bytes) -> str:
     return sha256(raw).hexdigest()
 
 
+def canonical(obj: object) -> bytes:
+    return (json.dumps(obj, ensure_ascii=False, sort_keys=True,
+                       allow_nan=False, separators=(",", ":")) + "\\n").encode("utf-8")
+
+
 @dataclass(frozen=True)
 class SealedG5:
     ordered: tuple[Slot, ...]
