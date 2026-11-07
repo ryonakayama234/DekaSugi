@@ -1,0 +1,39 @@
+name: R2-M-A G6 executor and scope (synthetic-only CI)
+on:
+  pull_request:
+    paths:
+      - 'packages/r2_m_a/g6_*.py'
+      - 'packages/r2_m_a/child_supervisor.py'
+      - 'packages/r2_m_a/import_guard.py'
+      - 'tests/test_r2_m_a_g6_1.py'
+      - 'tests/test_r2_m_a_g6_executor.py'
+      - 'docs/specs/R2-M-A-G6-3-EXECUTOR.md'
+      - '.github/workflows/r2-m-a-g6-executor-synthetic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Reuse the original G6 group; this workflow never writes audit refs.
+concurrency:
+  group: r2ma-g6-run-single
+  cancel-in-progress: false
+
+jobs:
+  isolated-synthetic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: G6-1 compatibility and G6 executor/scope negative tests
+        run: |
+          python -m unittest -v tests.test_r2_m_a_g6_1 tests.test_r2_m_a_g6_executor
+      - name: Complete R2-M-A regression suite
+        run: python -m unittest discover -s tests -p 'test_r2_m_a_*.py'
+      - name: R2-M-ENG 45-test regression suite
+        run: python -m unittest discover -s tests -p 'test_r2_m_eng_*.py'
+      - name: Check repository documentation
+        run: python scripts/check_docs.py
