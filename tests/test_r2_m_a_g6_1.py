@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -208,6 +209,7 @@ class G61Tests(unittest.TestCase):
         lock = next(x["data"] for x in state.events if x["kind"] == "SNAPSHOT_LOCK")
         self.assertTrue(restore_locked_snapshot(answer, lock, self.root).is_file())
         path = self.root / ("snapshot-" + TOKEN + ".json")
+        os.chmod(path, 0o600)  # deliberate adversarial chmod of immutable fixture
         path.write_bytes(b"tampered")
         with self.assertRaisesRegex(G6Blocked, "cached snapshot"):
             restore_locked_snapshot(answer, lock, self.root)
