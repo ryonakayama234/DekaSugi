@@ -94,10 +94,11 @@ class G6ExecutorScopeTests(unittest.TestCase):
         remote.load = backend.load
         remote.append = backend.append
         remote.pinned_g5 = lambda ref, commit, path: SEALED
-        remote.root = self.root
+        session = Path(tempfile.mkdtemp(prefix="scope-", dir=self.root))
+        remote.root = session
         remote.ref = RUN_BRANCH if scope == "production" else REHEARSAL_BRANCH
-        directory = (self.root if scope == "production"
-                     else self.root / REHEARSAL_ROOT / "artifacts" / "fixture")
+        directory = (session if scope == "production"
+                     else session / REHEARSAL_ROOT / "artifacts" / "fixture")
         directory.mkdir(parents=True, exist_ok=True)
         orch = G6Orchestrator(remote, self.g5, directory)
         permit = (ProductionPermit if scope == "production" else RehearsalPermit)(
