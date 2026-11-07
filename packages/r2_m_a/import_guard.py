@@ -25,6 +25,10 @@ FORBIDDEN_CHILD_MODULES = (
     "packages.r2_m_a.g6_order",
     "packages.r2_m_a.g6_orchestrator",
     "packages.r2_m_a.g6_measurement",
+    "packages.r2_m_a.g6_scope",
+    "packages.r2_m_a.g6_executor",
+    "packages.r2_m_a.g6_q",
+    "packages.r2_m_a.g6_driver",
 )
 
 

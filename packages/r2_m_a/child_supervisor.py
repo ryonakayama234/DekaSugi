@@ -1,4 +1,4 @@
-"""G3-2 Linux fresh-child supervisor, engineering-only; no scientific runner.
+"""G3-2 Linux fresh-child supervisor with a separately authorized G6 formal entry.
 
 Single spawn per reserved trace, independent process session/group, Linux
 PDEATHSIG child bootstrap, cgroup-v2 memory fail-closed, parent monotonic +
@@ -261,18 +261,15 @@ def _reserve_once(path: Path, payload: dict[str, object]) -> None:
         raise RunBlocked("RUN_BLOCK: duplicate/unwritable child attempt") from exc
 
 
-def supervise_synthetic_child(
+def _supervise_child(
     request: ChildRequest, *, delegated_cgroup_root: str | Path,
     engineering_only: bool, law_id: str | None = None,
-    child_slot: str | None = None,
+    child_slot: str | None = None, formal: bool = False,
 ) -> dict[str, object]:
-    """One synthetic child only. G3-3/G5/G6 custody/order/measurement not wired.
-
-    Production calls with engineering_only=False are rejected. No evaluator,
-    USE label, score, law ID, or order seed is sent to the child.
-    """
-    if engineering_only is not True:
-        raise RunBlocked("RUN_BLOCK: G6/scientific measurement not authorized")
+    """Single real fresh child; mode selected only by the approved parent gateway."""
+    if ((formal and engineering_only is not False)
+            or (not formal and engineering_only is not True)):
+        raise RunBlocked("RUN_BLOCK: G6/formal supervisor mode mismatch")
     _linux_required()
     if type(request) is not ChildRequest:
         raise RunBlocked("RUN_BLOCK: invalid child contract")
@@ -409,10 +406,14 @@ def supervise_synthetic_child(
         "RESOURCE_STOP" if observation.stopped_for is not None or oom else
         "INVALID" if exit_code != 0 or not valid_receipt else
         "BOUNDARY_REVIEW" if rss_boundary_status(observation.peak_rss_bytes)
-        == "BOUNDARY_REVIEW" else "ENGINEERING_ONLY"
+        == "BOUNDARY_REVIEW" else ("TRACE_PRESENT" if formal else "ENGINEERING_ONLY")
     )
+    if (formal and cgroup_peak is not None and cgroup_peak >= RSS_BYTES_CAP
+            and status == "TRACE_PRESENT"):
+        status = ("BOUNDARY_REVIEW" if cgroup_peak <= 536_870_912
+                  else "RESOURCE_STOP")
     return {
-        "engineering_only": True, "status": status,
+        "engineering_only": not formal, "status": status,
         "reason": failure or observation.stopped_for,
         "exit_code": exit_code, "reaped": observation.reaped,
         "process_group_id": proc.pid if proc else None,
@@ -426,3 +427,38 @@ def supervise_synthetic_child(
         "child_trace_digest": (
             child_receipt.get("trace_digest") if child_receipt else None),
     }
+
+
+def supervise_synthetic_child(
+    request: ChildRequest, *, delegated_cgroup_root: str | Path,
+    engineering_only: bool, law_id: str | None = None,
+    child_slot: str | None = None,
+) -> dict[str, object]:
+    """Original engineering-only interface. G6 cannot pass through this gate."""
+    if engineering_only is not True:
+        raise RunBlocked("RUN_BLOCK: G6/scientific measurement not authorized")
+    return _supervise_child(
+        request, delegated_cgroup_root=delegated_cgroup_root,
+        engineering_only=True, law_id=law_id, child_slot=child_slot)
+
+
+def supervise_formal_child(
+    request: ChildRequest, *, delegated_cgroup_root: str | Path,
+    g5, lock: dict, owner_go: object, scope: str,
+) -> dict[str, object]:
+    """G6 formal mode. Reauthenticate before touching cgroups or spawning.
+
+    Rehearsal and production share the same metrology and child process. Only
+    the scope-typed remote Owner permit and journal placement differ.
+    """
+    if scope == "production":
+        from .g6_measurement import authorize_g6
+        authorize_g6(g5, lock, owner_go)
+    elif scope == "rehearsal":
+        from .g6_scope import authorize_rehearsal_g6
+        authorize_rehearsal_g6(g5, lock, owner_go)
+    else:
+        raise RunBlocked("RUN_BLOCK: unknown formal scope")
+    return _supervise_child(
+        request, delegated_cgroup_root=delegated_cgroup_root,
+        engineering_only=False, formal=True)
