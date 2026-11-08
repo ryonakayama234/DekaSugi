@@ -1,0 +1,1 @@
+{"data":{"counts":{"finished":28,"missing":0,"reserved":28},"law_id":"1100","root_sha256":"37616ee5773120d0f58cccc5629bbf5b83012e8570a5efa20adbf3f0b89c645b"},"entry_sha256":"5fc1ca3e87df7ff223363fa2ac98f1d47f209671e62ca70b0c5b4173e6d88c07","kind":"LAW_CHECKPOINT","prev_sha256":"fc82559b6a4c58ccf9e1ae06ba39ff529559ba1f2762666d0d640d5f1785a4ec","schema":"r2ma-g6-event/1","seq":62}
