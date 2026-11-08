@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict
+from hashlib import sha256
 from pathlib import Path
 from unittest.mock import patch
 import json
@@ -10,7 +11,9 @@ import sys
 import tempfile
 import unittest
 
-from packages.r2_m_a.contracts import ChildRequest, PAID_Q001, RSS_BYTES_CAP
+from packages.r2_m_a.contracts import (
+    ChildRequest, G2_PREREG_SHA256, LAW_IDS, PAID_Q001, RSS_BYTES_CAP,
+)
 from packages.r2_m_a.g6_order import (
     G5_BRANCH, G5_COMMIT, G6Blocked, canonical, sha, validate_g5,
 )
@@ -25,10 +28,14 @@ from packages.r2_m_a.g6_scope import (
 from packages.r2_m_a.g6_measurement import (
     ProductionPermit, OwnerGOReference, MeasurementReceipt, authorize_g6,
 )
+from packages.r2_m_a import g6_q as g6_q_module
+from packages.r2_m_a.g6_production_gateway import production_gateway_factory
 from packages.r2_m_a.g6_q import (
     G6QStage, QArtifactFiles, FROZEN_PRODUCTION_METHOD, FROZEN_PRODUCTION_POLICY,
 )
-from packages.r2_m_eng.records import public_evidence_digest
+from packages.r2_m_eng.records import (
+    PUBLIC_POINTS, public_evidence_digest, validate_public_history,
+)
 from packages.r2_m_eng.source_gateway import PublicGateway, SyntheticPrivateSource
 from tests.test_r2_m_a_g6_1 import SEALED
 
@@ -274,19 +281,41 @@ class G6ExecutorScopeTests(unittest.TestCase):
                 orch.run_production_slot(0, trace_token="e" * 32)
         self.assertFalse(orch.state().reservations)
 
-    def test_no_production_digest_source_is_invented(self):
-        self.assertIsNone(FROZEN_PRODUCTION_METHOD)
-        self.assertIsNone(FROZEN_PRODUCTION_POLICY)
+    def test_production_wrong_artifacts_block_before_q_attempt(self):
+        self.assertIsNotNone(FROZEN_PRODUCTION_METHOD)
+        self.assertIsNotNone(FROZEN_PRODUCTION_POLICY)
         orch, _, permit, name = self.orch("production")
         self.initialize_with_fixture(orch, permit, name)
         files = QArtifactFiles(Path(__file__), Path(__file__).resolve().parent /
                                "test_r2_m_a_g6_1.py")
-        with self.assertRaisesRegex(G6Blocked, "unresolved"):
+        with self.assertRaisesRegex(G6Blocked, "frozen Q artifact path/pin mismatch"):
             G6QStage(orch).precommit(
-                "1100", PublicGateway(
-                    SyntheticPrivateSource((1, 1, 0, 0)), opened_at=5, expires_at=20),
+                "1100", production_gateway_factory("1100", 6),
                 now=6, artifacts=files)
         self.assertEqual(len(orch.state().events), 1)
+
+    def test_production_factory_is_explicit_and_intent_uses_frozen_pins(self):
+        from packages.r2_m_a.g6_driver import G6Driver
+        orch, _, permit, name = self.orch("production")
+        self.initialize_with_fixture(orch, permit, name)
+        files = QArtifactFiles(Path(FROZEN_PRODUCTION_METHOD[0]),
+                               Path(FROZEN_PRODUCTION_POLICY[0]))
+        with self.assertRaisesRegex(G6Blocked, "source gateway must be explicit"):
+            G6Driver(orch, owner_go=None, delegated_cgroup_root="/test-only",
+                     q_artifacts=files)
+        driver = G6Driver(
+            orch, owner_go=None, delegated_cgroup_root="/test-only",
+            q_artifacts=files, gateway_factory=production_gateway_factory)
+        self.assertIs(driver.gateway_factory, production_gateway_factory)
+        gateway = driver.gateway_factory("1100", 6)
+        G6QStage(orch).precommit("1100", gateway, now=6, artifacts=files)
+        intent = next(e["data"]["intent"] for e in orch.state().events
+                      if e["kind"] == "Q_PRECOMMIT")
+        self.assertEqual(
+            (intent["method_sha256"], intent["policy_sha256"]),
+            (FROZEN_PRODUCTION_METHOD[1], FROZEN_PRODUCTION_POLICY[1]))
+        self.assertEqual(intent["public_initial_count"], 3)
+        self.assertEqual(intent["paid_budget_remaining"], 1)
 
     def test_driver_start_first_law_cost_only_and_explicit_resume(self):
         from packages.r2_m_a.g6_driver import G6Driver
@@ -351,6 +380,94 @@ class G6ExecutorScopeTests(unittest.TestCase):
         path = q.snapshot("1100", token="d" * 32)
         self.assertTrue(path.is_file())
         self.assertEqual(len(orch.state().events), 5)
+
+
+class G6ProductionPreparationTests(unittest.TestCase):
+    """Read-only, artificial-source preparation: no GO or production run."""
+
+    def pinned_artifacts(self):
+        return QArtifactFiles(Path(FROZEN_PRODUCTION_METHOD[0]),
+                              Path(FROZEN_PRODUCTION_POLICY[0]))
+
+    def test_actual_frozen_production_originals_and_g2_pin(self):
+        root = Path(__file__).resolve().parents[1]
+        self.assertEqual(
+            self.pinned_artifacts().method_path,
+            (root / "packages/r2_m_eng/source_gateway.py").resolve())
+        self.assertEqual(
+            self.pinned_artifacts().policy_path,
+            (root / "docs/research/"
+             "R2-M-A-20261105-exhaustive16-engineering-prereg-draft.md").resolve())
+        self.assertEqual(
+            FROZEN_PRODUCTION_METHOD[1],
+            "6b80af4c3cef28f50c43b01b1f0667128c44e2850ce101d5dfafa4511220f247")
+        self.assertEqual(FROZEN_PRODUCTION_POLICY[1], G2_PREREG_SHA256)
+        for path, pin in (
+                (self.pinned_artifacts().method_path, FROZEN_PRODUCTION_METHOD),
+                (self.pinned_artifacts().policy_path, FROZEN_PRODUCTION_POLICY)):
+            self.assertEqual(sha256(path.read_bytes()).hexdigest(), pin[1])
+        self.assertEqual(self.pinned_artifacts().digests(scope="production"),
+                         (FROZEN_PRODUCTION_METHOD[1], G2_PREREG_SHA256))
+
+    def test_one_byte_mutation_of_either_original_is_run_block(self):
+        # Never modify the actual frozen repository files during a test.
+        with tempfile.TemporaryDirectory() as tmp:
+            method = Path(tmp) / "method.py"
+            policy = Path(tmp) / "policy.md"
+            method_raw = self.pinned_artifacts().method_path.read_bytes()
+            policy_raw = self.pinned_artifacts().policy_path.read_bytes()
+            method.write_bytes(method_raw)
+            policy.write_bytes(policy_raw)
+            files = QArtifactFiles(method, policy)
+            with patch.object(g6_q_module, "FROZEN_PRODUCTION_METHOD",
+                              (str(method.resolve()), FROZEN_PRODUCTION_METHOD[1])), \
+                 patch.object(g6_q_module, "FROZEN_PRODUCTION_POLICY",
+                              (str(policy.resolve()), FROZEN_PRODUCTION_POLICY[1])):
+                self.assertEqual(files.digests(scope="production"),
+                                 (FROZEN_PRODUCTION_METHOD[1], G2_PREREG_SHA256))
+                altered = bytearray(method_raw)
+                altered[0] ^= 1
+                method.write_bytes(altered)
+                with self.assertRaisesRegex(G6Blocked, "RUN_BLOCK"):
+                    files.digests(scope="production")
+                method.write_bytes(method_raw)
+                altered = bytearray(policy_raw)
+                altered[-1] ^= 1
+                policy.write_bytes(altered)
+                with self.assertRaisesRegex(G6Blocked, "RUN_BLOCK"):
+                    files.digests(scope="production")
+
+    def test_factory_all_sixteen_laws_have_legal_public_initial_state(self):
+        self.assertEqual(len(LAW_IDS), 16)
+        for law in sorted(LAW_IDS):
+            with self.subTest(law=law):
+                gateway = production_gateway_factory(law, 101)
+                self.assertIs(type(gateway), PublicGateway)
+                state = gateway.public_state(now=102)
+                observations = state["observations"]
+                self.assertEqual(len(observations), 3)
+                validate_public_history(observations)
+                self.assertEqual(tuple(row.point for row in observations),
+                                 PUBLIC_POINTS[:3])
+                self.assertEqual(state["paid_budget_remaining"], 1)
+                self.assertEqual(state["legal_actions"], (PAID_Q001,))
+                self.assertEqual(state["expires_at"], 1001)
+                self.assertEqual(len(gateway.public_journal()), 3)
+                self.assertEqual(
+                    [e["event"] for e in gateway.public_journal()],
+                    ["initial", "initial", "initial"])
+                self.assertNotIn("coefficients", state)
+
+    def test_factory_rejects_invalid_law_time_and_digest_overrides(self):
+        for law in ("", "010", "01010", "01xx", "2222", 1010, None, True):
+            with self.subTest(law=law), self.assertRaisesRegex(G6Blocked, "RUN_BLOCK"):
+                production_gateway_factory(law, 101)
+        for now in (True, 1.5, -1, "100"):
+            with self.subTest(now=now), self.assertRaisesRegex(G6Blocked, "RUN_BLOCK"):
+                production_gateway_factory("1100", now)
+        with self.assertRaises(TypeError):
+            production_gateway_factory(
+                "1100", 101, method_sha256="0" * 64)
 
 
 @unittest.skipUnless(sys.platform == "linux" and hasattr(os, "wait4"),
