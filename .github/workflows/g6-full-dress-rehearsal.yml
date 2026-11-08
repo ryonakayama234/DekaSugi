@@ -1,0 +1,59 @@
+name: G6 full-dress rehearsal (rehearsal scope only)
+on:
+  push:
+    branches: [audit/r2ma/g6-rehearsal-20261107]
+concurrency:
+  group: r2ma-g6-run-single
+  cancel-in-progress: false
+jobs:
+  full-dress:
+    if: github.ref == 'refs/heads/audit/r2ma/g6-rehearsal-20261107'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wait for driver script
+        run: |
+          if [ -f probe/g6-rehearsal/run_full_dress.py ]; then
+            echo "ready=true" >> "$GITHUB_ENV"
+          else
+            echo "ready=false" >> "$GITHUB_ENV"
+            echo "driver script not present yet; exiting neutrally"
+          fi
+      - uses: actions/setup-python@v5
+        if: env.ready == 'true'
+        with:
+          python-version: '3.12'
+      - name: Verify frozen production sources
+        if: env.ready == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 1bb7afb80d4a5764ec6263ea1c005fbfee06a0d0 HEAD
+          git diff --quiet 1bb7afb80d4a5764ec6263ea1c005fbfee06a0d0 HEAD -- packages/
+      - name: Run full-dress rehearsal (law 1 of 16)
+        if: env.ready == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          sudo env GITHUB_TOKEN="$GITHUB_TOKEN" \
+            GIT_AUTHOR_NAME="Muse G6 Rehearsal" GIT_AUTHOR_EMAIL="g6-rehearsal@localhost" \
+            GIT_COMMITTER_NAME="Muse G6 Rehearsal" GIT_COMMITTER_EMAIL="g6-rehearsal@localhost" \
+            "$(which python3)" probe/g6-rehearsal/run_full_dress.py
+      - name: Stage artifacts for upload
+        if: always() && env.ready == 'true'
+        run: |
+          sudo cp -r audit/r2ma/g6-rehearsal/artifacts /tmp/reh-artifacts
+          sudo chmod -R a+rX /tmp/reh-artifacts
+      - name: Archive rehearsal artifacts
+        if: always() && env.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: g6-full-dress-rehearsal-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/reh-artifacts/
+          if-no-files-found: warn
+          retention-days: 30
