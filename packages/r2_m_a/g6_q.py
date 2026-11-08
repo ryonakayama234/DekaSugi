@@ -1,8 +1,8 @@
 """G6 Q001 formal precommit -> paid response -> immutable public Snapshot.
 
-The production digest anchors are deliberately absent until the Owner identifies
-the frozen METHOD and POLICY byte artifacts. Rehearsal digests are explicitly
-fixture-only and cannot satisfy production Q authorization.
+Production METHOD and POLICY byte artifacts are pinned to the Owner-approved
+repository originals (Issue #146, comment 6721874306). Rehearsal digests
+remain fixture-only and cannot satisfy production Q authorization.
 """
 from __future__ import annotations
 
@@ -16,9 +16,20 @@ from packages.r2_m_eng.records import (
 )
 from .g6_order import G6Blocked
 
-# NO production hash is guessed from version labels or a nearby source file.
-FROZEN_PRODUCTION_METHOD: tuple[str, str] | None = None
-FROZEN_PRODUCTION_POLICY: tuple[str, str] | None = None
+# Owner-frozen originals from main 1bb7afb; source_gateway.py is pinned
+# instead of g6_q.py to avoid a self-referential SHA-256.
+# Paths are resolved absolute paths for the current checkout, never user-supplied.
+FROZEN_PRODUCTION_METHOD: tuple[str, str] | None = (
+    str((Path(__file__).resolve().parents[2] /
+         "packages/r2_m_eng/source_gateway.py").resolve()),
+    "6b80af4c3cef28f50c43b01b1f0667128c44e2850ce101d5dfafa4511220f247",
+)
+# POLICY is the immutable G2 preregistration (G2_PREREG_SHA256).
+FROZEN_PRODUCTION_POLICY: tuple[str, str] | None = (
+    str((Path(__file__).resolve().parents[2] /
+         "docs/research/R2-M-A-20261105-exhaustive16-engineering-prereg-draft.md").resolve()),
+    "865fd8cf13e61e028d97c1eaf7997a15d101e80e25bb6c105e575207843cda68",
+)
 
 
 @dataclass(frozen=True)
