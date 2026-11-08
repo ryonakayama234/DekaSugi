@@ -2,7 +2,7 @@
 
 id: R2-M-A-G6-3-EXECUTOR-20261107
 status: implementation_draft / NOT_AUTHORIZED / NO_EXECUTION / NO_SCORING
-updated: 2026-11-07
+updated: 2026-11-08
 tags: r2-m-a, g6, executor, rehearsal, fail-closed, recovery
 
 ## Authority and non-goals
@@ -73,8 +73,13 @@ the formal *parent* authenticates and verifies that child receipt and the
 actual process metrics, and separately emits a formal MeasurementReceipt.
 The child payload, child import contract and evaluator scoring boundary are
 unchanged. Receipt files are local write-once evidence bound by the remote
-terminal digest; relocating the full receipt bytes to an independent remote
-evidence store needs an explicit retention decision before actual G6-3.
+terminal digest. Receipt retention was decided by the Owner in
+[Issue #146 comment 6721874306](https://github.com/ryonakayama234/DekaSugi/issues/146#issuecomment-6721874306):
+during execution, administrator-readable copies are recovered as Actions
+Artifacts; **after** the run, Muse independently compares all 448 receipt
+bodies with the journal digests, commits them to a dedicated evidence branch,
+and retains a supervisor-side copy. This decision authorizes no execution
+or preservation action in this preparation change.
 
 ## Scope separation / Owner decisions
 
@@ -117,23 +122,47 @@ recorded data and G6-1 event structure are identical in both scopes. An
 uncertain precommit or Q window stops on restart; no requery or inference of
 a missing answer.
 
-### Unresolved: authoritative frozen METHOD / POLICY bytes
+### Resolved: authoritative frozen METHOD / POLICY bytes (Owner decision)
 
-No independently identified pair of frozen byte artifacts **and exact
-SHA-256 digest anchors** was found for `method_sha256` and
-`policy_sha256` in a G6 Q intent. Method-v2 has an Owner adoption
-record, but a version label or a nearby source file is **not** a valid
-digest anchor. `FROZEN_PRODUCTION_METHOD` and
-`FROZEN_PRODUCTION_POLICY` therefore remain `None`, and
-`QArtifactFiles.digests(scope="production")` returns `RUN_BLOCK`
-without emitting `Q_ATTEMPT`. Owner/Muse must identify the canonical
-path, exact pinned commit, raw bytes and digest for each before production Q
-can operate. This is a deferred authority decision, not a request to amend
-method/policy content or invent a digest.
+[Issue #146 comment 6721874306](https://github.com/ryonakayama234/DekaSugi/issues/146#issuecomment-6721874306)
+resolved both production Q digest originals and the post-run receipt custody
+method on 2026-11-08. The digest originals are pinned from `main`
+`1bb7afb80d4a5764ec6263ea1c005fbfee06a0d0`:
 
-Rehearsal instead hashes two actual, explicitly chosen fixture files.
-This is synthetic evidence scoped only to its independent run-lock and GO,
-and it cannot authorize a production Q.
+| Q intent field | Repository-relative original (resolved absolute at runtime) | Frozen SHA-256 |
+|---|---|---|
+| `method_sha256` | `packages/r2_m_eng/source_gateway.py` | `6b80af4c3cef28f50c43b01b1f0667128c44e2850ce101d5dfafa4511220f247` |
+| `policy_sha256` | `docs/research/R2-M-A-20261105-exhaustive16-engineering-prereg-draft.md` | `865fd8cf13e61e028d97c1eaf7997a15d101e80e25bb6c105e575207843cda68` |
+
+The policy digest equals `contracts.G2_PREREG_SHA256` and preserves the
+existing G2 preregistration. The method original is the evaluator-side Q001
+precommit/answer implementation, **not** `g6_q.py`, because pinning
+`g6_q.py` to its own digest would create an irresolvable self-reference.
+`g6_q.FROZEN_PRODUCTION_METHOD` and
+`g6_q.FROZEN_PRODUCTION_POLICY` fix these exact path/digest pairs.
+Existing `QArtifactFiles.digests(scope="production")` logic is
+unchanged: both actual files must exist as regular non-symlink files,
+resolve to the pins, match the SHA-256, and differ in digest. Any
+discrepancy is `RUN_BLOCK` **before** `Q_ATTEMPT`.
+Neither the caller nor a gateway factory may substitute hashes into a
+production Q intent. Rehearsal continues using two explicitly selected
+fixture files, never these production authorities.
+
+The distinct explicit production entry point is
+`packages.r2_m_a.g6_production_gateway.production_gateway_factory(law, at)`.
+The caller passes it to
+`G6Driver(..., gateway_factory=production_gateway_factory)`;
+production still rejects a missing factory. This creates a fresh
+`PublicGateway` wrapping `SyntheticPrivateSource`, with four artificial
+coefficients decoded from one of the 16 validated law IDs. It provides
+the legal public three observations, one remaining paid Q001, and a
+900-second deadline. Like the rehearsal source, it is an **artificial
+engineering source**, not independent scientific truth. The factory
+accepts no digest overrides or GO authorization.
+
+The Owner's receipt custody decision is **resolved as a plan only**.
+Receipt collection and evidence-branch archival follow a subsequent
+authorized production run, and none is performed here.
 
 ## Law driver and intermediate report
 
@@ -149,9 +178,11 @@ report. If some costs cannot be reconstructed, they are marked unmeasured.
 Owner decision required; it never skips to the next law.
 
 The gateway constructor is an explicit dependency: rehearsal may use
-`synthetic_rehearsal_gateway`; production must supply a separately
-reviewed gateway factory. Supplying a gateway is **not** permission to
-override production frozen method/policy hashes.
+`synthetic_rehearsal_gateway`; production must explicitly supply
+`production_gateway_factory` from the separate production module.
+Supplying a gateway is **not** permission to override the production
+frozen method/policy hashes. The driver retains its existing Q, resume,
+GO, single-attempt and no-score boundaries.
 
 ## Verification and remaining review
 
