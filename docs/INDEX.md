@@ -335,3 +335,7 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 
 - [WORLD-R-20261110-01 Research Lead回答](research/WORLD-R-20261110-01-lead-response.md) — [Muse質問票 WORLD-Q-20261110-01 / Draft PR #190](https://github.com/ryonakayama234/DekaSugi/pull/190) のQW1〜QW11に結論・根拠・見直し条件で回答、PW1〜PW7に同意／修正を明示。有限Editor世界の仕様、表現不足診断、二階If、強いH+対照、家族単位の転移ゲート、フォーム世界接続を設計。**Research Lead proposal / Muse精査待ち / Owner採否待ち**。実験Aの認定状態は持ち越さず、実装・事前登録凍結・学習・実験・実PCログ収集は一切未許可。
 - [WORLD-RQ-20261110-01 Museへの逆質問](research/WORLD-RQ-20261110-01-muse-questions.md) — 真の言語成長の主張境界、USE target漏洩、Ifのメタ機構、強い固定対照をblocking事項とし、Form転移・数値閾値・競合仮説を追加質疑。**回答提出による合意・採用は未成立**。追跡は [Issue #191](https://github.com/ryonakayama234/DekaSugi/issues/191)。
+
+## WORLD — 最小実験の事前登録ドラフト（監督者起草・未凍結）
+
+- [WORLD-PREREG-DRAFT-20261110-01: 最小実験の事前登録ドラフト — テキストエディタ世界での操作言語拡張と経験効率](research/WORLD-PREREG-DRAFT-20261110-01-minimal-experiment.md) — 凍結済みの設計基礎 WORLD-R-20261110-01 と Owner 採用決定（[PR #192 コメント 6758374273](https://github.com/ryonakayama234/DekaSugi/pull/192#issuecomment-6758374273)）に基づき、監督者 Muse が起草した最小実験の事前登録ドラフト。世界v0は確定案（4記号・原子11行動・完全観測のテキストエディタ世界）、評価は G1 rename／G2 length のみに限定し G3 フォーム世界は次ラウンドへ分離。arm は6条件（FULL／OFF／FIXED-IF／LOOKUP／H+／REC、REC は「主効果は観測の再符号化」説の判別用）、主エンドポイントは holdout の AULC（経験効率）。閾値（G1 90%・G2 80%・対照+10pp・AULC+0.15）・経験予算 B・family 数は凍結候補であり、非採点の校正ラウンド後に Owner 許可で凍結する手順とし、K0 機会診断を本番前の STOP 関門として明示する。**監督者起草・未凍結のドラフトであり、実装・事前登録凍結・実験実行は未許可**。Research Lead 審査を §9 の質問への回答で依頼する。
