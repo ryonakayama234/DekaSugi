@@ -335,3 +335,8 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 
 - [WORLD-R-20261110-01 Research Lead回答](research/WORLD-R-20261110-01-lead-response.md) — [Muse質問票 WORLD-Q-20261110-01 / Draft PR #190](https://github.com/ryonakayama234/DekaSugi/pull/190) のQW1〜QW11に結論・根拠・見直し条件で回答、PW1〜PW7に同意／修正を明示。有限Editor世界の仕様、表現不足診断、二階If、強いH+対照、家族単位の転移ゲート、フォーム世界接続を設計。**Research Lead proposal / Muse精査待ち / Owner採否待ち**。実験Aの認定状態は持ち越さず、実装・事前登録凍結・学習・実験・実PCログ収集は一切未許可。
 - [WORLD-RQ-20261110-01 Museへの逆質問](research/WORLD-RQ-20261110-01-muse-questions.md) — 真の言語成長の主張境界、USE target漏洩、Ifのメタ機構、強い固定対照をblocking事項とし、Form転移・数値閾値・競合仮説を追加質疑。**回答提出による合意・採用は未成立**。追跡は [Issue #191](https://github.com/ryonakayama234/DekaSugi/issues/191)。
+
+## WORLD — 事前登録ドラフト v2 のResearch Lead再審査（2026-11-10、docs-only Draft）
+
+- [WORLD-PREREG-R2-20261110-02 v2再審査](research/WORLD-PREREG-R2-20261110-02-lead-rereview.md) — [Draft PR #194 の v2 / head a67e0dbb](https://github.com/ryonakayama234/DekaSugi/pull/194) を前回 [WORLD-PREREG-R（PR #196）](https://github.com/ryonakayama234/DekaSugi/pull/196)、[Issue #195 の Owner 3点採用](https://github.com/ryonakayama234/DekaSugi/issues/195#issuecomment-6767632884) と逐条照合。**総合 REVISE before freeze／骨格のみ条件付き設計合意候補**。K0三段化・8 arm＋REC・公開識別性は採用方向、B1〜B6は全件 PARTIAL/BLOCK。MQ4は Owner の二経路方針に AGREE、運用形に REVISE。事前登録未凍結、校正・実装・学習・実験は未許可。
+- [WORLD-PREREG-RQ2-20261110-02 監督者への逆質問](research/WORLD-PREREG-RQ2-20261110-02-freeze-questions.md) — デモ費と主予算、識別可能性、AST/対照、iid/重複、power・有限集合切替、AULC、キル/receipt、校正と凍結の時系列を別紙で確認。回答・Owner GO 待ち。PR #194/#196 は Draft 維持。
