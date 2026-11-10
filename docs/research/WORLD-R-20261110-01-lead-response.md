@@ -3,6 +3,7 @@
 id: WORLD-R-20261110-01
 status: research_lead_proposal / pending_muse_review / pending_owner_decision / docs_only / NOT_PREREGISTERED / NOT_RUN
 updated: 2026-11-10
+tags: world-expansion, operation-language, research-lead-response, design-only, docs-only
 author_role: Research Lead (ChatGPT)
 question: [WORLD-Q-20261110-01 / Draft PR #190](https://github.com/ryonakayama234/DekaSugi/pull/190)
 tracking: [Issue #191](https://github.com/ryonakayama234/DekaSugi/issues/191)
@@ -112,7 +113,7 @@ reverse_questions: [WORLD-RQ-20261110-01](WORLD-RQ-20261110-01-muse-questions.md
 **結論**: 試験で狙う構造は抽象的に SELECT_BRANCH(Predicate p, Policy then, Policy else) と表せるが、**この名前・完成済み実行器を学習者に渡してはならない**。学習者は複数の相反する履歴から役割を抽出し、未見のp/then/elseへ再束縛できる構造を保存する。実行機が受け取る内部命令は、構成された条件分岐グラフを評価できる最小のメタ機構とする。
 
 **根拠**:
-- 第一階:「Aが在る→DELETE、ない→INSERT」の固定規則だけを獲得。第二階: Bを含むか、clipboardが空か等の異なる候補述語を、COPY/PASTE/MOVE等の新しい行動ペアへ**再学習なし**で束縛して同様の分岐を使える。
+- 第一階:「Aが在る→DELETE、ない→INSERT」の固定規則だけを獲得。第二階: Bを含むか、clipboardが空か等の異なる候補述語を、COPY/PASTE/MOVE_LEFT等の新しい行動ペアへ**再学習なし**で束縛して同様の分岐を使える。
 - 評価は (p_i,a_i,b_i,target_i) に対し、p_j,a_k,b_l,target_mの各成分を分離封印した**組合せ直積holdout**。新規パラメータの推定に要した使用時の公開観測は課金する。初見フォームadapterでも部分的に相当する関係を発見できるか試す。
 - 同条件の**固定高階IF（同じ実行機能と候補集合）**、固定条件付きlookup、学習した一階規則の検索、発見スキーマだけOFFを必ず含める。H0は同一の実行可能メタ言語を許す対照とし、目的は「自己発見の経験効率」とする。厳密な表現力拡大が欲しければ別の有限H0/H+証人として二次主張にする。
 - 発見は単に任意のニューラルスコアで次行動を選べることではない。**可視化可能な再束縛・独立した再実行・role swapでの安定性**を必要とする。
