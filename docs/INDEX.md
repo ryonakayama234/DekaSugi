@@ -326,3 +326,7 @@ G3-2 starts at G3-1 merge main `028ad73049a3fe07143c0e1663130129e1da286d`, pursu
 | R2-M-A-G3-3-CUSTODY-20261106 | fsynced hash-linked append-only events, GitHub remote Q-before-answer and pre-score digest locks, complete 448-slot missingness, deny-by-default score gate, eight NOT_AUDITED G4 templates | G3-3 engineering candidate; G4/G5/G6 and measurements NOT AUTHORIZED | [Spec](specs/R2-M-A-G3-3.md) / [Ledger](../packages/r2_m_a/evidence_ledger.py) / [Remote](../packages/r2_m_a/remote_custody.py) / [Gate](../packages/r2_m_a/evaluator_gate.py) / [Dossier](../packages/r2_m_a/g4_dossier.py) / [Tests](../tests/test_r2_m_a_g3_3_custody.py) |
 
 G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 448 measurement, G4 audit, G5 order or G6 scoring is permitted.
+
+## WORLD — 新軸: 世界での経験から操作言語を成長させる（2026-11-10）
+
+- [WORLD-Q-20261110-01 質問票](research/WORLD-Q-20261110-01-world-expansion-design.md) — 実験A（R2-M-A）の後継軸の設計ラウンド第1票。主張は「固定された操作族の中で解法を見つけるのではなく、有限な世界での経験の蓄積から、述語・技能・条件分岐を含む操作言語をシステム自身が拡張できるか。その拡張が未見の課題・未見の世界への転移として測れるか」。最初の世界は小さなテキストエディタ世界、転移先はフォーム世界（第1.5世界）。PW1〜PW7、QW1〜QW11、docs-only。実装・事前登録・実験は未許可。
