@@ -1,5 +1,10 @@
 # DekaSugi — SNS先行方針
 
+id: sns-policy
+status: owner_decision / recorded / public_policy_note
+updated: 2026-11-10
+tags: sns, public-policy, owner-decision
+
 決定: 2026-11-07（Owner決定）／ 記録: 2026-11-10
 
 ## 方針
