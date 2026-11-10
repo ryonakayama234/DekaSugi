@@ -269,7 +269,7 @@ observe public episode
 
 ## 15. 段階的研究ゲート案（計画、未許可）
 
-- **D0 / Design**: 世界の到達性、無条件方策の天井、機会ゼロの排除条件、H0/H+署名、強い対照表、goal漏洩脅威モデル、familiy分割ルールを紙上で定義。本回答はここ。
+- **D0 / Design**: 世界の到達性、無条件方策の天井、機会ゼロの排除条件、H0/H+署名、強い対照表、goal漏洩脅威モデル、family分割ルールを紙上で定義。本回答はここ。
 - **D1 / Independent methods review**: Museが設計上の帰属、役割写像の先渡し、費用、閾値、独立family数、ソース分離について精査。Ownerが採用範囲を決めるまで次へ行かない。
 - **D2 / Future engineering authorization only if separately approved**: 認可された場合のみ世界・logger・validatorの人工fixture工学検証。実験ではない。証拠の読み書き・停止仕様を整える。
 - **D3 / Future preregistration**: source/封印/統計/閾値/ゲートを別手続きで凍結。D2の人工fixture値を真の性能と呼ばない。
