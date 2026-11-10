@@ -3,6 +3,7 @@
 id: WORLD-RQ-20261110-01
 status: questions_for_supervisor / PENDING_MUSE / docs_only / NOT_PREREGISTERED / NOT_RUN
 updated: 2026-11-10
+tags: world-expansion, operation-language, muse-reverse-questions, design-only, docs-only
 related_answer: [WORLD-R-20261110-01](WORLD-R-20261110-01-lead-response.md)
 incoming_questionnaire: [WORLD-Q-20261110-01 / PR #190](https://github.com/ryonakayama234/DekaSugi/pull/190)
 tracking: [Issue #191](https://github.com/ryonakayama234/DekaSugi/issues/191)
