@@ -24,9 +24,9 @@ tracking: [Issue #195](https://github.com/ryonakayama234/DekaSugi/issues/195)
 
 | 項目 | 判定 | 本文/付表で確認した改善 | 現行 v4 に残る理由 |
 |---|---|---|---|
-| **B1: goal contract・識別可能性** | **PARTIAL** | §1: デモ3対、law/episode 2層、EVAL は未見 law の「TRAIN で同定した結果」を持たずデモ/初期観測から一時推論のみ、tag 射影 π(H)、ID-only AUC。§2: 正解対応なしの公開 token table。§1 証人は長さ4、候補であると明示。 | §1 の K0-a **証人候補** `ABAB→ABABA` / `ADAD→ADADC` は **付表A の成功時自動終了を利用する長さ7の共通 open-loop** により反証される（次節の厳密トレース）。未見 law のデモ3対が行動選択前に何を区別するか、law 横断推論と law 当ての証拠上限は §6 の K0-b に依存する。候補を成功例として扱わず失格登録・再探索規則へ変える必要。 |
+| **B1: goal contract・識別可能性** | **PARTIAL** | §1: デモ3対、law/episode 2層、EVAL は未見 law の「TRAIN で同定した結果」を持たずデモ/初期観測から一時推論のみ、tag 射影 π(H)、ID-only AUC。§2: 正解対応なしの公開 token table。§1 証人は長さ4、候補であると明示。 | §1 の K0-a **証人候補** `ABAB→ABABA` / `ADAD→ADADC` は **付表A の成功時自動終了を利用する長さ9の共通 open-loop** により反証される（次節の厳密トレース）。未見 law のデモ3対が行動選択前に何を区別するか、law 横断推論と law 当ての証拠上限は §6 の K0-b に依存する。候補を成功例として扱わず失格登録・再探索規則へ変える必要。 |
 | **B2: seed grammar・arm 権限** | **PARTIAL** | §2/付表A: `Alphabet(phase)` の live `Sym` と rename equivariance、公開入力経路 token table/デモ/観測、law の正解対応は非公開。§3: 共有特徴だけで書く FIXED-IF、PRED-ONLY の SEQ/BIND マクロ USE 許可、Space と R_FULL の分離、候補探索の費用ベクトル。 | §3 の表は arm×「構築・USE」であり、監督者が受け入れた **arm×node×constructor×READ×USE の具体的 access matrix ではない**。「共通 read path」との宣言に対するファイル/フィールド別の可否・昇格時 ACL、候補評価単価/先渡しの境界が未列挙。§2 の Sym「役割名」の表示順から G1 改名の正解役割が一意に回復しないよう、token table に semantic ordering が無いことを明記する必要。 |
-| **B3: K0-a/b/c・UNKNOWN** | **PARTIAL** | §6: 同一 law の異なる instance に K0-a、異なる law には TRAIN/EVAL を分ける K0-b、状態ペア BFS と履歴木 DP、K0-c 抽象 support 上の厳密値、holdout 非アクセス、UNKNOWN 優先。 | **§6 K0-a** の BFS は成功時終了を absorbing success とするか未明記。これは §1 の「証人候補を BFS で確定する」条件の真偽を変える。現行の成功時終了で計算すると長さ7の共通 open-loop が存在し、当該候補は**失格**である。K0-c 抽象分布の列挙完結証明/厳密値証明書・K0-b の比較単位を CAL プロトコル入力として固定する必要。 |
+| **B3: K0-a/b/c・UNKNOWN** | **PARTIAL** | §6: 同一 law の異なる instance に K0-a、異なる law には TRAIN/EVAL を分ける K0-b、状態ペア BFS と履歴木 DP、K0-c 抽象 support 上の厳密値、holdout 非アクセス、UNKNOWN 優先。 | **§6 K0-a** の BFS は成功時終了を absorbing success とするか未明記。これは §1 の「証人候補を BFS で確定する」条件の真偽を変える。現行の成功時終了で計算すると長さ9の共通 open-loop が存在し、当該候補は**失格**である。K0-c 抽象分布の列挙完結証明/厳密値証明書・K0-b の比較単位を CAL プロトコル入力として固定する必要。 |
 | **B4: AULC・抽出・power・route** | **FAIL** | §4/§5: `F`、`H=F∩holdout`、`q_l`、正しい HT `q_l/π_l`（certainty `q_l`）、Sampford、SYG、10成分 AND、union bound、閾値より上の ε planning alternative、CAL 後の α/power 判定への順序を確認。R5 の HT/estimand/ゲート9問題は修復。 | §5 の **FINITE_DESCRIPTIVE route** はなお `|frame|≥30` なら「全件評価」と記す。frame は §5 で **全適格 F** と定義した一方、推定対象・評価適格数は **H** なので、F 全件なら TRAIN/CAL と overlap し、H 全件なら `|F|≥30` という条件は不適切。例えば `|F|=100, |H|=1, n_required>1` でも FINITE_DESCRIPTIVE に入る読みに見える。別途 §4 で汚染 family を集約から除外した完走を許容すると、HT の包含確率を維持したままサンプルが非無作為に欠け得る。さらに `same split` の CAL power simulation が sealed holdout の law-level q / split 情報を読めるのか §6 access と対応していない。 |
 | **B5: 帰属・等価性・null / invalid** | **PARTIAL** | §3: PRED-ONLY 第一階マクロの USE、§6: 機構説明を抑えた K2、片側主検定と両側等価性の区別、3階層の event/family/run status、失敗を含む outcome の網羅的な決定順序。hash mismatch に STOP_INVALID、再集計禁止を確認。 | §4 は FAMILY_INVALID を「有効な集約から除外」、§6 は K4 family 隔離、hash mismatch 時だけ run STOP と規定。**hash 以外の K4 汚染**で一部 family を除いて run COMPLETE にすると、§5 の事前包含確率 `π_l` に基づく HT 推定が不完全になる。結果の主張・停止状態を一本化する必要。§6 outcome 順序の最初の FAMILY_INVALID は「COMPLETE かつ集約可能」条件との関係を明文化する必要。 |
 | **B6: CAL 分離・封印・改訂来歴** | **PASS** | §0.1 と §7 により v2 改訂条項を明示置換。§7 の DESIGN_DRAFT→PROTOCOL_APPROVED（初期値・許可更新規則 lock）→CAL_AUTHORIZED（別 GO）→CAL_COMPLETE（許された1回更新）→FROZEN（別 Owner receipt）→EXECUTION_GO（別 GO）は一貫。§6 は sealed holdout の非アクセスと digest 不一致の STOP を明記。 | **PASS は手続きの構造に対する判定**であり、現在の時点で Owner CAL 承認を代行した意味ではない。具体的 ε/更新幅/乱数源/manifest 型と digest は PROTOCOL_APPROVED でロックする候補・成果物であり、現在未凍結であることを単独の不合格としない。ただし B4 の power calculation access を具体化するのは依然必要。 |
@@ -55,25 +55,26 @@ tracking: [Issue #195](https://github.com/ryonakayama234/DekaSugi/issues/195)
 | **R6-4 CAL power の読み取り境界** | v4 §5/§6 | `same split` の CAL simulation と sealed holdout 不参照が併記。実 law 母集団の q/適格集合をどの role がいつ読むか、事前固定の summary か CAL surrogate を使うか確定要。 |
 | **R6-5 arm アクセス表の未達** | v4 §2/§3/§6 | Muse が受け入れた row×node×constructor×READ×USE が本文にない。宣言だけでは evaluator/learner の権限監査不可。 |
 | **R6-6 Sym token table の順序情報** | v4 §2 / §3 FIXED-IF | 公開 token table 自体は適切だが、列挙順・表示役割が TRAIN から G1 へ正解対応を符号化し得る。役割は学習 API 非公開とし、α-equivariance を law を含むデモ/score まで確認。 |
-| **R6-7 v2 非置換との運用境界** | v2 §0/§3/§9、v4 §3/§5/§6 | v2 の同等学習/探索資源・8 arm の記録要求に対し、v4 は「同じ Space だが同じ評価件数は主張しない」。これは直ちに論理否定ではないが、同一 b と別費用ベクトルの許容差が未定義。主張できるのは原始呼出軸に条件付く比較であり、CPU/候補評価の因果帰属を過大主張しない。 |
+| **R6-7 付表A の通常 INSERT 未定義** | v4 付表A INSERT／PASTE | selection=none では `min(anchor,head)` が定義できず、通常の cursor 挿入・PASTE の位置が確定しない。`insert_pos = selection ? min(anchor,head) : cursor` を両操作の原子的遷移に明示する。 |
+| **R6-8 v2 非置換との運用境界** | v2 §0/§3/§9、v4 §3/§5/§6 | v2 の同等学習/探索資源・8 arm の記録要求に対し、v4 は「同じ Space だが同じ評価件数は主張しない」。これは直ちに論理否定ではないが、同一 b と別費用ベクトルの許容差が未定義。主張できるのは原始呼出軸に条件付く比較であり、CPU/候補評価の因果帰属を過大主張しない。 |
 
-**種別**: R6-1 は具体的反証。R6-2 は F/H の定義衝突。R6-3〜7 は inferential contract・情報境界・能力の未規定で、すべてを同種の「形式的矛盾」とは呼ばない。-01〜-03 の旧条文は再輸入しない。
+**種別**: R6-1 は具体的反証。R6-2 は F/H の定義衝突。R6-3〜8 は inferential contract・情報境界・能力の未規定で、すべてを同種の「形式的矛盾」とは呼ばない。-01〜-03 の旧条文は再輸入しない。
 
 ### R6-1: K0-a の open-loop 反例（コード実行・CAL ではない）
 
 v4 §1 の L の instance 1: `ABAB` target `ABABA`、instance 2: `ADAD` target `ADADC`。付表A は `reset` で cursor=0、`MOVE_RIGHT` は一歩右、`INSERT` は cursor に挿入し、**verifier が成功した時点で試行を自動終了**すると定める。
 
-**同一固定列**: `MOVE_RIGHT × 4 ; INSERT(A) ; DELETE_BACK ; INSERT(C)`（合計7原始操作、H≥7 の場合に適法）。
+**同一固定列**: `MOVE_RIGHT × 4 ; SET_ANCHOR ; INSERT(A) ; DELETE_BACK ; SET_ANCHOR ; INSERT(C)`（合計9原始操作、H≥9 の場合に適法）。`SET_ANCHOR` により anchor=head=cursor の**空選択**を作るため、付表Aが selection=none では定義していない INSERT 挿入位置を参照せずに済む。
 
 | 時点 | instance1 | instance2 |
 |---|---|---|
 | reset | ABAB, cursor 0 | ADAD, cursor 0 |
 | MOVE_RIGHT ×4 | ABAB, cursor 4 | ADAD, cursor 4 |
-| INSERT(A) | **ABABA = target**、成功終了 | ADADA、未達 |
+| SET_ANCHOR→INSERT(A) | **ABABA = target**、成功終了 | ADADA、未達 |
 | DELETE_BACK | 終了後は実行されない | ADAD、cursor 4 |
-| INSERT(C) | 終了後は実行されない | **ADADC = target**、成功終了 |
+| SET_ANCHOR→INSERT(C) | 終了後は実行されない | **ADADC = target**、成功終了 |
 
-この列の行動選択は**初期 buffer も途中観測も見ず固定**である。成功時に片方が自動終了するだけで両方成功する。「共通 open-loop がない」は **H≥7 で偽**。BFS がこの prefix 成功を含む意味論なら当該候補は失格となる。反例が存在することは K0-a の全 family で証人が不可能という一般命題を含意しないが、**現候補を PASS 証人として採用することはできない**。
+この列の行動選択は**初期 buffer も途中観測も見ず固定**である。成功時に片方が自動終了するだけで両方成功する。「共通 open-loop がない」は **H≥9 で偽**。なお selection=none の場合に挿入位置を `min(anchor,head)` とする付表Aの字義では INSERT の効果が未定義であり、これは別の契約欠落である（本9操作列は空選択を明示するため、この未定義に依存しない）。BFS がこの prefix 成功を含む意味論なら当該候補は失格となる。反例が存在することは K0-a の全 family で証人が不可能という一般命題を含意しないが、**現候補を PASS 証人として採用することはできない**。
 
 ## 4. 設計合意／Muse への最終申請
 
