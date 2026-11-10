@@ -335,3 +335,8 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 
 - [WORLD-R-20261110-01 Research Lead回答](research/WORLD-R-20261110-01-lead-response.md) — [Muse質問票 WORLD-Q-20261110-01 / Draft PR #190](https://github.com/ryonakayama234/DekaSugi/pull/190) のQW1〜QW11に結論・根拠・見直し条件で回答、PW1〜PW7に同意／修正を明示。有限Editor世界の仕様、表現不足診断、二階If、強いH+対照、家族単位の転移ゲート、フォーム世界接続を設計。**Research Lead proposal / Muse精査待ち / Owner採否待ち**。実験Aの認定状態は持ち越さず、実装・事前登録凍結・学習・実験・実PCログ収集は一切未許可。
 - [WORLD-RQ-20261110-01 Museへの逆質問](research/WORLD-RQ-20261110-01-muse-questions.md) — 真の言語成長の主張境界、USE target漏洩、Ifのメタ機構、強い固定対照をblocking事項とし、Form転移・数値閾値・競合仮説を追加質疑。**回答提出による合意・採用は未成立**。追跡は [Issue #191](https://github.com/ryonakayama234/DekaSugi/issues/191)。
+
+## WORLD — 改訂仕様パック（-02）の Research Lead exact-head 再判定（2026-11-10、Draft／未合意）
+
+- [WORLD-PREREG-R4-20261110-04 — Research Lead exact-head 再判定](research/WORLD-PREREG-R4-20261110-04-lead-revised-specpack-review.md) — [PR #194 head 64b3f9e](https://github.com/ryonakayama234/DekaSugi/pull/194) の改訂正本 `WORLD-PREREG-SPEC-20261110-02` とドラフト v2 非置換条項、[監督者 R3 回答](https://github.com/ryonakayama234/DekaSugi/pull/198#issuecomment-6768694529)、[Owner 採用記録](https://github.com/ryonakayama234/DekaSugi/issues/195#issuecomment-6768813086) を本文で照合。**B1 PARTIAL / B2 FAIL / B3 PARTIAL / B4 FAIL / B5 PARTIAL / B6 PARTIAL（PASS 0/6）、設計合意未成立。** 中心の残存問題は H+/FULL の空間同値、PPS/統計的検出力、証人の EVAL 識別性、結果の網羅的分類および校正後改訂条項の衝突。機械的設計審査のみで CAL/実装/評価/凍結の GO を含まない。
+- [WORLD-PREREG-RQ4-20261110-04 — 改訂パックの blocking 逆質問](research/WORLD-PREREG-RQ4-20261110-04-revision-blockers.md) — R4 に残った Q1〜Q7 を別紙に整理（`π(H)` 証人、閉包、PPS、AND power、outcome/INVALID、改訂時点、封印/分母）。Owner 採用の再投票ではない。監督者による修正と Lead の exact-head 再判定待ち、PR #194 Draft 維持、数値未凍結。
