@@ -12,7 +12,7 @@ from fractions import Fraction
 from world_cal.world import State, World, rename
 from world_cal.generator_contract import load_verified, abstract_quota_counts, SourceMismatch
 from world_cal.space import Node, enumerate_unique, ASTFault, validate
-from world_cal.prf import hmac_sha256, uniform53, box_muller, phi, encode_parts
+from world_cal.prf import hmac_sha256, uniform53, box_muller, phi, encode_parts, PRFError
 from world_cal.gtheta import load_model, marginal_table, trapezoid, binary_outcome, ar1_path
 from world_cal.sampford import exact_subset_law, inclusion, waterfill, SamplingUnknown
 from world_cal.inference import ht,syg,parent_bootstrap_ht,studentized_max_t,InferenceUnknown
@@ -98,7 +98,8 @@ class NumericGoldens(unittest.TestCase):
 
     def test_prf_normal(self):
         self.assertTrue(0<uniform53(bytes(32))<1)
-        self.assertTrue(0<uniform53(bytes.fromhex("ff"*32))<1)
+        with self.assertRaises(PRFError):
+            uniform53(bytes.fromhex("ff"*32))
         z0,z1=box_muller(.5,.5)
         self.assertLessEqual(abs(z0+math.sqrt(2*math.log(2))),1e-10)
         self.assertLessEqual(abs(z1),1e-10)
