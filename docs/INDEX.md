@@ -335,3 +335,7 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 
 - [WORLD-R-20261110-01 Research Lead回答](research/WORLD-R-20261110-01-lead-response.md) — [Muse質問票 WORLD-Q-20261110-01 / Draft PR #190](https://github.com/ryonakayama234/DekaSugi/pull/190) のQW1〜QW11に結論・根拠・見直し条件で回答、PW1〜PW7に同意／修正を明示。有限Editor世界の仕様、表現不足診断、二階If、強いH+対照、家族単位の転移ゲート、フォーム世界接続を設計。**Research Lead proposal / Muse精査待ち / Owner採否待ち**。実験Aの認定状態は持ち越さず、実装・事前登録凍結・学習・実験・実PCログ収集は一切未許可。
 - [WORLD-RQ-20261110-01 Museへの逆質問](research/WORLD-RQ-20261110-01-muse-questions.md) — 真の言語成長の主張境界、USE target漏洩、Ifのメタ機構、強い固定対照をblocking事項とし、Form転移・数値閾値・競合仮説を追加質疑。**回答提出による合意・採用は未成立**。追跡は [Issue #191](https://github.com/ryonakayama234/DekaSugi/issues/191)。
+
+## WORLD — 第6版の Research Lead 最終判定 R8：設計合意（2026-11-11、Draft／CAL 未承認）
+
+- [WORLD-PREREG-R8-20261111-08 — 仕様パック第6版 exact-head 最終判定・設計合意](research/WORLD-PREREG-R8-20261111-08-lead-specpack-v6-design-consensus-review.md) — [PR #194 exact head 351016fe0e2d468c80736a477133a274cfb713b8](https://github.com/ryonakayama234/DekaSugi/pull/194) の正本 `WORLD-PREREG-SPEC-20261110-06` §0〜§7・付表A を独立監査。[Muse R7/RQ7 ACCEPT_WITH_EXPLICIT_EDIT](https://github.com/ryonakayama234/DekaSugi/pull/202#issuecomment-6783402893) と [Owner 採用](https://github.com/ryonakayama234/DekaSugi/issues/195#issuecomment-6783478862) に基づく S1-A（`G_θ` joint power 入力）、S2（episode/run outcome 分離）、S4（calculator read 明示例外）を本文で確認。**B1〜B6 すべて PASS／設計合意成立（Research Lead 判定）**。次の手続きは Owner の **CAL プロトコル承認可否**であり、現在は未承認。CAL 実施 GO、凍結、実装・実験の権限は別途必要。全数値未凍結、PR #194 は Draft 維持、本記録は docs-only。
