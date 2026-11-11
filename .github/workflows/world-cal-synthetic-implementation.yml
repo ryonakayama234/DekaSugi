@@ -5,25 +5,36 @@ on:
       - 'world_cal/**'
       - 'tests/test_world_cal_synthetic.py'
       - 'scripts/profile_world_cal_synthetic.py'
+      - 'scripts/profile_world_cal_integrated.py'
+      - 'scripts/audit_world_cal_sampford_336.py'
       - '.github/workflows/world-cal-synthetic-implementation.yml'
   workflow_dispatch:
 jobs:
   synthetic-only:
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 25
+    env:
+      PYTHONHASHSEED: '0'
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.12.16'
       - name: Pinned JCS verification library
         run: python -m pip install -r world_cal/requirements.lock
       - name: Golden and role-denial unit tests (not CAL)
         run: python -m unittest discover -s tests -p test_world_cal_synthetic.py -v
       - name: Synthetic component profiler (not simulation)
         run: PYTHONPATH=. python scripts/profile_world_cal_synthetic.py --output world-cal-synthetic-profiler.json
+      - name: Public N336 exact-law all-n audit (not CAL)
+        run: PYTHONPATH=. python scripts/audit_world_cal_sampford_336.py --output world-cal-sampford-336-public-audit.json
+      - name: One full-stack synthetic iteration only (not power simulation)
+        run: PYTHONPATH=. python scripts/profile_world_cal_integrated.py --output world-cal-synthetic-end-to-end-one-rep.json
       - name: Candidate byte closure (not algorithm_digest)
         run: |
           python scripts/build_world_cal_source_manifest.py --output world-cal-algorithm-source-manifest-candidate.json > /dev/null
@@ -33,5 +44,7 @@ jobs:
           name: world-cal-synthetic-component-profiler
           path: |
             world-cal-synthetic-profiler.json
+            world-cal-sampford-336-public-audit.json
+            world-cal-synthetic-end-to-end-one-rep.json
             world-cal-algorithm-source-manifest-candidate.json
           retention-days: 30
