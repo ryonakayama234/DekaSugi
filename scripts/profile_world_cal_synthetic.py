@@ -19,7 +19,7 @@ from fractions import Fraction
 from pathlib import Path
 
 from world_cal.gtheta import load_model,marginal_table,binary_outcome
-from world_cal.sampford import exact_subset_law,inclusion
+from world_cal.sampford import exact_subset_law,inclusion,exact_inclusions
 from world_cal.inference import parent_bootstrap_ht,studentized_max_t
 
 def sample(stage,fn,items):
@@ -59,6 +59,11 @@ def profile():
         first,second=inclusion(law,8)
         return str(sum(law.values()))+":"+str(second[0][1])
     rows.append(sample("Sampford_exact_pi_ll_small_N8_n2",pps,8*8))
+    for N,design_n in ((32,8),(64,16)):
+        def dp(N=N,design_n=design_n):
+            first,joint=exact_inclusions([design_n/N]*N)
+            return hashlib.sha256(repr((sum(first),joint[0][1])).encode()).hexdigest()
+        rows.append(sample(f"Sampford_exact_pi_ll_DP_N{N}_n{design_n}",dp,N*N))
     def bootstrap():
         sample_ids=list(range(8))
         q=[1/8]*8;pi=[1.0]*8
@@ -89,13 +94,13 @@ def profile():
         outcomes=3*10_000*576*(upper*(upper+1)//2-1)
         bootstraps=repetitions*999
         prf_rate=rows[0]["throughput_items_wall"]
-        bt_rate=rows[2]["throughput_items_wall"]
+        bt_rate=next(x["throughput_items_wall"] for x in rows if x["stage"]=="parent_bootstrap_and_maxT_kernel")
         counts["2.."+str(upper)]={
             "candidate_n":upper-1,"MC_repetitions":repetitions,
             "binary_outcomes":outcomes,"cluster_bootstrap_replicates":bootstraps,
             "PRF_Gtheta_kernel_lower_bound_wall_days":outcomes/prf_rate/86400,
             "bootstrap_kernel_lower_bound_wall_days":bootstraps/bt_rate/86400,
-            "exact_Sampford_pi_ll_real_scale":"NOT_ESTIMABLE: N8 exact enumeration is not an N336 solver",
+            "exact_Sampford_pi_ll_real_scale":"DP N32/N64 microbench only; N336 source data & numerical stability not audited",
             "complete_simulation_feasibility":"STOP_UNKNOWN"
         }
     return {
