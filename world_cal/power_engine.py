@@ -10,7 +10,8 @@ from dataclasses import dataclass
 
 from .gtheta import MODEL_SHA, load_model, marginal_table, aggregate_law
 from .inference import (InferenceUnknown, ht, syg, bootstrap_vectors,
-                        studentized_max_t, one_sided_lower, ten_and_gates)
+                        studentized_max_t, one_sided_lower, ten_and_gates,
+                        bootstrap_vectors_cached)
 from .power_route import (R_REQUIRED, BOOTSTRAPS, SCENARIOS, PowerUnknown,
                           lower_for_completed_counts, cost)
 from .prf import draw_digest, uniform53, box_muller
@@ -171,7 +172,7 @@ def run_one_repetition(*, q, parent_ids, n, scenario_id, repetition, key,
             if variance<=0 or not math.isfinite(variance):
                 raise PowerUnknown("STOP_UNKNOWN: degenerate SYG variance")
         bootstrap_draws=_draw_bootstrap_clusters(sample,parent_ids,draws)
-        pts,replicates=bootstrap_vectors(sample,q,pi,vectors,parent_ids,bootstrap_draws)
+        pts,replicates=bootstrap_vectors_cached(sample,q,pi,vectors,parent_ids,bootstrap_draws)
         ci=studentized_max_t(pts[:7],tuple(r[:7] for r in replicates),alpha=.0125)
         g1lower=one_sided_lower(pts[7],replicates,7,alpha=.00625)
         g2lower=one_sided_lower(pts[8],replicates,8,alpha=.00625)
