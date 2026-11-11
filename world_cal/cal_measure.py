@@ -23,5 +23,16 @@ def parent_folds(parent_ids, folds=5):
     roots=sorted(set(parent_ids))
     return {root:i%5 for i,root in enumerate(roots)}
 
-def id_only_diagnostic(*args,**kwargs):
-    raise CALNotAuthorized("ID-only classifier execution is CAL; not included in implementation GO")
+def id_only_diagnostic(tags,labels,parent_ids,permuted_labels,*,
+                       synthetic_fixture=False,authorization=None):
+    """Complete 999-permutation ID-only diagnostic, execution guarded.
+
+    Tag reissue and registered permutation draws are supplied by the separately
+    authorized CAL role. No such real tags/seed exist during implementation GO.
+    """
+    from .power_engine import CALAuthorization
+    from .id_only import id_only_permutation_test
+    if not synthetic_fixture and not (isinstance(authorization,CALAuthorization)
+            and authorization.role=="CAL_ORACLE" and authorization.approved):
+        raise CALNotAuthorized("STOP_UNKNOWN: ID-only CAL role not authorized")
+    return id_only_permutation_test(tags,labels,parent_ids,permuted_labels)
