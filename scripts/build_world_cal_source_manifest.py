@@ -12,6 +12,7 @@ PATHS=tuple(sorted((
     "docs/research/WORLD-CAL-IMPLEMENTATION-PLAN-20261111-01.md",
     "docs/research/WORLD-CAL-IMPLEMENTATION-RQ-20261111-01.md",
     "docs/research/WORLD-CAL-IMPLEMENTATION-ERRATA-20261111-01.md",
+    "docs/research/WORLD-CAL-IMPLEMENTATION-CONTINUATION-20261111-02.md",
     "docs/research/WORLD-CAL-GENERATOR-DISTRIBUTION-20261111-01.json",
     "docs/research/WORLD-CAL-GENERATOR-MANIFEST-20261111-01.json",
     "world_cal/__init__.py",
