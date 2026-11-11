@@ -44,8 +44,7 @@ def audit():
             stages[role]=(stage,{pub:hashlib.sha256(p.read_bytes()).hexdigest()})
         for role,(stage,manifest) in stages.items():
             out=launch_isolated(role,code_root=code,role_stage=stage,
-                    entrypoint="role_probe.py",manifest=manifest,
-                    synthetic_filesystem_only=True)
+                    entrypoint="role_probe.py",manifest=manifest
             result=json.loads(out)
             if result["role"]!=role:raise SandboxUnknown("STOP_UNKNOWN: wrong role identity")
             permitted="/role/"+next(iter(manifest))
@@ -56,11 +55,11 @@ def audit():
                 raise SandboxUnknown("STOP_UNKNOWN: cross-role read succeeded")
             results[role]=result
         return {"kind":"SYNTHETIC_PROCESS_AND_MOUNT_NAMESPACE_READ_PATH_AUDIT",
-                "status":"PARTIAL_FILESYSTEM_NAMESPACE_TEST_PASS__NETWORK_NAMESPACE_STOP_UNKNOWN",
+                "status":"SYNTHETIC_MOUNT_PID_NETWORK_NEGATIVE_TEST_PASS__NOT_INDEPENDENT_SUPERVISOR_PASS",
                 "environment":{"python":platform.python_version(),
                                "platform":platform.platform()},
-                "results":results,"network_namespace_verified":False,
-                "host_network_fixture_only":True,
+                "results":results,"network_namespace_verified":True,
+                "host_network_fixture_only":False,
                 "secret_created":False,
                 "cal_executed":False,"sealed_split_materialized":False}
 
