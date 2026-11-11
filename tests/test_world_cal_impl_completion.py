@@ -15,7 +15,7 @@ from world_cal.k0_c import exhaustive_k0c_curve
 from world_cal.power_engine import run_one_repetition
 from world_cal.power_route import PowerUnknown
 from world_cal.prf import uniform53
-from world_cal.role_boundary import verify_role_stage, SandboxUnknown
+from world_cal.role_boundary import verify_role_stage, verify_role_code_bundle, SandboxUnknown
 from world_cal.sampford import waterfill
 from world_cal.sampford_grouped import grouped_inclusions,draw_grouped
 from world_cal.world import State,World
@@ -96,6 +96,20 @@ class GuardGoldens(unittest.TestCase):
         with self.assertRaises(PowerUnknown):
             run_one_repetition(q=[.5,.5],parent_ids=["A","B"],n=2,
                    scenario_id="GTHETA-BASE-01",repetition=0,key=bytes(32))
+
+    def test_learner_cannot_mount_abstract_oracle_code_or_data(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=pathlib.Path(temp)
+            (root/"entry.py").write_text("print('safe')",encoding="utf-8")
+            self.assertEqual(verify_role_code_bundle("LEARNER_ARMS",root,"entry.py"),root)
+            oracle=root/"world_cal";oracle.mkdir()
+            (oracle/"abstract_support.py").write_text("pass",encoding="utf-8")
+            with self.assertRaises(SandboxUnknown):
+                verify_role_code_bundle("LEARNER_ARMS",root,"entry.py")
+            (oracle/"abstract_support.py").unlink()
+            (root/"private_truth.json").write_text("{}")
+            with self.assertRaises(SandboxUnknown):
+                verify_role_code_bundle("LEARNER_ARMS",root,"entry.py")
 
     def test_os_staging_rejects_private_source(self):
         with tempfile.TemporaryDirectory() as temp:
