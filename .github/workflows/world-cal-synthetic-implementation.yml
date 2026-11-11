@@ -7,6 +7,7 @@ on:
       - 'scripts/profile_world_cal_synthetic.py'
       - 'scripts/profile_world_cal_integrated.py'
       - 'scripts/audit_world_cal_sampford_336.py'
+      - 'scripts/audit_world_cal_role_process.py'
       - '.github/workflows/world-cal-synthetic-implementation.yml'
   workflow_dispatch:
 jobs:
@@ -35,6 +36,11 @@ jobs:
         run: PYTHONPATH=. python scripts/audit_world_cal_sampford_336.py --output world-cal-sampford-336-public-audit.json
       - name: One full-stack synthetic iteration only (not power simulation)
         run: PYTHONPATH=. python scripts/profile_world_cal_integrated.py --output world-cal-synthetic-end-to-end-one-rep.json
+      - name: Linux independent process read denial (not CAL)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq bubblewrap
+          PYTHONPATH=. python scripts/audit_world_cal_role_process.py
       - name: Candidate byte closure (not algorithm_digest)
         run: |
           python scripts/build_world_cal_source_manifest.py --output world-cal-algorithm-source-manifest-candidate.json > /dev/null
