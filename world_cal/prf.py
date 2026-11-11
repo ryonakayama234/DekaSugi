@@ -37,7 +37,10 @@ def draw_digest(key: bytes, model_digest: str, scenario: str, n: int,
 def uniform53(digest: bytes) -> float:
     if len(digest) != 32: raise PRFError("expected SHA-256 digest")
     x = int.from_bytes(digest[:7], "big") >> 3
-    return (x + 0.5) / (1 << 53)
+    u = (x + 0.5) / (1 << 53)
+    if not 0.0 < u < 1.0:
+        raise PRFError('STOP_UNKNOWN: binary64 cannot represent open-interval endpoint')
+    return u
 
 def box_muller(u1: float, u2: float) -> tuple[float, float]:
     if not (0 < u1 < 1 and 0 < u2 < 1): raise PRFError("uniform must be open interval")
