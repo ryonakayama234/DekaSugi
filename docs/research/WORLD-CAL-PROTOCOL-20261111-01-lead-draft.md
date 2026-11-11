@@ -41,6 +41,7 @@ normative_blob: 9362065507791ced44e2a3cc218c93a0b3cef395
 | \`n_train\` | **24 law family** | 先行 v2 の候補、評価 \`n_required\` と別。更新禁止。 |
 | \`n_cal\` | **各4族6件、計24 law** | TRAIN 分布から独立に確保、親 cluster を TRAIN/CAL/holdout で隔離。更新禁止。 |
 | \`n_k1\` | **20診断 family** | 第6版 §6 の K1 固定候補。更新禁止。 |
+| \`k1_tv_threshold\` | **0.10** | 確率的方策の K1 条件。20 family の所定状態で少なくとも1件 \`TV>0.10\`。更新禁止。 |
 | \`n_lookup\` / \`lookup_abstain\` | **512件 / 距離>0.20で棄権** | 第6版 §3 の既定候補。更新禁止。 |
 | \`demo_pairs\` | **3 / family / phase** | 第6版 §1 の仕様費、原始呼出課金から独立。更新禁止。 |
 | \`eval_replicates\` | **4 instance / law×G1/G2×checkpoint** | 同一 law の複製を独立 n と数えない。抽出後の正準 instance グリッド順。更新禁止。 |
@@ -118,6 +119,8 @@ theta_star:
 ### 6.1 CAL が測るもの／測らないもの
 
 **測る**: TRAIN 分布から隔離抽出した24 CAL law（各4族6件）の最短成功手数・分散／共分散の診断、原始呼出・候補評価・CPU/wall/RSS の費用ベクトル、強対照の飽和余地、ID-only tag AUC（固定分類器による順列 null の95パーセンタイル比較、複製ごと再 tag）、G2長13〜16についての**TRAIN law のみの工学的容量診断**、K0-a/b/c の抽象 support 診断、generator support の列挙可能性と parent-cluster 分離。CAL の分散結果は記述的診断だけに使用し、G_θ の再fit・シナリオ選択を行わず、分散値を calculator の新規 READ には追加しない。
+
+**ID-only 診断の候補算法**: tag の UTF-8 bytes から \`(byte_length, first_byte/255, last_byte/255, byte_sum_mod_256/255)\` の4特徴だけを作り、CAL law の4族 ID を予測する L2 正則化多クラス logistic regression（\`C=1\`、最適化は最尤目的の収束 tol=1e−8／最大1000反復・初期重み0）、親 cluster 単位の辞書式5-fold CV とする。AUC は4 one-vs-rest の macro 平均、ラベル置換999回の95パーセンタイルを閾値とする。未収束、学習 fold にクラス欠落、AUC 未定義は STOP_UNKNOWN。tag は CAL 複製ごとに登録乱数ドメインから再割付する。いずれも CAL_GO 後のみ実行し、意味 law を予測する学習モデルの成績には算入しない。
 
 **測らない**: 正式 G1/G2 holdout 成績、真の power、正式 law に対する実験、二階概念の効果認定、評価用 seed、sealed instance/target/score、学習結果の最適化。EVAL seed・split 実体には一度も触れず、\`F_laws\` の生成分布の **TRAIN 領域だけ**から採る。CAL で「未見 law 成績」を検証したと呼ばない。
 
