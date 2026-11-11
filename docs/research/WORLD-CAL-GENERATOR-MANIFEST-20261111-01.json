@@ -1,0 +1,354 @@
+{
+  "id": "WORLD-CAL-GENERATOR-MANIFEST-20261111-01",
+  "status": "RESEARCH_LEAD_SOURCE_FIRST_DRAFT__SUPERVISOR_AND_OWNER_REVIEW_PENDING__NOT_CAL_AUTHORIZED__NOT_FROZEN",
+  "updated": "2026-11-11",
+  "tags": [
+    "world-expansion",
+    "cal-preparation",
+    "generator",
+    "source-manifest",
+    "design-only",
+    "no-holdout-instances"
+  ],
+  "generator_version": "WORLD-GEN-SRC-1.0.0",
+  "normative_source": {
+    "spec_id": "WORLD-PREREG-SPEC-20261110-06",
+    "spec_head": "351016fe0e2d468c80736a477133a274cfb713b8",
+    "spec_blob": "9362065507791ced44e2a3cc218c93a0b3cef395",
+    "protocol_id": "WORLD-CAL-PROTOCOL-20261111-01",
+    "protocol_commit": "156491a5e710b2ef8b7ea38d9fa92f83439aa9f5",
+    "protocol_blob": "f01471d448da42c1458b4eb38203b71dc517a663",
+    "approval_issue_comment_id": 6784655532
+  },
+  "distribution_table_path": "docs/research/WORLD-CAL-GENERATOR-DISTRIBUTION-20261111-01.json",
+  "distribution_table_digest": "sha256:bdc841181fe370d940df95d12150e9216b110e065c89c4bfced031dc89339576",
+  "hash_algorithm": "SHA-256",
+  "digest_contract": "SHA-256 on stored UTF-8 bytes with LF line breaks including final newline, no manifest self-digest; any source byte change requires new review and digest.",
+  "syntax_version": "WORLD-LAW-NORMAL-FORM-v1",
+  "law_identity": {
+    "form": [
+      "template_id",
+      "predicate_AST_normal_form",
+      "branch_operation",
+      "target_role",
+      "normalized_parameters"
+    ],
+    "predicate_ast_rules": {
+      "COUNT_EQ": "COMPARE(EQ,COUNT_ROLE(S<signal>),COUNT_ROLE(S<payload>))",
+      "COUNT_LT": "COMPARE(LT,COUNT_ROLE(S<signal>),COUNT_ROLE(S<payload>))",
+      "reading": "COUNT_ROLE refers to spec-v6 allowed symbol-count observation feature; Pos integer 0..16; COMPARE is the shared evaluator construct; not a gifted learned BRANCH",
+      "roles": "S0,S1,S2,S3 are canonical hidden roles, not literal G1 symbols, and are bound to live Alphabet via the independent vocabulary-permutation grid."
+    },
+    "branch_operation": "IF_TRUE_ELSE_FALSE",
+    "target_role": "S<payload>",
+    "normalized_parameters": "[signal_role_index,payload_role_index,k_or_zero]",
+    "law_id_digest_input": "ASCII 'WORLD-LAW-NORMAL-FORM-v1\\n' followed by compact JSON encoding of the exact 5-element form; no whitespace or key sorting needed because only arrays/scalars",
+    "parent_id_digest_input": "ASCII 'WORLD-PARENT-CLUSTER-v1\\n' followed by compact JSON of [family_id,template_id,signal_role_index,payload_role_index]",
+    "uniqueness": "canonical tuple digest only, NOT an equivalence test on observed outputs; repeated draws of same tuple are the same unique law."
+  },
+  "finite_grid": {
+    "family_ids": [
+      "TRANSCRIBE",
+      "REPEAT_COPY",
+      "OBS_EDIT",
+      "TWO_STAGE_JOIN"
+    ],
+    "family_probability_each": "1/4",
+    "template_probability_each_within_family": "1/2",
+    "template_ids": {
+      "TRANSCRIBE": [
+        "T_HEAD",
+        "T_TAIL"
+      ],
+      "REPEAT_COPY": [
+        "R_HEAD",
+        "R_TAIL"
+      ],
+      "OBS_EDIT": [
+        "O_HEAD",
+        "O_TAIL"
+      ],
+      "TWO_STAGE_JOIN": [
+        "C_PREFIX",
+        "C_SUFFIX"
+      ]
+    },
+    "signal_role_domain": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "payload_role_domain": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "eligible_role_pairs": "all ordered (signal,payload) with signal != payload; 12 equiprobable pairs per template",
+    "predicate_ids": [
+      "COUNT_EQ",
+      "COUNT_LT"
+    ],
+    "predicate_probability_each": "1/2",
+    "k_domain_by_family": {
+      "TRANSCRIBE": [
+        0
+      ],
+      "REPEAT_COPY": [
+        1,
+        2,
+        3
+      ],
+      "OBS_EDIT": [
+        0
+      ],
+      "TWO_STAGE_JOIN": [
+        1,
+        2,
+        3
+      ]
+    },
+    "k_probability": "uniform within the listed k domain; 0 is a non-parameter sentinel and never interpreted as a repetition count",
+    "phase_length_grid": {
+      "TRAIN": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "CAL": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "G1": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "G2": [
+        13,
+        14,
+        15,
+        16
+      ]
+    },
+    "buffer_length_max": 16,
+    "phase_alphabet_size": 4,
+    "vocabulary_grid": "all 4! = 24 bijections of S0..S3 onto the phase-specific live Alphabet, uniformly sampled; for G1 the live symbols are a fresh injective opaque rename, never a fixed display-label mapping",
+    "word_grid": {
+      "pattern_ids": [
+        "UNIFORM_S0",
+        "UNIFORM_S1",
+        "ALTERNATE_01",
+        "HALF_BLOCKS_01",
+        "CYCLE_0123",
+        "CYCLE_1230",
+        "LEADING_S2",
+        "TRAILING_S3"
+      ],
+      "formulas": {
+        "UNIFORM_S0": "word[i] = S0",
+        "UNIFORM_S1": "word[i] = S1",
+        "ALTERNATE_01": "word[i] = S(i mod 2)",
+        "HALF_BLOCKS_01": "word[i] = S0 if i < floor(L/2), else S1",
+        "CYCLE_0123": "word[i] = S(i mod 4)",
+        "CYCLE_1230": "word[i] = S((i+1) mod 4)",
+        "LEADING_S2": "word[0] = S2, word[i>0] = S0",
+        "TRAILING_S3": "word[i<L-1] = S1, word[L-1] = S3"
+      },
+      "ordering": "pattern_ids array order; word index i is zero-based; L is selected phase length; eight distinct words for every L in 4..16",
+      "sampling": "uniform among the eight pre-registered word patterns; no adaptive preference based on result"
+    },
+    "instance_cell": "[law_unique_id,phase,L,vocabulary_permutation_rank_lexicographic_0_to_23,word_pattern_id]; canonical initial buffer = apply bijection to word formula, cursor=0,selection=none,clipboard=empty",
+    "instance_sampling": "law drawn by exact p_l row; conditional on phase and that law, choose uniformly among structurally admissible lengths; then uniformly among 24 vocabulary bijections and 8 word patterns. No rejection based on solved/failed results, observed scores, or ID-only classifier.",
+    "demonstration": "three distinct canonical instance cells per law/phase selected without replacement from the same law support by separate PRF domain; demo cells disjoint from scored trial cells; no demo or trial cells are instantiated in this PR",
+    "goal_contract": "target from deterministic private template function below; public task tag and three input/target demos, feedback only for TRAIN; hidden target/rule unavailable to learner"
+  },
+  "template_semantics": {
+    "general": "Input x is initial buffer of length L; indexes 0..L-1; P is the registered COUNT_EQ or COUNT_LT comparison on initial x; replace_one leaves other positions unchanged; true/false outputs are private verifier goals. Every output symbol uses the phase live Alphabet. Template evaluation does not provide a BRANCH instance to any learner.",
+    "T_HEAD": "if P then target=replace_one(x,0,x[L-1]) else target=replace_one(x,0,S<payload>)",
+    "T_TAIL": "if P then target=replace_one(x,L-1,x[0]) else target=replace_one(x,L-1,S<payload>)",
+    "R_HEAD": "if P then target=x||repeat(x[0],k) else target=x||repeat(S<payload>,k)",
+    "R_TAIL": "if P then target=x||repeat(x[L-1],k) else target=x||repeat(S<payload>,k)",
+    "O_HEAD": "if P then target=replace_one(x,0,S<payload>) else target=replace_one(x,0,S<signal>)",
+    "O_TAIL": "if P then target=replace_one(x,L-1,S<payload>) else target=replace_one(x,L-1,S<signal>)",
+    "C_PREFIX": "if P then target=x[k:L]||x[0:k] else target=x[0:k]||x[k:L]",
+    "C_SUFFIX": "if P then target=x[L-k:L]||x[0:L-k] else target=x[0:L-k]||x[L-k:L]",
+    "operations": "|| is sequence concatenation; repeat(s,k) repeats one live Sym exactly k times; replacement never changes length; slicing uses zero-based half-open indexes. Target function defines evaluator truth, not a learner macro.",
+    "target_validity": "Only buffer length capacity is structurally screened. Whether target is reachable within T_horizon=24, publicly identifiable, and uniquely demonstrates a second-order witness is deferred to K0 and never assumed from capacity admissibility."
+  },
+  "structural_exclusion": {
+    "ordering": [
+      "construct raw law grid",
+      "drop signal==payload before defining law support",
+      "canonicalize and deduplicate law tuples",
+      "for each phase and law-L cell, drop capacity impossible target BEFORE sampling any word/permutation",
+      "never drop a law from F merely because an observed trial fails, K0 is UNKNOWN or G2 performance is poor"
+    ],
+    "raw_law_grid_count": 512,
+    "invalid_equal_role_count": 128,
+    "law_support_count_after_grammar": 384,
+    "pre_instance_capacity_rule": "exclude iff template_id is R_HEAD or R_TAIL AND L+k>16; for the other six templates the target is exactly L symbols and none exceed capacity",
+    "law_capacity_exclusion_rule": "exclude a canonical law from F only if it has zero capacity-admissible instance cells across the registered TRAIN/G1 support (L=4..12). Under this exact grid: zero such laws.",
+    "law_level_capacity_exclusion_count": 0,
+    "F_laws_count": 384,
+    "phase_law_length_cells": {
+      "TRAIN": {
+        "raw": 3456,
+        "excluded": 0,
+        "eligible": 3456
+      },
+      "CAL": {
+        "raw": 3456,
+        "excluded": 0,
+        "eligible": 3456
+      },
+      "G1": {
+        "raw": 3456,
+        "excluded": 0,
+        "eligible": 3456
+      },
+      "G2": {
+        "raw": 1536,
+        "excluded": 288,
+        "eligible": 1248
+      }
+    },
+    "G2_repeat_capacity_detail": "For each k=1,2,3 there are 48 distinct REPEAT_COPY laws; remove respectively 1,2,3 lengths at the top of G2 13..16, giving 48*(1+2+3)=288 law-length exclusions",
+    "instance_cell_multiplier": "8 word patterns * 24 symbol bijections = 192 per eligible law-length cell",
+    "phase_instance_cell_counts": {
+      "TRAIN": 663552,
+      "CAL": 663552,
+      "G1": 663552,
+      "G2_raw": 294912,
+      "G2_excluded": 55296,
+      "G2_eligible": 239616
+    },
+    "exclusion_entire_grid_application": "nested canonical law ID lexicographic, phase in TRAIN/CAL/G1/G2, registered phase length ascending, permutation lexicographic, pattern_id listed order; apply capacity test on law and length before accepting any cell. Exclusion counts multiply by 192 uniformly. These are abstract cell cardinalities only; no real instance bytes or targets are produced.",
+    "post_generation_rule": "Failure, abstention, ACTION_FAULT and FAMILY_UNIDENTIFIABLE remain in denominator; FAMILY_INVALID follows K4 STOP_INVALID, never retroactively modifies F."
+  },
+  "distribution": {
+    "p_l": "TRANSCRIBE or OBS_EDIT row 1/192; REPEAT_COPY or TWO_STAGE_JOIN row 1/576. Exact rational p_l is stored in every distribution row. Sum all 384 p_l=1.",
+    "q_l": "after sealed parent allocation, for law l in H_laws, q_l=p_l/(sum_{h in H_laws}p_h). No weight is updated using outcomes.",
+    "estimator": "Sampford unique-law PPS without replacement, water-filling first order; unnormalized HT; parent cluster re-sampling. No iid repeated law rows.",
+    "proposed_split_design_mass": "With quota-based split below, 36 TRANSCRIBE +132 REPEAT_COPY +36 OBS_EDIT +132 TWO_STAGE_JOIN laws are in H, so sum_{H}p=5/6, and conditional q_l is 1/160 or 1/480 respectively; no H law IDs or actual split digests are disclosed here."
+  },
+  "parent_cluster_split": {
+    "source_rule_version": "WORLD-PARENT-SPLIT-v1",
+    "parent_identity": "cluster root [family_id,template_id,signal_role,payload_role]; predicate_id and k are descendants, all descendants stay in exactly one split. 24 parents/family, 96 total.",
+    "parent_size_by_family": {
+      "TRANSCRIBE": 2,
+      "REPEAT_COPY": 6,
+      "OBS_EDIT": 2,
+      "TWO_STAGE_JOIN": 6
+    },
+    "assignment_seed_policy": "Parent assignment is sealed. Owner must escrow distinct 256-bit key AFTER separate authorization under the protocol's seed policy; the key value, assignments, H_laws IDs, real instances and targets do not appear here.",
+    "assignment_rank": "for each family independently, sort all 24 parent IDs by unsigned 256-bit HMAC-SHA256(split_key, UTF-8('WORLD-PARENT-SPLIT-v1\\n'+parent_cluster_id)), ties by ASCII parent_cluster_id; do not use observed outcomes or generator seed",
+    "quotas_in_parents": {
+      "TRANSCRIBE": {
+        "TRAIN": 3,
+        "CAL": 3,
+        "HOLDOUT": 18
+      },
+      "REPEAT_COPY": {
+        "TRAIN": 1,
+        "CAL": 1,
+        "HOLDOUT": 22
+      },
+      "OBS_EDIT": {
+        "TRAIN": 3,
+        "CAL": 3,
+        "HOLDOUT": 18
+      },
+      "TWO_STAGE_JOIN": {
+        "TRAIN": 1,
+        "CAL": 1,
+        "HOLDOUT": 22
+      }
+    },
+    "assignment_rule": "per family: first TRAIN parent quota => TRAIN; next CAL quota => CAL; remaining => HOLDOUT; expand each parent to its entire family of descendant unique laws; no cross-split ancestor or derivation",
+    "design_counts": {
+      "N_unique": 384,
+      "n_train": 24,
+      "n_cal": 24,
+      "N_eligible_expected": 336,
+      "parent_count": 96,
+      "holdout_parents": 80
+    },
+    "parent_cluster_allocation_digest": null,
+    "H_laws_digest": null,
+    "split_manifest_pending": "digest values MUST be computed from a later authorized sealed allocation, must be checked against these count invariants and never inferred from this source-only draft. The actual instance sample must remain sealed."
+  },
+  "random_source_spec": {
+    "prf_version": "HMAC-SHA256 counter PRF; protocol WORLD-CAL-v1; domain separation between split, law, instance, demo, tag, CAL simulation, bootstrap",
+    "seed_escrow_path": "owner-private/escrow/WORLD-CAL-v1 (reference namespace only; no real secret/path or seed instantiated)",
+    "tag_issuance_rule_version": "WORLD-TAG-ISSUANCE-v1",
+    "tag_rule": "per phase, keyed PRF independent from generator and split secrets over canonical law ID plus collision counter; 128-bit opaque lower-case hexadecimal IDs, reject and increment counter on collision within phase; same law gets same tag within phase, different laws never share; phases use independent domain; IDs contain no role/name bits",
+    "holdout_seed_value": null
+  },
+  "runtime_manifest_contract": {
+    "split_manifest": {
+      "parent_cluster_allocation_digest": null,
+      "H_laws_digest": null
+    },
+    "demo_set_digests": null,
+    "cost_vector_schema_version": "WORLD-PREREG-SPEC-20261110-06#3",
+    "snapshot_digests": null,
+    "analysis_code_digest": null,
+    "role_read_paths": {
+      "LEARNER_ARMS": [
+        "public/token_table",
+        "public/demo",
+        "public/history",
+        "public/trace",
+        "self/allowed_snapshot"
+      ],
+      "CAL_ORACLE": [
+        "abstract/generator_laws",
+        "abstract/generator_instance_distribution",
+        "abstract/demo_distribution",
+        "abstract/feedback_rule",
+        "abstract/budget_rule"
+      ],
+      "BLIND_DESIGN_CALCULATOR": [
+        "design/split_metadata:N_eligible,q,parent_cluster",
+        "analysis/approved_theta_epsilon",
+        "analysis/alpha_beta",
+        "analysis/G_theta_model",
+        "analysis/sampling_and_tests"
+      ]
+    },
+    "model_digest": "sha256:31124f2df3acb7bebc9b75705aa6ac2e33f3f796a6f55dfad210863e375d077a",
+    "acl_csv_digest": "sha256:faf1962fd4737033f6056f24a9cd1e6b629826e1aeb6ad8bdbc7cb50fa76b44c",
+    "sampling_design": {
+      "Sampford_version": "CAL-protocol-v1",
+      "pi_method": "water-filling min(1,lambda*q)",
+      "pi_ll_method": "Sampford exact second order inclusion, implementation pending audit"
+    },
+    "T_horizon": 24,
+    "B_initial": 4096,
+    "B_final": null,
+    "amendment_history": [],
+    "failure_log_schema": "CAL protocol §7.2 action_event/family_status/run_status; fail-closed; raw trace + digest; no holdout scoring prior to separate GO",
+    "stage_gates": "No CAL, power simulation, K0 full run, holdout materialization, algorithm lock, FROZEN, implementation GO, or experiment GO is implied. Runtime-only digest/receipt fields remain null until separately authorized."
+  }
+}
