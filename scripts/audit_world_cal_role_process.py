@@ -44,7 +44,7 @@ def audit():
             stages[role]=(stage,{pub:hashlib.sha256(p.read_bytes()).hexdigest()})
         for role,(stage,manifest) in stages.items():
             out=launch_isolated(role,code_root=code,role_stage=stage,
-                    entrypoint="role_probe.py",manifest=manifest
+                    entrypoint="role_probe.py",manifest=manifest)
             result=json.loads(out)
             if result["role"]!=role:raise SandboxUnknown("STOP_UNKNOWN: wrong role identity")
             permitted="/role/"+next(iter(manifest))
