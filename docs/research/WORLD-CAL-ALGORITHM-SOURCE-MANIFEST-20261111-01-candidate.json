@@ -5,8 +5,8 @@
     {
       "encoding": "UTF-8/LF",
       "path": ".github/workflows/world-cal-synthetic-implementation.yml",
-      "sha256": "dcbf8cf8f126128aa14a23f1d72f5cfeb06d1bf7dc1dcfd2f8ccbe4d78f43959",
-      "size_bytes": 1491
+      "sha256": "c9d0defaeb46b991641c26b481a6d341cbf5fb71897b75d6b883df07c116e385",
+      "size_bytes": 3342
     },
     {
       "encoding": "UTF-8/LF",
@@ -22,9 +22,57 @@
     },
     {
       "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-GENERATOR-SOURCE-20261111-01.md",
+      "sha256": "8f5853d1b1e8e2d69aa5d64daddfd967a1e2d3390a9e63a8f873f97c08073a0c",
+      "size_bytes": 11318
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-IMPLEMENTATION-CONTINUATION-20261111-02.md",
+      "sha256": "b6fca35ccbe055d0a4ec5fb970222405b600bb40df0b8e3e43c506857a2bf7f2",
+      "size_bytes": 5256
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-IMPLEMENTATION-ERRATA-20261111-01.md",
+      "sha256": "7f9c14ed643c175b8ccbdb80d75d63a9f982e309cec243d669549cf08a16b36b",
+      "size_bytes": 3291
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-IMPLEMENTATION-PLAN-20261111-01.md",
+      "sha256": "cf85a3b036605b58c7818de0c6564dae46e1387a5743d289b8af5b58d62ed68e",
+      "size_bytes": 22825
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-IMPLEMENTATION-RQ-20261111-01.md",
+      "sha256": "09b7fcdc9f5f8c05029b27450cedfc404f96639e66b0c389aecfcf2de23fc11d",
+      "size_bytes": 4026
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "scripts/audit_world_cal_role_process.py",
+      "sha256": "91d5ffb0978dd929b5fe8c3be4cb79ec67d02de6ffa9761a1784acc3b98c6ede",
+      "size_bytes": 3293
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "scripts/audit_world_cal_sampford_336.py",
+      "sha256": "2cca4d6606032c357478c0b4cae15ac719c170e778370a660c373398bb7d0b8a",
+      "size_bytes": 4091
+    },
+    {
+      "encoding": "UTF-8/LF",
       "path": "scripts/build_world_cal_source_manifest.py",
-      "sha256": "d6cc514386c2892276c8744332a4fc82c50e88c13c703fab92d295a1c4b13e03",
-      "size_bytes": 2996
+      "sha256": "26f9b2bb1409c88f2316b9f503166b67eafff6a2df80632554d9c87c3d61b99d",
+      "size_bytes": 4308
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "scripts/profile_world_cal_integrated.py",
+      "sha256": "62a5ae7720b8a5acac47e4436647b93c849f7e2907371d93b3880fa8df109dda",
+      "size_bytes": 4007
     },
     {
       "encoding": "UTF-8/LF",
@@ -34,9 +82,15 @@
     },
     {
       "encoding": "UTF-8/LF",
+      "path": "tests/test_world_cal_impl_completion.py",
+      "sha256": "717c5777e58d79b4eb1cd81ea49847d2cea63c7864babd17e04bd994573e978e",
+      "size_bytes": 6508
+    },
+    {
+      "encoding": "UTF-8/LF",
       "path": "tests/test_world_cal_synthetic.py",
-      "sha256": "3b3c9505d0c7b6e723b281f24ef5eb990aa8233d8de74432cc5e5300c636bb64",
-      "size_bytes": 10788
+      "sha256": "0945895a9624f079a1e5c859217b7f8217ecfd7a81ad91ea4366b724ff686bfe",
+      "size_bytes": 10784
     },
     {
       "encoding": "UTF-8/LF",
@@ -46,9 +100,15 @@
     },
     {
       "encoding": "UTF-8/LF",
+      "path": "world_cal/abstract_support.py",
+      "sha256": "bfa7ff02a73a6b6b70fac923922ffdd87a6bf2bcb98b98df806345569120e875",
+      "size_bytes": 5270
+    },
+    {
+      "encoding": "UTF-8/LF",
       "path": "world_cal/cal_measure.py",
-      "sha256": "b7ff8ad001594f2d8f0c0cb215e7fc2698532bdf70c1c418e9e45305cac6c4f9",
-      "size_bytes": 1093
+      "sha256": "b43bd681bd12939c59c27d56a437b5ea9ee958606366f93db6abf6fe5fdac5cb",
+      "size_bytes": 1737
     },
     {
       "encoding": "UTF-8/LF",
@@ -59,14 +119,32 @@
     {
       "encoding": "UTF-8/LF",
       "path": "world_cal/gtheta.py",
-      "sha256": "049ebb7638f74413c86bde0499be3f4389f43eed0d9c0badcfb28de1c94e3013",
-      "size_bytes": 4631
+      "sha256": "e71fb9612fb152061a7fe89ef7ddca540bf56e896f47cfe3a07e1fc042fa7af3",
+      "size_bytes": 5184
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/id_only.py",
+      "sha256": "32ebbf8def087a4603d25c7fbb87d0e0751470e5274faf14308eb69eeaa9d478",
+      "size_bytes": 6289
     },
     {
       "encoding": "UTF-8/LF",
       "path": "world_cal/inference.py",
-      "sha256": "68f1eb09a3de71ce473311bfc2cff97c37da10fc90187c63a9ae4fd60dd223ce",
-      "size_bytes": 3480
+      "sha256": "ee45aa925196fb6ad1abe736bba5a1d61e69e184c473d87d2a2d9f9c1cad67c9",
+      "size_bytes": 5206
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/k0_b.py",
+      "sha256": "7af66c6a2bd53e4c1dde8de466d2a753c9cbbff49d3961d3e40ee73b6bb2d798",
+      "size_bytes": 6086
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/k0_c.py",
+      "sha256": "c4a05a33e427596a1dfa30e7a6dc8a12cb4a0f2bf7f749a549c5e52688392634",
+      "size_bytes": 5723
     },
     {
       "encoding": "UTF-8/LF",
@@ -118,6 +196,12 @@
     },
     {
       "encoding": "UTF-8/LF",
+      "path": "world_cal/power_engine.py",
+      "sha256": "057b91752c400064acda536ee735c7ec5532dde7212b56a8dccf286ab263d4a5",
+      "size_bytes": 11431
+    },
+    {
+      "encoding": "UTF-8/LF",
       "path": "world_cal/power_route.py",
       "sha256": "d0916c39cae71481f2be43e997671e5d623144be9bace30f8135730ba81855c8",
       "size_bytes": 2826
@@ -125,8 +209,8 @@
     {
       "encoding": "UTF-8/LF",
       "path": "world_cal/prf.py",
-      "sha256": "dae5499607ba7ec5eaddda1501322560f83a48ad0567cfe6fd66c6b882a2de6d",
-      "size_bytes": 2072
+      "sha256": "8118f7b6b2ee4d202d71b027a1d5ead8acc9bacbc18ed3d71e3ab17c167c61e9",
+      "size_bytes": 2379
     },
     {
       "encoding": "UTF-8/LF",
@@ -137,14 +221,26 @@
     {
       "encoding": "UTF-8/LF",
       "path": "world_cal/requirements.lock",
-      "sha256": "5e25367e585a85fa562d114b81b8888a833af0de52e81a6af806032b0b65d356",
-      "size_bytes": 103
+      "sha256": "0557280fcf3c477cc42cf44418a735f0233ee1b42dd93f4fd771fc0c25d055fb",
+      "size_bytes": 144
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/role_boundary.py",
+      "sha256": "be666687c1f9c115acb811c4a4ed39368a626382abe8be435d05816ac99b8ab4",
+      "size_bytes": 7746
     },
     {
       "encoding": "UTF-8/LF",
       "path": "world_cal/sampford.py",
       "sha256": "af93a82a4d592b0e0a782676d4f518852333a46c5da06be859a51e30732ad4e1",
       "size_bytes": 7854
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/sampford_grouped.py",
+      "sha256": "7f322411cec7406a91056cefc3f270b05aa4f01af37a0fa778a5b8ce68131e00",
+      "size_bytes": 5795
     },
     {
       "encoding": "UTF-8/LF",
@@ -160,15 +256,27 @@
     }
   ],
   "environment": {
+    "ci_python_pin": "3.12.16",
+    "cryptography_pin": "46.0.3",
+    "libc": [
+      "glibc",
+      "2.39"
+    ],
     "machine": "x86_64",
+    "numpy_pin": "2.2.6",
+    "openblas_num_threads": "1",
     "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
-    "python": "3.12.16"
+    "python": "3.12.16",
+    "python_implementation": "CPython",
+    "pythonhashseed": "0",
+    "rfc8785_pin": "0.1.4",
+    "ubuntu_runner_pin": "ubuntu-24.04"
   },
   "excluded_from_hash": "this candidate itself; future escrow/holdout/split secret files",
   "id": "WORLD-CAL-ALGORITHM-SOURCE-MANIFEST-20261111-01-CANDIDATE",
   "independent_audit_required": true,
   "seed": null,
-  "source_commit": "EXACT_HEAD_TO_BE_BOUND_BY_INDEPENDENT_SUPERVISOR",
+  "source_commit": "7024438fd974678c7674b13a031632bf66afee51",
   "source_origin_git_blob": {
     "acl_e2": "6068b0b21808d7016e6570b8893ef18edc2a1d75",
     "gtheta": "7df028318df0f876ffaf7b7331738620a1187e8c",
