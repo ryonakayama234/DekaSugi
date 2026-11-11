@@ -7,7 +7,8 @@ The distinction prevents a cardinality proof being mistaken for K0 PASS.
 import hashlib
 import itertools
 import json
-from math import comb, prod
+from math import comb
+from fractions import Fraction
 
 from .abstract_support import (
     PATTERNS, PHASE_LENGTHS, iter_law_cells, verified_rows,
@@ -33,6 +34,13 @@ def law_cell_count(row, phase):
         raise CoverageUnknown("STOP_UNKNOWN: unknown phase")
     return 24 * len(PATTERNS) * sum(
         capacity_admissible(row, length) for length in PHASE_LENGTHS[phase])
+
+def exact_cell_mass(row, phase):
+    """Per-cell mass under law p and the registered hierarchical uniform grid."""
+    valid_lengths=sum(capacity_admissible(row, n) for n in PHASE_LENGTHS[phase])
+    if not valid_lengths:
+        raise CoverageUnknown("STOP_UNKNOWN: no admissible lengths")
+    return Fraction(row[8], row[9]) / (valid_lengths * 24 * len(PATTERNS))
 
 def iter_law_pairs(rows=None):
     """Canonical unordered distinct-law pairs: bijection with i<j indices."""
@@ -64,6 +72,10 @@ def source_index_certificate(*, verify_generator_yields=True):
             produced = sum(1 for row in rows for _ in iter_law_cells(row, phase))
             if produced != arithmetic:
                 raise CoverageUnknown("STOP_UNKNOWN: generator/index discrepancy")
+        total_mass=sum((law_cell_count(row,phase)*exact_cell_mass(row,phase)
+                        for row in rows), Fraction(0))
+        if total_mass!=1:
+            raise CoverageUnknown("STOP_UNKNOWN: probability mass missing")
         counts[phase] = arithmetic
     pair_hash = hashlib.sha256()
     total = 0
@@ -77,6 +89,7 @@ def source_index_certificate(*, verify_generator_yields=True):
         "law_count": len(rows), "unordered_law_pairs": total,
         "pair_order_sha256": pair_hash.hexdigest(),
         "phase_index_cells": counts,
+        "phase_total_probability_exact": {phase:"1/1" for phase in counts},
         "per_law_phase_formula": "24 * 8 * number_of_capacity_admissible_lengths",
         "pair_index_formula": "n*(n-1)//2",
         "all_training_paths_exhausted": False,
