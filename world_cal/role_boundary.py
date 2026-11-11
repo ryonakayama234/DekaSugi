@@ -64,7 +64,7 @@ def _mount_system_ro():
     # Minimal interpreter and shared library paths; neither /home nor /mnt
     # nor the host working tree is visible in the namespace.
     paths=[]
-    for path in ("/usr","/bin","/lib","/lib64","/etc"):
+    for path in ("/usr","/bin","/lib","/lib64"):
         if pathlib.Path(path).exists() and path not in paths:
             paths.extend(["--ro-bind",path,path])
     prefix=pathlib.Path(sys.prefix).resolve()
@@ -101,7 +101,9 @@ def launch_isolated(role,*,code_root,role_stage,entrypoint,manifest,
          "--dev","/dev","--chdir","/code",
          "--setenv","HOME","/tmp","--setenv","PYTHONPATH","/code",
          "--setenv","WORLD_CAL_ROLE",role,
-         "--",sys.executable,"-I",str(pathlib.Path("/code")/entrypoint)]
+         "--",sys.executable,"-I","-c",
+         "import runpy,sys; sys.path.insert(0, '/code'); "+
+         "runpy.run_path("+repr(str(pathlib.Path("/code")/entrypoint))+",run_name='__main__')"]
     try:
         result=subprocess.run(cmd,input=payload,capture_output=True,
                               timeout=timeout,check=False,env={
