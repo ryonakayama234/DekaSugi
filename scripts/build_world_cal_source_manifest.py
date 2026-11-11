@@ -13,6 +13,7 @@ PATHS=tuple(sorted((
     "docs/research/WORLD-CAL-IMPLEMENTATION-RQ-20261111-01.md",
     "docs/research/WORLD-CAL-IMPLEMENTATION-ERRATA-20261111-01.md",
     "docs/research/WORLD-CAL-IMPLEMENTATION-CONTINUATION-20261111-02.md",
+    "docs/research/WORLD-CAL-IMPLEMENTATION-COVERAGE-AUDIT-20261111-03.md",
     "docs/research/WORLD-CAL-GENERATOR-DISTRIBUTION-20261111-01.json",
     "docs/research/WORLD-CAL-GENERATOR-MANIFEST-20261111-01.json",
     "world_cal/__init__.py",
@@ -35,6 +36,7 @@ PATHS=tuple(sorted((
     "world_cal/power_engine.py",
     "world_cal/k0_b.py",
     "world_cal/k0_c.py",
+    "world_cal/k0_coverage.py",
     "world_cal/role_boundary.py",
     "world_cal/receipt.py",
     "world_cal/normative/WORLD-CAL-GTHETA-20261111-01-model-candidates.json",
@@ -45,10 +47,13 @@ PATHS=tuple(sorted((
     "scripts/audit_world_cal_sampford_336.py",
     "scripts/profile_world_cal_integrated.py",
     "scripts/audit_world_cal_role_process.py",
+    "scripts/audit_world_cal_id_only_repro.py",
+    "scripts/audit_world_cal_k0_index.py",
     "scripts/profile_world_cal_synthetic.py",
     "scripts/build_world_cal_source_manifest.py",
     "tests/test_world_cal_synthetic.py",
     "tests/test_world_cal_impl_completion.py",
+    "tests/test_world_cal_k0_coverage.py",
     ".github/workflows/world-cal-synthetic-implementation.yml"
 )))
 
