@@ -38,8 +38,14 @@ def uniform53(digest: bytes) -> float:
     if len(digest) != 32: raise PRFError("expected SHA-256 digest")
     x = int.from_bytes(digest[:7], "big") >> 3
     u = (x + 0.5) / (1 << 53)
+    if not math.isfinite(u) or u <= 0.0:
+        raise PRFError('STOP_UNKNOWN: nonpositive/nonfinite PRF uniform')
+    # Supervisor RQ-CAL-IMPL-02: binary64 rounding at the upper endpoint.
+    # Only this representation boundary has a defined correction; all others STOP.
+    if u >= 1.0:
+        u = math.nextafter(1.0, 0.0)
     if not 0.0 < u < 1.0:
-        raise PRFError('STOP_UNKNOWN: binary64 cannot represent open-interval endpoint')
+        raise PRFError('STOP_UNKNOWN: invalid corrected PRF uniform')
     return u
 
 def box_muller(u1: float, u2: float) -> tuple[float, float]:
