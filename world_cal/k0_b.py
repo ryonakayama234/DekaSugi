@@ -136,9 +136,25 @@ def scan_k0b_pairs(pairs,*,complete_support,cap=2_000_000):
     unknown=False
     fails=[]
     audited=0
-    if not complete_support:
-        return {"status":"UNKNOWN","reason":"abstract pair enumeration incomplete"}
+    # A caller-supplied bool cannot certify a 73,536-pair Cartesian support.
+    # A complete coverage receipt must also certify every demo/trial/EVAL path,
+    # not just the 384-law index. These fields remain false until an actual
+    # exhaustive, separately audited enumeration has finished.
+    required=("law_pair_count","law_pairs_digest","demo_paths_exhausted",
+              "train_paths_exhausted","eval_paths_exhausted")
+    if not isinstance(complete_support,dict) or any(
+            key not in complete_support for key in required):
+        return {"status":"UNKNOWN","reason":"missing complete law/instance proof"}
+    if (complete_support["law_pair_count"]!=73536 or
+            not isinstance(complete_support["law_pairs_digest"],str) or
+            not all(complete_support[key] is True
+                    for key in required[2:])):
+        return {"status":"UNKNOWN","reason":"unexhausted law/instance support"}
+    pair_digests=set()
     for pair_digest,tr_l,tr_r,ev_l,ev_r in pairs:
+        if pair_digest in pair_digests:
+            return {"status":"UNKNOWN","reason":"duplicate law pair"}
+        pair_digests.add(pair_digest)
         train=solve_k0b_pair(tr_l,tr_r,mode="TRAIN",cap=cap)
         test=solve_k0b_pair(ev_l,ev_r,mode="EVAL",cap=cap)
         audited+=1
@@ -146,6 +162,9 @@ def scan_k0b_pairs(pairs,*,complete_support,cap=2_000_000):
         elif "FAIL" in (train["status"],test["status"]):
             fails.append({"pair_digest":pair_digest,
                           "train":train["status"],"eval":test["status"]})
+    if audited!=complete_support["law_pair_count"]:
+        return {"status":"UNKNOWN","reason":"law pair iterator did not exhaust",
+                "pairs_audited":audited}
     return {"status":"UNKNOWN" if unknown else "FAIL" if fails else "PASS",
             "pairs_audited":audited,"failed_pairs":fails if not unknown else [],
             "unknown_prioritized":unknown}
