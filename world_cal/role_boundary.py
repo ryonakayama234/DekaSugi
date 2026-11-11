@@ -76,13 +76,18 @@ def _mount_system_ro():
 
 
 def launch_isolated(role,*,code_root,role_stage,entrypoint,manifest,
-                    payload=b"",cal_authorized=False,timeout=180):
+                    payload=b"",cal_authorized=False,timeout=180,
+                    synthetic_filesystem_only=False):
     """Run a verified role inside a restrictive mount/PID/network namespace.
 
     Stage is trust-boundary input: the caller must prepare an exclusive,
     non-symlink directory of byte-hashed data. Only that directory is mounted
     at /role. Secrets remain on the host in a DIFFERENT unmapped directory.
     """
+    # Host-network mode is restricted to explicit PUBLIC fixture auditing;
+    # production role launch always requires independent network isolation.
+    if synthetic_filesystem_only and (cal_authorized or role not in ("LEARNER_ARMS","EVALUATOR")):
+        raise SandboxUnknown("STOP_UNKNOWN: fixture-only network exception denied")
     bwrap=shutil.which("bwrap")
     if sys.platform!="linux" or not bwrap:
         raise SandboxUnknown("STOP_UNKNOWN: bubblewrap isolation unavailable")
@@ -94,7 +99,9 @@ def launch_isolated(role,*,code_root,role_stage,entrypoint,manifest,
     if not isinstance(payload,bytes):
         raise SandboxUnknown("STOP_UNKNOWN: payload must be bytes")
     cmd=[bwrap,"--die-with-parent","--new-session","--unshare-user",
-         "--unshare-pid","--unshare-ipc","--unshare-net","--unshare-uts",
+         "--unshare-pid","--unshare-ipc",
+         *(["--share-net"] if synthetic_filesystem_only else ["--unshare-net"]),
+         "--unshare-uts",
          "--ro-bind",str(code),"/code","--ro-bind",
          str(pathlib.Path(role_stage).resolve()),"/role",
          *_mount_system_ro(),"--tmpfs","/tmp","--proc","/proc",
