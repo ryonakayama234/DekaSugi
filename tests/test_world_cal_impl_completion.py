@@ -7,6 +7,7 @@ import unittest
 from fractions import Fraction
 
 from world_cal.gtheta import aggregate_law
+from world_cal.inference import bootstrap_vectors, bootstrap_vectors_cached
 from world_cal.id_only import (features, parent_fold_ids,
     cross_validated_macro_auc,IDOnlyUnknown)
 from world_cal.k0_b import K0Hypothesis,solve_k0b_pair,scan_k0b_pairs
@@ -58,6 +59,18 @@ class RulingGoldens(unittest.TestCase):
 
 
 class GuardGoldens(unittest.TestCase):
+    def test_bootstrap_cached_bitwise_equivalent(self):
+        sample=[0,1,2,3]
+        q=[.25]*4
+        pi=[.5]*4
+        parents=["p0","p0","p1","p2"]
+        outcomes={i:tuple((i+1)*(j+1)/77 for j in range(9))
+                  for i in sample}
+        draws=[["p0","p1","p2"],["p1","p1","p0"],["p2","p0","p0"]]
+        slow=bootstrap_vectors(sample,q,pi,outcomes,parents,draws)
+        fast=bootstrap_vectors_cached(sample,q,pi,outcomes,parents,draws)
+        self.assertEqual(slow,fast)
+
     def test_id_only_folds_and_logistic(self):
         labels=[i%4 for i in range(20)]
         parents=["P%d"%(i//4) for i in range(20)]
