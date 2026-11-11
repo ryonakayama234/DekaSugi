@@ -3,10 +3,10 @@
   "canonical_order": "path lexicographic ascending; raw sha256 of all exact stored bytes",
   "closed_source_files": [
     {
-      "encoding": "UTF-8/LF",
       "path": ".github/workflows/world-cal-synthetic-implementation.yml",
-      "sha256": "c9d0defaeb46b991641c26b481a6d341cbf5fb71897b75d6b883df07c116e385",
-      "size_bytes": 3342
+      "size_bytes": 5500,
+      "sha256": "d3d4f414873adf1433b612ad3dfbf735a75990d80c81d95bfbaba5398b64ad91",
+      "encoding": "UTF-8/LF"
     },
     {
       "encoding": "UTF-8/LF",
@@ -27,10 +27,16 @@
       "size_bytes": 11318
     },
     {
-      "encoding": "UTF-8/LF",
       "path": "docs/research/WORLD-CAL-IMPLEMENTATION-CONTINUATION-20261111-02.md",
-      "sha256": "b6fca35ccbe055d0a4ec5fb970222405b600bb40df0b8e3e43c506857a2bf7f2",
-      "size_bytes": 5256
+      "size_bytes": 7105,
+      "sha256": "1a51fc8a21db11b59a6b7fd5bacb08b1c888e7dd1e44456e7d54643142f1ad6c",
+      "encoding": "UTF-8/LF"
+    },
+    {
+      "path": "docs/research/WORLD-CAL-IMPLEMENTATION-COVERAGE-AUDIT-20261111-03.md",
+      "size_bytes": 9049,
+      "sha256": "fd07b25e74d32326bb78051123009f7ff8955b8842d953485c7a24c3f3cc4c96",
+      "encoding": "UTF-8/LF"
     },
     {
       "encoding": "UTF-8/LF",
@@ -51,6 +57,18 @@
       "size_bytes": 4026
     },
     {
+      "path": "scripts/audit_world_cal_id_only_repro.py",
+      "size_bytes": 3803,
+      "sha256": "e6d8d6a2e6dea372a52a243605513b773e365cc3f444a6bb3ccee3f6b148a130",
+      "encoding": "UTF-8/LF"
+    },
+    {
+      "path": "scripts/audit_world_cal_k0_index.py",
+      "size_bytes": 554,
+      "sha256": "8f700ed2bcbc8cd0ac9fb38476231c283fae68e8f55196134a169d76ce0e5d88",
+      "encoding": "UTF-8/LF"
+    },
+    {
       "encoding": "UTF-8/LF",
       "path": "scripts/audit_world_cal_role_process.py",
       "sha256": "91d5ffb0978dd929b5fe8c3be4cb79ec67d02de6ffa9761a1784acc3b98c6ede",
@@ -63,10 +81,10 @@
       "size_bytes": 4091
     },
     {
-      "encoding": "UTF-8/LF",
       "path": "scripts/build_world_cal_source_manifest.py",
-      "sha256": "26f9b2bb1409c88f2316b9f503166b67eafff6a2df80632554d9c87c3d61b99d",
-      "size_bytes": 4308
+      "size_bytes": 4550,
+      "sha256": "4640832d58b9230a1f612a1a43208e53add37cb8cf901ac57b309bbd4abdb32e",
+      "encoding": "UTF-8/LF"
     },
     {
       "encoding": "UTF-8/LF",
@@ -85,6 +103,12 @@
       "path": "tests/test_world_cal_impl_completion.py",
       "sha256": "717c5777e58d79b4eb1cd81ea49847d2cea63c7864babd17e04bd994573e978e",
       "size_bytes": 6508
+    },
+    {
+      "path": "tests/test_world_cal_k0_coverage.py",
+      "size_bytes": 2531,
+      "sha256": "28281f38b38fe55940b9b7256175fbb74063fc9c036108847a7d1f550a73c133",
+      "encoding": "UTF-8/LF"
     },
     {
       "encoding": "UTF-8/LF",
@@ -135,16 +159,22 @@
       "size_bytes": 5206
     },
     {
-      "encoding": "UTF-8/LF",
       "path": "world_cal/k0_b.py",
-      "sha256": "7af66c6a2bd53e4c1dde8de466d2a753c9cbbff49d3961d3e40ee73b6bb2d798",
-      "size_bytes": 6086
+      "size_bytes": 7250,
+      "sha256": "f48f9a6a4ff6e278a81d52ff4d74d70798a4f0e30ff38ce1cbc0c3344efa4896",
+      "encoding": "UTF-8/LF"
     },
     {
-      "encoding": "UTF-8/LF",
       "path": "world_cal/k0_c.py",
-      "sha256": "c4a05a33e427596a1dfa30e7a6dc8a12cb4a0f2bf7f749a549c5e52688392634",
-      "size_bytes": 5723
+      "size_bytes": 6688,
+      "sha256": "acbbc4af742f387817926c0e550ec16eb7f61fb1bcc57bb8ab0e4c15891d2011",
+      "encoding": "UTF-8/LF"
+    },
+    {
+      "path": "world_cal/k0_coverage.py",
+      "size_bytes": 6567,
+      "sha256": "8d039a7828c1228e1feebda8dcc01e7ada9f304b1a1a044ca40a5d753a1d022a",
+      "encoding": "UTF-8/LF"
     },
     {
       "encoding": "UTF-8/LF",
@@ -276,7 +306,7 @@
   "id": "WORLD-CAL-ALGORITHM-SOURCE-MANIFEST-20261111-01-CANDIDATE",
   "independent_audit_required": true,
   "seed": null,
-  "source_commit": "7024438fd974678c7674b13a031632bf66afee51",
+  "source_commit": "CI_ARTIFACT_BINDS_EXACT_PR_HEAD__SEE_WORKFLOW",
   "source_origin_git_blob": {
     "acl_e2": "6068b0b21808d7016e6570b8893ef18edc2a1d75",
     "gtheta": "7df028318df0f876ffaf7b7331738620a1187e8c",
@@ -284,5 +314,6 @@
     "spec_v6": "9362065507791ced44e2a3cc218c93a0b3cef395"
   },
   "split_digest": null,
-  "status": "CANDIDATE_UNAUDITED__NOT_ALGORITHM_DIGEST"
+  "status": "CANDIDATE_UNAUDITED__NOT_ALGORITHM_DIGEST",
+  "source_head_binding": "CI runs set WORLD_CAL_SOURCE_HEAD to the exact PR SHA. Tracked manifest cannot self-contain its own commit SHA."
 }
