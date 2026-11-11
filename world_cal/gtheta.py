@@ -105,6 +105,14 @@ def aggregate_law(y):
             endpoints.append(values[-1])
         scores[arm] = ((curves[0]+curves[1])/2, endpoints[0],endpoints[1])
     controls=("H+","FIXED-IF","PRED-ONLY","REC","RANK-ONLY","LOOKUP","OFF")
+    # Descriptive family contrasts and per-arm B endpoints are retained so that
+    # the design-weighted Contrast is built AFTER the HT arm aggregation, not
+    # by averaging per-law maxima (max and weighted mean do not commute).
+    arm_b = {a: (scores[a][1], scores[a][2]) for a in scores}
+    overall_b = {a: (v[0] + v[1]) / 2 for a, v in arm_b.items()}
     return {"deltas":tuple(scores["FULL"][0]-scores[a][0] for a in controls),
             "g1":scores["FULL"][1], "g2":scores["FULL"][2],
-            "contrast":scores["FULL"][1]-max(scores[a][1] for a in controls)}
+            "b_by_arm":arm_b,
+            "contrast":overall_b["FULL"] - max(overall_b[a] for a in controls),
+            "contrast_g1":scores["FULL"][1]-max(scores[a][1] for a in controls),
+            "contrast_g2":scores["FULL"][2]-max(scores[a][2] for a in controls)}
