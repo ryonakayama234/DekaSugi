@@ -30,6 +30,7 @@ PATHS=tuple(sorted((
     "world_cal/ledger.py",
     "world_cal/sampford_grouped.py",
     "world_cal/id_only.py",
+    "world_cal/abstract_support.py",
     "world_cal/power_engine.py",
     "world_cal/k0_b.py",
     "world_cal/k0_c.py",
