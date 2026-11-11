@@ -16,6 +16,9 @@ from .space import Node, eval_expr, validate, ASTFault
 from .world import State, World
 
 MAX_NODES=2_000_000
+# All 63-atom SEQ programs are distinct size-64/depth-2 canonical Space ASTs.
+# This proves an unconditional syntactic Space lower bound.
+SPACE_SYNTAX_LOWER_BOUND=14**63
 T_HORIZON=24
 CONTROLS=("H+","FIXED-IF","PRED-ONLY","REC","RANK-ONLY","LOOKUP","OFF")
 
@@ -62,7 +65,9 @@ def shortest_path_abstract(cell,*,cap=MAX_NODES,horizon=T_HORIZON):
 
 def complete_l90(cells,*,support_complete,cap=MAX_NODES):
     """Do not omit missing/failed/UNKNOWN distances when computing rank-90."""
-    if not support_complete or not cells:
+    if (not isinstance(support_complete,dict) or
+            support_complete.get("law_instance_demo_support_exhausted") is not True
+            or support_complete.get("weights_audited") is not True or not cells):
         raise OracleUnknown("STOP_UNKNOWN: missing complete CAL abstract support")
     distances=[]
     for cell in cells:
@@ -95,6 +100,9 @@ def exhaustive_k0c_curve(*,cells,space_candidates,space_complete,
             and isinstance(space_complete.get("canonical_space_sha256"),str)
             and space_complete.get("canonical_space_count",0)>0):
         return {"status":"UNKNOWN","reason":"missing full typed Space/control/source receipts"}
+    if cap<SPACE_SYNTAX_LOWER_BOUND:
+        return {"status":"UNKNOWN","reason":"canonical Space exceeds enumeration cap",
+                "lower_bound":str(SPACE_SYNTAX_LOWER_BOUND)}
     if b_final not in (4096,6144) or not cells or cap<1:
         return {"status":"UNKNOWN","reason":"invalid oracle inputs"}
     if abs(math.fsum(cell.weight for cell in cells)-1)>1e-10:
