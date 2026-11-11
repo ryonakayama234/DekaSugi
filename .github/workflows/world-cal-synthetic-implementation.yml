@@ -3,7 +3,7 @@ on:
   pull_request:
     paths:
       - 'world_cal/**'
-      - 'tests/test_world_cal_synthetic.py'
+      - 'tests/test_world_cal*.py'
       - 'scripts/profile_world_cal_synthetic.py'
       - 'scripts/profile_world_cal_integrated.py'
       - 'scripts/audit_world_cal_sampford_336.py'
@@ -28,7 +28,7 @@ jobs:
       - name: Pinned JCS verification library
         run: python -m pip install -r world_cal/requirements.lock
       - name: Golden and role-denial unit tests (not CAL)
-        run: python -m unittest discover -s tests -p test_world_cal_synthetic.py -v
+        run: python -m unittest discover -s tests -p 'test_world_cal*.py' -v
       - name: Synthetic component profiler (not simulation)
         run: PYTHONPATH=. python scripts/profile_world_cal_synthetic.py --output world-cal-synthetic-profiler.json
       - name: Public N336 exact-law all-n audit (not CAL)
