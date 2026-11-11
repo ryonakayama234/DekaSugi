@@ -98,8 +98,7 @@ class NumericGoldens(unittest.TestCase):
 
     def test_prf_normal(self):
         self.assertTrue(0<uniform53(bytes(32))<1)
-        with self.assertRaises(PRFError):
-            uniform53(bytes.fromhex("ff"*32))
+        self.assertEqual(uniform53(bytes.fromhex("ff"*32)),math.nextafter(1.0,0.0))
         z0,z1=box_muller(.5,.5)
         self.assertLessEqual(abs(z0+math.sqrt(2*math.log(2))),1e-10)
         self.assertLessEqual(abs(z1),1e-10)
