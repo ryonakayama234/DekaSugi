@@ -14,7 +14,7 @@ from world_cal.generator_contract import load_verified, abstract_quota_counts, S
 from world_cal.space import Node, enumerate_unique, ASTFault, validate
 from world_cal.prf import hmac_sha256, uniform53, box_muller, phi, encode_parts, PRFError
 from world_cal.gtheta import load_model, marginal_table, trapezoid, binary_outcome, ar1_path
-from world_cal.sampford import exact_subset_law, inclusion, waterfill, SamplingUnknown
+from world_cal.sampford import exact_subset_law, inclusion, waterfill, SamplingUnknown, exact_inclusions, draw_sampford
 from world_cal.inference import ht,syg,parent_bootstrap_ht,studentized_max_t,InferenceUnknown
 from world_cal.power_route import cp_lower,cost,route_from_completed_scan,PowerUnknown
 from world_cal.k0_open_loop import trace_known_negative
@@ -134,11 +134,27 @@ class NumericGoldens(unittest.TestCase):
         self.assertAlmostEqual(ht([0,1],q,pi,[1,1,1]),1)
         with self.assertRaises(SamplingUnknown): exact_subset_law([Fraction(1,2)]*4,max_units=3)
 
+    def test_scalable_sampford_exact_inclusion(self):
+        for n,N in ((2,3),(2,8),(7,8),(2,32)):
+            pi=[n/N]*N
+            first,joint=exact_inclusions(pi)
+            self.assertEqual(len(first),N)
+            for i in range(N):
+                self.assertLessEqual(abs(first[i]-n/N),1e-10)
+                self.assertLessEqual(abs(sum(joint[i])-(n-1)*n/N),1e-10)
+            selection=draw_sampford(pi,iter([.35]*N))
+            self.assertEqual(len(selection),n)
+
     def test_sampford_unequal(self):
         pi=[Fraction(4,5),Fraction(7,10),Fraction(1,2)]
         law=exact_subset_law(pi)
         first,pair=inclusion(law,3)
         self.assertEqual(first,tuple(pi))
+        i2,j2=exact_inclusions(pi)
+        for i in range(3):
+            self.assertLessEqual(abs(i2[i]-float(pi[i])),1e-10)
+            for j in range(3):
+                self.assertLessEqual(abs(j2[i][j]-float(pair[i][j])),1e-10)
         self.assertTrue(all(x>=0 for x in pair[0]))
 
     def test_bootstrap_and_max_t(self):
