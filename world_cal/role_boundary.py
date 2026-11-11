@@ -100,7 +100,7 @@ def launch_isolated(role,*,code_root,role_stage,entrypoint,manifest,
         raise SandboxUnknown("STOP_UNKNOWN: payload must be bytes")
     cmd=[bwrap,"--die-with-parent","--new-session","--unshare-user",
          "--unshare-pid","--unshare-ipc",
-         *(["--share-net"] if synthetic_filesystem_only else ["--unshare-net"]),
+         *([] if synthetic_filesystem_only else ["--unshare-net"]),
          "--unshare-uts",
          "--ro-bind",str(code),"/code","--ro-bind",
          str(pathlib.Path(role_stage).resolve()),"/role",
