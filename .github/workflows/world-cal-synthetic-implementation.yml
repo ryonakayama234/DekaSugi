@@ -19,6 +19,7 @@ jobs:
       OPENBLAS_NUM_THREADS: '1'
       OMP_NUM_THREADS: '1'
       MKL_NUM_THREADS: '1'
+      WORLD_CAL_SOURCE_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
     permissions:
       contents: read
     steps:
@@ -36,6 +37,20 @@ jobs:
         run: PYTHONPATH=. python scripts/audit_world_cal_sampford_336.py --output world-cal-sampford-336-public-audit.json
       - name: One full-stack synthetic iteration only (not power simulation)
         run: PYTHONPATH=. python scripts/profile_world_cal_integrated.py --output world-cal-synthetic-end-to-end-one-rep.json
+      - name: Public audit and CPU measurement summary
+        run: |
+          python - <<'PY'
+          import json
+          for path in ('world-cal-sampford-336-public-audit.json', 'world-cal-synthetic-end-to-end-one-rep.json'):
+              data=json.load(open(path,encoding='utf-8'))
+              if 'rows' in data:
+                  print({'kind':data['kind'],'n_count':len(data['rows']),
+                         'min_pair':data['min_pair'],'max_residual':data['max_residual'],
+                         'python':data['python'],'platform':data['platform']})
+              else:
+                  print({'kind':data['kind'],'environment':data['environment'],
+                         'measurement':data['measurement'],'extrapolation':data['extrapolation']})
+          PY
       - name: Linux independent process read denial (not CAL)
         run: |
           sudo apt-get update -qq
