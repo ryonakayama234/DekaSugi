@@ -3,6 +3,7 @@
 id: WORLD-CAL-IMPLEMENTATION-COVERAGE-AUDIT-20261111-03
 status: SYNTHETIC_ID_REPRO_EVIDENCE_PASS / K0B_UNKNOWN / K0C_UNKNOWN / CPU_STOP_UNKNOWN / NO_CAL
 updated: 2026-11-11
+tags: world-cal, implementation-go, synthetic-audit, k0-enumeration, stop-unknown
 authority: Existing implementation GO; supervisor progress audit #6797428860. This is Lead self-audit evidence, NOT the supervisor's final PASS.
 
 ## 1. Exact public-source coverage, and what it does **not** prove
