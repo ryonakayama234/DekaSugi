@@ -14,6 +14,9 @@ import sys
 
 from .ledger import AccessDenied, ROLE_READS, check_role_read
 
+LEARNER_CODE_ALLOWLIST=frozenset(("world_cal/__init__.py",
+    "world_cal/world.py","world_cal/space.py","world_cal/ledger.py"))
+
 ROLE_DIRS={
     "LEARNER_ARMS":("public", "self"),
     "EVALUATOR":("private",),
@@ -60,6 +63,34 @@ def verify_role_stage(role,stage,allowed_sources,*,cal_authorized=False):
     return True
 
 
+def verify_role_code_bundle(role, code_root, entrypoint):
+    """Role executable bundle must contain only code, never secret/source data.
+
+    For LEARNER_ARMS, even code modules that can interpret abstract generator
+    truth are excluded; their presence in the mount namespace is a read leak.
+    """
+    root=pathlib.Path(code_root).resolve(strict=True)
+    if not root.is_dir() or root.is_symlink():
+        raise SandboxUnknown("STOP_UNKNOWN: invalid code root")
+    entry=pathlib.PurePosixPath(entrypoint)
+    if entry.is_absolute() or ".." in entry.parts or entry.suffix!=".py":
+        raise SandboxUnknown("STOP_UNKNOWN: invalid code entrypoint")
+    script=root/entrypoint
+    if not script.is_file() or script.is_symlink() or root not in script.resolve().parents:
+        raise SandboxUnknown("STOP_UNKNOWN: invalid role entrypoint")
+    permitted=LEARNER_CODE_ALLOWLIST|{entrypoint}
+    for file in root.rglob("*"):
+        if file.is_symlink():
+            raise SandboxUnknown("STOP_UNKNOWN: code bundle symlink")
+        if file.is_file():
+            path=file.relative_to(root).as_posix()
+            if path.endswith(".pyc") or not path.endswith(".py"):
+                raise SandboxUnknown("STOP_UNKNOWN: non-code data mounted")
+            if role=="LEARNER_ARMS" and path not in permitted:
+                raise SandboxUnknown("STOP_UNKNOWN: learner code bundle escapes allowlist")
+    return root
+
+
 def _mount_system_ro():
     # Minimal interpreter and shared library paths; neither /home nor /mnt
     # nor the host working tree is visible in the namespace.
@@ -92,10 +123,7 @@ def launch_isolated(role,*,code_root,role_stage,entrypoint,manifest,
     if sys.platform!="linux" or not bwrap:
         raise SandboxUnknown("STOP_UNKNOWN: bubblewrap isolation unavailable")
     verify_role_stage(role,role_stage,manifest,cal_authorized=cal_authorized)
-    code=pathlib.Path(code_root).resolve(strict=True)
-    script=code/entrypoint
-    if not script.is_file() or script.is_symlink() or code not in script.resolve().parents:
-        raise SandboxUnknown("STOP_UNKNOWN: invalid entrypoint")
+    code=verify_role_code_bundle(role,code_root,entrypoint)
     if not isinstance(payload,bytes):
         raise SandboxUnknown("STOP_UNKNOWN: payload must be bytes")
     cmd=[bwrap,"--die-with-parent","--new-session","--unshare-user",
