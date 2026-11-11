@@ -4,8 +4,8 @@
   "closed_source_files": [
     {
       "path": ".github/workflows/world-cal-synthetic-implementation.yml",
-      "size_bytes": 5500,
-      "sha256": "d3d4f414873adf1433b612ad3dfbf735a75990d80c81d95bfbaba5398b64ad91",
+      "size_bytes": 6338,
+      "sha256": "93090ffd0e91a644f5e6b2cf31596af5735df33d4d1d6ab7c06b766f695812ac",
       "encoding": "UTF-8/LF"
     },
     {
