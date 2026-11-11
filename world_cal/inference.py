@@ -76,3 +76,36 @@ def ten_and_gates(deltas,main_intervals,g1,g2,g1_lower,g2_lower,contrast):
     parts.extend([g1>=0.90 and g1_lower>0.90,
                   g2>=0.80 and g2_lower>0.80,contrast>=0.10])
     return tuple(parts),all(parts)
+
+def bootstrap_vectors_cached(sample,q,pi,outcomes_by_law,parent_ids,draws):
+    """Semantics-preserving 999-bootstrap acceleration, bitwise order maintained.
+
+    Cache exact per-parent HT sums once, rather than recalculating them 9
+    times per bootstrap draw. Within each dimension, unit traversal and
+    parent traversal are IDENTICAL to parent_bootstrap_ht/bootstrap_vectors.
+    This changes neither the number of resamples nor their contents.
+    """
+    if not sample:raise InferenceUnknown("empty sample")
+    dimensions=len(outcomes_by_law[sample[0]])
+    if dimensions!=9 or any(len(outcomes_by_law[i])!=dimensions for i in sample):
+        raise InferenceUnknown("expected seven contrasts plus G1,G2")
+    # Same additions and multiplication order as original ht (dimension-wise).
+    points=tuple(ht(sample,q,pi,{i:outcomes_by_law[i][j] for i in sample})
+                 for j in range(dimensions))
+    parents=tuple(sorted({parent_ids[i] for i in sample}))
+    if len(parents)<2:raise InferenceUnknown("invalid cluster bootstrap")
+    groups={}
+    # Maintain the same per-dimension, per-sample order of floating operations.
+    for j in range(dimensions):
+        for i in sample:
+            c=parent_ids[i]
+            if c not in groups:groups[c]=[0.0]*dimensions
+            groups[c][j]+=q[i]/pi[i]*outcomes_by_law[i][j]
+    replicates=[]
+    for draw in draws:
+        if len(draw)!=len(parents) or any(c not in groups for c in draw):
+            raise InferenceUnknown("invalid cluster bootstrap")
+        counts=Counter(draw)
+        replicates.append(tuple(sum(counts[c]*groups[c][j] for c in sorted(groups))
+                                for j in range(dimensions)))
+    return points,replicates
