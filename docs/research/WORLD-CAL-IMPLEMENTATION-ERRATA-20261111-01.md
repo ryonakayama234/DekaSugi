@@ -1,6 +1,8 @@
 # WORLD CAL Implementation Plan §2 — Errata 2026-11-11
 
 id: WORLD-CAL-IMPLEMENTATION-ERRATA-20261111-01
+updated: 2026-11-11
+tags: world-expansion, cal-preparation, implementation-errata, research-lead, no-cal
 status: HISTORICAL_CORRECTION / IMPLEMENTATION_GO_CONTINUATION / NOT_CAL_AUTHORIZED
 authority: supervisor intermediate audit PR #206 comment 6794959589
 original: docs/research/WORLD-CAL-IMPLEMENTATION-PLAN-20261111-01.md §2, row world_cal/k0_open_loop.py
