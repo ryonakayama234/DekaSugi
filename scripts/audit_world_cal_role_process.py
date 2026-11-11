@@ -12,6 +12,7 @@ import platform
 import subprocess
 import sys
 import tempfile
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parents[1]))
 from world_cal.role_boundary import launch_isolated, SandboxUnknown
 
 PROBE = r'''
