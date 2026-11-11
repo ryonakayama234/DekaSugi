@@ -62,18 +62,29 @@ def _fit(x, labels):
             hess[a*d:(a+1)*d,a*d:(a+1)*d]+=np.diag(penalty[a]/C)
         try: direction=np.linalg.solve(hess,grad.ravel()).reshape(k-1,d)
         except np.linalg.LinAlgError as exc:raise IDOnlyUnknown("STOP_UNKNOWN: singular Hessian") from exc
+        # The registered tolerance applies to the likelihood objective. Near
+        # optimum binary64 loss can be flat while the raw gradient remains
+        # slightly above 1e-8 on highly correlated tag features.
+        predicted_improvement=0.5*float(np.sum(grad*direction))
+        if not math.isfinite(predicted_improvement) or predicted_improvement<0:
+            raise IDOnlyUnknown("STOP_UNKNOWN: invalid Newton decrement")
+        if predicted_improvement <= TOL:
+            return beta
         step=1.0
         for _ in range(50):
             candidate=beta-step*direction
             new_obj,new_probs=evaluate(candidate)
             if math.isfinite(new_obj) and new_obj<objective:
+                change=objective-new_obj
                 beta,objective,probs=candidate,new_obj,new_probs
+                if change <= TOL: return beta
                 break
             step*=0.5
         else:
             # A tiny Newton step may not reduce rounded binary64 objective;
             # only the pre-registered gradient tolerance permits convergence.
-            if np.max(np.abs(grad))<=TOL:return beta
+            if predicted_improvement <= TOL:
+                return beta
             raise IDOnlyUnknown("STOP_UNKNOWN: optimizer stalled")
     raise IDOnlyUnknown("STOP_UNKNOWN: logistic regression max iterations exceeded")
 
