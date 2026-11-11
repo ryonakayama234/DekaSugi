@@ -1,7 +1,7 @@
 # WORLD CAL PR #206 — implementation continuation and audit ledger
 
 id: WORLD-CAL-IMPLEMENTATION-CONTINUATION-20261111-02
-status: IMPLEMENTATION_IN_PROGRESS / SELF_CHECK_ONLY / STOP_UNKNOWN_FOR_CAL_READINESS / NOT_FINAL_AUDIT_PASS
+status: SYNTHETIC_ID_REPRO_PASS / K0B_UNKNOWN / K0C_UNKNOWN / CPU_STOP_UNKNOWN / NOT_FINAL_AUDIT_PASS
 updated: 2026-11-11
 tags: world-expansion, world-cal, research-lead, synthetic-audit, no-cal, implementation-go
 
@@ -41,3 +41,12 @@ The same CI exercised isolated bubblewrap LEARNER_ARMS and EVALUATOR processes w
 6. Candidate algorithm source manifest must match final exact head, followed by independent source/access/numeric/environment audit; algorithm_digest remains null.
 
 This is explicitly a lead implementation continuation report, NOT a completed implementation PASS or a final supervisor verdict.
+
+## Supervisor progress-audit-2 follow-through (source-only / 2026-11-11)
+
+- Reference: [supervisor comment 6797428860](https://github.com/ryonakayama234/DekaSugi/pull/206#issuecomment-6797428860).
+- [Coverage and reproducibility self-audit](WORLD-CAL-IMPLEMENTATION-COVERAGE-AUDIT-20261111-03.md) records a source-index bijection, all registered phase index counts, exact rational mass and 73,536 canonical distinct-law pairs, plus the hard obstruction to literal full typed-Space enumeration (`14^63` distinct legal size-64 SEQ/ATOM strings). This is **not** an executed pair×demo×trial K0-b search nor a complete K0-c oracle/control curve.
+- Bounded K0-b and K0-c wrappers now reject caller-provided boolean "complete" claims and maintain UNKNOWN without complete iteration receipts; tests cover those negative cases.
+- Synthetic ID-only audit now exercises all 999 injected permutations through the complete classifier, twice in fresh processes per environment, on Ubuntu 22.04 and Ubuntu 24.04 with exact output-byte digest agreement. CI [43033546871](https://github.com/ryonakayama234/DekaSugi/actions/runs/43033546871). CAL-real tags and PRF schedules were neither generated nor audited.
+- CPU feasibility is still STOP_UNKNOWN. Existing `scan_authorized` has **no hardware wall-budget timer**; the 20,000,000 cap is a primitive-call cost bound checked after completing an n. An external time/CPU budget interruption before all three scenarios×10,000 repetitions for some n provides no completed eligible n and must result in STOP_UNKNOWN, not an optimistic later-n selection. No further measurement or optimization.
+- No final completion claim: K0-b full joint demo/trial/instance histories, K0-c full typed Space/control curves and CPU feasibility remain blocking. Draft, null algorithm_digest and no CAL/K0 production execution are unchanged.
