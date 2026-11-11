@@ -8,6 +8,8 @@ on:
       - 'scripts/profile_world_cal_integrated.py'
       - 'scripts/audit_world_cal_sampford_336.py'
       - 'scripts/audit_world_cal_role_process.py'
+      - 'scripts/audit_world_cal_id_only_repro.py'
+      - 'scripts/audit_world_cal_k0_index.py'
       - '.github/workflows/world-cal-synthetic-implementation.yml'
   workflow_dispatch:
 jobs:
@@ -56,6 +58,8 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq bubblewrap
           sudo -E "$(which python)" scripts/audit_world_cal_role_process.py
+      - name: Exact public source-index census (not K0)
+        run: PYTHONPATH=. python scripts/audit_world_cal_k0_index.py --output world-cal-k0-index-census.json
       - name: Candidate byte closure (not algorithm_digest)
         run: |
           python scripts/build_world_cal_source_manifest.py --output world-cal-algorithm-source-manifest-candidate.json > /dev/null
@@ -67,5 +71,59 @@ jobs:
             world-cal-synthetic-profiler.json
             world-cal-sampford-336-public-audit.json
             world-cal-synthetic-end-to-end-one-rep.json
+            world-cal-k0-index-census.json
             world-cal-algorithm-source-manifest-candidate.json
           retention-days: 30
+
+  id-only-repro-two-linux-environments:
+    name: Synthetic ID-only reproducibility on ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.16'
+      - run: python -m pip install -r world_cal/requirements.lock
+      - name: 999 synthetic permutations; independently spawned interpreters
+        run: PYTHONPATH=. python scripts/audit_world_cal_id_only_repro.py --output idonly-${{ matrix.os }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: idonly-${{ matrix.os }}
+          path: idonly-${{ matrix.os }}.json
+          retention-days: 30
+
+  id-only-cross-environment-compare:
+    needs: id-only-repro-two-linux-environments
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: idonly-ubuntu-*
+          path: idonly-copies
+          merge-multiple: true
+      - name: Cross-environment exact payload bytes and digest
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          a=Path('idonly-copies/idonly-ubuntu-22.04.json').read_bytes()
+          b=Path('idonly-copies/idonly-ubuntu-24.04.json').read_bytes()
+          if a!=b:
+              raise SystemExit('STOP_UNKNOWN: exact ID-only result bytes diverged across Linux environments')
+          data=json.loads(a)
+          assert data['null_repetitions']==999
+          print('SYNTHETIC_ID_ONLY_CROSS_ENV_PASS',data['result_digest'])
+          PY
