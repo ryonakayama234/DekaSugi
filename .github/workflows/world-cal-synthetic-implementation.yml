@@ -23,7 +23,7 @@ jobs:
       - name: Golden and role-denial unit tests (not CAL)
         run: python -m unittest discover -s tests -p test_world_cal_synthetic.py -v
       - name: Synthetic component profiler (not simulation)
-        run: python scripts/profile_world_cal_synthetic.py --output world-cal-synthetic-profiler.json
+        run: PYTHONPATH=. python scripts/profile_world_cal_synthetic.py --output world-cal-synthetic-profiler.json
       - uses: actions/upload-artifact@v4
         with:
           name: world-cal-synthetic-component-profiler
