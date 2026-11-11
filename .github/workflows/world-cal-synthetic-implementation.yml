@@ -25,7 +25,9 @@ jobs:
       - name: Synthetic component profiler (not simulation)
         run: PYTHONPATH=. python scripts/profile_world_cal_synthetic.py --output world-cal-synthetic-profiler.json
       - name: Candidate byte closure (not algorithm_digest)
-        run: python scripts/build_world_cal_source_manifest.py --output world-cal-algorithm-source-manifest-candidate.json > /dev/null
+        run: |
+          python scripts/build_world_cal_source_manifest.py --output world-cal-algorithm-source-manifest-candidate.json > /dev/null
+          cat world-cal-algorithm-source-manifest-candidate.json
       - uses: actions/upload-artifact@v4
         with:
           name: world-cal-synthetic-component-profiler
