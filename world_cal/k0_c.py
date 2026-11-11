@@ -82,8 +82,19 @@ def exhaustive_k0c_curve(*,cells,space_candidates,space_complete,
     a truncated enumerator cannot convert an oracle upper bound into an exact
     curve. All eight checkpoints and the 0-origin are preserved.
     """
-    if not (support_complete and space_complete):
+    # Unqualified booleans are not completeness certificates. In particular,
+    # the source 384-law index census says nothing about demo draws, full
+    # typed AST Space, or all seven control curves. Require separately
+    # auditable, exhausted finite iterator receipts before claiming COMPLETE.
+    if not isinstance(support_complete,dict) or not isinstance(space_complete,dict):
         return {"status":"UNKNOWN","reason":"Space/support completeness uncertified"}
+    if not (support_complete.get("law_instance_demo_support_exhausted") is True
+            and support_complete.get("weights_audited") is True
+            and space_complete.get("typed_space_exhausted") is True
+            and space_complete.get("control_curves_exhausted") is True
+            and isinstance(space_complete.get("canonical_space_sha256"),str)
+            and space_complete.get("canonical_space_count",0)>0):
+        return {"status":"UNKNOWN","reason":"missing full typed Space/control/source receipts"}
     if b_final not in (4096,6144) or not cells or cap<1:
         return {"status":"UNKNOWN","reason":"invalid oracle inputs"}
     if abs(math.fsum(cell.weight for cell in cells)-1)>1e-10:
@@ -118,8 +129,9 @@ def exhaustive_k0c_curve(*,cells,space_candidates,space_complete,
         for j,budget in enumerate(checkpoints):
             if primitive_total<=budget and successes>best[j]:
                 best[j]=successes
-    if inspected==0:
-        return {"status":"UNKNOWN","reason":"empty Space"}
+    if inspected==0 or inspected!=space_complete["canonical_space_count"]:
+        return {"status":"UNKNOWN","reason":"Space iterator did not exhaust",
+                "nodes":inspected}
     # j=0 is strictly zero primitive calls; the zero-budget candidate is
     # required to be present in the certified Space iterator.
     auc=trapezoid(best)
