@@ -77,19 +77,26 @@ def _synthetic_joint_scores(sample, parents, table, scenario, draws):
     ws={name:math.sqrt(scenario["weight_"+name]) for name in
         ("cluster","law","gate","arm","checkpoint","episode")}
     rho=scenario["checkpoint_ar1"]
-    cluster={c:draws.normal("cluster") for c in sorted({parents[i] for i in sample})}
-    gate={(c,g):draws.normal("gate") for c in sorted(cluster) for g in range(2)}
+    # Every independent factor is addressed by its canonical scope identifiers.
+    # Drawing only selected laws must not change another law/cluster normal
+    # because a preceding selected unit happened to be absent this time.
+    def scoped(kind,*parts):
+        return kind+"".join("|"+str(len(str(v)))+":"+str(v) for v in parts)
+    cluster={c:draws.normal(scoped("cluster",c))
+             for c in sorted({parents[i] for i in sample})}
+    gate={(c,g):draws.normal(scoped("gate",c,g))
+          for c in sorted(cluster) for g in range(2)}
     result={}
     for i in sample:
-        z_l=draws.normal("law")
+        z_l=draws.normal(scoped("law",i))
         by_arm={}
         for arm in ARMS:
-            z_a=draws.normal("arm")
+            z_a=draws.normal(scoped("arm",i,arm))
             gates=[]
             for g in range(2):
                 ar=[]
                 for j in range(CHECKPOINTS):
-                    z=draws.normal("checkpoint")
+                    z=draws.normal(scoped("checkpoint",i,g,arm))
                     ar.append(z if j==0 else rho*ar[-1]+math.sqrt(1-rho*rho)*z)
                 rows=[]
                 fixed=(ws["cluster"]*cluster[parents[i]]+ws["law"]*z_l+
@@ -98,7 +105,8 @@ def _synthetic_joint_scores(sample, parents, table, scenario, draws):
                     baseline=fixed+ws["checkpoint"]*ar[j]
                     observations=[]
                     for episode in range(EPISODES):
-                        latent=baseline+ws["episode"]*draws.normal("episode")
+                        latent=baseline+ws["episode"]*draws.normal(
+                            scoped("episode",i,g,arm,j))
                         # Required normative binary64 Phi=erfc; no latent
                         # substitutions or independent Contrast draw.
                         probability=.5*math.erfc(-latent/math.sqrt(2))
