@@ -3,7 +3,7 @@ import itertools
 import unittest
 from fractions import Fraction
 from world_cal.k0_b import scan_k0b_pairs
-from world_cal.k0_c import exhaustive_k0c_curve
+from world_cal.k0_c import exhaustive_k0c_curve,SPACE_SYNTAX_LOWER_BOUND
 from math import comb
 from world_cal.k0_coverage import (
     CoverageUnknown, law_cell_count, exact_cell_mass, iter_law_pairs,
@@ -41,6 +41,20 @@ class IndexProofTests(unittest.TestCase):
         self.assertEqual(exhaustive_k0c_curve(
             cells=[],space_candidates=[],space_complete=True,
             support_complete=True,b_final=4096,control_curves={})["status"],"UNKNOWN")
+    def test_full_typed_space_cannot_fit_literal_node_cap(self):
+        self.assertEqual(SPACE_SYNTAX_LOWER_BOUND, 14**63)
+        self.assertGreater(SPACE_SYNTAX_LOWER_BOUND,2_000_000)
+        result=exhaustive_k0c_curve(
+            cells=[],space_candidates=[],
+            space_complete={"typed_space_exhausted":True,
+                            "control_curves_exhausted":True,
+                            "canonical_space_sha256":"arbitrary",
+                            "canonical_space_count":SPACE_SYNTAX_LOWER_BOUND},
+            support_complete={"law_instance_demo_support_exhausted":True,
+                              "weights_audited":True},
+            b_final=4096,control_curves={},cap=2_000_000)
+        self.assertEqual(result["status"],"UNKNOWN")
+        self.assertEqual(result["lower_bound"],str(14**63))
     def test_unbounded_trial_counts_not_claimed_complete(self):
         a,b=next(iter_law_pairs())
         with self.assertRaises(CoverageUnknown):
