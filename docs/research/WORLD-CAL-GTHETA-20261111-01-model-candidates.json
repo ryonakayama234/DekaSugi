@@ -125,14 +125,16 @@
   },
   "simulation": {
     "prng": "HMAC-SHA256 counter PRF with secret owner-escrow CAL seed, domain separated",
-    "uniform_to_normal": "registered IEEE754 binary64 inverse Phi version; must digest implementation before CAL",
+    "uniform_to_normal": "HMAC-SHA256 output first 53 bits x -> u=(x+0.5)/2^53; consecutive u1,u2 -> Box-Muller Z0=sqrt(-2ln(u1))*cos(2pi*u2), Z1=sqrt(-2ln(u1))*sin(2pi*u2); binary64",
     "R_per_n_per_scenario": 10000,
     "maxT_bootstrap_replicates": 999,
     "one_sided_MC_confidence": 0.99,
     "samples": "unique law Sampford PPSWOR / parent cluster bootstrap HT weights",
     "n_min": 2,
     "n_max": 512,
-    "stop": "complete ascending scan; only first admissible n; STOP_UNKNOWN on unavailable model/design/repetitions or MC lower bound below 0.80"
+    "stop": "complete ascending scan; only first admissible n; STOP_UNKNOWN on unavailable model/design/repetitions or MC lower bound below 0.80",
+    "normal_cdf": "Phi(z)=0.5*erfc(-z/sqrt(2)), binary64, numerical consistency tolerance 1e-10",
+    "bootstrap": "draw k parent clusters with replacement uniformly among k observed clusters; m_c counts; replicate HT total sum_c m_c * sum_{law in cluster c and sample}(q_l/pi_l)*outcome_l; no normalization and no episode iid resampling; k<2 => STOP_UNKNOWN"
   },
   "digest_contract": "SHA-256 of exact stored UTF-8/LF JSON file bytes; lowercase 64hex prefixed sha256:; no self-referential digest field"
 }
