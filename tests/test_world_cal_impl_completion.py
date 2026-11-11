@@ -6,6 +6,7 @@ import tempfile
 import unittest
 from fractions import Fraction
 
+from world_cal.abstract_support import source_grid_counts,word_roles,target_roles
 from world_cal.gtheta import aggregate_law
 from world_cal.inference import bootstrap_vectors, bootstrap_vectors_cached
 from world_cal.id_only import (features, parent_fold_ids,
@@ -22,6 +23,13 @@ from world_cal.world import State,World
 
 
 class RulingGoldens(unittest.TestCase):
+    def test_source_only_abstract_grid_counts(self):
+        self.assertEqual(source_grid_counts(),
+            {"TRAIN":663552,"CAL":663552,"G1":663552,"G2":239616})
+        self.assertEqual(word_roles("ALTERNATE_01",4),(0,1,0,1))
+        toy=("law","parent","TRANSCRIBE","T_HEAD","COUNT_EQ",0,1,0,1,192)
+        self.assertEqual(target_roles(toy,(0,1,0,1)),(1,1,0,1))
+
     def test_fourteen_tokens_not_horizon(self):
         w=World(tuple("ABCD"),horizon=24)
         self.assertEqual(len(w.legal_actions()),14)
