@@ -1,0 +1,420 @@
+{
+  "algorithm_digest": null,
+  "canonical_order": "path lexicographic ascending; raw sha256 of all exact stored bytes",
+  "closed_source_files": [
+    {
+      "encoding": "UTF-8/LF",
+      "path": ".github/workflows/world-cal-synthetic-implementation.yml",
+      "sha256": "9024ce44e224fbc8b278e590135b1e8ba180a0badf6693191e6c210a3ffd715a",
+      "size_bytes": 7757
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": ".gitignore",
+      "sha256": "27f319c8cc22fcee738fb522a5af100ee37a355bfcd0b365b900cf2980369925",
+      "size_bytes": 301
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "AGENTS.md",
+      "sha256": "b438df033a3aefce8c4bfc3c5cee624967ec76551ce4c491a96238880de6f9e7",
+      "size_bytes": 78995
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/INDEX.md",
+      "sha256": "f1dd610bd96e481fc375f0606f6af7c070a08589ab1e54b8dfccc1712878c184",
+      "size_bytes": 50734
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/architecture/contracts.md",
+      "sha256": "31103583f7a4d83ccbcf7c4ac228d86c33c902aeda1fbf8c8bdab5af49532620",
+      "size_bytes": 124082
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/architecture/system.md",
+      "sha256": "76588214dfa46816f68a7690ba3a4e7dc1c9a30f0bbb334b5585c3d0a6ef8ffd",
+      "size_bytes": 77387
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-ALGORITHM-SOURCE-MANIFEST-20261111-01-candidate.json",
+      "sha256": "1c722753379711b49c01df12bcc4be2d910e14cfc549ed65ba9d828c8a8e1e01",
+      "size_bytes": 12750
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-FAIL-CLOSED-EVIDENCE-20261112-01.json",
+      "sha256": "891bb6abaefd5d7ea9043d2ade38b775dc5543a4d37b152af7a30b458107ea66",
+      "size_bytes": 12789
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-FINAL-AUDIT-REQUEST-20261112-01.md",
+      "sha256": "63dfd449b61a8fc5c9bc25cea9e85843e8c67e56069475836e8ad5089cf39db1",
+      "size_bytes": 10385
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-GENERATOR-DISTRIBUTION-20261111-01.json",
+      "sha256": "bdc841181fe370d940df95d12150e9216b110e065c89c4bfced031dc89339576",
+      "size_bytes": 107729
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-GENERATOR-MANIFEST-20261111-01.json",
+      "sha256": "3b0e500890a0836cb2711422b54d55412e6d07654e1dabe5aeaeab18b8b85f3a",
+      "size_bytes": 16120
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-GENERATOR-SOURCE-20261111-01.md",
+      "sha256": "8f5853d1b1e8e2d69aa5d64daddfd967a1e2d3390a9e63a8f873f97c08073a0c",
+      "size_bytes": 11318
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-IMPLEMENTATION-CONTINUATION-20261111-02.md",
+      "sha256": "1a51fc8a21db11b59a6b7fd5bacb08b1c888e7dd1e44456e7d54643142f1ad6c",
+      "size_bytes": 7105
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-IMPLEMENTATION-COVERAGE-AUDIT-20261111-03.md",
+      "sha256": "fd07b25e74d32326bb78051123009f7ff8955b8842d953485c7a24c3f3cc4c96",
+      "size_bytes": 9049
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-IMPLEMENTATION-ERRATA-20261111-01.md",
+      "sha256": "7f9c14ed643c175b8ccbdb80d75d63a9f982e309cec243d669549cf08a16b36b",
+      "size_bytes": 3291
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-IMPLEMENTATION-PLAN-20261111-01.md",
+      "sha256": "cf85a3b036605b58c7818de0c6564dae46e1387a5743d289b8af5b58d62ed68e",
+      "size_bytes": 22825
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-IMPLEMENTATION-RQ-20261111-01.md",
+      "sha256": "09b7fcdc9f5f8c05029b27450cedfc404f96639e66b0c389aecfcf2de23fc11d",
+      "size_bytes": 4026
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-OPTIMIZATION-20261112-01.md",
+      "sha256": "319925627afc25657aa39527e518c5e7d2c451e7ba9ef50457d33c127dbe5a73",
+      "size_bytes": 9922
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-OPTIMIZATION-EVIDENCE-20261112-01.json",
+      "sha256": "a0218c39286959d632ba83c1365b65449fb5fef4baa6c9923901259530b0da1b",
+      "size_bytes": 70888
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "scripts/audit_world_cal_fail_closed.py",
+      "sha256": "165cd4d2d5a3b3517f923ea33cbc6ea01a7a066af16903e9b1eed85d8e2909d0",
+      "size_bytes": 2159
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "scripts/audit_world_cal_id_only_repro.py",
+      "sha256": "e6d8d6a2e6dea372a52a243605513b773e365cc3f444a6bb3ccee3f6b148a130",
+      "size_bytes": 3803
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "scripts/audit_world_cal_k0_index.py",
+      "sha256": "8f700ed2bcbc8cd0ac9fb38476231c283fae68e8f55196134a169d76ce0e5d88",
+      "size_bytes": 554
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "scripts/audit_world_cal_optimization.py",
+      "sha256": "0a33ec1f0f6848b3bb222a5458c196285391af45e3bbdfbd3cdafc4172bb64a6",
+      "size_bytes": 11090
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "scripts/audit_world_cal_role_process.py",
+      "sha256": "91d5ffb0978dd929b5fe8c3be4cb79ec67d02de6ffa9761a1784acc3b98c6ede",
+      "size_bytes": 3293
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "scripts/audit_world_cal_sampford_336.py",
+      "sha256": "2cca4d6606032c357478c0b4cae15ac719c170e778370a660c373398bb7d0b8a",
+      "size_bytes": 4091
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "scripts/build_world_cal_prf_batch.py",
+      "sha256": "75693313fd34356562b829f1bc14e8d1a4482998c878c9666ec807bbabe4a767",
+      "size_bytes": 704
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "scripts/build_world_cal_source_manifest.py",
+      "sha256": "6050b2854b688330df9033087a017a059630b05a20a9cd6421f808e5e054c9f6",
+      "size_bytes": 5687
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "scripts/profile_world_cal_integrated.py",
+      "sha256": "62a5ae7720b8a5acac47e4436647b93c849f7e2907371d93b3880fa8df109dda",
+      "size_bytes": 4007
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "scripts/profile_world_cal_synthetic.py",
+      "sha256": "0b1a766f303d1a33608093d7f6ee0849fe5a17c8124518f5ab09c60f521dd9c1",
+      "size_bytes": 5716
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "tests/test_world_cal_fail_closed.py",
+      "sha256": "dbb9afb5112d80a959246d63d0499e1b287cbd5ffe7f336eae3d440a6318c950",
+      "size_bytes": 13717
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "tests/test_world_cal_impl_completion.py",
+      "sha256": "717c5777e58d79b4eb1cd81ea49847d2cea63c7864babd17e04bd994573e978e",
+      "size_bytes": 6508
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "tests/test_world_cal_k0_coverage.py",
+      "sha256": "04fbbf947eea62f56c84650ad9bc58ee9f53aa9049c250da8f98cbe6f8c1b03e",
+      "size_bytes": 3386
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "tests/test_world_cal_optimization.py",
+      "sha256": "1ac48bb78b44a74efe8150d4907f713920246c4a8750b42ac2a4e35e57b3b212",
+      "size_bytes": 3636
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "tests/test_world_cal_synthetic.py",
+      "sha256": "0945895a9624f079a1e5c859217b7f8217ecfd7a81ad91ea4366b724ff686bfe",
+      "size_bytes": 10784
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/__init__.py",
+      "sha256": "8e250508c61ef2dee5ad7560a344283a1cce88ca4cb936e099ae2eb7c68b52b8",
+      "size_bytes": 97
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/abstract_support.py",
+      "sha256": "bfa7ff02a73a6b6b70fac923922ffdd87a6bf2bcb98b98df806345569120e875",
+      "size_bytes": 5270
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/cal_measure.py",
+      "sha256": "b43bd681bd12939c59c27d56a437b5ea9ee958606366f93db6abf6fe5fdac5cb",
+      "size_bytes": 1737
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/generator_contract.py",
+      "sha256": "ea711f3d6367527adf64032b8130b9de4fac2f048ee56e9e3cd6e50994246ca4",
+      "size_bytes": 3896
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/gtheta.py",
+      "sha256": "e71fb9612fb152061a7fe89ef7ddca540bf56e896f47cfe3a07e1fc042fa7af3",
+      "size_bytes": 5184
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/id_only.py",
+      "sha256": "32ebbf8def087a4603d25c7fbb87d0e0751470e5274faf14308eb69eeaa9d478",
+      "size_bytes": 6289
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/inference.py",
+      "sha256": "a9e4a7ffd58ffcd48832354a68c97c41073913266d300bfcafd3a8d71b03bd6c",
+      "size_bytes": 6738
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/k0_b.py",
+      "sha256": "0c7b78864fcec30bd4d03f678c128eae169c882eaf3beb7b4dab23651b8f635e",
+      "size_bytes": 8282
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/k0_c.py",
+      "sha256": "3883198a6b5b9cb67e457ae0a7d2e2d01ef866ff8956a00e9d3146b0bd11c648",
+      "size_bytes": 8498
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/k0_coverage.py",
+      "sha256": "8d039a7828c1228e1feebda8dcc01e7ada9f304b1a1a044ca40a5d753a1d022a",
+      "size_bytes": 6567
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/k0_history_dp.py",
+      "sha256": "869073af9cf8a997df884a3fb3ccd09ded1ea5ec7d08228151240dc80c270941",
+      "size_bytes": 2437
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/k0_open_loop.py",
+      "sha256": "a536c5fb51e55ad20c777df18be408adaa434dedfb6c2e7a957b1400a85d0716",
+      "size_bytes": 1828
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/k0_oracle.py",
+      "sha256": "2e0a908366177de25b23080a536ec0276488dd1442312747d049e1a35b41cffc",
+      "size_bytes": 2014
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/ledger.py",
+      "sha256": "5b8c72788c3e24310503d720db528c0b8e5a62c11cdddfad2a83ca688f759cdf",
+      "size_bytes": 4910
+    },
+    {
+      "encoding": "UTF-8 CSV/LF",
+      "path": "world_cal/normative/WORLD-CAL-ACL-20261111-01-normalized-manifest.csv",
+      "sha256": "faf1962fd4737033f6056f24a9cd1e6b629826e1aeb6ad8bdbc7cb50fa76b44c",
+      "size_bytes": 336238
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/normative/WORLD-CAL-GTHETA-20261111-01-model-candidates.json",
+      "sha256": "31124f2df3acb7bebc9b75705aa6ac2e33f3f796a6f55dfad210863e375d077a",
+      "size_bytes": 5100
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/normative/WORLD-CAL-PROTOCOL-20261111-01.md",
+      "sha256": "0e362bb2f6d2b65f0a58981c7c27672c02df685aeb92cda90f8d632d56bb0ad1",
+      "size_bytes": 38929
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/normative/WORLD-PREREG-SPEC-20261110-06.md",
+      "sha256": "d8c9b4baff2ee72908a2f37bd741b2931fced6a1bbaf96304b4a4be18ce96ffe",
+      "size_bytes": 43483
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/power_engine.py",
+      "sha256": "16441d7ec8e891d49065331128420b4af30073ec99645cee5fa8c167b86a799e",
+      "size_bytes": 13914
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/power_route.py",
+      "sha256": "81596d483d4e7b23ba1185d6c887815b732291e9ff7fdefc54380b2b058ac0b6",
+      "size_bytes": 3650
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/prf.py",
+      "sha256": "8118f7b6b2ee4d202d71b027a1d5ead8acc9bacbc18ed3d71e3ab17c167c61e9",
+      "size_bytes": 2379
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/prf_batch.c",
+      "sha256": "27844d01e9ed7e82379ab333d944242dc855bdc297022aa4e2fb528ab91821e5",
+      "size_bytes": 4973
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/receipt.py",
+      "sha256": "1c28328a8a3b0ed734db1ce292d167691e7cca0ebe27bf492fed6851f42bb28c",
+      "size_bytes": 3079
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/requirements.lock",
+      "sha256": "0557280fcf3c477cc42cf44418a735f0233ee1b42dd93f4fd771fc0c25d055fb",
+      "size_bytes": 144
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/role_boundary.py",
+      "sha256": "be666687c1f9c115acb811c4a4ed39368a626382abe8be435d05816ac99b8ab4",
+      "size_bytes": 7746
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/sampford.py",
+      "sha256": "af93a82a4d592b0e0a782676d4f518852333a46c5da06be859a51e30732ad4e1",
+      "size_bytes": 7854
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/sampford_grouped.py",
+      "sha256": "7f322411cec7406a91056cefc3f270b05aa4f01af37a0fa778a5b8ce68131e00",
+      "size_bytes": 5795
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/space.py",
+      "sha256": "898f4c085084b473eb8360426353d0930fe08eab35e20edfeceb776cb82ac969",
+      "size_bytes": 3886
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "world_cal/world.py",
+      "sha256": "6b35184cc04de910f017e95dca3cb1d2829bce1bbf96578f3b237380da43dff3",
+      "size_bytes": 4469
+    }
+  ],
+  "environment": {
+    "ci_python_pin": "3.12.16",
+    "cryptography_pin": "46.0.3",
+    "libc": [
+      "glibc",
+      "2.41"
+    ],
+    "machine": "x86_64",
+    "numpy_pin": "2.2.6",
+    "openblas_num_threads": null,
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "python": "3.12.14",
+    "python_implementation": "CPython",
+    "pythonhashseed": null,
+    "rfc8785_pin": "0.1.4",
+    "ubuntu_runner_pin": "ubuntu-24.04"
+  },
+  "excluded_from_hash": "this candidate itself; future escrow/holdout/split secret files",
+  "id": "WORLD-CAL-ALGORITHM-SOURCE-MANIFEST-20261112-OPTIMIZATION-CANDIDATE",
+  "independent_audit_required": true,
+  "native_build": "Explicit scripts/build_world_cal_prf_batch.py; optional libcrypto accelerator; binary hash/environment in optimization evidence; no runtime compilation",
+  "previous_audit": {
+    "algorithm_digest": "sha256:1c722753379711b49c01df12bcc4be2d910e14cfc549ed65ba9d828c8a8e1e01",
+    "comment_id": 6821592224,
+    "head": "834fe0dc0c33065a1b8039764097141c1d526d98"
+  },
+  "seed": null,
+  "source_commit": "EXACT_HEAD_TO_BE_BOUND_BY_INDEPENDENT_SUPERVISOR",
+  "source_origin_git_blob": {
+    "acl_e2": "6068b0b21808d7016e6570b8893ef18edc2a1d75",
+    "gtheta": "7df028318df0f876ffaf7b7331738620a1187e8c",
+    "protocol_approved": "f01471d448da42c1458b4eb38203b71dc517a663",
+    "spec_v6": "9362065507791ced44e2a3cc218c93a0b3cef395"
+  },
+  "split_digest": null,
+  "status": "CANDIDATE_UNAUDITED__NOT_ALGORITHM_DIGEST"
+}

@@ -1,0 +1,470 @@
+{
+  "CAL_EXECUTED": false,
+  "K0_EXECUTED": false,
+  "POWER_SIMULATION_EXECUTED": false,
+  "SEALED_SPLIT_MATERIALIZED": false,
+  "SEED_GENERATED": false,
+  "algorithm_digest": null,
+  "cases": [
+    {
+      "case": "b-iterator-resource",
+      "result": {
+        "reason": "incomplete pair/support enumeration",
+        "status": "UNKNOWN"
+      }
+    },
+    {
+      "case": "b-forged-completeness-PASS",
+      "result": {
+        "failed_pairs": [],
+        "pairs_audited": 73536,
+        "reason": "registered joint-support certification not implemented",
+        "status": "UNKNOWN",
+        "unknown_prioritized": true
+      }
+    },
+    {
+      "case": "b-forged-completeness-FAIL",
+      "result": {
+        "failed_pairs": [],
+        "pairs_audited": 73536,
+        "reason": "registered joint-support certification not implemented",
+        "status": "UNKNOWN",
+        "unknown_prioritized": true
+      }
+    },
+    {
+      "case": "b-forged-completeness-UNKNOWN",
+      "result": {
+        "failed_pairs": [],
+        "pairs_audited": 73536,
+        "reason": "registered joint-support certification not implemented",
+        "status": "UNKNOWN",
+        "unknown_prioritized": true
+      }
+    },
+    {
+      "case": "b-cap-before-positive",
+      "result": {
+        "mode": "EVAL",
+        "nodes": 4,
+        "status": "UNKNOWN"
+      }
+    },
+    {
+      "case": "b-TRAIN-cap1",
+      "result": {
+        "mode": "TRAIN",
+        "nodes": 2,
+        "status": "UNKNOWN"
+      }
+    },
+    {
+      "case": "b-EVAL-cap1",
+      "result": {
+        "mode": "EVAL",
+        "nodes": 2,
+        "status": "UNKNOWN"
+      }
+    },
+    {
+      "case": "b-truncated-after-fail",
+      "result": {
+        "pairs_audited": 1,
+        "reason": "law pair iterator did not exhaust",
+        "status": "UNKNOWN"
+      }
+    },
+    {
+      "case": "c-inner-cap1",
+      "result": {
+        "nodes": 2,
+        "reason": "Space cap reached",
+        "status": "UNKNOWN"
+      }
+    },
+    {
+      "case": "c-inner-truncated",
+      "result": {
+        "nodes": 1,
+        "reason": "Space iterator did not exhaust",
+        "status": "UNKNOWN"
+      }
+    },
+    {
+      "case": "c-inner-resource",
+      "result": {
+        "reason": "incomplete oracle enumeration",
+        "status": "UNKNOWN"
+      }
+    },
+    {
+      "case": "c-shortest-cap1",
+      "result": {
+        "length": null,
+        "nodes": 1,
+        "status": "UNKNOWN"
+      }
+    },
+    {
+      "case": "c-registered-cap-1",
+      "result": {
+        "lower_bound": "1607186396188673214933428422746430966564755954690227345058705914036486144",
+        "reason": "canonical Space exceeds enumeration cap",
+        "status": "UNKNOWN"
+      }
+    },
+    {
+      "case": "c-registered-cap-2000000",
+      "result": {
+        "lower_bound": "1607186396188673214933428422746430966564755954690227345058705914036486144",
+        "reason": "canonical Space exceeds enumeration cap",
+        "status": "UNKNOWN"
+      }
+    },
+    {
+      "case": "c-registered-cap-1607186396188673214933428422746430966564755954690227345058705914036486144",
+      "result": {
+        "reason": "invalid registered enumeration cap",
+        "status": "UNKNOWN"
+      }
+    },
+    {
+      "case": "k0-unknown-precedence",
+      "result": {
+        "slots_checked": 4,
+        "status": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "c-partial-not-promoted",
+      "result": {
+        "status": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "real-cap-to-downstream-2",
+      "result": {
+        "integrated": {
+          "cost_cap_check": false,
+          "n_required": null,
+          "power_lower_bound": null,
+          "reason": "K0 not complete/continuable",
+          "route": "STOP_UNKNOWN"
+        },
+        "k0_status": "STOP_UNKNOWN",
+        "pure": {
+          "cost_cap_check": false,
+          "n_required": null,
+          "power_lower_bound": null,
+          "reason": "K0 not complete/continuable",
+          "route": "STOP_UNKNOWN"
+        },
+        "upstream": {
+          "mode": "EVAL",
+          "nodes": 2,
+          "status": "UNKNOWN"
+        }
+      }
+    },
+    {
+      "case": "real-cap-to-downstream-3",
+      "result": {
+        "integrated": {
+          "cost_cap_check": false,
+          "n_required": null,
+          "power_lower_bound": null,
+          "reason": "K0 not complete/continuable",
+          "route": "STOP_UNKNOWN"
+        },
+        "k0_status": "STOP_UNKNOWN",
+        "pure": {
+          "cost_cap_check": false,
+          "n_required": null,
+          "power_lower_bound": null,
+          "reason": "K0 not complete/continuable",
+          "route": "STOP_UNKNOWN"
+        },
+        "upstream": {
+          "lower_bound": "1607186396188673214933428422746430966564755954690227345058705914036486144",
+          "reason": "canonical Space exceeds enumeration cap",
+          "status": "UNKNOWN"
+        }
+      }
+    },
+    {
+      "case": "scan-complete-mock-control",
+      "result": {
+        "cost_cap_check": true,
+        "n_required": 2,
+        "power_lower_bound": 0.9995395890030878,
+        "route": "STATISTICAL"
+      }
+    },
+    {
+      "case": "scan-forced-stop-PowerUnknown",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "incomplete integrated scan: PowerUnknown",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-forced-stop-SamplingUnknown",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "incomplete integrated scan: SamplingUnknown",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-forced-stop-MemoryError",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "incomplete integrated scan: MemoryError",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-forced-stop-RecursionError",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "incomplete integrated scan: RecursionError",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-forced-stop-StopIteration",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "incomplete integrated scan: StopIteration",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-primitive-cost-cap",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "no certified statistical n; descriptive route not evaluated",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-nonbool-or-partial",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "incomplete integrated scan: PowerUnknown",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-nonbool-or-partial",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "incomplete integrated scan: PowerUnknown",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-nonbool-or-partial",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "incomplete integrated scan: PowerUnknown",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-nonbool-or-partial",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "incomplete integrated scan: PowerUnknown",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-nonbool-or-partial",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "incomplete integrated scan: PowerUnknown",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-nonbool-or-partial",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "incomplete integrated scan: PowerUnknown",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "route-incomplete-prefix",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "incomplete ascending n scan",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "route-incomplete-prefix",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "incomplete scenario counts",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "route-incomplete-prefix",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "incomplete scenario counts",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "route-incomplete-prefix",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "incomplete scenario counts",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "route-incomplete-prefix",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "incomplete scenario counts",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "receipt-unknown-no-n-or-power",
+      "result": {
+        "n_required": null,
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-blocked-k0-None",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "K0 not complete/continuable",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-blocked-k0-UNKNOWN",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "K0 not complete/continuable",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-blocked-k0-STOP_UNKNOWN",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "K0 not complete/continuable",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-blocked-k0-STOP_K0",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "K0 not complete/continuable",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-blocked-k0-True",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "K0 not complete/continuable",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-blocked-k0-{}",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "K0 not complete/continuable",
+        "route": "STOP_UNKNOWN"
+      }
+    },
+    {
+      "case": "scan-blocked-k0-PASS",
+      "result": {
+        "cost_cap_check": false,
+        "n_required": null,
+        "power_lower_bound": null,
+        "reason": "K0 not complete/continuable",
+        "route": "STOP_UNKNOWN"
+      }
+    }
+  ],
+  "errors": [],
+  "failures": [],
+  "kind": "SYNTHETIC_FAIL_CLOSED_NEGATIVE_TESTS_NOT_K0_CAL_OR_SIMULATION",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "python": "3.12.14",
+  "raw_source_sha256": {
+    "scripts/audit_world_cal_fail_closed.py": "165cd4d2d5a3b3517f923ea33cbc6ea01a7a066af16903e9b1eed85d8e2909d0",
+    "tests/test_world_cal_fail_closed.py": "dbb9afb5112d80a959246d63d0499e1b287cbd5ffe7f336eae3d440a6318c950",
+    "world_cal/k0_b.py": "0c7b78864fcec30bd4d03f678c128eae169c882eaf3beb7b4dab23651b8f635e",
+    "world_cal/k0_c.py": "3883198a6b5b9cb67e457ae0a7d2e2d01ef866ff8956a00e9d3146b0bd11c648",
+    "world_cal/k0_oracle.py": "2e0a908366177de25b23080a536ec0276488dd1442312747d049e1a35b41cffc",
+    "world_cal/power_engine.py": "2e9abfaa9e8bb7b4f680bc3b49a45165b6daaab900525b715be0b5ebf9bb6b27",
+    "world_cal/power_route.py": "81596d483d4e7b23ba1185d6c887815b732291e9ff7fdefc54380b2b058ac0b6",
+    "world_cal/receipt.py": "1c28328a8a3b0ed734db1ce292d167691e7cca0ebe27bf492fed6851f42bb28c"
+  },
+  "source_commit": "SUBMISSION_HEAD_BOUND_BY_MANIFEST_AND_PR",
+  "successful": true,
+  "tests_run": 19
+}

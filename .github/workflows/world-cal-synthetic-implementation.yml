@@ -1,0 +1,169 @@
+name: WORLD CAL pre-authorization synthetic CI
+on:
+  pull_request:
+    paths:
+      - 'world_cal/**'
+      - 'tests/test_world_cal*.py'
+      - 'scripts/profile_world_cal_synthetic.py'
+      - 'scripts/profile_world_cal_integrated.py'
+      - 'scripts/audit_world_cal_sampford_336.py'
+      - 'scripts/audit_world_cal_role_process.py'
+      - 'scripts/audit_world_cal_id_only_repro.py'
+      - 'scripts/audit_world_cal_k0_index.py'
+      - 'scripts/audit_world_cal_fail_closed.py'
+      - 'scripts/build_world_cal_source_manifest.py'
+      - 'scripts/build_world_cal_prf_batch.py'
+      - 'scripts/audit_world_cal_optimization.py'
+      - 'docs/research/WORLD-CAL-*.md'
+      - 'docs/research/WORLD-CAL-*.json'
+      - '.github/workflows/world-cal-synthetic-implementation.yml'
+  workflow_dispatch:
+jobs:
+  synthetic-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONHASHSEED: '0'
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      WORLD_CAL_SOURCE_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.16'
+      - name: Pinned JCS verification library
+        run: python -m pip install -r world_cal/requirements.lock
+      - name: Build explicit optional PRF and bootstrap accelerator
+        run: python scripts/build_world_cal_prf_batch.py
+      - name: Paired immutable-head synthetic fixture audit (not a scan)
+        run: PYTHONPATH=. python scripts/audit_world_cal_optimization.py --output world-cal-optimization-evidence.json
+      - name: Golden and role-denial unit tests (not CAL)
+        run: python -m unittest discover -s tests -p 'test_world_cal*.py' -v
+      - name: Forced caps and UNKNOWN downstream evidence (synthetic and mocked only)
+        shell: bash
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python scripts/audit_world_cal_fail_closed.py --output world-cal-fail-closed.json 2>&1 | tee world-cal-fail-closed.log
+      - name: Documentation links and metadata
+        run: python scripts/check_docs.py
+      - name: Synthetic component profiler (not simulation)
+        run: PYTHONPATH=. python scripts/profile_world_cal_synthetic.py --output world-cal-synthetic-profiler.json
+      - name: Public N336 exact-law all-n audit (not CAL)
+        run: PYTHONPATH=. python scripts/audit_world_cal_sampford_336.py --output world-cal-sampford-336-public-audit.json
+      - name: One full-stack synthetic iteration only (not power simulation)
+        run: PYTHONPATH=. python scripts/profile_world_cal_integrated.py --output world-cal-synthetic-end-to-end-one-rep.json
+      - name: Public audit and CPU measurement summary
+        run: |
+          python - <<'PY'
+          import json
+          for path in ('world-cal-sampford-336-public-audit.json', 'world-cal-synthetic-end-to-end-one-rep.json'):
+              data=json.load(open(path,encoding='utf-8'))
+              if 'rows' in data:
+                  print({'kind':data['kind'],'n_count':len(data['rows']),
+                         'min_pair':data['min_pair'],'max_residual':data['max_residual'],
+                         'python':data['python'],'platform':data['platform']})
+              else:
+                  print({'kind':data['kind'],'environment':data['environment'],
+                         'measurement':data['measurement'],'extrapolation':data['extrapolation']})
+          PY
+      - name: Linux independent process read denial (not CAL)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq bubblewrap
+          sudo -E "$(which python)" scripts/audit_world_cal_role_process.py
+      - name: Exact public source-index census (not K0)
+        run: PYTHONPATH=. python scripts/audit_world_cal_k0_index.py --output world-cal-k0-index-census.json
+      - name: Candidate byte closure (not algorithm_digest)
+        run: |
+          python scripts/build_world_cal_source_manifest.py --output world-cal-algorithm-source-manifest-candidate.json > /dev/null
+          cat world-cal-algorithm-source-manifest-candidate.json
+      - name: Compare checked-in byte closure with generated exact-head manifest
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          from scripts.build_world_cal_source_manifest import PATHS
+          tracked=json.loads(Path('docs/research/WORLD-CAL-ALGORITHM-SOURCE-MANIFEST-20261112-optimization-candidate.json').read_text())
+          exact=json.loads(Path('world-cal-algorithm-source-manifest-candidate.json').read_text())
+          assert tracked['closed_source_files']==exact['closed_source_files']
+          assert len(exact['closed_source_files'])==len(PATHS)==63
+          assert exact['source_commit']==os.environ['WORLD_CAL_SOURCE_HEAD']
+          assert exact['algorithm_digest'] is None and exact['seed'] is None and exact['split_digest'] is None
+          print('RAW_BYTE_MANIFEST_ALL_MATCH_EXACT_HEAD',len(PATHS),exact['source_commit'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: world-cal-synthetic-component-profiler
+          path: |
+            world-cal-synthetic-profiler.json
+            world-cal-sampford-336-public-audit.json
+            world-cal-synthetic-end-to-end-one-rep.json
+            world-cal-k0-index-census.json
+            world-cal-algorithm-source-manifest-candidate.json
+            world-cal-fail-closed.json
+            world-cal-fail-closed.log
+            world-cal-optimization-evidence.json
+            world_cal/_prf_batch*.so
+          retention-days: 30
+
+  id-only-repro-two-linux-environments:
+    name: Synthetic ID-only reproducibility on ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.16'
+      - run: python -m pip install -r world_cal/requirements.lock
+      - name: 999 synthetic permutations; independently spawned interpreters
+        run: PYTHONPATH=. python scripts/audit_world_cal_id_only_repro.py --output idonly-${{ matrix.os }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: idonly-${{ matrix.os }}
+          path: idonly-${{ matrix.os }}.json
+          retention-days: 30
+
+  id-only-cross-environment-compare:
+    needs: id-only-repro-two-linux-environments
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: idonly-ubuntu-*
+          path: idonly-copies
+          merge-multiple: true
+      - name: Cross-environment exact payload bytes and digest
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          a=Path('idonly-copies/idonly-ubuntu-22.04.json').read_bytes()
+          b=Path('idonly-copies/idonly-ubuntu-24.04.json').read_bytes()
+          if a!=b:
+              raise SystemExit('STOP_UNKNOWN: exact ID-only result bytes diverged across Linux environments')
+          data=json.loads(a)
+          assert data['null_repetitions']==999
+          print('SYNTHETIC_ID_ONLY_CROSS_ENV_PASS',data['result_digest'])
+          PY

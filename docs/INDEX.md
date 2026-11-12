@@ -343,3 +343,14 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 - [WORLD-CAL-IMPLEMENTATION-PLAN-20261111-01](research/WORLD-CAL-IMPLEMENTATION-PLAN-20261111-01.md) — 世界意味論・K0・G_θ/PRF/Sampford/HT/SYG/bootstrap/max-T・測定・ACL/receipt の**実装前計画**、条項対応・golden・tol・第三者監査・algorithm_digest・原始呼出と simulation の別予算。**実装／CAL／K0／simulation 未実行**。
 
 本系列は [PROTOCOL_APPROVED](https://github.com/ryonakayama234/DekaSugi/issues/195#issuecomment-6784655532) 後の前提準備のみ。監督者審査と Owner の別 CAL_AUTHORIZED／実装 GO／事前登録 FROZEN／実験 GO はいずれも**未成立**。生成器の source 定義案は既承認本文そのものではなく、監督者確認が必要。
+
+
+## WORLD CAL — 監査3に基づく最終監査依頼（2026-11-12）
+
+- [最終監査依頼と健全性の範囲](research/WORLD-CAL-FINAL-AUDIT-REQUEST-20261112-01.md) — 監督者コメント6820712792を正本とする。K0とCPUは健全・不完全・STOP_UNKNOWN前提。全探索完走ではなく、cap／不完了を確定認定へ変換しないことの審査依頼。
+- [合成negative test生証跡](research/WORLD-CAL-FAIL-CLOSED-EVIDENCE-20261112-01.json) / [unlocked manifest](research/WORLD-CAL-ALGORITHM-SOURCE-MANIFEST-20261111-01-candidate.json)。algorithm_digest=null、CAL_AUTHORIZED=false。過去の準備段階の状態は当時の記録として保持。
+
+## WORLD CAL — 意味論不変の高速化ラウンド（2026-11-12）
+
+- [高速化候補・一致性・再計測・停止報告](research/WORLD-CAL-OPTIMIZATION-20261112-01.md) / [13合成fixture比較と5組の計測生JSON](research/WORLD-CAL-OPTIMIZATION-EVIDENCE-20261112-01.json)。5倍の目安に届かずOwner判断へ戻す。CAL_AUTHORIZED=false。
+- [変更版unlocked manifest](research/WORLD-CAL-ALGORITHM-SOURCE-MANIFEST-20261112-optimization-candidate.json)。旧55-file manifestは834fe0dcの履歴。新algorithm_digestは未固定、独立再監査待ち。

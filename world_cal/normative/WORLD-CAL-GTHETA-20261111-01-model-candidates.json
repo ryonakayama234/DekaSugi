@@ -1,0 +1,140 @@
+{
+  "id": "WORLD-CAL-GTHETA-20261111-01",
+  "status": "candidate_not_approved_not_executed",
+  "updated": "2026-11-11",
+  "tags": [
+    "world-expansion",
+    "cal-protocol",
+    "synthetic-power-model",
+    "design-only"
+  ],
+  "specification": {
+    "id": "WORLD-PREREG-SPEC-20261110-06",
+    "head": "351016fe0e2d468c80736a477133a274cfb713b8",
+    "blob": "9362065507791ced44e2a3cc218c93a0b3cef395"
+  },
+  "model_version": "GTHETA-v1",
+  "model_scope": "synthetic only; holdout actual outcomes excluded",
+  "selection": {
+    "primary": "GTHETA-BASE-01",
+    "rule": "constant primary for every valid theta_star; never select using CAL outcomes",
+    "sensitivities": [
+      "GTHETA-LOWCORR-01",
+      "GTHETA-HIGHCORR-01"
+    ],
+    "power_bound": "minimum one-sided 99% Clopper-Pearson across three scenarios"
+  },
+  "planning_alternative": {
+    "epsilon_A": "min(0.05,delta_AULC/3)",
+    "epsilon_1": "min(0.05,(1-g1_gate)/2)",
+    "epsilon_2": "min(0.05,(1-g2_gate)/2)",
+    "epsilon_c": "min(0.05,(1-contrast_gate)/2)",
+    "admissible": "all four eps in (0,0.05], all resulting margins in (0,1)",
+    "fixed_candidates": {
+      "delta_AULC": 0.15,
+      "g1_gate": 0.9,
+      "g2_gate": 0.8,
+      "contrast_gate": 0.1,
+      "eps_A": 0.05,
+      "eps_1": 0.05,
+      "eps_2": 0.05,
+      "eps_c": 0.05,
+      "Delta_star": 0.2,
+      "G1_star": 0.95,
+      "G2_star": 0.85,
+      "Contrast_star": 0.15
+    }
+  },
+  "binary_joint_generator": {
+    "factor_scopes": {
+      "cluster": "one N(0,1) per parent cluster per repetition",
+      "law": "one N(0,1) per law per repetition, shared across gates/arms/checkpoints/episodes",
+      "gate": "one N(0,1) per (parent_cluster, gate) per repetition",
+      "arm": "one N(0,1) per (law, arm) per repetition",
+      "checkpoint": "stationary AR(1) Gaussian per (law, gate, arm), j=0..8",
+      "episode": "independent N(0,1) per (law, gate, arm, checkpoint, episode)"
+    },
+    "latent_formula": "U=sum_f sqrt(weight_f)*Z_f; Y=1{Phi(U)<=p_arm,gate,j}; all weights nonnegative and sum to one",
+    "scenarios": [
+      {
+        "id": "GTHETA-BASE-01",
+        "weight_cluster": 0.2,
+        "weight_law": 0.15,
+        "weight_gate": 0.1,
+        "weight_arm": 0.1,
+        "weight_checkpoint": 0.15,
+        "weight_episode": 0.3,
+        "checkpoint_ar1": 0.6
+      },
+      {
+        "id": "GTHETA-LOWCORR-01",
+        "weight_cluster": 0.05,
+        "weight_law": 0.1,
+        "weight_gate": 0.05,
+        "weight_arm": 0.1,
+        "weight_checkpoint": 0.2,
+        "weight_episode": 0.5,
+        "checkpoint_ar1": 0.3
+      },
+      {
+        "id": "GTHETA-HIGHCORR-01",
+        "weight_cluster": 0.35,
+        "weight_law": 0.2,
+        "weight_gate": 0.1,
+        "weight_arm": 0.1,
+        "weight_checkpoint": 0.15,
+        "weight_episode": 0.1,
+        "checkpoint_ar1": 0.85
+      }
+    ],
+    "arms": [
+      "FULL",
+      "OFF",
+      "PRED-ONLY",
+      "REC",
+      "RANK-ONLY",
+      "FIXED-IF",
+      "LOOKUP",
+      "H+"
+    ],
+    "control_strength_order": [
+      "H+",
+      "FIXED-IF",
+      "PRED-ONLY",
+      "REC",
+      "RANK-ONLY",
+      "LOOKUP",
+      "OFF"
+    ],
+    "control_endpoint_deficit_additions": [
+      0,
+      0.005,
+      0.01,
+      0.015,
+      0.02,
+      0.025,
+      0.03
+    ],
+    "full_logit_slope": 1.5,
+    "marginal_full": "logit(p_full,g,j)=logit(g_star)-1.5*(8-j)/8",
+    "marginal_control": "p_control,g,8=g_star-Contrast_star-d[a]; logit(p_control,g,j)=logit(p_control,g,8)-kappa[a]*(8-j)/8",
+    "slope_solver": "minimal kappa[a] in [0,8] matching mean of two G1/G2 trapezoidal AULC differences to Delta_star; 64 bisections; fail if absent or final abs discrepancy >1e-10",
+    "aggregation": "same Y used for seven AULC differences, G1/B, G2/B, and FULL minus max of all seven control B success rates, all HT weighted; no independent Contrast variable",
+    "episode_count": 4,
+    "checkpoints": 9
+  },
+  "simulation": {
+    "prng": "HMAC-SHA256 counter PRF with secret owner-escrow CAL seed, domain separated",
+    "uniform_to_normal": "HMAC-SHA256 output first 53 bits x -> u=(x+0.5)/2^53; consecutive u1,u2 -> Box-Muller Z0=sqrt(-2ln(u1))*cos(2pi*u2), Z1=sqrt(-2ln(u1))*sin(2pi*u2); binary64",
+    "R_per_n_per_scenario": 10000,
+    "maxT_bootstrap_replicates": 999,
+    "one_sided_MC_confidence": 0.99,
+    "samples": "unique law Sampford PPSWOR / parent cluster bootstrap HT weights",
+    "n_min": 2,
+    "n_max": 512,
+    "stop": "complete ascending scan; only first admissible n; STOP_UNKNOWN on unavailable model/design/repetitions or MC lower bound below 0.80",
+    "normal_cdf": "Phi(z)=0.5*erfc(-z/sqrt(2)), binary64, numerical consistency tolerance 1e-10",
+    "bootstrap": "draw k parent clusters with replacement uniformly among k observed clusters; m_c counts; replicate HT total sum_c m_c * sum_{law in cluster c and sample}(q_l/pi_l)*outcome_l; no normalization and no episode iid resampling; k<2 => STOP_UNKNOWN"
+  },
+  "digest_contract": "SHA-256 of exact stored UTF-8/LF JSON file bytes; lowercase 64hex prefixed sha256:; no self-referential digest field"
+}

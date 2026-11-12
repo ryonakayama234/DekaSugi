@@ -1,0 +1,6 @@
+# Synthetic CI dependency pin; Python 3.12.16, Ubuntu 24.04 x86_64
+rfc8785==0.1.4
+cryptography==46.0.3
+numpy==2.2.6
+cffi==2.1.1
+pycparser==3.12

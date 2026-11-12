@@ -1,0 +1,279 @@
+"""Integrated conditional synthetic power engine. No work occurs at import.
+
+Production entry requires CAL_AUTHORIZED role capability supplied by the
+independent launcher. An explicit, non-secret synthetic fixture can exercise
+ONE complete repetition in pre-CAL CI; full scan is never run by tests/CI.
+No holdout instances, scores, or seeds are read or generated here.
+"""
+import math
+from dataclasses import dataclass
+
+from .gtheta import MODEL_SHA, load_model, marginal_table, aggregate_law
+from .inference import (InferenceUnknown, ht, syg, bootstrap_vectors,
+                        studentized_max_t, one_sided_lower, ten_and_gates,
+                        bootstrap_vectors_cached, bootstrap_vectors_array)
+from .power_route import (R_REQUIRED, BOOTSTRAPS, SCENARIOS, PowerUnknown,
+                          lower_for_completed_counts, cost, k0_allows_scan,
+                          unknown_scan)
+from .prf import draw_digest, uniform53, box_muller, encode_parts, hmac_sha256
+try:
+    from ._prf_batch import uniforms as _batch_uniforms
+except ImportError:
+    _batch_uniforms = None
+from .sampford import waterfill, SamplingUnknown
+from .sampford_grouped import grouped_inclusions, draw_grouped
+
+ARMS = ("FULL","OFF","PRED-ONLY","REC","RANK-ONLY","FIXED-IF","LOOKUP","H+")
+CONTROLS = ("H+","FIXED-IF","PRED-ONLY","REC","RANK-ONLY","LOOKUP","OFF")
+GATES = ("G1","G2")
+CHECKPOINTS=9
+EPISODES=4
+
+
+@dataclass(frozen=True)
+class CALAuthorization:
+    """Verified, process-local capability; construction is NOT authorization.
+
+    Only a separately reviewed OS-isolated launcher should create this after
+    authenticating its role, approved source manifest and Owner CAL state.
+    """
+    role: str
+    algorithm_digest: str
+    approved: bool
+
+
+class _CounterDraws:
+    def __init__(self, key, scenario, n, repetition):
+        if not isinstance(key,bytes) or len(key)!=32:
+            raise PowerUnknown("STOP_UNKNOWN: injected 256-bit key required")
+        if not isinstance(repetition,int) or repetition<0:
+            raise PowerUnknown("STOP_UNKNOWN: invalid repetition")
+        self.key,self.scenario,self.n,self.repetition=key,scenario,n,repetition
+        self.prefix=encode_parts("WORLD-CAL-v1","sha256:"+MODEL_SHA,scenario,n,repetition)
+        self.next_index={}
+        self.spare={}
+    def uniform_many(self,stage,count):
+        if type(count) is not int or count<0:
+            raise PowerUnknown("STOP_UNKNOWN: invalid batch count")
+        ix=self.next_index.get(stage,0)
+        prefix=self.prefix+encode_parts(stage)
+        if _batch_uniforms is None:
+            values=[uniform53(hmac_sha256(self.key,prefix+encode_parts(i)))
+                    for i in range(ix,ix+count)]
+        else:
+            values=_batch_uniforms(self.key,prefix,ix,count)
+        self.next_index[stage]=ix+count
+        return values
+    def uniform(self,stage):
+        return self.uniform_many(stage,1)[0]
+    def normal_many(self,stage,count):
+        if type(count) is not int or count<0:
+            raise PowerUnknown("STOP_UNKNOWN: invalid normal count")
+        if count==0:return []
+        result=[]
+        if stage in self.spare:
+            result.append(self.spare.pop(stage))
+        needed=count-len(result)
+        if needed:
+            values=self.uniform_many(stage,2*((needed+1)//2))
+            for i in range(0,len(values),2):
+                result.extend(box_muller(values[i],values[i+1]))
+            if len(result)>count:self.spare[stage]=result.pop()
+        return result
+    def normal(self,stage):
+        return self.normal_many(stage,1)[0]
+    def uniforms(self,stage):
+        while True:yield self.uniform(stage)
+
+
+def _inputs(q,parents,n,scenario):
+    if scenario not in SCENARIOS or not isinstance(n,int) or not 2<=n<=len(q):
+        raise PowerUnknown("STOP_UNKNOWN: invalid n/scenario")
+    if len(q)!=len(parents) or any(not isinstance(p,str) or not p for p in parents):
+        raise PowerUnknown("STOP_UNKNOWN: invalid parent metadata")
+    if any(not isinstance(x,(float,int)) or not math.isfinite(x) or x<=0 for x in q):
+        raise PowerUnknown("STOP_UNKNOWN: invalid design q")
+    if abs(math.fsum(q)-1.0)>1e-10:
+        raise PowerUnknown("STOP_UNKNOWN: q not normalized")
+    # Private caller must have sorted canonical law IDs, checked inside role
+    # boundary. This pure engine receives only aligned ordered opaque vectors.
+
+
+def _synthetic_joint_scores(sample, parents, table, scenario, draws):
+    """Shared latent factors, one Y array per law across all components."""
+    ws={name:math.sqrt(scenario["weight_"+name]) for name in
+        ("cluster","law","gate","arm","checkpoint","episode")}
+    rho=scenario["checkpoint_ar1"]
+    # Every independent factor is addressed by its canonical scope identifiers.
+    # Drawing only selected laws must not change another law/cluster normal
+    # because a preceding selected unit happened to be absent this time.
+    def scoped(kind,*parts):
+        return kind+"".join("|"+str(len(str(v)))+":"+str(v) for v in parts)
+    cluster={c:draws.normal(scoped("cluster",c))
+             for c in sorted({parents[i] for i in sample})}
+    gate={(c,g):draws.normal(scoped("gate",c,g))
+          for c in sorted(cluster) for g in range(2)}
+    result={}
+    for i in sample:
+        z_l=draws.normal(scoped("law",i))
+        by_arm={}
+        for arm in ARMS:
+            z_a=draws.normal(scoped("arm",i,arm))
+            gates=[]
+            for g in range(2):
+                ar=[]
+                for j,z in enumerate(draws.normal_many(scoped("checkpoint",i,g,arm),CHECKPOINTS)):
+                    ar.append(z if j==0 else rho*ar[-1]+math.sqrt(1-rho*rho)*z)
+                rows=[]
+                fixed=(ws["cluster"]*cluster[parents[i]]+ws["law"]*z_l+
+                       ws["gate"]*gate[(parents[i],g)]+ws["arm"]*z_a)
+                for j in range(CHECKPOINTS):
+                    baseline=fixed+ws["checkpoint"]*ar[j]
+                    observations=[]
+                    for z_episode in draws.normal_many(scoped("episode",i,g,arm,j),EPISODES):
+                        latent=baseline+ws["episode"]*z_episode
+                        # Required normative binary64 Phi=erfc; no latent
+                        # substitutions or independent Contrast draw.
+                        probability=.5*math.erfc(-latent/math.sqrt(2))
+                        if not math.isfinite(probability):
+                            raise PowerUnknown("STOP_UNKNOWN: CDF nonfinite")
+                        observations.append(int(probability<=table[arm][g][j]))
+                    rows.append(tuple(observations))
+                gates.append(tuple(rows))
+            by_arm[arm]=tuple(gates)
+        result[i]=aggregate_law(by_arm)
+    return result
+
+
+def _ht_b(sample,q,pi,scores,gate):
+    return {arm:ht(sample,q,pi,{i:scores[i]["b_by_arm"][arm][gate] for i in sample})
+            for arm in ARMS}
+
+
+def _draw_bootstrap_clusters(sample,parents,draws):
+    clusters=tuple(sorted({parents[i] for i in sample}))
+    k=len(clusters)
+    if k<2:raise PowerUnknown("STOP_UNKNOWN: fewer than two observed parent clusters")
+    uniforms=iter(draws.uniform_many("bootstrap",BOOTSTRAPS*k))
+    return tuple(tuple(clusters[min(k-1,int(next(uniforms)*k))]
+                       for _ in range(k)) for _ in range(BOOTSTRAPS))
+
+
+def run_one_repetition(*, q, parent_ids, n, scenario_id, repetition, key,
+                       synthetic_fixture=False, authorization=None,
+                       cached_design=None):
+    """All components of EXACTLY ONE power repetition; no implicit looping.
+
+    A fixture is public and must be explicitly flagged. Production requires a
+    verified calculator process capability, not an in-process learner flag.
+    """
+    if not synthetic_fixture and not (isinstance(authorization,CALAuthorization)
+            and authorization.approved and
+            authorization.role=="BLIND_DESIGN_CALCULATOR" and
+            authorization.algorithm_digest.startswith("sha256:")):
+        raise PowerUnknown("STOP_UNKNOWN: CAL_AUTHORIZED process capability absent")
+    _inputs(q,parent_ids,n,scenario_id)
+    try:
+        if cached_design is None:
+            pi=waterfill(q,n)
+            _,pij=grouped_inclusions(pi)
+        else:
+            pi,pij=cached_design
+            if len(pi)!=len(q) or abs(math.fsum(pi)-n)>1e-10:
+                raise PowerUnknown("STOP_UNKNOWN: bad cached design")
+        draws=_CounterDraws(key,scenario_id,n,repetition)
+        sample=draw_grouped(pi,draws.uniforms("pps"))
+        model=load_model()
+        scenario=next(s for s in model["binary_joint_generator"]["scenarios"]
+                      if s["id"]==scenario_id)
+        scores=_synthetic_joint_scores(sample,parent_ids,marginal_table(model),
+                                       scenario,draws)
+        vectors={i:tuple(scores[i]["deltas"])+(scores[i]["g1"],scores[i]["g2"])
+                 for i in sample}
+        # Every dimension has the same PPS inclusion, design variance and
+        # same cluster bootstrap draw: never iid episode/law resampling.
+        for dim in range(9):
+            variance=syg(sample,q,pi,pij,{i:vectors[i][dim] for i in sample})
+            if variance<=0 or not math.isfinite(variance):
+                raise PowerUnknown("STOP_UNKNOWN: degenerate SYG variance")
+        bootstrap_draws=_draw_bootstrap_clusters(sample,parent_ids,draws)
+        pts,replicates=bootstrap_vectors_array(sample,q,pi,vectors,parent_ids,bootstrap_draws)
+        ci=studentized_max_t(pts[:7],tuple(r[:7] for r in replicates),alpha=.0125)
+        g1lower=one_sided_lower(pts[7],replicates,7,alpha=.00625)
+        g2lower=one_sided_lower(pts[8],replicates,8,alpha=.00625)
+        b1=_ht_b(sample,q,pi,scores,0)
+        b2=_ht_b(sample,q,pi,scores,1)
+        both={arm:(b1[arm]+b2[arm])/2 for arm in ARMS}
+        contrast=both["FULL"]-max(both[arm] for arm in CONTROLS)
+        family_diag=(b1["FULL"]-max(b1[a] for a in CONTROLS),
+                     b2["FULL"]-max(b2[a] for a in CONTROLS))
+        gates,all_success=ten_and_gates(pts[:7],ci,pts[7],pts[8],
+                                        g1lower,g2lower,contrast)
+        k2_ci=studentized_max_t(pts[:7],tuple(r[:7] for r in replicates),alpha=.05)[3]
+        return {"and":all_success,"ten_components":gates,
+                "contrast":contrast,"family_contrast_descriptive":family_diag,
+                "g1":pts[7],"g2":pts[8],"main_intervals":ci,
+                "k2_rec_interval_95":k2_ci,
+                "k2_equivalence_descriptive":k2_ci[0]>=-.05 and k2_ci[1]<=.05,
+                "sample_size":len(sample),"observed_parent_clusters":len(set(parent_ids[i] for i in sample)),
+                "bootstrap_count":BOOTSTRAPS}
+    except (InferenceUnknown,SamplingUnknown,ValueError,OverflowError,
+            ZeroDivisionError) as exc:
+        raise PowerUnknown("STOP_UNKNOWN: integrated repetition failed: "+str(exc)) from exc
+
+
+def scan_authorized(*, q, parent_ids, key, authorization, b_final,k0_status=None):
+    """The future CAL-only R=10,000 x 3 x ascending-n scan; never pre-CAL.
+
+    No simulation is called unless authorization arrives from an audited,
+    OS-isolated BLIND_DESIGN_CALCULATOR launcher. No skip/fast pass/adaptive
+    R or 999 substitutions. Any incomplete n fails closed.
+    """
+    if not (isinstance(authorization,CALAuthorization) and authorization.approved
+            and authorization.role=="BLIND_DESIGN_CALCULATOR"
+            and len(authorization.algorithm_digest)==71):
+        raise PowerUnknown("STOP_UNKNOWN: CAL authorization missing")
+    if not k0_allows_scan(k0_status):
+        return unknown_scan("K0 not complete/continuable")
+    try:
+        _inputs(q,parent_ids,2,SCENARIOS[0])
+        if b_final not in (4096,6144):
+            raise PowerUnknown("invalid B_final")
+        return _scan_complete_n(q,parent_ids,key,authorization,b_final)
+    except (PowerUnknown,InferenceUnknown,SamplingUnknown,ValueError,TypeError,
+            KeyError,OverflowError,ZeroDivisionError,StopIteration,
+            RecursionError,MemoryError) as exc:
+        # No partial counts escape, no later n can replace an incomplete n.
+        # External wall interruption remains a future CAL operational rule.
+        return unknown_scan("incomplete integrated scan: "+type(exc).__name__)
+
+
+def _scan_complete_n(q,parent_ids,key,authorization,b_final):
+    N=len(q)
+    for n in range(2,min(N,512)+1):
+        design=(waterfill(q,n),None)
+        design=(design[0],grouped_inclusions(design[0])[1])
+        counts={}
+        for scenario in SCENARIOS:
+            successes=0
+            for r in range(R_REQUIRED):
+                result=run_one_repetition(q=q,parent_ids=parent_ids,n=n,
+                        scenario_id=scenario,repetition=r,key=key,
+                        authorization=authorization,cached_design=design)
+                if (type(result) is not dict or "status" in result or
+                        type(result.get("and")) is not bool or
+                        type(result.get("ten_components")) is not tuple or
+                        len(result["ten_components"])!=10 or
+                        any(type(x) is not bool for x in result["ten_components"]) or
+                        result["and"] is not all(result["ten_components"])):
+                    raise PowerUnknown("incomplete/invalid repetition result")
+                if result["and"]:
+                    successes+=1
+            counts[scenario]=successes
+        lower=lower_for_completed_counts(counts)
+        if lower>=.80 and cost(n,b_final)<=20_000_000:
+            return {"route":"STATISTICAL","n_required":n,
+                    "power_lower_bound":lower,"cost_cap_check":True}
+    # A complete finite descriptive evaluation is a separately authorized
+    # route; the simulation alone cannot assert it.
+    return unknown_scan("no certified statistical n; descriptive route not evaluated")

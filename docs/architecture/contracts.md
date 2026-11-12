@@ -1095,3 +1095,28 @@ flowchart LR
 - Query: exactly one Q001 pre-answer intent per law (P3 digest, legal Q digest, paid budget=1, expiry, method/policy hashes). Remote GitHub audit-branch commit/push, ref verification and fetched exact bytes required before synthetic answer callback; failures leave an unrepeatable local intent and **no paid answer**.
 - Pre-score: 448 scheduled slots always represented. `NOT_RUN` and `STARTED_MISSING` plus typed INVALID/RESOURCE_STOP/RUN_BLOCK/UNMEASURED are not replaced with zero. Raw trace/receipt SHA required for completed slots. Immutable pre-score manifest, event-chain tip and remote object bytes rechecked; missing Q receipts or any changed original block.
 - Gate: `SCIENTIFIC_EXECUTION_AUTHORIZED=False` and independent G4/G5/G6 flags are false; `require_score_gate` rejects caller-provided Owner approval claims. No score or truth reading is implemented. G4 dossier generator emits only NOT_AUDITED documents. GitHub-only timestamps are not independent trusted timestamps. [G3-3 specification](../specs/R2-M-A-G3-3.md).
+
+
+## WORLD CAL — 不完備結果とscan契約（最終監査候補、2026-11-12）
+
+| 境界 | 契約 |
+|---|---|
+| K0-b/c → `k0_result_outcome` | UNKNOWNがFAIL・飽和に優先。Cのstatus=COMPLETE確認前にsaturatedを読まない。全sourceのcomplete辞書を出典認証としない。 |
+| `k0_status` → 両scan入口 | 省略・不明・停止・未知の値はSTOP_UNKNOWN。既知のK0A_WITNESS/K0A_NO_WITNESSだけが継続可能。NO_WITNESSの二階帰属STOPは別規則。これは外部承認の認証器ではない。 |
+| 反復 → 統合scan | exact boolのandと10個のbool成分の一致が必要。未完了・例外・部分countは捨てず停止する。大きいnへの飛越しは禁止。 |
+| scan → route | STOP_UNKNOWNではn_required=null、power_lower_bound=null、cost_cap_check=false。確定nは完全な3シナリオ計数後のみ。FINITE_DESCRIPTIVE fallbackは未実装。 |
+| route → receipt | STOP_UNKNOWNに非nullのn/powerを添えればschema拒否。実CALには別のsource/role/Owner認証が必要。 |
+
+[最終監査依頼・case証跡](../research/WORLD-CAL-FINAL-AUDIT-REQUEST-20261112-01.md)に完全性の範囲とテスト差替えの範囲を明記。実CAL・K0・power simulationやsplit・seed生成、algorithm_digest固定を許可しない。wall予算は将来のCAL_AUTHORIZED記録で扱う運用規則。
+
+## WORLD CAL — 高速化候補の比較契約（2026-11-12）
+
+| 入出力 | 不変性・検証 |
+|---|---|
+| PRF | 同じ `encode_parts` のprefixに `I + uint64(8) + uint64(index)` を結合。全使用scopeのdigest32 bytesとstage/index/uniform列、消費数、spareを旧headとbyte比較。prefix/鍵は反復内のみ。 |
+| normal / Y | Box–Mullerは既存Python関数。9 checkpointでは10 uniform、4 episodeでは4 uniformを消費。余剰normal保持も一致。二値Yとlaw集計が一致。 |
+| bootstrap | 999件のparent draw、parent別HT和とpointsを保持。最後の和をnative逐次加算。Python 3.12の補償sumとの誤差は中間999x9値と最終CI/gateでtol=1e-10内を検査。 |
+| 実行境界 | native未buildならPython fallback。明示buildはsource/flags/hashを監査対象に追加。エラーは既存PowerUnknown→scan STOP_UNKNOWN。CAL capability・ACLに変更なし。 |
+| 比較の上限 | 13個の公開合成fixtureのみ。3シナリオ、n=8/96/160/336とrepetition=7追加。退化SYGも同じUNKNOWN。本scanのpowerや適格nは認定しない。 |
+
+旧digestは旧headにのみ有効。変更版は独立再監査待ちでalgorithm_digest=null。5倍未達時はOwner判断へ戻す。[証跡](../research/WORLD-CAL-OPTIMIZATION-EVIDENCE-20261112-01.json) / [停止報告](../research/WORLD-CAL-OPTIMIZATION-20261112-01.md)。
