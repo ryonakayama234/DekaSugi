@@ -11,11 +11,15 @@ from dataclasses import dataclass
 from .gtheta import MODEL_SHA, load_model, marginal_table, aggregate_law
 from .inference import (InferenceUnknown, ht, syg, bootstrap_vectors,
                         studentized_max_t, one_sided_lower, ten_and_gates,
-                        bootstrap_vectors_cached)
+                        bootstrap_vectors_cached, bootstrap_vectors_array)
 from .power_route import (R_REQUIRED, BOOTSTRAPS, SCENARIOS, PowerUnknown,
                           lower_for_completed_counts, cost, k0_allows_scan,
                           unknown_scan)
-from .prf import draw_digest, uniform53, box_muller
+from .prf import draw_digest, uniform53, box_muller, encode_parts, hmac_sha256
+try:
+    from ._prf_batch import uniforms as _batch_uniforms
+except ImportError:
+    _batch_uniforms = None
 from .sampford import waterfill, SamplingUnknown
 from .sampford_grouped import grouped_inclusions, draw_grouped
 
@@ -45,18 +49,39 @@ class _CounterDraws:
         if not isinstance(repetition,int) or repetition<0:
             raise PowerUnknown("STOP_UNKNOWN: invalid repetition")
         self.key,self.scenario,self.n,self.repetition=key,scenario,n,repetition
+        self.prefix=encode_parts("WORLD-CAL-v1","sha256:"+MODEL_SHA,scenario,n,repetition)
         self.next_index={}
         self.spare={}
-    def uniform(self,stage):
+    def uniform_many(self,stage,count):
+        if type(count) is not int or count<0:
+            raise PowerUnknown("STOP_UNKNOWN: invalid batch count")
         ix=self.next_index.get(stage,0)
-        self.next_index[stage]=ix+1
-        return uniform53(draw_digest(self.key,"sha256:"+MODEL_SHA,
-                                     self.scenario,self.n,self.repetition,stage,ix))
+        prefix=self.prefix+encode_parts(stage)
+        if _batch_uniforms is None:
+            values=[uniform53(hmac_sha256(self.key,prefix+encode_parts(i)))
+                    for i in range(ix,ix+count)]
+        else:
+            values=_batch_uniforms(self.key,prefix,ix,count)
+        self.next_index[stage]=ix+count
+        return values
+    def uniform(self,stage):
+        return self.uniform_many(stage,1)[0]
+    def normal_many(self,stage,count):
+        if type(count) is not int or count<0:
+            raise PowerUnknown("STOP_UNKNOWN: invalid normal count")
+        if count==0:return []
+        result=[]
+        if stage in self.spare:
+            result.append(self.spare.pop(stage))
+        needed=count-len(result)
+        if needed:
+            values=self.uniform_many(stage,2*((needed+1)//2))
+            for i in range(0,len(values),2):
+                result.extend(box_muller(values[i],values[i+1]))
+            if len(result)>count:self.spare[stage]=result.pop()
+        return result
     def normal(self,stage):
-        if stage in self.spare:return self.spare.pop(stage)
-        a,b=box_muller(self.uniform(stage),self.uniform(stage))
-        self.spare[stage]=b
-        return a
+        return self.normal_many(stage,1)[0]
     def uniforms(self,stage):
         while True:yield self.uniform(stage)
 
@@ -97,8 +122,7 @@ def _synthetic_joint_scores(sample, parents, table, scenario, draws):
             gates=[]
             for g in range(2):
                 ar=[]
-                for j in range(CHECKPOINTS):
-                    z=draws.normal(scoped("checkpoint",i,g,arm))
+                for j,z in enumerate(draws.normal_many(scoped("checkpoint",i,g,arm),CHECKPOINTS)):
                     ar.append(z if j==0 else rho*ar[-1]+math.sqrt(1-rho*rho)*z)
                 rows=[]
                 fixed=(ws["cluster"]*cluster[parents[i]]+ws["law"]*z_l+
@@ -106,9 +130,8 @@ def _synthetic_joint_scores(sample, parents, table, scenario, draws):
                 for j in range(CHECKPOINTS):
                     baseline=fixed+ws["checkpoint"]*ar[j]
                     observations=[]
-                    for episode in range(EPISODES):
-                        latent=baseline+ws["episode"]*draws.normal(
-                            scoped("episode",i,g,arm,j))
+                    for z_episode in draws.normal_many(scoped("episode",i,g,arm,j),EPISODES):
+                        latent=baseline+ws["episode"]*z_episode
                         # Required normative binary64 Phi=erfc; no latent
                         # substitutions or independent Contrast draw.
                         probability=.5*math.erfc(-latent/math.sqrt(2))
@@ -131,7 +154,8 @@ def _draw_bootstrap_clusters(sample,parents,draws):
     clusters=tuple(sorted({parents[i] for i in sample}))
     k=len(clusters)
     if k<2:raise PowerUnknown("STOP_UNKNOWN: fewer than two observed parent clusters")
-    return tuple(tuple(clusters[min(k-1,int(draws.uniform("bootstrap")*k))]
+    uniforms=iter(draws.uniform_many("bootstrap",BOOTSTRAPS*k))
+    return tuple(tuple(clusters[min(k-1,int(next(uniforms)*k))]
                        for _ in range(k)) for _ in range(BOOTSTRAPS))
 
 
@@ -173,7 +197,7 @@ def run_one_repetition(*, q, parent_ids, n, scenario_id, repetition, key,
             if variance<=0 or not math.isfinite(variance):
                 raise PowerUnknown("STOP_UNKNOWN: degenerate SYG variance")
         bootstrap_draws=_draw_bootstrap_clusters(sample,parent_ids,draws)
-        pts,replicates=bootstrap_vectors_cached(sample,q,pi,vectors,parent_ids,bootstrap_draws)
+        pts,replicates=bootstrap_vectors_array(sample,q,pi,vectors,parent_ids,bootstrap_draws)
         ci=studentized_max_t(pts[:7],tuple(r[:7] for r in replicates),alpha=.0125)
         g1lower=one_sided_lower(pts[7],replicates,7,alpha=.00625)
         g2lower=one_sided_lower(pts[8],replicates,8,alpha=.00625)

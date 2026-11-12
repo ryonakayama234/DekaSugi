@@ -1,0 +1,2017 @@
+{
+  "algorithm_digest": null,
+  "benchmark_pairs": [
+    {
+      "optimized": {
+        "cal_executed": false,
+        "environment": {
+          "cpu_count": 9,
+          "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+          "implementation": "CPython",
+          "libc": [
+            "glibc",
+            "2.41"
+          ],
+          "machine": "x86_64",
+          "openblas_threads": "1",
+          "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+          "python": "3.12.14",
+          "pythonhashseed": "0"
+        },
+        "extrapolation": {
+          "hypothesis": "one-rep wall time proportional to n; ignores fixed PPS/DP and different n-dependent bootstrap costs, no stop-early savings",
+          "hypothetical_all_n_wall_hours": 1298.2820828698539,
+          "real_world_feasibility": "STOP_UNKNOWN",
+          "scan": "all n=2..336, 3 scenarios, R=10000"
+        },
+        "full_power_executed": false,
+        "k0_executed": false,
+        "kind": "PRECAL_ONE_COMPLETE_SYNTHETIC_REPETITION_ONLY",
+        "limitations": "Not a validated real-run budget or a production power run. Per-n model, exact authentic split law-ID mapping, scenario costs and real-world resource contention require independent audit.",
+        "measurement": {
+          "actual_bootstrap_replicates": 999,
+          "and_result": false,
+          "cpu_seconds": 0.26414439500000003,
+          "exec_image_rss_hwm_kib": 23168,
+          "maxrss_kib": 47120,
+          "observed_parent_clusters": 63,
+          "observed_sample_size": 96,
+          "ru_stime_delta": 0.0,
+          "ru_utime_delta": 0.264157,
+          "ten_gate_values": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true,
+            false,
+            false,
+            true
+          ],
+          "wall_seconds": 0.2641739750006309
+        },
+        "public_fixture": {
+          "N": 336,
+          "bootstrap_replicates": 999,
+          "injected_public_test_vector": "RFC4231-style static 0b x 32 (not escrow)",
+          "model": "GTHETA-BASE-01",
+          "n": 96,
+          "parent_structure": "synthetic 36x2 + 44x6",
+          "q_counts": {
+            "1/160": 72,
+            "1/480": 264
+          },
+          "repetition": 0
+        },
+        "sealed_split_materialized": false,
+        "seed_generated": false
+      },
+      "reference": {
+        "cal_executed": false,
+        "environment": {
+          "cpu_count": 9,
+          "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+          "implementation": "CPython",
+          "libc": [
+            "glibc",
+            "2.41"
+          ],
+          "machine": "x86_64",
+          "openblas_threads": "1",
+          "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+          "python": "3.12.14",
+          "pythonhashseed": "0"
+        },
+        "extrapolation": {
+          "hypothesis": "one-rep wall time proportional to n; ignores fixed PPS/DP and different n-dependent bootstrap costs, no stop-early savings",
+          "hypothetical_all_n_wall_hours": 4620.595604527748,
+          "real_world_feasibility": "STOP_UNKNOWN",
+          "scan": "all n=2..336, 3 scenarios, R=10000"
+        },
+        "full_power_executed": false,
+        "k0_executed": false,
+        "kind": "PRECAL_ONE_COMPLETE_SYNTHETIC_REPETITION_ONLY",
+        "limitations": "Not a validated real-run budget or a production power run. Per-n model, exact authentic split law-ID mapping, scenario costs and real-world resource contention require independent audit.",
+        "measurement": {
+          "actual_bootstrap_replicates": 999,
+          "and_result": false,
+          "cpu_seconds": 0.9401607080000001,
+          "exec_image_rss_hwm_kib": 18940,
+          "maxrss_kib": 47120,
+          "observed_parent_clusters": 63,
+          "observed_sample_size": 96,
+          "ru_stime_delta": 0.0,
+          "ru_utime_delta": 0.9401759999999999,
+          "ten_gate_values": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true,
+            false,
+            false,
+            true
+          ],
+          "wall_seconds": 0.9401971449997291
+        },
+        "public_fixture": {
+          "N": 336,
+          "bootstrap_replicates": 999,
+          "injected_public_test_vector": "RFC4231-style static 0b x 32 (not escrow)",
+          "model": "GTHETA-BASE-01",
+          "n": 96,
+          "parent_structure": "synthetic 36x2 + 44x6",
+          "q_counts": {
+            "1/160": 72,
+            "1/480": 264
+          },
+          "repetition": 0
+        },
+        "sealed_split_materialized": false,
+        "seed_generated": false
+      }
+    },
+    {
+      "optimized": {
+        "cal_executed": false,
+        "environment": {
+          "cpu_count": 9,
+          "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+          "implementation": "CPython",
+          "libc": [
+            "glibc",
+            "2.41"
+          ],
+          "machine": "x86_64",
+          "openblas_threads": "1",
+          "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+          "python": "3.12.14",
+          "pythonhashseed": "0"
+        },
+        "extrapolation": {
+          "hypothesis": "one-rep wall time proportional to n; ignores fixed PPS/DP and different n-dependent bootstrap costs, no stop-early savings",
+          "hypothetical_all_n_wall_hours": 1073.3933800998684,
+          "real_world_feasibility": "STOP_UNKNOWN",
+          "scan": "all n=2..336, 3 scenarios, R=10000"
+        },
+        "full_power_executed": false,
+        "k0_executed": false,
+        "kind": "PRECAL_ONE_COMPLETE_SYNTHETIC_REPETITION_ONLY",
+        "limitations": "Not a validated real-run budget or a production power run. Per-n model, exact authentic split law-ID mapping, scenario costs and real-world resource contention require independent audit.",
+        "measurement": {
+          "actual_bootstrap_replicates": 999,
+          "and_result": false,
+          "cpu_seconds": 0.21838310100000002,
+          "exec_image_rss_hwm_kib": 23168,
+          "maxrss_kib": 47120,
+          "observed_parent_clusters": 63,
+          "observed_sample_size": 96,
+          "ru_stime_delta": 0.018851,
+          "ru_utime_delta": 0.19954399999999997,
+          "ten_gate_values": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true,
+            false,
+            false,
+            true
+          ],
+          "wall_seconds": 0.2184137020003618
+        },
+        "public_fixture": {
+          "N": 336,
+          "bootstrap_replicates": 999,
+          "injected_public_test_vector": "RFC4231-style static 0b x 32 (not escrow)",
+          "model": "GTHETA-BASE-01",
+          "n": 96,
+          "parent_structure": "synthetic 36x2 + 44x6",
+          "q_counts": {
+            "1/160": 72,
+            "1/480": 264
+          },
+          "repetition": 0
+        },
+        "sealed_split_materialized": false,
+        "seed_generated": false
+      },
+      "reference": {
+        "cal_executed": false,
+        "environment": {
+          "cpu_count": 9,
+          "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+          "implementation": "CPython",
+          "libc": [
+            "glibc",
+            "2.41"
+          ],
+          "machine": "x86_64",
+          "openblas_threads": "1",
+          "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+          "python": "3.12.14",
+          "pythonhashseed": "0"
+        },
+        "extrapolation": {
+          "hypothesis": "one-rep wall time proportional to n; ignores fixed PPS/DP and different n-dependent bootstrap costs, no stop-early savings",
+          "hypothetical_all_n_wall_hours": 4830.01016968686,
+          "real_world_feasibility": "STOP_UNKNOWN",
+          "scan": "all n=2..336, 3 scenarios, R=10000"
+        },
+        "full_power_executed": false,
+        "k0_executed": false,
+        "kind": "PRECAL_ONE_COMPLETE_SYNTHETIC_REPETITION_ONLY",
+        "limitations": "Not a validated real-run budget or a production power run. Per-n model, exact authentic split law-ID mapping, scenario costs and real-world resource contention require independent audit.",
+        "measurement": {
+          "actual_bootstrap_replicates": 999,
+          "and_result": false,
+          "cpu_seconds": 0.9827245000000001,
+          "exec_image_rss_hwm_kib": 18932,
+          "maxrss_kib": 47120,
+          "observed_parent_clusters": 63,
+          "observed_sample_size": 96,
+          "ru_stime_delta": 0.007550999999999999,
+          "ru_utime_delta": 0.9752310000000001,
+          "ten_gate_values": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true,
+            false,
+            false,
+            true
+          ],
+          "wall_seconds": 0.9828087460000461
+        },
+        "public_fixture": {
+          "N": 336,
+          "bootstrap_replicates": 999,
+          "injected_public_test_vector": "RFC4231-style static 0b x 32 (not escrow)",
+          "model": "GTHETA-BASE-01",
+          "n": 96,
+          "parent_structure": "synthetic 36x2 + 44x6",
+          "q_counts": {
+            "1/160": 72,
+            "1/480": 264
+          },
+          "repetition": 0
+        },
+        "sealed_split_materialized": false,
+        "seed_generated": false
+      }
+    },
+    {
+      "optimized": {
+        "cal_executed": false,
+        "environment": {
+          "cpu_count": 9,
+          "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+          "implementation": "CPython",
+          "libc": [
+            "glibc",
+            "2.41"
+          ],
+          "machine": "x86_64",
+          "openblas_threads": "1",
+          "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+          "python": "3.12.14",
+          "pythonhashseed": "0"
+        },
+        "extrapolation": {
+          "hypothesis": "one-rep wall time proportional to n; ignores fixed PPS/DP and different n-dependent bootstrap costs, no stop-early savings",
+          "hypothetical_all_n_wall_hours": 1029.9885565977377,
+          "real_world_feasibility": "STOP_UNKNOWN",
+          "scan": "all n=2..336, 3 scenarios, R=10000"
+        },
+        "full_power_executed": false,
+        "k0_executed": false,
+        "kind": "PRECAL_ONE_COMPLETE_SYNTHETIC_REPETITION_ONLY",
+        "limitations": "Not a validated real-run budget or a production power run. Per-n model, exact authentic split law-ID mapping, scenario costs and real-world resource contention require independent audit.",
+        "measurement": {
+          "actual_bootstrap_replicates": 999,
+          "and_result": false,
+          "cpu_seconds": 0.209564615,
+          "exec_image_rss_hwm_kib": 23092,
+          "maxrss_kib": 47120,
+          "observed_parent_clusters": 63,
+          "observed_sample_size": 96,
+          "ru_stime_delta": 0.016545999999999998,
+          "ru_utime_delta": 0.19303399999999998,
+          "ten_gate_values": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true,
+            false,
+            false,
+            true
+          ],
+          "wall_seconds": 0.20958170400081144
+        },
+        "public_fixture": {
+          "N": 336,
+          "bootstrap_replicates": 999,
+          "injected_public_test_vector": "RFC4231-style static 0b x 32 (not escrow)",
+          "model": "GTHETA-BASE-01",
+          "n": 96,
+          "parent_structure": "synthetic 36x2 + 44x6",
+          "q_counts": {
+            "1/160": 72,
+            "1/480": 264
+          },
+          "repetition": 0
+        },
+        "sealed_split_materialized": false,
+        "seed_generated": false
+      },
+      "reference": {
+        "cal_executed": false,
+        "environment": {
+          "cpu_count": 9,
+          "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+          "implementation": "CPython",
+          "libc": [
+            "glibc",
+            "2.41"
+          ],
+          "machine": "x86_64",
+          "openblas_threads": "1",
+          "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+          "python": "3.12.14",
+          "pythonhashseed": "0"
+        },
+        "extrapolation": {
+          "hypothesis": "one-rep wall time proportional to n; ignores fixed PPS/DP and different n-dependent bootstrap costs, no stop-early savings",
+          "hypothetical_all_n_wall_hours": 4455.274609907469,
+          "real_world_feasibility": "STOP_UNKNOWN",
+          "scan": "all n=2..336, 3 scenarios, R=10000"
+        },
+        "full_power_executed": false,
+        "k0_executed": false,
+        "kind": "PRECAL_ONE_COMPLETE_SYNTHETIC_REPETITION_ONLY",
+        "limitations": "Not a validated real-run budget or a production power run. Per-n model, exact authentic split law-ID mapping, scenario costs and real-world resource contention require independent audit.",
+        "measurement": {
+          "actual_bootstrap_replicates": 999,
+          "and_result": false,
+          "cpu_seconds": 0.906451771,
+          "exec_image_rss_hwm_kib": 18940,
+          "maxrss_kib": 47120,
+          "observed_parent_clusters": 63,
+          "observed_sample_size": 96,
+          "ru_stime_delta": 0.004121,
+          "ru_utime_delta": 0.9023429999999999,
+          "ten_gate_values": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true,
+            false,
+            false,
+            true
+          ],
+          "wall_seconds": 0.9065576880002482
+        },
+        "public_fixture": {
+          "N": 336,
+          "bootstrap_replicates": 999,
+          "injected_public_test_vector": "RFC4231-style static 0b x 32 (not escrow)",
+          "model": "GTHETA-BASE-01",
+          "n": 96,
+          "parent_structure": "synthetic 36x2 + 44x6",
+          "q_counts": {
+            "1/160": 72,
+            "1/480": 264
+          },
+          "repetition": 0
+        },
+        "sealed_split_materialized": false,
+        "seed_generated": false
+      }
+    },
+    {
+      "optimized": {
+        "cal_executed": false,
+        "environment": {
+          "cpu_count": 9,
+          "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+          "implementation": "CPython",
+          "libc": [
+            "glibc",
+            "2.41"
+          ],
+          "machine": "x86_64",
+          "openblas_threads": "1",
+          "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+          "python": "3.12.14",
+          "pythonhashseed": "0"
+        },
+        "extrapolation": {
+          "hypothesis": "one-rep wall time proportional to n; ignores fixed PPS/DP and different n-dependent bootstrap costs, no stop-early savings",
+          "hypothetical_all_n_wall_hours": 998.3914695403623,
+          "real_world_feasibility": "STOP_UNKNOWN",
+          "scan": "all n=2..336, 3 scenarios, R=10000"
+        },
+        "full_power_executed": false,
+        "k0_executed": false,
+        "kind": "PRECAL_ONE_COMPLETE_SYNTHETIC_REPETITION_ONLY",
+        "limitations": "Not a validated real-run budget or a production power run. Per-n model, exact authentic split law-ID mapping, scenario costs and real-world resource contention require independent audit.",
+        "measurement": {
+          "actual_bootstrap_replicates": 999,
+          "and_result": false,
+          "cpu_seconds": 0.203140688,
+          "exec_image_rss_hwm_kib": 23168,
+          "maxrss_kib": 47120,
+          "observed_parent_clusters": 63,
+          "observed_sample_size": 96,
+          "ru_stime_delta": 0.0,
+          "ru_utime_delta": 0.203154,
+          "ten_gate_values": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true,
+            false,
+            false,
+            true
+          ],
+          "wall_seconds": 0.20315234000008786
+        },
+        "public_fixture": {
+          "N": 336,
+          "bootstrap_replicates": 999,
+          "injected_public_test_vector": "RFC4231-style static 0b x 32 (not escrow)",
+          "model": "GTHETA-BASE-01",
+          "n": 96,
+          "parent_structure": "synthetic 36x2 + 44x6",
+          "q_counts": {
+            "1/160": 72,
+            "1/480": 264
+          },
+          "repetition": 0
+        },
+        "sealed_split_materialized": false,
+        "seed_generated": false
+      },
+      "reference": {
+        "cal_executed": false,
+        "environment": {
+          "cpu_count": 9,
+          "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+          "implementation": "CPython",
+          "libc": [
+            "glibc",
+            "2.41"
+          ],
+          "machine": "x86_64",
+          "openblas_threads": "1",
+          "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+          "python": "3.12.14",
+          "pythonhashseed": "0"
+        },
+        "extrapolation": {
+          "hypothesis": "one-rep wall time proportional to n; ignores fixed PPS/DP and different n-dependent bootstrap costs, no stop-early savings",
+          "hypothetical_all_n_wall_hours": 5415.283802587773,
+          "real_world_feasibility": "STOP_UNKNOWN",
+          "scan": "all n=2..336, 3 scenarios, R=10000"
+        },
+        "full_power_executed": false,
+        "k0_executed": false,
+        "kind": "PRECAL_ONE_COMPLETE_SYNTHETIC_REPETITION_ONLY",
+        "limitations": "Not a validated real-run budget or a production power run. Per-n model, exact authentic split law-ID mapping, scenario costs and real-world resource contention require independent audit.",
+        "measurement": {
+          "actual_bootstrap_replicates": 999,
+          "and_result": false,
+          "cpu_seconds": 1.0930988449999999,
+          "exec_image_rss_hwm_kib": 18936,
+          "maxrss_kib": 47120,
+          "observed_parent_clusters": 63,
+          "observed_sample_size": 96,
+          "ru_stime_delta": 0.014436999999999998,
+          "ru_utime_delta": 1.0786769999999999,
+          "ten_gate_values": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true,
+            false,
+            false,
+            true
+          ],
+          "wall_seconds": 1.1019000159994903
+        },
+        "public_fixture": {
+          "N": 336,
+          "bootstrap_replicates": 999,
+          "injected_public_test_vector": "RFC4231-style static 0b x 32 (not escrow)",
+          "model": "GTHETA-BASE-01",
+          "n": 96,
+          "parent_structure": "synthetic 36x2 + 44x6",
+          "q_counts": {
+            "1/160": 72,
+            "1/480": 264
+          },
+          "repetition": 0
+        },
+        "sealed_split_materialized": false,
+        "seed_generated": false
+      }
+    },
+    {
+      "optimized": {
+        "cal_executed": false,
+        "environment": {
+          "cpu_count": 9,
+          "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+          "implementation": "CPython",
+          "libc": [
+            "glibc",
+            "2.41"
+          ],
+          "machine": "x86_64",
+          "openblas_threads": "1",
+          "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+          "python": "3.12.14",
+          "pythonhashseed": "0"
+        },
+        "extrapolation": {
+          "hypothesis": "one-rep wall time proportional to n; ignores fixed PPS/DP and different n-dependent bootstrap costs, no stop-early savings",
+          "hypothetical_all_n_wall_hours": 1000.3482549613325,
+          "real_world_feasibility": "STOP_UNKNOWN",
+          "scan": "all n=2..336, 3 scenarios, R=10000"
+        },
+        "full_power_executed": false,
+        "k0_executed": false,
+        "kind": "PRECAL_ONE_COMPLETE_SYNTHETIC_REPETITION_ONLY",
+        "limitations": "Not a validated real-run budget or a production power run. Per-n model, exact authentic split law-ID mapping, scenario costs and real-world resource contention require independent audit.",
+        "measurement": {
+          "actual_bootstrap_replicates": 999,
+          "and_result": false,
+          "cpu_seconds": 0.20341521099999998,
+          "exec_image_rss_hwm_kib": 23168,
+          "maxrss_kib": 47120,
+          "observed_parent_clusters": 63,
+          "observed_sample_size": 96,
+          "ru_stime_delta": 0.011979000000000002,
+          "ru_utime_delta": 0.19144899999999998,
+          "ten_gate_values": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true,
+            false,
+            false,
+            true
+          ],
+          "wall_seconds": 0.20355050599937385
+        },
+        "public_fixture": {
+          "N": 336,
+          "bootstrap_replicates": 999,
+          "injected_public_test_vector": "RFC4231-style static 0b x 32 (not escrow)",
+          "model": "GTHETA-BASE-01",
+          "n": 96,
+          "parent_structure": "synthetic 36x2 + 44x6",
+          "q_counts": {
+            "1/160": 72,
+            "1/480": 264
+          },
+          "repetition": 0
+        },
+        "sealed_split_materialized": false,
+        "seed_generated": false
+      },
+      "reference": {
+        "cal_executed": false,
+        "environment": {
+          "cpu_count": 9,
+          "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+          "implementation": "CPython",
+          "libc": [
+            "glibc",
+            "2.41"
+          ],
+          "machine": "x86_64",
+          "openblas_threads": "1",
+          "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+          "python": "3.12.14",
+          "pythonhashseed": "0"
+        },
+        "extrapolation": {
+          "hypothesis": "one-rep wall time proportional to n; ignores fixed PPS/DP and different n-dependent bootstrap costs, no stop-early savings",
+          "hypothetical_all_n_wall_hours": 4264.666338782271,
+          "real_world_feasibility": "STOP_UNKNOWN",
+          "scan": "all n=2..336, 3 scenarios, R=10000"
+        },
+        "full_power_executed": false,
+        "k0_executed": false,
+        "kind": "PRECAL_ONE_COMPLETE_SYNTHETIC_REPETITION_ONLY",
+        "limitations": "Not a validated real-run budget or a production power run. Per-n model, exact authentic split law-ID mapping, scenario costs and real-world resource contention require independent audit.",
+        "measurement": {
+          "actual_bootstrap_replicates": 999,
+          "and_result": false,
+          "cpu_seconds": 0.8642729370000001,
+          "exec_image_rss_hwm_kib": 18936,
+          "maxrss_kib": 47120,
+          "observed_parent_clusters": 63,
+          "observed_sample_size": 96,
+          "ru_stime_delta": 0.011608999999999998,
+          "ru_utime_delta": 0.8526809999999999,
+          "ten_gate_values": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true,
+            false,
+            false,
+            true
+          ],
+          "wall_seconds": 0.8677727849999428
+        },
+        "public_fixture": {
+          "N": 336,
+          "bootstrap_replicates": 999,
+          "injected_public_test_vector": "RFC4231-style static 0b x 32 (not escrow)",
+          "model": "GTHETA-BASE-01",
+          "n": 96,
+          "parent_structure": "synthetic 36x2 + 44x6",
+          "q_counts": {
+            "1/160": 72,
+            "1/480": 264
+          },
+          "repetition": 0
+        },
+        "sealed_split_materialized": false,
+        "seed_generated": false
+      }
+    }
+  ],
+  "cal_authorized": false,
+  "cal_executed": false,
+  "compiler": "cc (Debian 14.2.0-19) 14.2.0",
+  "execution_cores": 1,
+  "fivefold_gate": "NOT_MET_STOP_FOR_OWNER",
+  "fixtures": [
+    {
+      "binary_y_sha256": "d121fc4a51ca7850132fa6cae89fa9983645fc5a511ec8174ad19e65f356a49a",
+      "components": {
+        "bootstrap": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "790e62444663221498d3d9b242a265c68ffd1e6f87be10d32ec4394ae35a2404",
+          "reference_sha256": "790e62444663221498d3d9b242a265c68ffd1e6f87be10d32ec4394ae35a2404"
+        },
+        "counters": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "ab4223232798dea59f3c4d4a2c7d68deb7f63c55eb250eb31a7a40b0adc7196e",
+          "reference_sha256": "ab4223232798dea59f3c4d4a2c7d68deb7f63c55eb250eb31a7a40b0adc7196e"
+        },
+        "scores": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "0ba735b0ba0eac5e8c893a0cf29e65290c4f5056a848feaa862a4337c32bc269",
+          "reference_sha256": "0ba735b0ba0eac5e8c893a0cf29e65290c4f5056a848feaa862a4337c32bc269"
+        },
+        "spare": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "5777295ec18926fbe2c8266371d5c9ed5d7b67c973200e25a93ab25697440b30",
+          "reference_sha256": "5777295ec18926fbe2c8266371d5c9ed5d7b67c973200e25a93ab25697440b30"
+        },
+        "syg": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "9cd459f42af667f96596f7bf3f12fa12ebb7c58760a58b9616e9a35fbb40beb8",
+          "reference_sha256": "9cd459f42af667f96596f7bf3f12fa12ebb7c58760a58b9616e9a35fbb40beb8"
+        }
+      },
+      "exception": null,
+      "fixture": {
+        "n": 8,
+        "repetition": 0,
+        "scenario": "GTHETA-BASE-01"
+      },
+      "full_prf_digest_sha256": "2ddd7bd90081fe630f041155a3d0cb5c6a69b0646d88e88443b07a18a64b6523",
+      "max_abs_float_error": 0.0,
+      "optimized_sha256": "d082be1cd5453a76636c44ae463fa639680f98862431cfbea6f284ad2379ce12",
+      "random_draw_count": 14409,
+      "reference_sha256": "d082be1cd5453a76636c44ae463fa639680f98862431cfbea6f284ad2379ce12",
+      "result": {
+        "and": false,
+        "bootstrap_count": 999,
+        "contrast": 0.015625,
+        "family_contrast_descriptive": [
+          0.0,
+          0.0
+        ],
+        "g1": 0.90625,
+        "g2": 0.9375,
+        "k2_equivalence_descriptive": false,
+        "k2_rec_interval_95": [
+          0.026064291049659363,
+          0.26495133395034065
+        ],
+        "main_intervals": [
+          [
+            0.04362469285093551,
+            0.1868440571490645
+          ],
+          [
+            0.002740064384447294,
+            0.3546818106155527
+          ],
+          [
+            0.0986943361844021,
+            0.2704462888155979
+          ],
+          [
+            0.00424019784897367,
+            0.28677542715102633
+          ],
+          [
+            0.04161081099376554,
+            0.4662016890062345
+          ],
+          [
+            -0.033326523656847656,
+            0.27160777365684763
+          ],
+          [
+            0.01171875,
+            0.4296875
+          ]
+        ],
+        "observed_parent_clusters": 8,
+        "sample_size": 8,
+        "ten_components": [
+          false,
+          true,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false
+        ]
+      },
+      "uniform_trace_sha256": "8f7b3042982d5eccb2cd35ee9caad958d4a125885dfeef9e2746675ed4414e3b"
+    },
+    {
+      "binary_y_sha256": "1abfa0c339ce53a2043ed8efc803b6a755a5f913b0ca64ed8d1e70b83059a14f",
+      "components": {
+        "bootstrap": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "reference_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        "counters": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "addea0139f5baffcf99447ff2974dfceb98ba73ec2343d1754a26c711b368453",
+          "reference_sha256": "addea0139f5baffcf99447ff2974dfceb98ba73ec2343d1754a26c711b368453"
+        },
+        "scores": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "336aefce2eb5cb5e4e6637c834d94c8f43001ade81a757c06b2f97710ec6edb8",
+          "reference_sha256": "336aefce2eb5cb5e4e6637c834d94c8f43001ade81a757c06b2f97710ec6edb8"
+        },
+        "spare": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "86914aea1c342fbf71d1b4ec3bbb273c766803facc0164b58336879389e9ccc7",
+          "reference_sha256": "86914aea1c342fbf71d1b4ec3bbb273c766803facc0164b58336879389e9ccc7"
+        },
+        "syg": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "6cc14262ed595dff95c2eef93a06f3ac7f35be386a03590804b43eb19acb1f0b",
+          "reference_sha256": "6cc14262ed595dff95c2eef93a06f3ac7f35be386a03590804b43eb19acb1f0b"
+        }
+      },
+      "exception": {
+        "message": "STOP_UNKNOWN: integrated repetition failed: STOP_UNKNOWN: degenerate SYG variance",
+        "type": "PowerUnknown"
+      },
+      "fixture": {
+        "n": 8,
+        "repetition": 0,
+        "scenario": "GTHETA-LOWCORR-01"
+      },
+      "full_prf_digest_sha256": "4737c47c9f4fcdbed998a6743e1a317685d734138e94c6f696a6b36bd8a84b45",
+      "max_abs_float_error": 0.0,
+      "optimized_sha256": "d1b0fb3086d5609717925e7f7f92e2a32ac66d47b8557f20cd21156edf9225ef",
+      "random_draw_count": 6417,
+      "reference_sha256": "d1b0fb3086d5609717925e7f7f92e2a32ac66d47b8557f20cd21156edf9225ef",
+      "result": null,
+      "uniform_trace_sha256": "eef2087386d5e814d265fbcf217a46bd6f855d112dbe32bfca06f39ec85d9a21"
+    },
+    {
+      "binary_y_sha256": "7a243d059ef8a344a6a2b03e91629fae49f57abdad8846038e653228a088b47c",
+      "components": {
+        "bootstrap": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "reference_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        "counters": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "e27686b44171146c1aa38d1c27566305086c37e560e123f9f9edd47d14691d06",
+          "reference_sha256": "e27686b44171146c1aa38d1c27566305086c37e560e123f9f9edd47d14691d06"
+        },
+        "scores": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "2a17b0054262d950f50a659299f75502eb4f6cc276543650ae392887b0824208",
+          "reference_sha256": "2a17b0054262d950f50a659299f75502eb4f6cc276543650ae392887b0824208"
+        },
+        "spare": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "5daf4fd5b1275d2c3e771a1d7151ccf154d2e5cf34145a7c8c12656a9f60d946",
+          "reference_sha256": "5daf4fd5b1275d2c3e771a1d7151ccf154d2e5cf34145a7c8c12656a9f60d946"
+        },
+        "syg": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "44c133d0df3f330fb9f87ac017a4b29b851f6a19c3d7551f16f6b492f014b14d",
+          "reference_sha256": "44c133d0df3f330fb9f87ac017a4b29b851f6a19c3d7551f16f6b492f014b14d"
+        }
+      },
+      "exception": {
+        "message": "STOP_UNKNOWN: integrated repetition failed: STOP_UNKNOWN: degenerate SYG variance",
+        "type": "PowerUnknown"
+      },
+      "fixture": {
+        "n": 8,
+        "repetition": 0,
+        "scenario": "GTHETA-HIGHCORR-01"
+      },
+      "full_prf_digest_sha256": "d531989895a92d2f26d628a77b8fb6250ecdb0ca3259f59dfb9fa97942c5edca",
+      "max_abs_float_error": 0.0,
+      "optimized_sha256": "7fd0d694cb6e1b22eed6c0ff9dff5b7809403255ec3ee4507b247141e7eeba74",
+      "random_draw_count": 6411,
+      "reference_sha256": "7fd0d694cb6e1b22eed6c0ff9dff5b7809403255ec3ee4507b247141e7eeba74",
+      "result": null,
+      "uniform_trace_sha256": "2f28f9b5bb3db2685c5c09566265431de1739ea86e867189500d8bcd31f3fccf"
+    },
+    {
+      "binary_y_sha256": "4c281440d58d6890169a7edff7de8336eaac5902e7b573b015ef1e298a82e585",
+      "components": {
+        "bootstrap": {
+          "max_abs_float_error": 4.440892098500626e-16,
+          "optimized_sha256": "0b107f0667b6468babced5f9d1de0f26f698b7e644ad9a5dc614b683b0dbbda3",
+          "reference_sha256": "cef421340cf6b5f622d4e1181b20ba326617ed3b5b5f00d31f0bb807951cc547"
+        },
+        "counters": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "d61af2883471f7f871b132b07d40771c50b41707d67018ddb3c6c748e65880ad",
+          "reference_sha256": "d61af2883471f7f871b132b07d40771c50b41707d67018ddb3c6c748e65880ad"
+        },
+        "scores": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "9bbfb6a0eda52b0e6e6f326a0dd47d0540b4f74142c403c86ccf95bca734be63",
+          "reference_sha256": "9bbfb6a0eda52b0e6e6f326a0dd47d0540b4f74142c403c86ccf95bca734be63"
+        },
+        "spare": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "b67f87d7dcc5b5a1df1dcdf6d5cda641e7d6c9ad486ad37389f1dae7a735b49b",
+          "reference_sha256": "b67f87d7dcc5b5a1df1dcdf6d5cda641e7d6c9ad486ad37389f1dae7a735b49b"
+        },
+        "syg": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "ca9e39dbf0018d73ce4f1731f315c06574e6b58efe7091b2801fa28a62850c1c",
+          "reference_sha256": "ca9e39dbf0018d73ce4f1731f315c06574e6b58efe7091b2801fa28a62850c1c"
+        }
+      },
+      "exception": null,
+      "fixture": {
+        "n": 96,
+        "repetition": 0,
+        "scenario": "GTHETA-BASE-01"
+      },
+      "full_prf_digest_sha256": "0de860e3664780ca3a47ad394e9bc610fcc03f801a24740b29a062f85b3f7620",
+      "max_abs_float_error": 4.440892098500626e-16,
+      "optimized_sha256": "c25913c8d0fa187797e1863c09a9527107a696ed883fdcd03ecd81f3d853e5f5",
+      "random_draw_count": 136036,
+      "reference_sha256": "756200b547bb182ce421cc53cd98ded6d650810da6eb5debe7002a950b13fd9e",
+      "result": {
+        "and": false,
+        "bootstrap_count": 999,
+        "contrast": 0.11458333333333337,
+        "family_contrast_descriptive": [
+          0.11197916666666663,
+          0.109375
+        ],
+        "g1": 0.9244791666666666,
+        "g2": 0.8177083333333333,
+        "k2_equivalence_descriptive": false,
+        "k2_rec_interval_95": [
+          0.10059104699023619,
+          0.20279436967643044
+        ],
+        "main_intervals": [
+          [
+            0.11730203216553568,
+            0.24418885325113093
+          ],
+          [
+            0.0843937575922249,
+            0.2193171799077751
+          ],
+          [
+            0.10888261295145454,
+            0.2530965537152121
+          ],
+          [
+            0.09296128106896821,
+            0.2104241355976984
+          ],
+          [
+            0.08186848958333331,
+            0.2021484375
+          ],
+          [
+            0.10459253746863918,
+            0.24404027503136083
+          ],
+          [
+            0.0981863469391098,
+            0.23661183014422352
+          ]
+        ],
+        "observed_parent_clusters": 63,
+        "sample_size": 96,
+        "ten_components": [
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          false,
+          false,
+          true
+        ]
+      },
+      "uniform_trace_sha256": "d38ab65343bbc42487b59a23fbfc8eabb39add3ad56f1053dcdce686f1f15f2d"
+    },
+    {
+      "binary_y_sha256": "4cc1f557625f260407278f4bf4bef502f3b5a3f13977d72c4737fe09f1cec667",
+      "components": {
+        "bootstrap": {
+          "max_abs_float_error": 5.551115123125783e-16,
+          "optimized_sha256": "daeb0c7bd565808df63e3000b7e8f1bee98a82a55324c18905d4dc4774d8df26",
+          "reference_sha256": "8d404cd9c64703972485dbeeb4926634cd548a1dc8c04f1ab6f5a593eb6079bf"
+        },
+        "counters": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "89265e5282353aa65434448159dd645595f7b1200a9edccaf225cd3fe0be5436",
+          "reference_sha256": "89265e5282353aa65434448159dd645595f7b1200a9edccaf225cd3fe0be5436"
+        },
+        "scores": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "e43dd6d5c7485fbd418e58b71fb1ba9c26953f0fbdcd3276e6c3386767163b44",
+          "reference_sha256": "e43dd6d5c7485fbd418e58b71fb1ba9c26953f0fbdcd3276e6c3386767163b44"
+        },
+        "spare": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "b05dae5704a61ffe93aa40274c7b75a90ad45120c57ed1229bddd93258a22096",
+          "reference_sha256": "b05dae5704a61ffe93aa40274c7b75a90ad45120c57ed1229bddd93258a22096"
+        },
+        "syg": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "9c51e4e85c967a14bfc8d5f9d3437b16b7b75c7df72108f00e70f7a98f1000a2",
+          "reference_sha256": "9c51e4e85c967a14bfc8d5f9d3437b16b7b75c7df72108f00e70f7a98f1000a2"
+        }
+      },
+      "exception": null,
+      "fixture": {
+        "n": 96,
+        "repetition": 0,
+        "scenario": "GTHETA-LOWCORR-01"
+      },
+      "full_prf_digest_sha256": "9f446c4c65282e7b86aa9aefa9d9d3634f7b32db07ad06ff9cc591bf30b0d0ab",
+      "max_abs_float_error": 5.551115123125783e-16,
+      "optimized_sha256": "b2f66c85908215734a1f75f98c686398629ca7fdf5032414fd34ee95250ffcb4",
+      "random_draw_count": 136036,
+      "reference_sha256": "455e076513cd258c7df4357e62cf0ecce377e4b6e6c76a3341cf7f0d9d3a1f10",
+      "result": {
+        "and": false,
+        "bootstrap_count": 999,
+        "contrast": 0.15364583333333337,
+        "family_contrast_descriptive": [
+          0.13020833333333326,
+          0.16145833333333337
+        ],
+        "g1": 0.9348958333333333,
+        "g2": 0.8541666666666666,
+        "k2_equivalence_descriptive": false,
+        "k2_rec_interval_95": [
+          0.13776838191497554,
+          0.24406755558502446
+        ],
+        "main_intervals": [
+          [
+            0.11649512978015844,
+            0.2746181514698416
+          ],
+          [
+            0.12680867000140825,
+            0.24151815291525838
+          ],
+          [
+            0.12890625,
+            0.25732421875
+          ],
+          [
+            0.12838290462431623,
+            0.25345303287568377
+          ],
+          [
+            0.12917211112590266,
+            0.25901148262409734
+          ],
+          [
+            0.12151424056576167,
+            0.24974226985090497
+          ],
+          [
+            0.1278949358348691,
+            0.2671245954151309
+          ]
+        ],
+        "observed_parent_clusters": 63,
+        "sample_size": 96,
+        "ten_components": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          true
+        ]
+      },
+      "uniform_trace_sha256": "d41e3b7d8d8649fdd49445e3378ffb1fa69673524f3bdac9843d41a253b244fd"
+    },
+    {
+      "binary_y_sha256": "91b24dea1d193e9dcda198d5e787cd844bf548e5d81021e926486594d826b23a",
+      "components": {
+        "bootstrap": {
+          "max_abs_float_error": 5.551115123125783e-16,
+          "optimized_sha256": "584d54f7b9aefb1aab9455bd5c135febcc1d0d403041af3b873168a461d6e668",
+          "reference_sha256": "980b69fd9d40f94a39e78d07d42715d75d5a3eef1f8a8b8794465292fbdfd6d9"
+        },
+        "counters": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "73444a321847596553062591619d3a70ed3f6a82b3331423b1940502e7a2d285",
+          "reference_sha256": "73444a321847596553062591619d3a70ed3f6a82b3331423b1940502e7a2d285"
+        },
+        "scores": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "8702c1de07970a1be31121767656f8233c55ec9f885f566a4dc8b16990bd85f7",
+          "reference_sha256": "8702c1de07970a1be31121767656f8233c55ec9f885f566a4dc8b16990bd85f7"
+        },
+        "spare": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "743479604f1cd0ef2e586eb1e7e58c912d46f529e80e82c35a684b8326946d5d",
+          "reference_sha256": "743479604f1cd0ef2e586eb1e7e58c912d46f529e80e82c35a684b8326946d5d"
+        },
+        "syg": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "ac5d92d6b7636c5715e41ead5013d6d255e3776960c5e6a405f5729312f5e4ea",
+          "reference_sha256": "ac5d92d6b7636c5715e41ead5013d6d255e3776960c5e6a405f5729312f5e4ea"
+        }
+      },
+      "exception": null,
+      "fixture": {
+        "n": 96,
+        "repetition": 0,
+        "scenario": "GTHETA-HIGHCORR-01"
+      },
+      "full_prf_digest_sha256": "0b185b09d727ca9188b5a1fc6c5a6ad9675832148745d5088ec348e4ccf5233e",
+      "max_abs_float_error": 5.551115123125783e-16,
+      "optimized_sha256": "92039e305f039e1b5f58d960d683f634e7ce0ccd09f12449ca83aad89184940f",
+      "random_draw_count": 135031,
+      "reference_sha256": "b644836294b938000072cca7765c2e4b9490840157c17a6c79ab948f49f28816",
+      "result": {
+        "and": false,
+        "bootstrap_count": 999,
+        "contrast": 0.08984375,
+        "family_contrast_descriptive": [
+          0.08854166666666663,
+          0.09114583333333326
+        ],
+        "g1": 0.9114583333333333,
+        "g2": 0.8177083333333333,
+        "k2_equivalence_descriptive": false,
+        "k2_rec_interval_95": [
+          0.0923710046048821,
+          0.20857300581178453
+        ],
+        "main_intervals": [
+          [
+            0.07818549847163866,
+            0.20013481402836134
+          ],
+          [
+            0.10102316856009798,
+            0.25005105018990204
+          ],
+          [
+            0.11874822506512543,
+            0.27854995201820787
+          ],
+          [
+            0.08317661783383659,
+            0.21776739258283004
+          ],
+          [
+            0.09467476326711594,
+            0.2546090908995507
+          ],
+          [
+            0.10099283854166667,
+            0.24519856770833331
+          ],
+          [
+            0.07400425265378943,
+            0.21652309109621057
+          ]
+        ],
+        "observed_parent_clusters": 62,
+        "sample_size": 96,
+        "ten_components": [
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "uniform_trace_sha256": "8f9718173de24665aad166e2e13c2b9f8ac7ba04138fca197ec48b912482c6d5"
+    },
+    {
+      "binary_y_sha256": "e6e215a77d94b95c4a5672b67097a8081d03213938688de7fde2294cd2193d35",
+      "components": {
+        "bootstrap": {
+          "max_abs_float_error": 6.661338147750939e-16,
+          "optimized_sha256": "955fcad1b9f95ab4455305920bc91c7822b7c0789e30ecba2d747d86a654f639",
+          "reference_sha256": "5a42c5fa43fb90a3db70eb04d5a45cf5b9af0eaff2f65b92187c591e6f28e2ef"
+        },
+        "counters": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "a8b5e061188e94059eae38a8ffcacb9812718ead940bf4ffcb4dadc654dc6dfc",
+          "reference_sha256": "a8b5e061188e94059eae38a8ffcacb9812718ead940bf4ffcb4dadc654dc6dfc"
+        },
+        "scores": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "1efd9c63b54293ccc2e5c749ec4bcd4c365aa6b4819859a2e4f040df367fa1db",
+          "reference_sha256": "1efd9c63b54293ccc2e5c749ec4bcd4c365aa6b4819859a2e4f040df367fa1db"
+        },
+        "spare": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "7f4af40dd956403bbb1d20690cf47e2739a73d0b0ea8bd24a8ce2bf80addfceb",
+          "reference_sha256": "7f4af40dd956403bbb1d20690cf47e2739a73d0b0ea8bd24a8ce2bf80addfceb"
+        },
+        "syg": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "545bc0b50d12bbeeff1404925edab507343f4945cdac098bded5e00f23c90c30",
+          "reference_sha256": "545bc0b50d12bbeeff1404925edab507343f4945cdac098bded5e00f23c90c30"
+        }
+      },
+      "exception": null,
+      "fixture": {
+        "n": 160,
+        "repetition": 0,
+        "scenario": "GTHETA-BASE-01"
+      },
+      "full_prf_digest_sha256": "bb9dcad4b4a8bba08616e6b872c3d93f014f7b58af82b7779e4c5ceeed633494",
+      "max_abs_float_error": 6.661338147750939e-16,
+      "optimized_sha256": "d30cc9e3ae20c1e134e7f157bb266f36bd0dc14d6ae2abe7591ef333c991954f",
+      "random_draw_count": 197285,
+      "reference_sha256": "5c01f0f8fa6195e11559e6a0cf6fff179f23f76e05f172b0cf521062283ddac6",
+      "result": {
+        "and": false,
+        "bootstrap_count": 999,
+        "contrast": 0.15390625000000013,
+        "family_contrast_descriptive": [
+          0.1546875000000001,
+          0.15312500000000007
+        ],
+        "g1": 0.9515625000000001,
+        "g2": 0.8562500000000001,
+        "k2_equivalence_descriptive": false,
+        "k2_rec_interval_95": [
+          0.16103987345452292,
+          0.2662062202954771
+        ],
+        "main_intervals": [
+          [
+            0.1439127179167931,
+            0.28499353208320694
+          ],
+          [
+            0.1649958440877113,
+            0.3022893121622887
+          ],
+          [
+            0.163623046875,
+            0.286865234375
+          ],
+          [
+            0.1492276629807964,
+            0.27801843076920363
+          ],
+          [
+            0.1506373318010509,
+            0.2705540744489491
+          ],
+          [
+            0.1584461047799971,
+            0.29487420772000295
+          ],
+          [
+            0.15424448152006162,
+            0.2804234872299384
+          ]
+        ],
+        "observed_parent_clusters": 76,
+        "sample_size": 160,
+        "ten_components": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          true
+        ]
+      },
+      "uniform_trace_sha256": "13f1ddd02f6373adb1ebcaf8900820d324bb2eb1ad69c18f25501e851d61f861"
+    },
+    {
+      "binary_y_sha256": "db7f9896b44a5b9ffa7785a574a7c280ffc00e78386e77b71fe3924d5a67df87",
+      "components": {
+        "bootstrap": {
+          "max_abs_float_error": 5.551115123125783e-16,
+          "optimized_sha256": "248de9dd8dcfa23f8ace9c45cfe7248a6bea3deba91862b6d14073f53d436eaf",
+          "reference_sha256": "7ee7b4878fc4bfd491e7c2243d711046dc3c4a80bd442d612d31c608e8e53b53"
+        },
+        "counters": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "c4146745da37777dda5732537c1c952113e03ddfc1859d0d764c048c9623fa70",
+          "reference_sha256": "c4146745da37777dda5732537c1c952113e03ddfc1859d0d764c048c9623fa70"
+        },
+        "scores": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "96f89d39bd4a721e2414442b90bfb9968c1761b095ad6d46ba9289903baf3041",
+          "reference_sha256": "96f89d39bd4a721e2414442b90bfb9968c1761b095ad6d46ba9289903baf3041"
+        },
+        "spare": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "810c5df90c2af63797da1271e5b0d1afe3af6105cae396f6a9eff6f07e2bc871",
+          "reference_sha256": "810c5df90c2af63797da1271e5b0d1afe3af6105cae396f6a9eff6f07e2bc871"
+        },
+        "syg": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "d61c2a196384d63662432d9ea5611429e796ddb125b2ef7f947d67f17adc2f55",
+          "reference_sha256": "d61c2a196384d63662432d9ea5611429e796ddb125b2ef7f947d67f17adc2f55"
+        }
+      },
+      "exception": null,
+      "fixture": {
+        "n": 160,
+        "repetition": 0,
+        "scenario": "GTHETA-LOWCORR-01"
+      },
+      "full_prf_digest_sha256": "7f8825047106365097d07f96bd7e30be1209454ac5ac040074bd20699df771ee",
+      "max_abs_float_error": 5.551115123125783e-16,
+      "optimized_sha256": "590ef0dd98b4b6be14c5a15c6a0b84f531e2d1da28d0b8309c4e6f50ae8c62c7",
+      "random_draw_count": 195275,
+      "reference_sha256": "20d326fb5a876de45690a89f8e8a544764cf3202b112179f45b4b1fa31a65138",
+      "result": {
+        "and": false,
+        "bootstrap_count": 999,
+        "contrast": 0.13203124999999993,
+        "family_contrast_descriptive": [
+          0.11250000000000004,
+          0.13749999999999996
+        ],
+        "g1": 0.9500000000000001,
+        "g2": 0.8796875000000001,
+        "k2_equivalence_descriptive": false,
+        "k2_rec_interval_95": [
+          0.15815429687499993,
+          0.2516113281250001
+        ],
+        "main_intervals": [
+          [
+            0.15037459281139068,
+            0.25607071968860934
+          ],
+          [
+            0.13658240882830663,
+            0.23744102867169337
+          ],
+          [
+            0.1634204977013255,
+            0.27837637729867454
+          ],
+          [
+            0.14695610921156413,
+            0.2628095157884359
+          ],
+          [
+            0.14122215790593934,
+            0.2530161233440607
+          ],
+          [
+            0.12875976562499994,
+            0.24135742187500006
+          ],
+          [
+            0.14962395407387827,
+            0.2610205771761217
+          ]
+        ],
+        "observed_parent_clusters": 74,
+        "sample_size": 160,
+        "ten_components": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          true
+        ]
+      },
+      "uniform_trace_sha256": "2bcedff3537c71eafe7e1637a189e90fd0dffe0df790fe982fe42eb904de26d1"
+    },
+    {
+      "binary_y_sha256": "59a4628631ef34080bbf24392e357d36bc281db076bb94ea6b2021754d58267f",
+      "components": {
+        "bootstrap": {
+          "max_abs_float_error": 6.661338147750939e-16,
+          "optimized_sha256": "86da142bb40517414cd33a21360219e96859aa8616691949909325e0e21ca54e",
+          "reference_sha256": "e09d30d593b14b243243bef33a0bd3fec16ad8de12ccaa61b6c6ce73abc686ca"
+        },
+        "counters": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "c6fdc487c6b5453563f4a938845e06bfc23f5ba30992c1f8bea22995cb6798d2",
+          "reference_sha256": "c6fdc487c6b5453563f4a938845e06bfc23f5ba30992c1f8bea22995cb6798d2"
+        },
+        "scores": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "8c3318738eec073a7855bd3c31e335162735a5284b6e11f87de087c9dc96eb87",
+          "reference_sha256": "8c3318738eec073a7855bd3c31e335162735a5284b6e11f87de087c9dc96eb87"
+        },
+        "spare": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "013e7540d5e3fcf2345552e6f0bf1de4b28d8d1289aa173981e275b6acaff918",
+          "reference_sha256": "013e7540d5e3fcf2345552e6f0bf1de4b28d8d1289aa173981e275b6acaff918"
+        },
+        "syg": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "59449752f460c56ab3f2e48d540ec28930d94d0ead1f5e67905ab5d98fbd4d6e",
+          "reference_sha256": "59449752f460c56ab3f2e48d540ec28930d94d0ead1f5e67905ab5d98fbd4d6e"
+        }
+      },
+      "exception": null,
+      "fixture": {
+        "n": 160,
+        "repetition": 0,
+        "scenario": "GTHETA-HIGHCORR-01"
+      },
+      "full_prf_digest_sha256": "ce5818ec568b8ecba64b15b9354b65769d18e5f24c5624e07f2a1771bf218e50",
+      "max_abs_float_error": 6.661338147750939e-16,
+      "optimized_sha256": "9dbc0b13a0692f225ff73175e8eb425b72dbbb7baeb3b4fe19fe03b0b22cd4b3",
+      "random_draw_count": 199295,
+      "reference_sha256": "0702a2b2ffe4a206b876985c0ecb823d759bb969d5df783421bac3060ca2e210",
+      "result": {
+        "and": false,
+        "bootstrap_count": 999,
+        "contrast": 0.12421875000000004,
+        "family_contrast_descriptive": [
+          0.13593750000000004,
+          0.11249999999999993
+        ],
+        "g1": 0.9593750000000001,
+        "g2": 0.8046875,
+        "k2_equivalence_descriptive": false,
+        "k2_rec_interval_95": [
+          0.14243164062500008,
+          0.26596679687499997
+        ],
+        "main_intervals": [
+          [
+            0.13129608107536228,
+            0.2656765751746377
+          ],
+          [
+            0.113916015625,
+            0.23901367187500003
+          ],
+          [
+            0.1346847767921512,
+            0.27117459820784884
+          ],
+          [
+            0.13066610990262312,
+            0.2777323275973769
+          ],
+          [
+            0.13235816530755856,
+            0.28365745969244144
+          ],
+          [
+            0.10822443546549855,
+            0.2529083770345015
+          ],
+          [
+            0.14924927219227616,
+            0.3059265090577239
+          ]
+        ],
+        "observed_parent_clusters": 78,
+        "sample_size": 160,
+        "ten_components": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          true
+        ]
+      },
+      "uniform_trace_sha256": "7ff1ccfb2afb64ba87757d3d79d845b04530be70c017a2addf7f500aa1bad799"
+    },
+    {
+      "binary_y_sha256": "78b5adc0fe433ee8840181a9e494a90821629987cfbe26fdc1d56599e84ed160",
+      "components": {
+        "bootstrap": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "reference_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        "counters": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "712dddca7e24b30ec40751f2a46ade4a5d88a775042cec1a0687a90b862b297f",
+          "reference_sha256": "712dddca7e24b30ec40751f2a46ade4a5d88a775042cec1a0687a90b862b297f"
+        },
+        "scores": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "939c09e27b7648d7a6b273fae47929d39d4d729e2d2ff47eb29abdb796ef84ac",
+          "reference_sha256": "939c09e27b7648d7a6b273fae47929d39d4d729e2d2ff47eb29abdb796ef84ac"
+        },
+        "spare": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "4ce9f1cc4c12e1bd0949dac42fdca1b00afddee2c8f7867da2a0589516ba2866",
+          "reference_sha256": "4ce9f1cc4c12e1bd0949dac42fdca1b00afddee2c8f7867da2a0589516ba2866"
+        },
+        "syg": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "37aed087d1cfac1ac1185c1622819ee5100567b178df43d6c00e8a7db4bc244b",
+          "reference_sha256": "37aed087d1cfac1ac1185c1622819ee5100567b178df43d6c00e8a7db4bc244b"
+        }
+      },
+      "exception": {
+        "message": "STOP_UNKNOWN: integrated repetition failed: STOP_UNKNOWN: degenerate SYG variance",
+        "type": "PowerUnknown"
+      },
+      "fixture": {
+        "n": 336,
+        "repetition": 0,
+        "scenario": "GTHETA-BASE-01"
+      },
+      "full_prf_digest_sha256": "6e7a74f808b6fd867fbf70711946ebfe08c26fae11291854fedfdf150564dc96",
+      "max_abs_float_error": 0.0,
+      "optimized_sha256": "ef0ffe773d6831333cb1d64a207b348deaf5c74b70dff68f262eac458552e5c7",
+      "random_draw_count": 253824,
+      "reference_sha256": "ef0ffe773d6831333cb1d64a207b348deaf5c74b70dff68f262eac458552e5c7",
+      "result": null,
+      "uniform_trace_sha256": "3de87cbd14884d2a2236a01c0eaeb384841ac428d5fb0524b2c33a43c42beade"
+    },
+    {
+      "binary_y_sha256": "c632c4c6d533ef7654010e06c7dea0dc63986745b786c3ae08b9f1f5801b9938",
+      "components": {
+        "bootstrap": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "reference_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        "counters": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "712dddca7e24b30ec40751f2a46ade4a5d88a775042cec1a0687a90b862b297f",
+          "reference_sha256": "712dddca7e24b30ec40751f2a46ade4a5d88a775042cec1a0687a90b862b297f"
+        },
+        "scores": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "c3c7e1b9df4e312bb1bca85e00347d5d78f602cbcbaa7e43b6a46e19051732d0",
+          "reference_sha256": "c3c7e1b9df4e312bb1bca85e00347d5d78f602cbcbaa7e43b6a46e19051732d0"
+        },
+        "spare": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "7c9f41ee7bf86e35dc9e540b356ad685cd17d5efed37f9569d6da170fdfbba4e",
+          "reference_sha256": "7c9f41ee7bf86e35dc9e540b356ad685cd17d5efed37f9569d6da170fdfbba4e"
+        },
+        "syg": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "37aed087d1cfac1ac1185c1622819ee5100567b178df43d6c00e8a7db4bc244b",
+          "reference_sha256": "37aed087d1cfac1ac1185c1622819ee5100567b178df43d6c00e8a7db4bc244b"
+        }
+      },
+      "exception": {
+        "message": "STOP_UNKNOWN: integrated repetition failed: STOP_UNKNOWN: degenerate SYG variance",
+        "type": "PowerUnknown"
+      },
+      "fixture": {
+        "n": 336,
+        "repetition": 0,
+        "scenario": "GTHETA-LOWCORR-01"
+      },
+      "full_prf_digest_sha256": "0f7f8f138f108dba1164b6b3ea1524237da640936316f1352ff6878b89b3b6be",
+      "max_abs_float_error": 0.0,
+      "optimized_sha256": "c2e7f5d6536c1190608771e529b9a3714a04f76a1f73bcb258055be4778ee372",
+      "random_draw_count": 253824,
+      "reference_sha256": "c2e7f5d6536c1190608771e529b9a3714a04f76a1f73bcb258055be4778ee372",
+      "result": null,
+      "uniform_trace_sha256": "66df9aa5aba9e1cebda64c1f2f30c241e31d664bc922291d7b9aa43ea42cde6b"
+    },
+    {
+      "binary_y_sha256": "3c49134f2efeff766f307a3e0eee3514916ecc47e36bf902f8b491cdc25162f6",
+      "components": {
+        "bootstrap": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "reference_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        "counters": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "712dddca7e24b30ec40751f2a46ade4a5d88a775042cec1a0687a90b862b297f",
+          "reference_sha256": "712dddca7e24b30ec40751f2a46ade4a5d88a775042cec1a0687a90b862b297f"
+        },
+        "scores": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "1485fc58904e381c5030c8897d5b49d112108e7659f7a31d6c485a7dddf730aa",
+          "reference_sha256": "1485fc58904e381c5030c8897d5b49d112108e7659f7a31d6c485a7dddf730aa"
+        },
+        "spare": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "0dfc59bc826040f861aa5b81bba3389db81fe3f8a0a05a184d0df59d472f5904",
+          "reference_sha256": "0dfc59bc826040f861aa5b81bba3389db81fe3f8a0a05a184d0df59d472f5904"
+        },
+        "syg": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "37aed087d1cfac1ac1185c1622819ee5100567b178df43d6c00e8a7db4bc244b",
+          "reference_sha256": "37aed087d1cfac1ac1185c1622819ee5100567b178df43d6c00e8a7db4bc244b"
+        }
+      },
+      "exception": {
+        "message": "STOP_UNKNOWN: integrated repetition failed: STOP_UNKNOWN: degenerate SYG variance",
+        "type": "PowerUnknown"
+      },
+      "fixture": {
+        "n": 336,
+        "repetition": 0,
+        "scenario": "GTHETA-HIGHCORR-01"
+      },
+      "full_prf_digest_sha256": "1298ed807c3e9905302515cad4ed7cd1f0832158cb5ee23091d47540bdf4781b",
+      "max_abs_float_error": 0.0,
+      "optimized_sha256": "f84d98f81ae46d4706f485ea62c2e15ef391318f47031fd9bd7469e73112ed90",
+      "random_draw_count": 253824,
+      "reference_sha256": "f84d98f81ae46d4706f485ea62c2e15ef391318f47031fd9bd7469e73112ed90",
+      "result": null,
+      "uniform_trace_sha256": "5fb12f938c84493e30351cafbe79f5d8f4c89ab230811ed4a92ecd824d8c9239"
+    },
+    {
+      "binary_y_sha256": "b241a1cca49629977b33c99be6d390a7831b211643fb65ba07c14696e8ad475c",
+      "components": {
+        "bootstrap": {
+          "max_abs_float_error": 5.551115123125783e-16,
+          "optimized_sha256": "9149b65c1ff2209ef815793cef21588f034d07029ddb4a2558d7e866d2926a53",
+          "reference_sha256": "ded0186522144387c8ea8e736c638d13dfba759176058db412beebd6e649eb08"
+        },
+        "counters": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "8c7edba92cd2fe0f71dfcc79319353bbf9f7c08993ae6244a6314d30b077ba79",
+          "reference_sha256": "8c7edba92cd2fe0f71dfcc79319353bbf9f7c08993ae6244a6314d30b077ba79"
+        },
+        "scores": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "37cd17d8db126447bea08e205533872d8b784274e255c3901a5044e622af9938",
+          "reference_sha256": "37cd17d8db126447bea08e205533872d8b784274e255c3901a5044e622af9938"
+        },
+        "spare": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "884f5bd4f66ad9ad17f4e7a047abb0173e59f88d6116ad5e32e586cd2fe5bee9",
+          "reference_sha256": "884f5bd4f66ad9ad17f4e7a047abb0173e59f88d6116ad5e32e586cd2fe5bee9"
+        },
+        "syg": {
+          "max_abs_float_error": 0.0,
+          "optimized_sha256": "f74ef5fb528c3e2d7af908505b43cb6b0769475ca6dc678c2360f7845833c3ae",
+          "reference_sha256": "f74ef5fb528c3e2d7af908505b43cb6b0769475ca6dc678c2360f7845833c3ae"
+        }
+      },
+      "exception": null,
+      "fixture": {
+        "n": 96,
+        "repetition": 7,
+        "scenario": "GTHETA-BASE-01"
+      },
+      "full_prf_digest_sha256": "fc337760da4ae8b7818d29294c8eb05296423a8febf426a99814a9f8b6c85fed",
+      "max_abs_float_error": 5.551115123125783e-16,
+      "optimized_sha256": "f5791058411e11f112e3a2cda46e608278709e2a671d4cff8bfa43dd40445acf",
+      "random_draw_count": 139051,
+      "reference_sha256": "cda88283cf6cf61938f50352bca4bbf6ba676d15ad60c16f0e3a8778a694f777",
+      "result": {
+        "and": false,
+        "bootstrap_count": 999,
+        "contrast": 0.11848958333333326,
+        "family_contrast_descriptive": [
+          0.125,
+          0.11197916666666663
+        ],
+        "g1": 0.9140625,
+        "g2": 0.8385416666666666,
+        "k2_equivalence_descriptive": false,
+        "k2_rec_interval_95": [
+          0.14353144645406518,
+          0.2666248035459348
+        ],
+        "main_intervals": [
+          [
+            0.08688906597996505,
+            0.21910051735336827
+          ],
+          [
+            0.11491381822312467,
+            0.26854972344354194
+          ],
+          [
+            0.08930955402865798,
+            0.21619174805467534
+          ],
+          [
+            0.1286336272961366,
+            0.2815226227038634
+          ],
+          [
+            0.11458926030189776,
+            0.28824277094810224
+          ],
+          [
+            0.13452148437499994,
+            0.30965169270833337
+          ],
+          [
+            0.10678358689791077,
+            0.28058620476875584
+          ]
+        ],
+        "observed_parent_clusters": 66,
+        "sample_size": 96,
+        "ten_components": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          true
+        ]
+      },
+      "uniform_trace_sha256": "b7a6c53133e1d8fdab7598b1c299ec226e874fdc51a1058189227acd0f5e5d11"
+    }
+  ],
+  "full_power_executed": false,
+  "id": "WORLD-CAL-OPTIMIZATION-EVIDENCE-20261112-01",
+  "instrumented_profile_not_used_for_speedup": {
+    "optimized": [
+      {
+        "calls": 1,
+        "cumulative_seconds": 0.6065090830000001,
+        "file": "power_engine.py",
+        "function": "run_one_repetition",
+        "line": 162,
+        "self_seconds": 0.0026734940000000002
+      },
+      {
+        "calls": 1,
+        "cumulative_seconds": 0.39617636700000003,
+        "file": "power_engine.py",
+        "function": "_synthetic_joint_scores",
+        "line": 102,
+        "self_seconds": 0.069136575
+      },
+      {
+        "calls": 16413,
+        "cumulative_seconds": 0.21376899800000002,
+        "file": "power_engine.py",
+        "function": "normal_many",
+        "line": 69,
+        "self_seconds": 0.038207656
+      },
+      {
+        "calls": 16751,
+        "cumulative_seconds": 0.128852777,
+        "file": "power_engine.py",
+        "function": "uniform_many",
+        "line": 55,
+        "self_seconds": 0.016293118000000002
+      },
+      {
+        "calls": 1,
+        "cumulative_seconds": 0.078010968,
+        "file": "sampford_grouped.py",
+        "function": "grouped_inclusions",
+        "line": 62,
+        "self_seconds": 0.023599515
+      },
+      {
+        "calls": 16413,
+        "cumulative_seconds": 0.063401673,
+        "file": "power_engine.py",
+        "function": "scoped",
+        "line": 110,
+        "self_seconds": 0.007598416
+      },
+      {
+        "calls": 1,
+        "cumulative_seconds": 0.053977949000000004,
+        "file": "power_engine.py",
+        "function": "_draw_bootstrap_clusters",
+        "line": 153,
+        "self_seconds": 0.000183405
+      },
+      {
+        "calls": 36381,
+        "cumulative_seconds": 0.053508063,
+        "file": "prf.py",
+        "function": "box_muller",
+        "line": 51,
+        "self_seconds": 0.032843471
+      },
+      {
+        "calls": 16752,
+        "cumulative_seconds": 0.045788272000000005,
+        "file": "prf.py",
+        "function": "encode_parts",
+        "line": 9,
+        "self_seconds": 0.027801501000000003
+      },
+      {
+        "calls": 78264,
+        "cumulative_seconds": 0.041561174,
+        "file": "power_engine.py",
+        "function": "<genexpr>",
+        "line": 111,
+        "self_seconds": 0.036528544
+      },
+      {
+        "calls": 1000,
+        "cumulative_seconds": 0.039086139000000006,
+        "file": "power_engine.py",
+        "function": "<genexpr>",
+        "line": 158,
+        "self_seconds": 0.006794755
+      },
+      {
+        "calls": 113232,
+        "cumulative_seconds": 0.035185689,
+        "file": "sampford_grouped.py",
+        "function": "<genexpr>",
+        "line": 100,
+        "self_seconds": 0.022665516
+      },
+      {
+        "calls": 1,
+        "cumulative_seconds": 0.027662546000000003,
+        "file": "inference.py",
+        "function": "bootstrap_vectors_array",
+        "line": 114,
+        "self_seconds": 0.008058590000000001
+      },
+      {
+        "calls": 1053,
+        "cumulative_seconds": 0.016227625000000002,
+        "file": "power_engine.py",
+        "function": "normal",
+        "line": 83,
+        "self_seconds": 0.0016241710000000002
+      },
+      {
+        "calls": 96,
+        "cumulative_seconds": 0.0154648,
+        "file": "gtheta.py",
+        "function": "aggregate_law",
+        "line": 93,
+        "self_seconds": 0.005886843
+      },
+      {
+        "calls": 1,
+        "cumulative_seconds": 0.012756090000000001,
+        "file": "gtheta.py",
+        "function": "marginal_table",
+        "line": 65,
+        "self_seconds": 4.3855e-05
+      }
+    ],
+    "reference": [
+      {
+        "calls": 1,
+        "cumulative_seconds": 2.971246577,
+        "file": "power_engine.py",
+        "function": "run_one_repetition",
+        "line": 138,
+        "self_seconds": 0.00045622
+      },
+      {
+        "calls": 136036,
+        "cumulative_seconds": 2.1423680330000003,
+        "file": "power_engine.py",
+        "function": "uniform",
+        "line": 50,
+        "self_seconds": 0.09909383000000001
+      },
+      {
+        "calls": 136036,
+        "cumulative_seconds": 1.876772034,
+        "file": "prf.py",
+        "function": "draw_digest",
+        "line": 31,
+        "self_seconds": 0.079087274
+      },
+      {
+        "calls": 1,
+        "cumulative_seconds": 1.665368454,
+        "file": "power_engine.py",
+        "function": "_synthetic_joint_scores",
+        "line": 77,
+        "self_seconds": 0.096462698
+      },
+      {
+        "calls": 136036,
+        "cumulative_seconds": 1.2887374550000001,
+        "file": "prf.py",
+        "function": "encode_parts",
+        "line": 9,
+        "self_seconds": 0.751480684
+      },
+      {
+        "calls": 70173,
+        "cumulative_seconds": 1.284945403,
+        "file": "power_engine.py",
+        "function": "normal",
+        "line": 55,
+        "self_seconds": 0.042091566000000004
+      },
+      {
+        "calls": 1,
+        "cumulative_seconds": 1.004939169,
+        "file": "power_engine.py",
+        "function": "_draw_bootstrap_clusters",
+        "line": 130,
+        "self_seconds": 0.000240522
+      },
+      {
+        "calls": 1000,
+        "cumulative_seconds": 1.004690735,
+        "file": "power_engine.py",
+        "function": "<genexpr>",
+        "line": 134,
+        "self_seconds": 0.009175625
+      },
+      {
+        "calls": 136036,
+        "cumulative_seconds": 0.497484205,
+        "file": "prf.py",
+        "function": "hmac_sha256",
+        "line": 26,
+        "self_seconds": 0.10414213800000001
+      },
+      {
+        "calls": 70173,
+        "cumulative_seconds": 0.237292151,
+        "file": "power_engine.py",
+        "function": "scoped",
+        "line": 85,
+        "self_seconds": 0.026952261
+      },
+      {
+        "calls": 1,
+        "cumulative_seconds": 0.166614,
+        "file": "inference.py",
+        "function": "bootstrap_vectors_cached",
+        "line": 80,
+        "self_seconds": 0.003238475
+      },
+      {
+        "calls": 334776,
+        "cumulative_seconds": 0.161636528,
+        "file": "power_engine.py",
+        "function": "<genexpr>",
+        "line": 86,
+        "self_seconds": 0.142638288
+      },
+      {
+        "calls": 9990,
+        "cumulative_seconds": 0.149496325,
+        "file": "inference.py",
+        "function": "<genexpr>",
+        "line": 109,
+        "self_seconds": 0.003848188
+      },
+      {
+        "calls": 136036,
+        "cumulative_seconds": 0.142934225,
+        "file": "prf.py",
+        "function": "uniform53",
+        "line": 37,
+        "self_seconds": 0.10292767200000001
+      },
+      {
+        "calls": 1,
+        "cumulative_seconds": 0.07967908500000001,
+        "file": "sampford_grouped.py",
+        "function": "grouped_inclusions",
+        "line": 62,
+        "self_seconds": 0.028488692000000003
+      },
+      {
+        "calls": 36381,
+        "cumulative_seconds": 0.055823442,
+        "file": "prf.py",
+        "function": "box_muller",
+        "line": 51,
+        "self_seconds": 0.034663194
+      }
+    ]
+  },
+  "k0_executed": false,
+  "kind": "PUBLIC_SYNTHETIC_FIXTURE_COMPARISON_ONLY",
+  "limitations": "No production feasibility certification. All-n wall projection is the existing linear-in-n extrapolation, not a validated per-n runtime model.",
+  "median_optimized_wall_seconds": 0.20958170400081144,
+  "median_reference_wall_seconds": 0.9401971449997291,
+  "native_binary": {
+    "sha256": "56dfc4913370b8484a48fea13be8fb79cacb0d2ecf43edea85e503ea314508e9",
+    "size_bytes": 17320
+  },
+  "openssl": "OpenSSL 3.5.7 9 Jun 2026 (Library: OpenSSL 3.5.7 9 Jun 2026)",
+  "paired_same_host_speedup": 4.48606499065438,
+  "parallelism": "none; sequential native loops; no BLAS",
+  "reference_algorithm_digest": "sha256:1c722753379711b49c01df12bcc4be2d910e14cfc549ed65ba9d828c8a8e1e01",
+  "reference_head": "834fe0dc0c33065a1b8039764097141c1d526d98",
+  "sealed_split_materialized": false,
+  "seed_generated": false,
+  "source_sha256": {
+    "scripts/audit_world_cal_optimization.py": "0a33ec1f0f6848b3bb222a5458c196285391af45e3bbdfbd3cdafc4172bb64a6",
+    "scripts/build_world_cal_prf_batch.py": "75693313fd34356562b829f1bc14e8d1a4482998c878c9666ec807bbabe4a767",
+    "tests/test_world_cal_optimization.py": "1ac48bb78b44a74efe8150d4907f713920246c4a8750b42ac2a4e35e57b3b212",
+    "world_cal/inference.py": "a9e4a7ffd58ffcd48832354a68c97c41073913266d300bfcafd3a8d71b03bd6c",
+    "world_cal/power_engine.py": "16441d7ec8e891d49065331128420b4af30073ec99645cee5fa8c167b86a799e",
+    "world_cal/prf_batch.c": "27844d01e9ed7e82379ab333d944242dc855bdc297022aa4e2fb528ab91821e5"
+  },
+  "tolerance": 1e-10
+}

@@ -1091,3 +1091,18 @@ flowchart TD
 ```
 
 登録全supportのK0-bと全SpaceのK0-cは現headでは確定認定しない。scan制御は合成mockでのみ検証し、本CAL・K0・simulationは未実行。監督者監査3の正本に従い、全探索完走を実装監査の前提にしない。CPU feasibilityはSTOP_UNKNOWNのまま。[最終監査依頼と限界](../research/WORLD-CAL-FINAL-AUDIT-REQUEST-20261112-01.md) / [ARCH-002](contracts.md)。
+
+## WORLD CAL — 合成入力の高速化候補（2026-11-12）
+
+```mermaid
+flowchart TD
+  P["同じPRF domainとstage/index"] --> B["連続indexのbatch HMAC / Python fallback"]
+  B --> Y["同じnormal列と二値Y"]
+  Y --> S["同じPPS・SYG・parent draw"]
+  S --> N["parent和だけnative reduction"]
+  N --> G["既存max-T・10 AND・UNKNOWN gate"]
+  R["監査済み834fe0dc"] --> A["合成13入力の中間・最終比較"]
+  G --> A
+```
+
+PRF/モデル/世界生成器/ACL/scan制御は変更しない。新コードは鍵付き共通prefixの再利用、同stageの連続draw、bootstrapの最後の和のみを高速化する。参照scalar実装と旧headは保存。使用は1 core、並列化なし。5倍の目安未達はOwner判断へ戻して停止し、CPU feasibilityはSTOP_UNKNOWN。[比較・停止報告](../research/WORLD-CAL-OPTIMIZATION-20261112-01.md)。

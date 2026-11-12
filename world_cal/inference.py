@@ -109,3 +109,37 @@ def bootstrap_vectors_cached(sample,q,pi,outcomes_by_law,parent_ids,draws):
         replicates.append(tuple(sum(counts[c]*groups[c][j] for c in sorted(groups))
                                 for j in range(dimensions)))
     return points,replicates
+
+
+def bootstrap_vectors_array(sample,q,pi,outcomes_by_law,parent_ids,draws):
+    """Same cluster sums/draws; native final sums (roundoff audited <=1e-10).
+
+    No BLAS reduction or thread pool; bounded native sequential reduction.
+    Keep the scalar implementation above as an independent numerical reference.
+    """
+    try:
+        from ._prf_batch import weighted_sums
+    except ImportError:
+        return bootstrap_vectors_cached(sample,q,pi,outcomes_by_law,parent_ids,draws)
+    if not sample:raise InferenceUnknown("empty sample")
+    if any(len(outcomes_by_law[i])!=9 for i in sample):
+        raise InferenceUnknown("expected seven contrasts plus G1,G2")
+    points=tuple(ht(sample,q,pi,{i:outcomes_by_law[i][j] for i in sample})
+                 for j in range(9))
+    parents=tuple(sorted({parent_ids[i] for i in sample}))
+    if len(parents)<2:raise InferenceUnknown("invalid cluster bootstrap")
+    groups={c:[0.0]*9 for c in parents}
+    for j in range(9):
+        for i in sample:
+            groups[parent_ids[i]][j]+=q[i]/pi[i]*outcomes_by_law[i][j]
+    counts=[]
+    for draw in draws:
+        if len(draw)!=len(parents) or any(c not in groups for c in draw):
+            raise InferenceUnknown("invalid cluster bootstrap")
+        count=Counter(draw)
+        counts.append([count[c] for c in parents])
+    if not counts:return points,[]
+    try:
+        return points,weighted_sums(counts,list(groups.values()))
+    except ValueError as exc:
+        raise InferenceUnknown("invalid bootstrap arrays") from exc

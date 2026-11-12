@@ -12,6 +12,8 @@ on:
       - 'scripts/audit_world_cal_k0_index.py'
       - 'scripts/audit_world_cal_fail_closed.py'
       - 'scripts/build_world_cal_source_manifest.py'
+      - 'scripts/build_world_cal_prf_batch.py'
+      - 'scripts/audit_world_cal_optimization.py'
       - 'docs/research/WORLD-CAL-*.md'
       - 'docs/research/WORLD-CAL-*.json'
       - '.github/workflows/world-cal-synthetic-implementation.yml'
@@ -32,11 +34,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12.16'
       - name: Pinned JCS verification library
         run: python -m pip install -r world_cal/requirements.lock
+      - name: Build explicit optional PRF and bootstrap accelerator
+        run: python scripts/build_world_cal_prf_batch.py
+      - name: Paired immutable-head synthetic fixture audit (not a scan)
+        run: PYTHONPATH=. python scripts/audit_world_cal_optimization.py --output world-cal-optimization-evidence.json
       - name: Golden and role-denial unit tests (not CAL)
         run: python -m unittest discover -s tests -p 'test_world_cal*.py' -v
       - name: Forced caps and UNKNOWN downstream evidence (synthetic and mocked only)
@@ -83,10 +90,10 @@ jobs:
           import json, os
           from pathlib import Path
           from scripts.build_world_cal_source_manifest import PATHS
-          tracked=json.loads(Path('docs/research/WORLD-CAL-ALGORITHM-SOURCE-MANIFEST-20261111-01-candidate.json').read_text())
+          tracked=json.loads(Path('docs/research/WORLD-CAL-ALGORITHM-SOURCE-MANIFEST-20261112-optimization-candidate.json').read_text())
           exact=json.loads(Path('world-cal-algorithm-source-manifest-candidate.json').read_text())
           assert tracked['closed_source_files']==exact['closed_source_files']
-          assert len(exact['closed_source_files'])==len(PATHS)==55
+          assert len(exact['closed_source_files'])==len(PATHS)==63
           assert exact['source_commit']==os.environ['WORLD_CAL_SOURCE_HEAD']
           assert exact['algorithm_digest'] is None and exact['seed'] is None and exact['split_digest'] is None
           print('RAW_BYTE_MANIFEST_ALL_MATCH_EXACT_HEAD',len(PATHS),exact['source_commit'])
@@ -102,6 +109,8 @@ jobs:
             world-cal-algorithm-source-manifest-candidate.json
             world-cal-fail-closed.json
             world-cal-fail-closed.log
+            world-cal-optimization-evidence.json
+            world_cal/_prf_batch*.so
           retention-days: 30
 
   id-only-repro-two-linux-environments:

@@ -9,6 +9,14 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 PATHS=tuple(sorted((
     "AGENTS.md",
+    ".gitignore",
+    "world_cal/prf_batch.c",
+    "scripts/build_world_cal_prf_batch.py",
+    "scripts/audit_world_cal_optimization.py",
+    "tests/test_world_cal_optimization.py",
+    "docs/research/WORLD-CAL-OPTIMIZATION-20261112-01.md",
+    "docs/research/WORLD-CAL-OPTIMIZATION-EVIDENCE-20261112-01.json",
+    "docs/research/WORLD-CAL-ALGORITHM-SOURCE-MANIFEST-20261111-01-candidate.json",
     "docs/INDEX.md",
     "docs/architecture/system.md",
     "docs/architecture/contracts.md",
@@ -73,7 +81,7 @@ def candidate():
         entries.append({"path":path,"size_bytes":len(raw),"sha256":hashlib.sha256(raw).hexdigest(),
                         "encoding":"UTF-8/LF" if not path.endswith(".csv") else "UTF-8 CSV/LF"})
     return {
-        "id":"WORLD-CAL-ALGORITHM-SOURCE-MANIFEST-20261111-01-CANDIDATE",
+        "id":"WORLD-CAL-ALGORITHM-SOURCE-MANIFEST-20261112-OPTIMIZATION-CANDIDATE",
         "status":"CANDIDATE_UNAUDITED__NOT_ALGORITHM_DIGEST",
         "source_commit":os.environ.get("WORLD_CAL_SOURCE_HEAD","EXACT_HEAD_TO_BE_BOUND_BY_INDEPENDENT_SUPERVISOR"),
         "algorithm_digest":None,
@@ -98,6 +106,10 @@ def candidate():
                        "ci_python_pin":"3.12.16"},
         "closed_source_files":entries,
         "excluded_from_hash":"this candidate itself; future escrow/holdout/split secret files",
+        "previous_audit":{"head":"834fe0dc0c33065a1b8039764097141c1d526d98",
+           "algorithm_digest":"sha256:1c722753379711b49c01df12bcc4be2d910e14cfc549ed65ba9d828c8a8e1e01",
+           "comment_id":6821592224},
+        "native_build":"Explicit scripts/build_world_cal_prf_batch.py; optional libcrypto accelerator; binary hash/environment in optimization evidence; no runtime compilation",
         "independent_audit_required":True
     }
 

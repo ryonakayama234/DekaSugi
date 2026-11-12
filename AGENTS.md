@@ -461,3 +461,11 @@ The controlling Owner decision is [PR #183 comment 6675971478](https://github.co
 - cap・列挙未完・未認証support・不正countをPASS/FAIL・飽和・route・n_requiredへ昇格しない。全sourceのK0-bは現在UNKNOWN固定、全SpaceのK0-cは下界と登録capでUNKNOWN。将来の完全性防御解除は独立監査を要する実装変更。
 - negative testは人工pairとmock scanのみ。run_one_repetitionをmockせずに本scanをテストから実行しない。CAL・K0本実行・simulation、sealed split・seed生成は引き続き禁止。algorithm_digest=null、CAL_AUTHORIZED=false。
 - CPU feasibilityはSTOP_UNKNOWN。wall予算は将来のCAL_AUTHORIZED時の運用記録で扱い、この監査提出に新たなwall実装や性能認定を混ぜない。Draft維持、merge／ready化は別承認。
+
+## WORLD CAL 意味論不変の高速化ラウンド（2026-11-12）
+
+Owner は監督者最終PASS（PR #206 コメント6821592224、head 834fe0dc）後に合成fixture限定の高速化を許可した。前節の「新たな性能計測を混ぜない」は旧監査ラウンドに対する記録であり、このラウンドの合成比較・実測は許可範囲。詳細は [停止報告](docs/research/WORLD-CAL-OPTIMIZATION-20261112-01.md)。旧algorithm_digestは旧headだけの履歴として保存し、変更版は未監査candidate。
+
+- PRF byte領域・stage/index列・Box–Muller spare消費・999 draw・MC_R=10,000・3シナリオ・昇順n/早期停止・閾値/cost capを不変とする。全scopeの32-byte digest、一様乱数、二値Y、離散判定を一致検査する。
+- optional native kernelは明示buildのみ。import時のコンパイル・乱数/鍵生成なし。Python fallbackあり。生成binaryは追跡しない。ソースとビルド手順は新manifest、実binary SHA/コンパイラ/libcrypto版は証跡に結合。CAL launcherは従来どおり別監査・承認が必要。
+- 5倍に届かなければ事実と律速を報告して停止する。CAL_AUTHORIZED=false。CAL・simulation・K0本実行・sealed split/seed生成は禁止のまま。有限合成fixture比較は本scanではない。Draft維持、merge/readyなし。
