@@ -1,5 +1,10 @@
 # WORLD-LEAN-1 — implementation / artificial fixture engineering plan
 
+id: WORLD-LEAN-1-ENGINEERING-PLAN-20261112
+status: IMPLEMENTATION_FIXTURE_ONLY / EVALUATION_FORBIDDEN
+updated: 2026-11-12
+tags: world, experiment-plan, fixture-only
+
 Owner adopted design `WORLD-LEAN-EXPERIMENT-DESIGN-20261112-01` as head
 `a0d0a203`, PR #208. Supervisor AGREE comment `6823583705` includes RQ1–3.
 Separate Owner implementation GO authorizes *only* implementation, freeze,

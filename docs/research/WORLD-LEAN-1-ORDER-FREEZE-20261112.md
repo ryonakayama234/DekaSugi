@@ -1,5 +1,8 @@
 # WORLD-LEAN-1-ORDER-FREEZE-20261112 — engineering source-lock proposal
 
+updated: 2026-11-12
+tags: world, lean-editor, freeze, implementation, fixture
+
 id: WORLD-LEAN-1-ORDER-FREEZE-20261112
 status: IMPLEMENTED_FIXTURE_ONLY / SOURCE_DIGEST_LOCKED / INDEPENDENT_REVIEW_PENDING
 source_design: WORLD-LEAN-EXPERIMENT-DESIGN-20261112-01, adopted by Owner, PR #208 head a0d0a203

@@ -1,5 +1,9 @@
 # WORLD-LEAN-1 / artificial fixture gate — 2026-11-12
 
+id: WORLD-LEAN-1-ARTIFICIAL-FIXTURE-GATE-20261112
+updated: 2026-11-12
+tags: world, fixture, engineering-evidence
+
 status: ARTIFICIAL_FIXTURE_PASSED_LOCALLY / CPYTHON_3_12_TARGET_REPLAY_PENDING / SUPERVISOR_AUDIT_PENDING
 formal_seed: NOT_CREATED
 formal_holdout: NOT_MATERIALIZED

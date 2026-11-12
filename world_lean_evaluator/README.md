@@ -1,5 +1,10 @@
 # Evaluator-side public artificial fixtures only
 
+id: WORLD-LEAN-1-ARTIFICIAL-EVALUATOR
+status: FIXTURE_ONLY / FORMAL_NOT_AUTHORIZED
+updated: 2026-11-12
+tags: world, evaluator, fixture, boundary
+
 `fixture.py` owns TRAIN-only recipe meanings and deterministic synthetic
 example/trace generation. It is never distributed to the learner subprocess.
 `protocol.py` records design constants and fail-closed formal entrypoints.

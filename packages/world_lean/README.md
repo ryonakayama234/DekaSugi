@@ -1,5 +1,10 @@
 # WORLD-LEAN-1 — public learner / lean-editor/1
 
+id: WORLD-LEAN-1-PUBLIC-LEARNER
+status: IMPLEMENTED_FIXTURE_ONLY / FORMAL_NOT_AUTHORIZED
+updated: 2026-11-12
+tags: world, learner, runtime, fixture
+
 Independent from `world_cal`. CPython 3.12.12 is the selected exact patch for
 future replay; the 2026-11-12 local engineering fixture was run on 3.13.5.
 No third-party runtime packages, arbitrary code execution, runtime source
