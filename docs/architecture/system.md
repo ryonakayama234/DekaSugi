@@ -1076,3 +1076,20 @@ flowchart TD
 ~~~
 
 G3-3 is a parent/evaluator-side **engineering interface**, not an actual scientific runner. The remote adapter's real GitHub push/readback is not invoked in CI (fake remote only). Child import guard forbids evaluator/gate/ledger/remote/dossier modules. GitHub-only custody cannot prove an independent timestamp or absolute WORM; anchored hashes support subsequent audit. There is no 448 measurement, G5 order, G6 score or scientific M_use certification. [Specification](../specs/R2-M-A-G3-3.md) / [ARCH-002](contracts.md).
+
+## WORLD-LEAN-1 — 提案する責務、まだ未実装（2026-11-12）
+
+設計正本は[最初の実験案](../research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-01.md)、追跡は[Issue #207](https://github.com/ryonakayama234/DekaSugi/issues/207)。旧WORLD-CAL実装を改版せず、将来の別packageを想定する。実装・実験は未許可。
+
+```mermaid
+flowchart TD
+    GEN["Evaluator: 固定レシピとseed"] --> PUB["公開TRAIN履歴と仕様例"]
+    PUB --> LRN["FULL / STATIC-RANK / LOOKUP"]
+    LRN --> SNAP["全checkpointのsnapshot固定"]
+    SNAP --> USE["新しい作業コピーでFULLとOFFも評価"]
+    GEN --> HOLD["未見queryと非公開目標"]
+    HOLD --> USE
+    USE --> AUD["親Evaluator: 採点と対応seed集計"]
+```
+
+図のHOLD→USEは公開初期観測だけの受渡し。非公開目標は親Evaluatorに残る。子は成否を受け取らず、試行ごとに作業メモリを捨てる。4腕はschema固有帰属を完了しない。方式・閾値・seed数はproposed、独立審査とOwner採否は未了。

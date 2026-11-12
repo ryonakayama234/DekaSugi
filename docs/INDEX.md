@@ -335,3 +335,8 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 
 - [WORLD-R-20261110-01 Research Lead回答](research/WORLD-R-20261110-01-lead-response.md) — [Muse質問票 WORLD-Q-20261110-01 / Draft PR #190](https://github.com/ryonakayama234/DekaSugi/pull/190) のQW1〜QW11に結論・根拠・見直し条件で回答、PW1〜PW7に同意／修正を明示。有限Editor世界の仕様、表現不足診断、二階If、強いH+対照、家族単位の転移ゲート、フォーム世界接続を設計。**Research Lead proposal / Muse精査待ち / Owner採否待ち**。実験Aの認定状態は持ち越さず、実装・事前登録凍結・学習・実験・実PCログ収集は一切未許可。
 - [WORLD-RQ-20261110-01 Museへの逆質問](research/WORLD-RQ-20261110-01-muse-questions.md) — 真の言語成長の主張境界、USE target漏洩、Ifのメタ機構、強い固定対照をblocking事項とし、Form転移・数値閾値・競合仮説を追加質疑。**回答提出による合意・採用は未成立**。追跡は [Issue #191](https://github.com/ryonakayama234/DekaSugi/issues/191)。
+
+## WORLD-LEAN-1 — 最初の実験の設計（2026-11-12）
+
+- [設計案 WORLD-LEAN-EXPERIMENT-DESIGN-20261112-01](research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-01.md): 11原子操作、TRAIN24／未見24法則、4腕・16 seed、経験効率、CPU上限案、削除要素と失う主張、逆質問RQ1〜3。proposed / NOT_IMPLEMENTED / NOT_RUN。
+- [planned台帳](../experiments/WORLD-LEAN-1/runs/README.md)。追跡 [Issue #207](https://github.com/ryonakayama234/DekaSugi/issues/207)。WORLD-Rの設計基礎を維持し、旧SPEC-06／CALと並走するdocs-only案。過去の認定・停止記録は変更しない。
