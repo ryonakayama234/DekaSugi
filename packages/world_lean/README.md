@@ -32,3 +32,7 @@ without branching and selects a nearest public-demo law then nearest trace.
 
 No formal evaluator invocation or holdout generation command is exposed. Only
 `python -m world_lean_evaluator fixture-gate` is authorized at this stage.
+
+## Six-demo revision -02 (proposed)
+
+`demo_candidates` and TRAIN episode validation now require exactly six public input→output demo pairs (true×3/false×3; labels withheld). FULL/OFF/STATIC-RANK/LOOKUP each consume the same six pairs. No world operation, arm, threshold or budget changes. [Design -02](../../docs/research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-02.md) / [order -02](../../docs/research/WORLD-LEAN-1-ORDER-FREEZE-20261112-02.md). Formal evaluation remains disabled.
