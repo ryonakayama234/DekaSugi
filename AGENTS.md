@@ -452,3 +452,9 @@ The controlling Owner decision is [PR #183 comment 6675971478](https://github.co
 - Parent-only `packages/r2_m_a/evidence_ledger.py` uses a unique run root, exclusive O_EXCL artifacts, O_APPEND/flock/fsynced hash-linked events and a complete unordered 448-slot manifest. Remote GitHub custody must pin actual pre-answer and pre-score SHA bytes and fail closed on push/readback failure; any local receipt alone is insufficient. Synthetic fake remote tests do not attest an actual remote seal.
 - Missing slots remain NOT_RUN or STARTED_MISSING, terminal failures INVALID/RESOURCE_STOP/RUN_BLOCK/UNMEASURED remain visible and cannot be retried after START; no absence is converted to successful zero. Q before remote, post-freeze event, overwritten trace or forged approval is rejected.
 - `packages/r2_m_a/evaluator_gate.py` always refuses scoring for this head, including caller-supplied owner_approval=True. Child import guard blocks evidence, remote, evaluator and dossier modules. `g4_dossier.py` generates eight NOT_AUDITED templates (not audit evidence); G4 exact-head, G5, G6 separately require supervisor/Owner approvals and real-path evidence. CI includes synthetic negative tests only, never scientific execution.
+
+## WORLD-LEAN-1 — design-only boundary（2026-11-12）
+
+- [Issue #207](https://github.com/ryonakayama234/DekaSugi/issues/207) / [設計案](docs/research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-01.md) / [planned台帳](experiments/WORLD-LEAN-1/runs/README.md)。Ownerの路線組替えに基づく新しい設計提案。実装・seed／task生成・学習・評価・旧CAL再実行は未許可。
+- WORLD-Rの三層切断・段階認定・seed境界を維持する。4腕の効率候補をL-Schema最終認定へ自動変換しない。数値・生成規則・対照・finish契約はproposed、逆質問RQ1〜3は未決。採用も実装GO／評価GOとは別。
+- 旧SPEC-06、CALプロトコル、CAL_AUTHORIZEDとゲート停止・旧ソース／workflow／封印物を編集しない。新しい実行入口を本PRに追加しない。人工fixture工程も別許可を要する。

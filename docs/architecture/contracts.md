@@ -1095,3 +1095,18 @@ flowchart LR
 - Query: exactly one Q001 pre-answer intent per law (P3 digest, legal Q digest, paid budget=1, expiry, method/policy hashes). Remote GitHub audit-branch commit/push, ref verification and fetched exact bytes required before synthetic answer callback; failures leave an unrepeatable local intent and **no paid answer**.
 - Pre-score: 448 scheduled slots always represented. `NOT_RUN` and `STARTED_MISSING` plus typed INVALID/RESOURCE_STOP/RUN_BLOCK/UNMEASURED are not replaced with zero. Raw trace/receipt SHA required for completed slots. Immutable pre-score manifest, event-chain tip and remote object bytes rechecked; missing Q receipts or any changed original block.
 - Gate: `SCIENTIFIC_EXECUTION_AUTHORIZED=False` and independent G4/G5/G6 flags are false; `require_score_gate` rejects caller-provided Owner approval claims. No score or truth reading is implemented. G4 dossier generator emits only NOT_AUDITED documents. GitHub-only timestamps are not independent trusted timestamps. [G3-3 specification](../specs/R2-M-A-G3-3.md).
+
+## WORLD-LEAN-1 — proposed data boundary（2026-11-12、未実装）
+
+[設計案](../research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-01.md) §1〜8が意味論・予算・費用・再現性の提案正本。[planned台帳](../../experiments/WORLD-LEAN-1/runs/README.md)。既存契約を置換しない。
+
+| データ | 読み手と境界 |
+|---|---|
+| PublicTrainTrace | 4欄状態、匿名tag、操作、観測、試行末尾の成否、仕様デモ。全腕で同一digest |
+| AgentSnapshot | FULL／STATIC-RANK／LOOKUPを全checkpointで先に固定。OFFはFULLと同じbytes、USEのみ遮断 |
+| PublicEvalInput | 固定4入出力仕様例、query初期状態、Sym集合。task真値・law index・seed・採点結果を含めない |
+| EvaluatorManifest | recipe、split、seed、query目標、digest。学習側入力rootの外に保持 |
+| TrialEvidence | 行動とASTの来歴、展開費用、親だけが保持する成否。query間で子へ戻さない |
+| SemanticResult / RuntimeMetadata | 前者は固定順の整数・有理数と決定的trace、後者はCPU／wall／RSS等。一致の範囲を混ぜない |
+
+JSON受渡し／別processは協力的コードの分離案であり、悪意ある同一Unixユーザーへの非干渉証明ではない。RQ1（認定射程）・RQ2（分離脅威モデル）・RQ3（goal契約）は未決。実データ・schema実装・結果は本PRに存在しない。
