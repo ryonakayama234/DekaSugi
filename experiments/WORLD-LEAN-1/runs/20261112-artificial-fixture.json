@@ -1,0 +1,107 @@
+{
+  "ambiguity_above_10pct": false,
+  "ambiguity_combined_fraction": "18/192",
+  "ambiguous_train_only": [
+    {
+      "ambiguous_fraction": "3/48",
+      "ambiguous_queries": 3,
+      "demo_nonunique_recipes": 4,
+      "extra": false,
+      "fixture_stream": "artificial-fixture-A",
+      "queries": 48,
+      "recipe_scope": "TRAIN_ONLY",
+      "recipes": 24
+    },
+    {
+      "ambiguous_fraction": "7/48",
+      "ambiguous_queries": 7,
+      "demo_nonunique_recipes": 7,
+      "extra": false,
+      "fixture_stream": "artificial-fixture-B",
+      "queries": 48,
+      "recipe_scope": "TRAIN_ONLY",
+      "recipes": 24
+    },
+    {
+      "ambiguous_fraction": "2/48",
+      "ambiguous_queries": 2,
+      "demo_nonunique_recipes": 6,
+      "extra": false,
+      "fixture_stream": "artificial-fixture-C",
+      "queries": 48,
+      "recipe_scope": "TRAIN_ONLY",
+      "recipes": 24
+    },
+    {
+      "ambiguous_fraction": "6/48",
+      "ambiguous_queries": 6,
+      "demo_nonunique_recipes": 7,
+      "extra": false,
+      "fixture_stream": "artificial-fixture-D",
+      "queries": 48,
+      "recipe_scope": "TRAIN_ONLY",
+      "recipes": 24
+    }
+  ],
+  "boundary_negative": {
+    "extra_target_seed_keys_rejected": true,
+    "learner_imports_evaluator": false,
+    "private_root_absent": true,
+    "process_mode": "python -I",
+    "threat_model": "cooperative code; same-UID malicious access not prevented"
+  },
+  "deterministic_digest": "115f343854b1baeb89e4ab6e4ced205d65ed858da31bc4c70a4497c05212ce91",
+  "engineering_gate_status": "FIXTURE_PASSED_SUPERVISOR_PENDING",
+  "formal_evaluation": "NOT_RUN",
+  "formal_holdout": "NOT_MATERIALIZED",
+  "formal_seed_generation": "NOT_RUN",
+  "schema": "WORLD-LEAN-1/ARTIFICIAL-FIXTURE-GATE/1",
+  "static_rank_reachability": {
+    "conditional": {
+      "candidate_ordinal": 1,
+      "chosen_ast_digest": "5ef2747819b809f893013c7c9253e9df9dbe5e04d74569d5dad193b7db916eaa",
+      "constructed_edges": 5349,
+      "verified": 18
+    },
+    "copy": {
+      "candidate_ordinal": 1,
+      "chosen_ast_digest": "83ec0a2211acc550668ae79ad2d38c4b273b6bd1e06f597d1238efc109a5a295",
+      "constructed_edges": 9886,
+      "verified": 8
+    },
+    "local_delete": {
+      "candidate_ordinal": 1,
+      "chosen_ast_digest": "16052f3d7da1ac75b982821fd14ed59774098ff99d8e6f11aed801f4ee711472",
+      "constructed_edges": 5262,
+      "verified": 128
+    },
+    "local_insert": {
+      "candidate_ordinal": 1,
+      "chosen_ast_digest": "63ff436e4c18e7e8c53aa573e9cb0c9e79b8be99e557050725e33166d1432a4a",
+      "constructed_edges": 8405,
+      "verified": 128
+    }
+  },
+  "transitions": {
+    "caveat": "Artificial one-law timings, CPython fixture runtime and projected per-query costs are NOT rigorous 16-seed wall/CPU bounds; filesystem I/O, source patch differences and worst-case grammar remain unmeasured.",
+    "design_cap_transitions": 185688064,
+    "extrapolation_2x_transitions_plus_update_hours": 0.51,
+    "measured_transitions_per_sec": 624995.0,
+    "meets_5000_per_sec": true,
+    "n_transitions": 100000,
+    "sample_one_query_per_arm_seconds": {
+      "FULL": 0.122156,
+      "LOOKUP": 0.001617,
+      "OFF": 0.069325,
+      "STATIC-RANK": 0.06912
+    },
+    "sample_query_extrapolation_hours": 0.336,
+    "seconds": 0.160001,
+    "transitions_only_hours": 0.083,
+    "under_36h_cpu_proxy": true,
+    "under_48h_wall_proxy": true,
+    "update_for_64_train_events_seconds": 0.011278,
+    "update_library_size": 6,
+    "updates_reached": 1
+  }
+}
