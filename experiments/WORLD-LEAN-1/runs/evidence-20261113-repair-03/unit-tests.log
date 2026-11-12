@@ -1,0 +1,47 @@
+test_exact_area_and_sign (tests.test_world_lean_fixture.AnalyzerFixture.test_exact_area_and_sign) ... ok
+test_paired_shape (tests.test_world_lean_fixture.AnalyzerFixture.test_paired_shape) ... ok
+test_import_root_separation (tests.test_world_lean_fixture.BoundaryFixture.test_import_root_separation) ... ok
+test_6_demo_static_reach (tests.test_world_lean_fixture.LearnerFixture.test_6_demo_static_reach) ... ok
+test_ambiguity_train_only (tests.test_world_lean_fixture.LearnerFixture.test_ambiguity_train_only) ... ok
+test_empty_snapshot_and_shared_off (tests.test_world_lean_fixture.LearnerFixture.test_empty_snapshot_and_shared_off) ... ok
+test_inference_rejects_legacy_four_demo_input (tests.test_world_lean_fixture.LearnerFixture.test_inference_rejects_legacy_four_demo_input) ... ok
+test_legacy_four_demo_payload_rejected (tests.test_world_lean_fixture.LearnerFixture.test_legacy_four_demo_payload_rejected) ... ok
+test_source_cannot_hide_invalid_transition (tests.test_world_lean_fixture.LearnerFixture.test_source_cannot_hide_invalid_transition) ... ok
+test_train_64_update_order_and_off (tests.test_world_lean_fixture.LearnerFixture.test_train_64_update_order_and_off) ... ok
+test_training_child_checkpoints_digest_replay (tests.test_world_lean_fixture.LearnerFixture.test_training_child_checkpoints_digest_replay) ... ok
+test_formal_call_fail_closed (tests.test_world_lean_fixture.ProtocolGateFixture.test_formal_call_fail_closed) ... ok
+test_11_types_14_tokens (tests.test_world_lean_fixture.WorldFixture.test_11_types_14_tokens) ... ok
+test_anchor_extend_copy_clear_paste (tests.test_world_lean_fixture.WorldFixture.test_anchor_extend_copy_clear_paste) ... ok
+test_ast_bound_fault_and_call_off (tests.test_world_lean_fixture.WorldFixture.test_ast_bound_fault_and_call_off) ... ok
+test_copy_empty_preserves_clipboard (tests.test_world_lean_fixture.WorldFixture.test_copy_empty_preserves_clipboard) ... ok
+test_delete_empty_selection_and_edges (tests.test_world_lean_fixture.WorldFixture.test_delete_empty_selection_and_edges) ... ok
+test_delete_nonempty_selection_both_directions (tests.test_world_lean_fixture.WorldFixture.test_delete_nonempty_selection_both_directions) ... ok
+test_finish_4_fields_and_12_calls_no_early_end (tests.test_world_lean_fixture.WorldFixture.test_finish_4_fields_and_12_calls_no_early_end) ... ok
+test_finish_not_primitive (tests.test_world_lean_fixture.WorldFixture.test_finish_not_primitive) ... ok
+test_generator_train_only_nonunique_rejection (tests.test_world_lean_fixture.WorldFixture.test_generator_train_only_nonunique_rejection) ... ok
+test_invalid_token_fault (tests.test_world_lean_fixture.WorldFixture.test_invalid_token_fault) ... ok
+test_move_end_noop_clear (tests.test_world_lean_fixture.WorldFixture.test_move_end_noop_clear) ... ok
+test_no_formal_rng_api (tests.test_world_lean_fixture.WorldFixture.test_no_formal_rng_api) ... ok
+test_selection_replace_and_full_overflow_atomic (tests.test_world_lean_fixture.WorldFixture.test_selection_replace_and_full_overflow_atomic) ... ok
+test_artificial_stream_branch_balance_duplicate_rejection (tests.test_world_lean_formal.FormalRepair.test_artificial_stream_branch_balance_duplicate_rejection) ... ok
+test_exact_AND_analyzer_on_invented_counts_only (tests.test_world_lean_formal.FormalRepair.test_exact_AND_analyzer_on_invented_counts_only) ... ok
+test_generated_data_tamper_fail_closed (tests.test_world_lean_formal.FormalRepair.test_generated_data_tamper_fail_closed) ... ok
+test_generation_is_once_only (tests.test_world_lean_formal.FormalRepair.test_generation_is_once_only) ... ok
+test_manifest_lock_commitment_disagreement_rejected (tests.test_world_lean_formal.FormalRepair.test_manifest_lock_commitment_disagreement_rejected) ... ok
+test_manifest_tamper_rejected_before_seed (tests.test_world_lean_formal.FormalRepair.test_manifest_tamper_rejected_before_seed) ... ok
+test_missing_artifact_is_not_success (tests.test_world_lean_formal.FormalRepair.test_missing_artifact_is_not_success) ... ok
+test_no_evaluation_without_all_snapshot_barrier (tests.test_world_lean_formal.FormalRepair.test_no_evaluation_without_all_snapshot_barrier) ... ok
+test_numeric_contract_reexports_all_original_constants (tests.test_world_lean_formal.FormalRepair.test_numeric_contract_reexports_all_original_constants) ... ok
+test_private_root_unavailable_and_forbidden_keys_rejected (tests.test_world_lean_formal.FormalRepair.test_private_root_unavailable_and_forbidden_keys_rejected) ... ok
+test_resource_stop_is_not_completed (tests.test_world_lean_formal.FormalRepair.test_resource_stop_is_not_completed) ... ok
+test_roundtrip_full_stage_order_and_deterministic_replay (tests.test_world_lean_formal.FormalRepair.test_roundtrip_full_stage_order_and_deterministic_replay) ... ok
+test_six_demo_ambiguity_exact_reproduction (tests.test_world_lean_formal.FormalRepair.test_six_demo_ambiguity_exact_reproduction) ... ok
+test_source_byte_tamper_rejected (tests.test_world_lean_formal.FormalRepair.test_source_byte_tamper_rejected) ... ok
+test_synthetic_profile_cannot_be_passed_as_official (tests.test_world_lean_formal.FormalRepair.test_synthetic_profile_cannot_be_passed_as_official) ... ok
+test_two_and_only_two_design_corrections (tests.test_world_lean_formal.FormalRepair.test_two_and_only_two_design_corrections) ... ok
+test_without_explicit_resume_no_official_seed (tests.test_world_lean_formal.FormalRepair.test_without_explicit_resume_no_official_seed) ... ok
+
+----------------------------------------------------------------------
+Ran 42 tests in 9.552s
+
+OK

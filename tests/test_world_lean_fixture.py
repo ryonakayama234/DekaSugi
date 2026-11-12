@@ -96,7 +96,7 @@ class LearnerFixture(unittest.TestCase):
         src=Path(__file__).resolve().parents[1]/'packages/world_lean'
         with TemporaryDirectory() as temp:
             root=Path(temp);public=root/'world_lean';public.mkdir()
-            for name in ('__init__.py','core.py','learner.py','child_entry.py'):
+            for name in ('__init__.py','core.py','learner.py','child_entry.py','protocol.py'):
                 copyfile(src/name,public/name)
             request={'mode':'train','blocks':list(blocks)}
             x=child_request(root,request)

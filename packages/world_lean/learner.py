@@ -11,6 +11,8 @@ from .core import (State, Fault, READS, OPS, TOKENS, MAX_NODES, MAX_DEPTH,
                    MAX_STEPS, canonical, digest, execute, eval_predicate,
                    normalize, read, step, _validate_ast)
 
+from .protocol import DEMOS_PER_LAW
+
 UPDATE_EVERY=64
 MAX_LIBRARY=64
 MAX_VERIFIED=128
@@ -106,7 +108,7 @@ def demo_candidates(demos: tuple[tuple[State,State], ...],
     Fixed IF scaffold tries all 5-read equalities in canonical order. Branch
     bodies come from uniform grammar beam synthesis; not a hand-written recipe.
     """
-    if len(demos)!=6 or any(type(x) is not tuple or len(x)!=2 for x in demos):
+    if len(demos)!=DEMOS_PER_LAW or any(type(x) is not tuple or len(x)!=2 for x in demos):
         raise Fault('six public input/output demo pairs required')
     formed={}
     construction=0
@@ -117,10 +119,10 @@ def demo_candidates(demos: tuple[tuple[State,State], ...],
             formed[canonical(n)]=n
         except Fault:continue
     # Build single-body paths and one-branch graphs from demo groupings.
-    partitions=[(None,(0,1,2,3),())]
+    partitions=[(None,tuple(range(DEMOS_PER_LAW)),())]
     for pred in sorted(PREDICATES,key=canonical):
         truth=tuple(i for i,(s,_) in enumerate(demos) if eval_predicate(s,pred))
-        false=tuple(i for i in range(6) if i not in truth)
+        false=tuple(i for i in range(DEMOS_PER_LAW) if i not in truth)
         if truth and false:
             partitions.append((pred,truth,false))
     body_cache={}
@@ -174,7 +176,7 @@ def demo_candidates(demos: tuple[tuple[State,State], ...],
     checked.sort(key=lambda x:x[:3])
     return tuple(v[3] for v in checked),{'construct_edges':construction,
         'formed':len(formed),'verified':len(checked),'capped':len(formed)>max_verified,
-        'best_mismatches':checked[0][0] if checked else 6}
+        'best_mismatches':checked[0][0] if checked else DEMOS_PER_LAW}
 
 def _ast_ok(ast: list, library: dict[str,list] | None = None) -> bool:
     try:
@@ -204,7 +206,7 @@ def _from_record(obj: dict) -> tuple[tuple[State,State],...]:
         if type(raw) is not list or len(raw)!=2:raise Fault('action pair')
         s=step(s,tuple(raw))
         if obj['observations'][i+1]!=s.record():raise Fault('transition trace mismatch')
-    if type(obj['demos']) is not list or len(obj['demos'])!=6:raise Fault('six TRAIN demos')
+    if type(obj['demos']) is not list or len(obj['demos'])!=DEMOS_PER_LAW:raise Fault('six TRAIN demos')
     return tuple((State.parse(a),State.parse(b)) for a,b in obj['demos'])
 
 @dataclass
@@ -218,7 +220,7 @@ class Learner:
     events: int = 0
     update_receipts: list[dict] = field(default_factory=list)
 
-    def add_block(self, obj: dict) -> None:
+    def add_block(self, obj: dict, *, acquire: bool = True) -> None:
         _from_record(obj)
         if self.events+8>4096:raise Fault('TRAIN event cap')
         self.episodes.append(obj)
@@ -230,7 +232,7 @@ class Learner:
                 for term in READ_TERMS:
                     # Only observation-context frequencies, not evaluator recipe IDs.
                     self.frequency['read:'+term[1]]+=1 if arg==read(State.parse(obj['initial']),term) else 0
-        if self.events%UPDATE_EVERY==0:self.update()
+        if acquire and self.events%UPDATE_EVERY==0:self.update()
 
     def update(self) -> dict:
         if self.events==0 or self.events%UPDATE_EVERY or self.updates>=64:

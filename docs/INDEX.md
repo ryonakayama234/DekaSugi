@@ -354,3 +354,10 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 - [設計-02](research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-02.md) — -01を保持し公開仕様デモ4→6と依存費用のみを改訂。監督者差分審査・Owner採否前。
 - [全順序-02](research/WORLD-LEAN-1-ORDER-FREEZE-20261112-02.md) / [source lock-02](research/WORLD-LEAN-1-SOURCE-LOCK-20261112-02.json) — 旧lockは上書きしない。
 - [6デモTRAIN人工監査](../experiments/WORLD-LEAN-1/runs/20261112-six-demo-fixture-gate.md) — 正式評価ではない。
+
+### WORLD-LEAN-1 — 正式評価前修復 -03（2026-11-13）
+
+- [修復仕様・全定数対応表](research/WORLD-LEAN-1-REPAIR-20261113-03.md)。採用 -02 と正式評価 GO を継承し、再監査・Owner再開確認を待つ。
+- [設計 -03](research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-03.md): 説明文2か所のみ訂正、残りbytesは -02 と同一。
+- [全順序 -03](research/WORLD-LEAN-1-ORDER-FREEZE-20261112-03.md) / [source lock -03](research/WORLD-LEAN-1-SOURCE-LOCK-20261112-03.json)。旧版不変更。
+- [修復証跡](../experiments/WORLD-LEAN-1/runs/20261113-repair-03.md): fixture、negative tests、TRAINのみのstage dry-run。正式seed／holdout／評価は未実施。

@@ -1,0 +1,49 @@
+{
+  "counts": [
+    {
+      "FULL": [
+        1,
+        2
+      ],
+      "LOOKUP": [
+        0,
+        0
+      ],
+      "OFF": [
+        1,
+        1
+      ],
+      "STATIC-RANK": [
+        1,
+        1
+      ]
+    }
+  ],
+  "extra_ambiguous": 0,
+  "full_curves": [
+    {
+      "FULL": [
+        1,
+        2
+      ],
+      "LOOKUP": [
+        0,
+        0
+      ],
+      "OFF": [
+        1,
+        1
+      ],
+      "STATIC-RANK": [
+        1,
+        1
+      ]
+    }
+  ],
+  "main_ambiguous": 0,
+  "query_rows": 24,
+  "reduced_schedule": true,
+  "scientific_decision": "NOT_RUN",
+  "status": "SYNTHETIC_DRY_RUN_COMPLETE",
+  "usage_seeds": 1
+}

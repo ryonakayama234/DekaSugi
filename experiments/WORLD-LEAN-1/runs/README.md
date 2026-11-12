@@ -43,3 +43,5 @@ The above `NOT_AUTHORIZED` entries describe the former design-only stage. Follow
 - [Design -02](../../../docs/research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-02.md): only the public spec-demo count rises from 4 to 6; dependent order, arithmetic and source lock are versioned separately.
 - [Fixture receipt -02](20261112-six-demo-fixture-gate.md): TRAIN-only four named synthetic streams and tests; no scientific data.
 - Old four-demo receipt, implementation PR #209, source lock and CAL/SPEC history remain unchanged. Supervisor diff review, separate Owner adoption and later evaluation GO are required.
+
+- [2026-11-13 repair -03](20261113-repair-03.md): implemented formal stages, complete constant table, synthetic negative tests and dry-run only. Official seed NOT_GENERATED, official holdout NOT_MATERIALIZED, official evaluation NOT_RUN. Re-audit and Owner resumption pending.

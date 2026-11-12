@@ -16,14 +16,19 @@ jobs:
       - name: Check pinned public/evaluator source digest
         run: python scripts/verify_world_lean_freeze.py
       - name: Run allowlisted artificial-only unit tests
-        run: python -m unittest tests.test_world_lean_fixture -v
+        run: python -m unittest tests.test_world_lean_fixture tests.test_world_lean_formal -v
       - name: Run artificial-only engineering gate
         run: python -m world_lean_evaluator fixture-gate --output /tmp/world-lean-artificial-evidence.json
+      - name: Run synthetic TRAIN-only staged dry-run (NO OFFICIAL SEED)
+        run: python -m world_lean_evaluator synthetic-dry-run --root /tmp/world-lean-03-dry --output /tmp/world-lean-03-summary.json
       - name: Upload six-demo TRAIN-only evidence
         uses: actions/upload-artifact@v4
         with:
-          name: world-lean-six-demo-train-only
-          path: /tmp/world-lean-artificial-evidence.json
+          name: world-lean-repair-03-synthetic-only
+          path: |
+            /tmp/world-lean-artificial-evidence.json
+            /tmp/world-lean-03-summary.json
+            /tmp/world-lean-03-dry
           if-no-files-found: error
       - name: Show formal protocol refuses without Owner approval
         run: python -c 'from world_lean_evaluator.protocol import formal_run,OwnerEvaluationAuthorizationRequired; import sys; exec("try:\n formal_run()\nexcept OwnerEvaluationAuthorizationRequired:\n sys.exit(0)\nsys.exit(1)")'

@@ -15,6 +15,9 @@ MAX_STEPS = 12
 MAX_NODES = 32
 MAX_DEPTH = 6
 
+# Observational process-local accounting; never consulted by candidate ordering.
+PRIMITIVE_TRANSITIONS = 0
+
 class Fault(ValueError):
     """Invalid input, AST or step; terminal unsuccessful attempt."""
 
@@ -73,6 +76,8 @@ def _range(state: State) -> tuple[int, int] | None:
 def step(s: State, action: tuple[str, str | None]) -> State:
     if type(action) is not tuple or len(action) != 2 or action not in TOKENS:
         raise Fault('invalid atomic token')
+    global PRIMITIVE_TRANSITIONS
+    PRIMITIVE_TRANSITIONS += 1
     op, arg = action
     b, c, sel, cb = s.buffer, s.cursor, s.selection, s.clipboard
     if op in ('MOVE_LEFT', 'MOVE_RIGHT'):
@@ -196,7 +201,7 @@ def expanded_nodes(ast: list, library: dict[str,list] | None = None,
     if n>MAX_NODES:raise Fault('expanded AST too large')
     return n
 
-def execute(ast: list, s: State, library: dict[str,list] | None = None, *, allow_calls: bool = True) -> tuple[State, int, bool]:
+def execute(ast: list, s: State, library: dict[str,list] | None = None, *, allow_calls: bool = True, trace: list | None = None) -> tuple[State, int, bool]:
     ast=normalize(ast)
     if _validate_ast(ast)>MAX_NODES:
         raise Fault('AST too large')
@@ -231,6 +236,7 @@ def execute(ast: list, s: State, library: dict[str,list] | None = None, *, allow
             if arg not in SYMS:
                 raise Fault('read undefined at INSERT')
         count+=1
+        if trace is not None:trace.append([op,arg])
         return step(current,(op,arg))
     end=go(ast,s)
     return end,count,used

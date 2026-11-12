@@ -1116,3 +1116,28 @@ flowchart TD
 ## WORLD-LEAN-1 six-demo fixture-only revision (2026-11-12)
 
 The existing learner/evaluator topology and world semantics above remain unchanged. [Design -02](../research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-02.md) increases the six public law specification pairs to true×3/false×3 (no labels). Learner validation, generic constructor, LOOKUP, cost accounting and TRAIN-only ambiguity are updated solely as consequences. [New source order](../research/WORLD-LEAN-1-ORDER-FREEZE-20261112-02.md) and [lock](../research/WORLD-LEAN-1-SOURCE-LOCK-20261112-02.json) supersede -01 only if Owner adopts the revision. The former lock is unchanged, and independent supervisor diff review, separate Owner adoption, then separate formal evaluation GO remain mandatory.
+
+## WORLD-LEAN-1 repair -03: staged evaluator (2026-11-13)
+
+[Repair and constants](../research/WORLD-LEAN-1-REPAIR-20261113-03.md) /
+[versioned source lock](../research/WORLD-LEAN-1-SOURCE-LOCK-20261112-03.json).
+Implementation is available, independently unaccepted; current execution is synthetic only.
+
+```mermaid
+flowchart TD
+  M["Fixed manifest and source lock"] --> A{"Resume authorization matches?"}
+  A -->|No| X["Pre-seed stop"]
+  A -->|Yes| P["Private evaluator seed and tasks"]
+  P --> T["Public TRAIN children"]
+  T --> S["All snapshots fixed"]
+  S --> E["Fresh query children"]
+  P --> V["Parent-only targets and audit"]
+  E --> V
+  V --> R["Complete schedule analysis"]
+```
+
+The public data-free protocol defines the demo count once and is copied with the
+learner. Parent-only formal code never enters child root. The explicit synthetic
+profile exercises the same stage order with TRAIN fixtures and skips official
+entropy, holdout generation and scientific qualification. No official stage runs
+in this round; supervisor re-audit and Owner resumption remain necessary.

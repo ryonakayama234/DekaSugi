@@ -1125,3 +1125,23 @@ Supersedes the preceding `未実装` status as an engineering update, **not** as
 ## WORLD-LEAN-1 six-demo amendment (-02, fixture-only)
 
 The -01 contract above is historical provenance. Under [revision -02](../research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-02.md), public TRAIN traces and evaluation-input schemas expose **six** initial→final four-field demo pairs per law, ordered true×3 then false×3, without labels. Four-pair payloads are rejected. Queries remain true×1/false×1. Six-demo agreement governs candidate selection and TRAIN-only ambiguity checks. No target, recipe, seed, holdout label, additional field or evaluator source is allowed into the learner child. [Six-demo order](../research/WORLD-LEAN-1-ORDER-FREEZE-20261112-02.md) and [six-demo source lock](../research/WORLD-LEAN-1-SOURCE-LOCK-20261112-02.json) are new files, not edits to -01. Formal scoring stays blocked.
+
+## WORLD-LEAN-1 -03 executable manifest and barrier (2026-11-13)
+
+The [repair contract](../research/WORLD-LEAN-1-REPAIR-20261113-03.md) supersedes
+historical stub descriptions; -01/-02 frozen records remain unchanged.
+
+| Boundary | Contract |
+|---|---|
+| Source → manifest | Recomputed file bytes + source digest; exact lock/design/order hashes; runtime, streams, schedule, numeric caps; external SHA avoids self hash |
+| Authorization → generation | Exact source + manifest SHA, supervisor re-audit reference and Owner resume reference; absent or mismatched data fails before entropy |
+| Parent → TRAIN child | Exact `mode, blocks, arm, checkpoints, symbols`; legacy artificial `mode,blocks` remains valid; no seed/recipe/target/holdout path |
+| Parent → USE child | Exact `mode,snapshot_b64,arm,demos,query,symbols`; symbols is the ordered public token set, six demos are the only goal evidence |
+| Child → parent | Canonical snapshot/prediction, primitive count; child normalizes opaque public names to internal token identity, parent alone compares target |
+| Training → evaluation | Exclusive `snapshots-fixed.json` pins ALL realization/arm/checkpoint bytes, identical FULL/OFF bytes and shared public trace digest |
+| Evaluation → analysis | Exactly planned trial count, no missing rows/commitments; per-trial legality replay, fixed denominator, complete-only exact analyzer |
+| Resources → status | Generation + parent + child aggregate CPU, generation-to-completion wall, save bytes and observed transitions; overrun RESOURCE_STOP/INCOMPLETE |
+
+Fresh `python -I` children receive only five public files and no evaluation feedback.
+Negative tests cover forbidden metadata keys, import root and absent relative private
+files. This remains the adopted cooperative-code boundary, not same-UID hostile custody.

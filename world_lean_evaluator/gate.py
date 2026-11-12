@@ -16,6 +16,8 @@ from packages.world_lean.learner import (Learner, demo_candidates, derive_bodies
 from .fixture import (FIXTURE_STREAMS, Recipe, audit_ambiguity, body, examples,
                       random_train_blocks)
 
+from .protocol import DEMOS_PER_LAW
+
 DESIGN_TRANSITION_CEILING=252_928_000
 WALL_CAP_SECONDS=48*3600
 CPU_CAP_SECONDS=36*3600
@@ -34,7 +36,7 @@ def negative_boundary_fixture() -> dict:
         public=root/'child_only'/'world_lean'
         public.mkdir(parents=True)
         public_src=Path(__file__).parents[1]/'packages'/'world_lean'
-        for filename in ('__init__.py','core.py','learner.py','child_entry.py'):
+        for filename in ('__init__.py','core.py','learner.py','child_entry.py','protocol.py'):
             shutil.copyfile(public_src/filename,public/filename)
         private=root/'evaluator_private'
         private.mkdir()
@@ -62,12 +64,12 @@ def reachability_fixture() -> dict:
     evidence={}
     for category,recipe in categories.items():
         data=examples(recipe,FIXTURE_STREAMS[0])
-        asts,stats=demo_candidates(data[:6])
-        successes=[ast for ast in asts if all(execute(ast,x)[0]==y for x,y in data[:6])]
+        asts,stats=demo_candidates(data[:DEMOS_PER_LAW])
+        successes=[ast for ast in asts if all(execute(ast,x)[0]==y for x,y in data[:DEMOS_PER_LAW])]
         if not successes:raise AssertionError('STATIC-RANK fixture unreachable: '+category)
         assert stats['verified']<=128
         evidence[category]={'candidate_ordinal':next(i+1 for i,a in enumerate(asts)
-               if all(execute(a,x)[0]==y for x,y in data[:6])),
+               if all(execute(a,x)[0]==y for x,y in data[:DEMOS_PER_LAW])),
                'verified':stats['verified'],'constructed_edges':stats['construct_edges'],
                'chosen_ast_digest':hashlib.sha256(canonical(successes[0])).hexdigest()}
     return evidence
@@ -90,7 +92,7 @@ def benchmark() -> dict:
     inference_seconds={}
     for arm in ('FULL','OFF','STATIC-RANK','LOOKUP'):
         begin=time.perf_counter()
-        infer(snap,arm,demo[:6],demo[6][0])
+        infer(snap,arm,demo[:DEMOS_PER_LAW],demo[DEMOS_PER_LAW][0])
         inference_seconds[arm]=time.perf_counter()-begin
     estimated_transition_sec=DESIGN_TRANSITION_CEILING/rate
     # pessimistic 16*64*3 observed update costs, plus 2x transition-time reserve

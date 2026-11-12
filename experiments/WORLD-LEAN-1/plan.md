@@ -29,3 +29,14 @@ snapshot-before-evaluation custody. Current implementation deliberately raises
 ## 2026-11-12 limited six-demo revision proposal
 
 Owner selected (b) after PR #209's implementation PASS. [Design -02](../../docs/research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-02.md) changes precisely one experimental input: four public demos (true2/false2) to six (true3/false3) per law. All derivative source, ordering and arithmetic are updated; arms, seeds, thresholds, cap and world semantics remain identical. [New order](../../docs/research/WORLD-LEAN-1-ORDER-FREEZE-20261112-02.md), [new source lock](../../docs/research/WORLD-LEAN-1-SOURCE-LOCK-20261112-02.json) and [new fixture receipt](runs/20261112-six-demo-fixture-gate.md) coexist with untouched -01 originals. Formal seed/holdout/scoring remains forbidden. Independent supervisor diff review precedes separate Owner adoption and later evaluation GO.
+
+## 2026-11-13 repair -03 (current authorization)
+
+Following PR #210's legitimate pre-seed stop, Owner authorizes repair and evidence
+only. [Repair specification / complete constant table](../../docs/research/WORLD-LEAN-1-REPAIR-20261113-03.md)
+records the adopted -02, inherited evaluation GO, and the additional supervisor
+re-audit + Owner resumption requirement. The executable driver is implemented;
+only named artificial TRAIN fixtures and synthetic dry-run are allowed now.
+[Design -03](../../docs/research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-03.md)
+changes exactly two prose typos; no scientific parameter changes. New lock/order
+-03 coexist with immutable predecessors. [Evidence receipt](runs/20261113-repair-03.md).
