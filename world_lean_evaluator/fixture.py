@@ -68,8 +68,8 @@ def initial(stream: CounterStream, extra: bool = False) -> State:
 def examples(recipe: Recipe, fixture_stream: str, extra: bool = False) -> tuple[tuple[State,State],...]:
     if fixture_stream not in FIXTURE_STREAMS: raise ValueError('only named artificial fixture streams')
     out=[]; seen=set()
-    # T,T,F,F fixed presentation (labels omitted); query T,F.
-    for kind,wants in [('demo',True),('demo',True),('demo',False),('demo',False),('query',True),('query',False)]:
+    # T,T,T,F,F,F fixed presentation (labels omitted); query T,F.
+    for kind,wants in [('demo',True)]*3+[('demo',False)]*3+[('query',True),('query',False)]:
         index=len(out)
         rng=CounterStream('world-lean-1','FIXTURE_TRAIN_ONLY',fixture_stream,
                           str(recipe.condition),str(recipe.then_body),str(recipe.else_body),
@@ -88,9 +88,9 @@ def audit_ambiguity(fixture_stream: str, extra: bool = False) -> dict:
     ambiguous=0; unresolved=0; total=0
     for true_law in lawset:
         data=examples(true_law,fixture_stream,extra=extra)
-        agreeing=tuple(h for h in lawset if all(target(h,s)==t for s,t in data[:4]))
+        agreeing=tuple(h for h in lawset if all(target(h,s)==t for s,t in data[:6]))
         if len(agreeing)>1: unresolved+=1
-        for query,_ in data[4:]:
+        for query,_ in data[6:]:
             predictions={digest(target(h,query).record()) for h in agreeing}
             ambiguous+=len(predictions)>1
             total+=1
@@ -125,5 +125,5 @@ def random_train_blocks(fixture_stream: str, blocks: int = 3) -> tuple[dict,...]
             result.append({'tag':opaque_tag,
                 'initial':pre.record(),'actions':actions,'observations':observations,
                 'success':s==target(recipe,pre),
-                'demos':[[x.record(),y.record()] for x,y in examples(recipe,fixture_stream)[:4]]})
+                'demos':[[x.record(),y.record()] for x,y in examples(recipe,fixture_stream)[:6]]})
     return tuple(result)
