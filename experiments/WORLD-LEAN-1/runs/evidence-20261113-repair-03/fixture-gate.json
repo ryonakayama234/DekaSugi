@@ -85,22 +85,22 @@
   "transitions": {
     "caveat": "Artificial one-law timings, CPython fixture runtime and projected per-query costs are NOT rigorous 16-seed wall/CPU bounds; filesystem I/O, source patch differences and worst-case grammar remain unmeasured.",
     "design_cap_transitions": 252928000,
-    "extrapolation_2x_transitions_plus_update_hours": 0.666,
-    "measured_transitions_per_sec": 630560.07,
+    "extrapolation_2x_transitions_plus_update_hours": 0.657,
+    "measured_transitions_per_sec": 651067.24,
     "meets_5000_per_sec": true,
     "n_transitions": 100000,
     "sample_one_query_per_arm_seconds": {
-      "FULL": 0.113396,
-      "LOOKUP": 0.00244,
-      "OFF": 0.11128,
-      "STATIC-RANK": 0.110325
+      "FULL": 0.112411,
+      "LOOKUP": 0.002452,
+      "OFF": 0.110369,
+      "STATIC-RANK": 0.110923
     },
-    "sample_query_extrapolation_hours": 0.432,
-    "seconds": 0.158589,
-    "transitions_only_hours": 0.111,
+    "sample_query_extrapolation_hours": 0.43,
+    "seconds": 0.153594,
+    "transitions_only_hours": 0.108,
     "under_36h_cpu_proxy": true,
     "under_48h_wall_proxy": true,
-    "update_for_64_train_events_seconds": 0.012624,
+    "update_for_64_train_events_seconds": 0.012465,
     "update_library_size": 6,
     "updates_reached": 1
   }

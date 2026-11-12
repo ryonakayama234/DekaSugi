@@ -42,6 +42,6 @@ test_two_and_only_two_design_corrections (tests.test_world_lean_formal.FormalRep
 test_without_explicit_resume_no_official_seed (tests.test_world_lean_formal.FormalRepair.test_without_explicit_resume_no_official_seed) ... ok
 
 ----------------------------------------------------------------------
-Ran 42 tests in 9.465s
+Ran 42 tests in 9.552s
 
 OK

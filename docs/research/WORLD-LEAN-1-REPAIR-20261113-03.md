@@ -13,10 +13,10 @@ tags: world, repair, protocol, evidence
 ## 1. protocol.py の全定数の照合
 
 **唯一の定義元は `packages/world_lean/protocol.py`**。評価側の
-`world_lean_evaluator/protocol.py` は下記14個を同じ名前で再公開する。
+`world_lean_evaluator/protocol.py` は下記13個を同じ名前で再公開する。
 子に評価側モジュールをimportさせず、このデータを持たない公開ファイルだけをコピーするための配置である。
 `DEMOS_PER_LAW` の定義は1か所のみ。fixture、曖昧性監査、正式生成、学習側検証・partitionは同じ定数を参照する。
-下表は旧評価側protocolの全13定数＋明示化したARMSを網羅する（関数・例外クラスは定数ではない）。
+下表は旧評価側protocolの全12定数＋明示化したARMSを網羅する（関数・例外クラスは定数ではない）。
 
 | 定数 | 旧値 | -03 値 | 設計 -02 の対応 | 判定 |
 |---|---|---|---|---|

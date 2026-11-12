@@ -18,6 +18,9 @@ class FormalRepair(unittest.TestCase):
     def test_numeric_contract_reexports_all_original_constants(self):
         names=('WORLD','N_REPLICATES','B','TRAIN_BODY_PAIRS','HELD_OUT_PAIR_PLAN','DEMOS_PER_LAW',
                'QUERIES_PER_LAW','EXTRA_DIAG_QUERIES_PER_LAW','DRAW_LIMIT','MAX_WALL_SECONDS','MAX_CPU_SECONDS','MAX_SAVE_BYTES')
+        inventory={n.targets[0].id for n in ast.parse(Path(public.__file__).read_text()).body if isinstance(n,ast.Assign)}
+        self.assertEqual(inventory,set(names)|{'ARMS'})
+        self.assertEqual(len(inventory),13)
         for name in names:self.assertEqual(getattr(public,name),getattr(evaluator,name))
         self.assertEqual(public.DEMOS_PER_LAW,6)
         self.assertEqual(public.B,(0,512,1024,2048,4096))

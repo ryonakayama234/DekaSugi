@@ -78,7 +78,7 @@ def manifest(dry_run=False):
         'wall_cap':MAX_WALL_SECONDS,'cpu_cap':MAX_CPU_SECONDS,'save_cap':MAX_SAVE_BYTES,
         'transition_ceiling':252928000,
         'stream':'raw master + length-prefixed world-lean-1/replicate/phase/law/item + uint64 counter; SHA256 unbiased rejection',
-        'bootstrap':'MT19937, shared 9999 paired resamples; seed=SHA256(master + LP world-lean-1/bootstrap); exact linear percentile',
+        'bootstrap':'MT19937, shared 9999 paired resamples; seed=Stream(master,bootstrap).uint(2**256), SHA256 with uint64 counter=0; exact linear percentile',
         'secondary':'same six demos; query lengths 7..8; separately named public token alphabet',
         'stop':'no retries/redraw except branch/duplicate rejection; all snapshots before all scoring'}
 
