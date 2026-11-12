@@ -1110,3 +1110,14 @@ flowchart LR
 | SemanticResult / RuntimeMetadata | 前者は固定順の整数・有理数と決定的trace、後者はCPU／wall／RSS等。一致の範囲を混ぜない |
 
 JSON受渡し／別processは協力的コードの分離案であり、悪意ある同一Unixユーザーへの非干渉証明ではない。RQ1（認定射程）・RQ2（分離脅威モデル）・RQ3（goal契約）は未決。実データ・schema実装・結果は本PRに存在しない。
+
+
+## WORLD-LEAN-1 — implemented synthetic-only interface (2026-11-12)
+
+Supersedes the preceding `未実装` status as an engineering update, **not** as permission for formal evaluation. RQ1–RQ3 were approved in the [supervisor review](https://github.com/ryonakayama234/DekaSugi/pull/208#issuecomment-6823583705), followed by separate Owner implementation GO.
+
+- Parent-only `world_lean_evaluator.fixture`: TRAIN recipe menu, synthetic conditions/bodies, artificial stream sampling and oracle targets. Recipe identifiers, seed material and target never cross into a learner child request.
+- Child-only `packages.world_lean.child_entry`: exact schema `train` / `infer` / `boundary_probe`; reject unexpected keys including `holdout`, `evaluation_source`, `seed`, `target`. Separate Python `-I` process and source-only root, with negative artificial sentinel.
+- `packages.world_lean.core`: 11 operations, 14 concrete tokens, all 4 fields, finish-only scoring, 12-step termination, bounded typed AST, canonical JSON. Public snapshots are deterministic byte strings; FULL/OFF share identical snapshot input and OFF bars acquired CALLs. STATIC-RANK uses fixed generic one-branch grammar and TRAIN-only integer frequency rank; LOOKUP stores available success traces without truncation to 128.
+- `world_lean_evaluator.protocol.formal_generation` and `.formal_run` raise `OwnerEvaluationAuthorizationRequired` unconditionally. Formal seed/holdout creation and evaluation implementations are intentionally absent pending independent supervisor approval and another Owner GO.
+- The [source lock](../research/WORLD-LEAN-1-SOURCE-LOCK-20261112.json), [total order](../research/WORLD-LEAN-1-ORDER-FREEZE-20261112.md) and [artificial gate result](../../experiments/WORLD-LEAN-1/runs/20261112-fixture-gate.md) are auditable; source commitment alone does not prove scientific validity or hostile custody. Original CAL/SPEC and sealed historical records remain unchanged.

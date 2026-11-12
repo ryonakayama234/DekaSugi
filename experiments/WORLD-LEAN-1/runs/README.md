@@ -19,3 +19,21 @@ tags: world, experiment-ledger, design-only
 | 結果採用 | NOT_EVALUATED | LEAN候補を旧B／L-Schema最終認定へ自動変換しない |
 
 費用算術・二項尾確率の確認と文書リンク検査は設計の検算であり、世界・学習器・人工fixtureを走らせた実験結果ではない。旧CAL_AUTHORIZED・実施前停止は不変。実験run ID、seed、task digest、成績、CPU実測は存在しない。
+
+
+## 2026-11-12 engineering implementation update — later authorization
+
+The above `NOT_AUTHORIZED` entries describe the former design-only stage. Following supervisor [AGREE](https://github.com/ryonakayama234/DekaSugi/pull/208#issuecomment-6823583705), Owner adopted design `a0d0a203` and separately granted *implementation plus artificial fixture* GO. [Source order and digest](../../../docs/research/WORLD-LEAN-1-ORDER-FREEZE-20261112.md) are submitted but **not independently approved**.
+
+| Updated gate | State |
+|---|---|
+| World / public learner / four arms / analyzer implementation | IMPLEMENTED, fixture-only |
+| Unit / semantics / STATIC-RANK reachability / process boundary fixture | 23 synthetic tests PASS locally on CPython 3.13.5 |
+| Transition benchmark / extrapolation | 100,000 transitions measured; [receipt](20261112-fixture-gate.md), no real-run guarantee |
+| TRAIN-only ambiguity (4 artificial series) | 18/192 (9.375%) pooled; one series 7/48 (14.58%), supervisor to assess |
+| Total order and 12-file source digest | COMMITTED / SUPERVISOR_REVIEW_PENDING |
+| CPython 3.12.12 exact-head CI | PENDING, not claimed as passed |
+| Formal seeds / holdout materialization / evaluation | FORBIDDEN / NOT_RUN; separate Owner GO required |
+| Existing CAL/SPEC records | UNCHANGED |
+
+[Deterministic and timing evidence JSON](20261112-artificial-fixture.json). Stop after this gate; no evaluation authorization is implied by a passing fixture.

@@ -458,3 +458,12 @@ The controlling Owner decision is [PR #183 comment 6675971478](https://github.co
 - [Issue #207](https://github.com/ryonakayama234/DekaSugi/issues/207) / [設計案](docs/research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-01.md) / [planned台帳](experiments/WORLD-LEAN-1/runs/README.md)。Ownerの路線組替えに基づく新しい設計提案。実装・seed／task生成・学習・評価・旧CAL再実行は未許可。
 - WORLD-Rの三層切断・段階認定・seed境界を維持する。4腕の効率候補をL-Schema最終認定へ自動変換しない。数値・生成規則・対照・finish契約はproposed、逆質問RQ1〜3は未決。採用も実装GO／評価GOとは別。
 - 旧SPEC-06、CALプロトコル、CAL_AUTHORIZEDとゲート停止・旧ソース／workflow／封印物を編集しない。新しい実行入口を本PRに追加しない。人工fixture工程も別許可を要する。
+
+
+## WORLD-LEAN-1 — adopted design / fixture-only implementation GO (2026-11-12)
+
+- The preceding `design-only` subsection is a historical record, not the latest authorization. Owner subsequently adopted [WORLD-LEAN-EXPERIMENT-DESIGN-20261112-01](docs/research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-01.md) at PR #208 head `a0d0a203`; [supervisor AGREE](https://github.com/ryonakayama234/DekaSugi/pull/208#issuecomment-6823583705) included RQ1–RQ3 agreement. Owner then separately authorized **implementation and artificial fixture checks only**.
+- Independent `packages/world_lean` learner and `world_lean_evaluator` fixture-evaluator/CLI are isolated from `world_cal`. Never import, mutate or execute old CAL/SPEC scored sources, sealed data or stopped workflows. [Freeze/order contract](docs/research/WORLD-LEAN-1-ORDER-FREEZE-20261112.md), [source lock](docs/research/WORLD-LEAN-1-SOURCE-LOCK-20261112.json), [artificial evidence](experiments/WORLD-LEAN-1/runs/20261112-fixture-gate.md).
+- `WORLD-LEAN-1` fixture entrypoints and CI run **only artificial TRAIN-side exercises**. Do not create formal master seeds, actual split/holdout/query target files, launch official evaluation, compare against formal outcomes or claim B certification. Formal protocol gates fail closed. Any source-lock change needs a new digest and independent review.
+- The four arms are FULL/OFF/STATIC-RANK/LOOKUP; OFF must receive exactly FULL snapshot bytes with all acquired CALLs disabled. Separate cooperative subprocess and exact input schemas keep hidden targets out of child. The local synthetic negative test is not a hostile same-user custody proof.
+- Source-lock digest `ee1ae0b144a0b1deb76034fc23465c9b76828719e98b8dcccd33b40674e4a147` is **submitted for supervisor audit**; not yet independently accepted. CPython 3.12.12 exact-patch CI replay is pending; local fixtures used CPython 3.13.5. Stop at fixture gate for supervisor and a distinct Owner evaluation GO.

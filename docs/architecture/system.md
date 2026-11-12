@@ -1093,3 +1093,22 @@ flowchart TD
 ```
 
 図のHOLD→USEは公開初期観測だけの受渡し。非公開目標は親Evaluatorに残る。子は成否を受け取らず、試行ごとに作業メモリを捨てる。4腕はschema固有帰属を完了しない。方式・閾値・seed数はproposed、独立審査とOwner採否は未了。
+
+
+## WORLD-LEAN-1 — fixture-only implemented topology (2026-11-12)
+
+The earlier proposed diagram is preserved as historical design context. Following Owner design adoption and implementation GO, the current **engineering-only** topology is:
+
+```mermaid
+flowchart TD
+    F["Separate artificial TRAIN fixture generator"] --> E["Parent evaluator fixture gate"]
+    E --> C["Minimal public JSON input"]
+    C --> L["Independent learner child in restricted source root"]
+    L --> S["FULL snapshot bytes"]
+    S --> U["FULL or OFF (same bytes, CALL blocked in OFF)"]
+    C --> R["STATIC-RANK or LOOKUP"]
+    E --> A["Artificial semantics, reachability, speed, ambiguity and boundary evidence"]
+    E -. "Forbidden: formal seed, holdout and scored evaluation" .-> X["Fail-closed formal protocol"]
+```
+
+[Implementation package](../../packages/world_lean/README.md), [separate fixture package](../../world_lean_evaluator/README.md), [total-order source lock](../research/WORLD-LEAN-1-ORDER-FREEZE-20261112.md), [fixture receipt](../../experiments/WORLD-LEAN-1/runs/20261112-fixture-gate.md). The child has no evaluator import path, official target or recipe, and cannot run arbitrary Python. No old `world_cal` imports. Frozen source is submitted for independent review, **not** approved for formal scoring. Local replay used CPython 3.13.5; 3.12.12 CI remains pending.
