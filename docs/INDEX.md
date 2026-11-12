@@ -348,3 +348,9 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 - [Bit-specific learner total order](research/WORLD-LEAN-1-ORDER-FREEZE-20261112.md) and [12-file SHA-256 source-lock manifest](research/WORLD-LEAN-1-SOURCE-LOCK-20261112.json). Independent audit of freeze still pending.
 - [Learner package](../packages/world_lean/README.md), [separate fixture evaluator](../world_lean_evaluator/README.md), [artificial fixture evidence](../experiments/WORLD-LEAN-1/runs/20261112-fixture-gate.md), [plan](../experiments/WORLD-LEAN-1/plan.md), [ledger](../experiments/WORLD-LEAN-1/runs/README.md).
 - **No official seeds, split files, holdout, snapshot score evaluation or B result**. CPython 3.12.12 replay and independent supervisor gate outstanding. Historic CAL/SPEC unaffected.
+
+### WORLD-LEAN-1 — 6デモ限定改訂（2026-11-12）
+
+- [設計-02](research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-02.md) — -01を保持し公開仕様デモ4→6と依存費用のみを改訂。監督者差分審査・Owner採否前。
+- [全順序-02](research/WORLD-LEAN-1-ORDER-FREEZE-20261112-02.md) / [source lock-02](research/WORLD-LEAN-1-SOURCE-LOCK-20261112-02.json) — 旧lockは上書きしない。
+- [6デモTRAIN人工監査](../experiments/WORLD-LEAN-1/runs/20261112-six-demo-fixture-gate.md) — 正式評価ではない。

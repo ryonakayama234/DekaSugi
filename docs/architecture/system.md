@@ -1112,3 +1112,7 @@ flowchart TD
 ```
 
 [Implementation package](../../packages/world_lean/README.md), [separate fixture package](../../world_lean_evaluator/README.md), [total-order source lock](../research/WORLD-LEAN-1-ORDER-FREEZE-20261112.md), [fixture receipt](../../experiments/WORLD-LEAN-1/runs/20261112-fixture-gate.md). The child has no evaluator import path, official target or recipe, and cannot run arbitrary Python. No old `world_cal` imports. Frozen source is submitted for independent review, **not** approved for formal scoring. Local replay used CPython 3.13.5; 3.12.12 CI remains pending.
+
+## WORLD-LEAN-1 six-demo fixture-only revision (2026-11-12)
+
+The existing learner/evaluator topology and world semantics above remain unchanged. [Design -02](../research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-02.md) increases the six public law specification pairs to true×3/false×3 (no labels). Learner validation, generic constructor, LOOKUP, cost accounting and TRAIN-only ambiguity are updated solely as consequences. [New source order](../research/WORLD-LEAN-1-ORDER-FREEZE-20261112-02.md) and [lock](../research/WORLD-LEAN-1-SOURCE-LOCK-20261112-02.json) supersede -01 only if Owner adopts the revision. The former lock is unchanged, and independent supervisor diff review, separate Owner adoption, then separate formal evaluation GO remain mandatory.

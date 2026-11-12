@@ -16,7 +16,7 @@ from packages.world_lean.learner import (Learner, demo_candidates, derive_bodies
 from .fixture import (FIXTURE_STREAMS, Recipe, audit_ambiguity, body, examples,
                       random_train_blocks)
 
-DESIGN_TRANSITION_CEILING=185_688_064
+DESIGN_TRANSITION_CEILING=252_928_000
 WALL_CAP_SECONDS=48*3600
 CPU_CAP_SECONDS=36*3600
 
@@ -62,12 +62,12 @@ def reachability_fixture() -> dict:
     evidence={}
     for category,recipe in categories.items():
         data=examples(recipe,FIXTURE_STREAMS[0])
-        asts,stats=demo_candidates(data[:4])
-        successes=[ast for ast in asts if all(execute(ast,x)[0]==y for x,y in data[:4])]
+        asts,stats=demo_candidates(data[:6])
+        successes=[ast for ast in asts if all(execute(ast,x)[0]==y for x,y in data[:6])]
         if not successes:raise AssertionError('STATIC-RANK fixture unreachable: '+category)
         assert stats['verified']<=128
         evidence[category]={'candidate_ordinal':next(i+1 for i,a in enumerate(asts)
-               if all(execute(a,x)[0]==y for x,y in data[:4])),
+               if all(execute(a,x)[0]==y for x,y in data[:6])),
                'verified':stats['verified'],'constructed_edges':stats['construct_edges'],
                'chosen_ast_digest':hashlib.sha256(canonical(successes[0])).hexdigest()}
     return evidence
@@ -84,13 +84,13 @@ def benchmark() -> dict:
     begun=time.perf_counter()
     for block in blocks:learner.add_block(block)
     update_seconds=time.perf_counter()-begun
-    # Observe the four public inference paths on one TRAIN-only artificial law.
+    # Observe the six-demo inference paths on one TRAIN-only artificial law.
     demo=examples(Recipe(1,3,1),FIXTURE_STREAMS[0])
     snap=learner.snapshot()
     inference_seconds={}
     for arm in ('FULL','OFF','STATIC-RANK','LOOKUP'):
         begin=time.perf_counter()
-        infer(snap,arm,demo[:4],demo[4][0])
+        infer(snap,arm,demo[:6],demo[6][0])
         inference_seconds[arm]=time.perf_counter()-begin
     estimated_transition_sec=DESIGN_TRANSITION_CEILING/rate
     # pessimistic 16*64*3 observed update costs, plus 2x transition-time reserve
@@ -120,7 +120,7 @@ def run_gate() -> dict:
     bench=benchmark()
     reach=reachability_fixture()
     boundary=negative_boundary_fixture()
-    evidence={'schema':'WORLD-LEAN-1/ARTIFICIAL-FIXTURE-GATE/1',
+    evidence={'schema':'WORLD-LEAN-1/ARTIFICIAL-FIXTURE-GATE/2',
         'formal_seed_generation':'NOT_RUN','formal_holdout':'NOT_MATERIALIZED',
         'formal_evaluation':'NOT_RUN','ambiguous_train_only':amb,
         'ambiguity_combined_fraction':f'{ambiguous}/{total}',

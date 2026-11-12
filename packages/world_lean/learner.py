@@ -106,8 +106,8 @@ def demo_candidates(demos: tuple[tuple[State,State], ...],
     Fixed IF scaffold tries all 5-read equalities in canonical order. Branch
     bodies come from uniform grammar beam synthesis; not a hand-written recipe.
     """
-    if len(demos)!=4 or any(type(x) is not tuple or len(x)!=2 for x in demos):
-        raise Fault('four public input/output demo pairs required')
+    if len(demos)!=6 or any(type(x) is not tuple or len(x)!=2 for x in demos):
+        raise Fault('six public input/output demo pairs required')
     formed={}
     construction=0
     for ast in learned:
@@ -120,7 +120,7 @@ def demo_candidates(demos: tuple[tuple[State,State], ...],
     partitions=[(None,(0,1,2,3),())]
     for pred in sorted(PREDICATES,key=canonical):
         truth=tuple(i for i,(s,_) in enumerate(demos) if eval_predicate(s,pred))
-        false=tuple(i for i in range(4) if i not in truth)
+        false=tuple(i for i in range(6) if i not in truth)
         if truth and false:
             partitions.append((pred,truth,false))
     body_cache={}
@@ -174,7 +174,7 @@ def demo_candidates(demos: tuple[tuple[State,State], ...],
     checked.sort(key=lambda x:x[:3])
     return tuple(v[3] for v in checked),{'construct_edges':construction,
         'formed':len(formed),'verified':len(checked),'capped':len(formed)>max_verified,
-        'best_mismatches':checked[0][0] if checked else 4}
+        'best_mismatches':checked[0][0] if checked else 6}
 
 def _ast_ok(ast: list, library: dict[str,list] | None = None) -> bool:
     try:
@@ -204,7 +204,7 @@ def _from_record(obj: dict) -> tuple[tuple[State,State],...]:
         if type(raw) is not list or len(raw)!=2:raise Fault('action pair')
         s=step(s,tuple(raw))
         if obj['observations'][i+1]!=s.record():raise Fault('transition trace mismatch')
-    if type(obj['demos']) is not list or len(obj['demos'])!=4:raise Fault('four TRAIN demos')
+    if type(obj['demos']) is not list or len(obj['demos'])!=6:raise Fault('six TRAIN demos')
     return tuple((State.parse(a),State.parse(b)) for a,b in obj['demos'])
 
 @dataclass
@@ -304,7 +304,7 @@ class Learner:
                     'counterexamples':[],'tag':recent[-1]['tag'],
                     'rank':[mismatch,mdl,key.decode('utf-8')]}
         # Candidate branches are constructed only from previously acquired
-        # macros and general read-term equalities that split four TRAIN demos.
+        # macros and general read-term equalities that split six TRAIN demos.
         macro_lib={k:v['ast'] for k,v in self.library.items()}
         graph_constructed=0
         graph_checked=0
@@ -404,7 +404,7 @@ def _lookups(snapshot: dict, demos: tuple[tuple[State,State],...], query: State)
                       (a.selection[1] if a.selection is not None else None,b.selection[1] if b.selection is not None else None)):
             symbol_d += (0 if ai==bi else 16 if ai is None or bi is None else abs(ai-bi))
         return symbol_d
-    # All 512 TRAIN blocks retained, distance from fixed four public demos.
+    # All 512 TRAIN blocks retained, distance from fixed six public demos.
     grouped=[]
     for ep in snapshot['episodes']:
         ed=tuple((State.parse(a),State.parse(b)) for a,b in ep['demos'])
