@@ -19,5 +19,11 @@ jobs:
         run: python -m unittest tests.test_world_lean_fixture -v
       - name: Run artificial-only engineering gate
         run: python -m world_lean_evaluator fixture-gate --output /tmp/world-lean-artificial-evidence.json
+      - name: Upload six-demo TRAIN-only evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: world-lean-six-demo-train-only
+          path: /tmp/world-lean-artificial-evidence.json
+          if-no-files-found: error
       - name: Show formal protocol refuses without Owner approval
         run: python -c 'from world_lean_evaluator.protocol import formal_run,OwnerEvaluationAuthorizationRequired; import sys; exec("try:\n formal_run()\nexcept OwnerEvaluationAuthorizationRequired:\n sys.exit(0)\nsys.exit(1)")'
