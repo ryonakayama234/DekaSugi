@@ -20,3 +20,7 @@ These four named fixture streams are not the official 16 seeds, not the actual
 holdout and not independent generalization evidence. Failure to reproduce
 performance on CPython 3.12.12, or a larger ambiguity estimate, must be treated
 as an audit finding and not patched using official holdout feedback.
+
+## Six-demo revision -02 (proposed)
+
+The TRAIN-only artificial generator emits six public law demos (T,T,T,F,F,F) followed by two balanced queries and reruns the same four named synthetic ambiguity streams. No official seed, holdout or formal scoring is created. See [design -02](../docs/research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-02.md), [separate source lock -02](../docs/research/WORLD-LEAN-1-SOURCE-LOCK-20261112-02.json) and [fixture receipt -02](../experiments/WORLD-LEAN-1/runs/20261112-six-demo-fixture-gate.md).
