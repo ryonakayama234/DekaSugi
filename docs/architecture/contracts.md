@@ -1095,3 +1095,16 @@ flowchart LR
 - Query: exactly one Q001 pre-answer intent per law (P3 digest, legal Q digest, paid budget=1, expiry, method/policy hashes). Remote GitHub audit-branch commit/push, ref verification and fetched exact bytes required before synthetic answer callback; failures leave an unrepeatable local intent and **no paid answer**.
 - Pre-score: 448 scheduled slots always represented. `NOT_RUN` and `STARTED_MISSING` plus typed INVALID/RESOURCE_STOP/RUN_BLOCK/UNMEASURED are not replaced with zero. Raw trace/receipt SHA required for completed slots. Immutable pre-score manifest, event-chain tip and remote object bytes rechecked; missing Q receipts or any changed original block.
 - Gate: `SCIENTIFIC_EXECUTION_AUTHORIZED=False` and independent G4/G5/G6 flags are false; `require_score_gate` rejects caller-provided Owner approval claims. No score or truth reading is implemented. G4 dossier generator emits only NOT_AUDITED documents. GitHub-only timestamps are not independent trusted timestamps. [G3-3 specification](../specs/R2-M-A-G3-3.md).
+
+
+## WORLD CAL — 不完備結果とscan契約（最終監査候補、2026-11-12）
+
+| 境界 | 契約 |
+|---|---|
+| K0-b/c → `k0_result_outcome` | UNKNOWNがFAIL・飽和に優先。Cのstatus=COMPLETE確認前にsaturatedを読まない。全sourceのcomplete辞書を出典認証としない。 |
+| `k0_status` → 両scan入口 | 省略・不明・停止・未知の値はSTOP_UNKNOWN。既知のK0A_WITNESS/K0A_NO_WITNESSだけが継続可能。NO_WITNESSの二階帰属STOPは別規則。これは外部承認の認証器ではない。 |
+| 反復 → 統合scan | exact boolのandと10個のbool成分の一致が必要。未完了・例外・部分countは捨てず停止する。大きいnへの飛越しは禁止。 |
+| scan → route | STOP_UNKNOWNではn_required=null、power_lower_bound=null、cost_cap_check=false。確定nは完全な3シナリオ計数後のみ。FINITE_DESCRIPTIVE fallbackは未実装。 |
+| route → receipt | STOP_UNKNOWNに非nullのn/powerを添えればschema拒否。実CALには別のsource/role/Owner認証が必要。 |
+
+[最終監査依頼・case証跡](../research/WORLD-CAL-FINAL-AUDIT-REQUEST-20261112-01.md)に完全性の範囲とテスト差替えの範囲を明記。実CAL・K0・power simulationやsplit・seed生成、algorithm_digest固定を許可しない。wall予算は将来のCAL_AUTHORIZED記録で扱う運用規則。

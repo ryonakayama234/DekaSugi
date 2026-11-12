@@ -38,6 +38,15 @@ class AbstractCell:
 
 
 def shortest_path_abstract(cell,*,cap=MAX_NODES,horizon=T_HORIZON):
+    try:
+        if type(cap) is not int or not 1<=cap<=MAX_NODES:
+            raise OracleUnknown("invalid registered node cap")
+        return _shortest_path_abstract(cell,cap=cap,horizon=horizon)
+    except (OracleUnknown,ValueError,TypeError,StopIteration,RecursionError,MemoryError):
+        return {"status":"UNKNOWN","length":None}
+
+
+def _shortest_path_abstract(cell,*,cap,horizon):
     """Exact BFS shortest primitive path or UNKNOWN (no early negative)."""
     w=World(cell.alphabet,cell.verifier,horizon=horizon)
     w.reset(cell.initial)
@@ -79,6 +88,22 @@ def complete_l90(cells,*,support_complete,cap=MAX_NODES):
 
 
 def exhaustive_k0c_curve(*,cells,space_candidates,space_complete,
+                          support_complete,b_final,
+                          control_curves,cap=MAX_NODES):
+    # Reject inflated caps: a caller cannot bypass the proven syntax lower
+    # bound with a huge integer and a forged one-program 'complete' receipt.
+    if type(cap) is not int or not 1<=cap<=MAX_NODES:
+        return {"status":"UNKNOWN","reason":"invalid registered enumeration cap"}
+    try:
+        return _exhaustive_k0c_curve(cells=cells,space_candidates=space_candidates,
+            space_complete=space_complete,support_complete=support_complete,
+            b_final=b_final,control_curves=control_curves,cap=cap)
+    except (OracleUnknown,ValueError,TypeError,KeyError,StopIteration,
+            RecursionError,MemoryError):
+        return {"status":"UNKNOWN","reason":"incomplete oracle enumeration"}
+
+
+def _exhaustive_k0c_curve(*,cells,space_candidates,space_complete,
                           support_complete,b_final,
                           control_curves,cap=MAX_NODES):
     """Maximal success rate at each registered checkpoint over entire Space.

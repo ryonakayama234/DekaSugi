@@ -452,3 +452,12 @@ The controlling Owner decision is [PR #183 comment 6675971478](https://github.co
 - Parent-only `packages/r2_m_a/evidence_ledger.py` uses a unique run root, exclusive O_EXCL artifacts, O_APPEND/flock/fsynced hash-linked events and a complete unordered 448-slot manifest. Remote GitHub custody must pin actual pre-answer and pre-score SHA bytes and fail closed on push/readback failure; any local receipt alone is insufficient. Synthetic fake remote tests do not attest an actual remote seal.
 - Missing slots remain NOT_RUN or STARTED_MISSING, terminal failures INVALID/RESOURCE_STOP/RUN_BLOCK/UNMEASURED remain visible and cannot be retried after START; no absence is converted to successful zero. Q before remote, post-freeze event, overwritten trace or forged approval is rejected.
 - `packages/r2_m_a/evaluator_gate.py` always refuses scoring for this head, including caller-supplied owner_approval=True. Child import guard blocks evidence, remote, evaluator and dossier modules. `g4_dossier.py` generates eight NOT_AUDITED templates (not audit evidence); G4 exact-head, G5, G6 separately require supervisor/Owner approvals and real-path evidence. CI includes synthetic negative tests only, never scientific execution.
+
+
+
+## WORLD CAL PR #206 — 監査3後の最終監査候補（2026-11-12）
+
+- 正本は[監督者コメント6820712792](https://github.com/ryonakayama234/DekaSugi/pull/206#issuecomment-6820712792)。全探索完走を最終監査の条件にせず、健全・不完全・STOP_UNKNOWN前提で審査を依頼する。[最終監査依頼](docs/research/WORLD-CAL-FINAL-AUDIT-REQUEST-20261112-01.md)。
+- cap・列挙未完・未認証support・不正countをPASS/FAIL・飽和・route・n_requiredへ昇格しない。全sourceのK0-bは現在UNKNOWN固定、全SpaceのK0-cは下界と登録capでUNKNOWN。将来の完全性防御解除は独立監査を要する実装変更。
+- negative testは人工pairとmock scanのみ。run_one_repetitionをmockせずに本scanをテストから実行しない。CAL・K0本実行・simulation、sealed split・seed生成は引き続き禁止。algorithm_digest=null、CAL_AUTHORIZED=false。
+- CPU feasibilityはSTOP_UNKNOWN。wall予算は将来のCAL_AUTHORIZED時の運用記録で扱い、この監査提出に新たなwall実装や性能認定を混ぜない。Draft維持、merge／ready化は別承認。

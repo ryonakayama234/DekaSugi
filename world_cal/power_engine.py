@@ -13,7 +13,8 @@ from .inference import (InferenceUnknown, ht, syg, bootstrap_vectors,
                         studentized_max_t, one_sided_lower, ten_and_gates,
                         bootstrap_vectors_cached)
 from .power_route import (R_REQUIRED, BOOTSTRAPS, SCENARIOS, PowerUnknown,
-                          lower_for_completed_counts, cost)
+                          lower_for_completed_counts, cost, k0_allows_scan,
+                          unknown_scan)
 from .prf import draw_digest, uniform53, box_muller
 from .sampford import waterfill, SamplingUnknown
 from .sampford_grouped import grouped_inclusions, draw_grouped
@@ -197,7 +198,7 @@ def run_one_repetition(*, q, parent_ids, n, scenario_id, repetition, key,
         raise PowerUnknown("STOP_UNKNOWN: integrated repetition failed: "+str(exc)) from exc
 
 
-def scan_authorized(*, q, parent_ids, key, authorization, b_final):
+def scan_authorized(*, q, parent_ids, key, authorization, b_final,k0_status=None):
     """The future CAL-only R=10,000 x 3 x ascending-n scan; never pre-CAL.
 
     No simulation is called unless authorization arrives from an audited,
@@ -208,6 +209,22 @@ def scan_authorized(*, q, parent_ids, key, authorization, b_final):
             and authorization.role=="BLIND_DESIGN_CALCULATOR"
             and len(authorization.algorithm_digest)==71):
         raise PowerUnknown("STOP_UNKNOWN: CAL authorization missing")
+    if not k0_allows_scan(k0_status):
+        return unknown_scan("K0 not complete/continuable")
+    try:
+        _inputs(q,parent_ids,2,SCENARIOS[0])
+        if b_final not in (4096,6144):
+            raise PowerUnknown("invalid B_final")
+        return _scan_complete_n(q,parent_ids,key,authorization,b_final)
+    except (PowerUnknown,InferenceUnknown,SamplingUnknown,ValueError,TypeError,
+            KeyError,OverflowError,ZeroDivisionError,StopIteration,
+            RecursionError,MemoryError) as exc:
+        # No partial counts escape, no later n can replace an incomplete n.
+        # External wall interruption remains a future CAL operational rule.
+        return unknown_scan("incomplete integrated scan: "+type(exc).__name__)
+
+
+def _scan_complete_n(q,parent_ids,key,authorization,b_final):
     N=len(q)
     for n in range(2,min(N,512)+1):
         design=(waterfill(q,n),None)
@@ -216,9 +233,17 @@ def scan_authorized(*, q, parent_ids, key, authorization, b_final):
         for scenario in SCENARIOS:
             successes=0
             for r in range(R_REQUIRED):
-                if run_one_repetition(q=q,parent_ids=parent_ids,n=n,
+                result=run_one_repetition(q=q,parent_ids=parent_ids,n=n,
                         scenario_id=scenario,repetition=r,key=key,
-                        authorization=authorization,cached_design=design)["and"]:
+                        authorization=authorization,cached_design=design)
+                if (type(result) is not dict or "status" in result or
+                        type(result.get("and")) is not bool or
+                        type(result.get("ten_components")) is not tuple or
+                        len(result["ten_components"])!=10 or
+                        any(type(x) is not bool for x in result["ten_components"]) or
+                        result["and"] is not all(result["ten_components"])):
+                    raise PowerUnknown("incomplete/invalid repetition result")
+                if result["and"]:
                     successes+=1
             counts[scenario]=successes
         lower=lower_for_completed_counts(counts)
@@ -227,5 +252,4 @@ def scan_authorized(*, q, parent_ids, key, authorization, b_final):
                     "power_lower_bound":lower,"cost_cap_check":True}
     # A complete finite descriptive evaluation is a separately authorized
     # route; the simulation alone cannot assert it.
-    return {"route":"STOP_UNKNOWN","n_required":None,
-            "power_lower_bound":None,"cost_cap_check":False}
+    return unknown_scan("no certified statistical n; descriptive route not evaluated")

@@ -3,10 +3,46 @@
   "canonical_order": "path lexicographic ascending; raw sha256 of all exact stored bytes",
   "closed_source_files": [
     {
+      "encoding": "UTF-8/LF",
       "path": ".github/workflows/world-cal-synthetic-implementation.yml",
-      "size_bytes": 6338,
-      "sha256": "93090ffd0e91a644f5e6b2cf31596af5735df33d4d1d6ab7c06b766f695812ac",
-      "encoding": "UTF-8/LF"
+      "sha256": "6ba729457c930e05aa184540a7779d6ae2fb6991bd70f2a484d984181ba3aa22",
+      "size_bytes": 7222
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "AGENTS.md",
+      "sha256": "2cb6591d9c5ae8337318890981270ba05422f80d57516cf908470f6d300cbe69",
+      "size_bytes": 77607
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/INDEX.md",
+      "sha256": "49480ea588c99be34ec3c5d94a15ecf2bf89236a2e9f26014e354aeabef2102c",
+      "size_bytes": 50153
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/architecture/contracts.md",
+      "sha256": "fbba6ab171395b6e9387c2485a6ac8d780861894c8ee140f2d0f57b8096b7e5a",
+      "size_bytes": 122687
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/architecture/system.md",
+      "sha256": "a2242133902239410ae5a2ec978ca535916a8eeedf571595f144fb2dbc8483b6",
+      "size_bytes": 76505
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-FAIL-CLOSED-EVIDENCE-20261112-01.json",
+      "sha256": "891bb6abaefd5d7ea9043d2ade38b775dc5543a4d37b152af7a30b458107ea66",
+      "size_bytes": 12789
+    },
+    {
+      "encoding": "UTF-8/LF",
+      "path": "docs/research/WORLD-CAL-FINAL-AUDIT-REQUEST-20261112-01.md",
+      "sha256": "63dfd449b61a8fc5c9bc25cea9e85843e8c67e56069475836e8ad5089cf39db1",
+      "size_bytes": 10385
     },
     {
       "encoding": "UTF-8/LF",
@@ -27,16 +63,16 @@
       "size_bytes": 11318
     },
     {
+      "encoding": "UTF-8/LF",
       "path": "docs/research/WORLD-CAL-IMPLEMENTATION-CONTINUATION-20261111-02.md",
-      "size_bytes": 7105,
       "sha256": "1a51fc8a21db11b59a6b7fd5bacb08b1c888e7dd1e44456e7d54643142f1ad6c",
-      "encoding": "UTF-8/LF"
+      "size_bytes": 7105
     },
     {
+      "encoding": "UTF-8/LF",
       "path": "docs/research/WORLD-CAL-IMPLEMENTATION-COVERAGE-AUDIT-20261111-03.md",
-      "size_bytes": 9049,
       "sha256": "fd07b25e74d32326bb78051123009f7ff8955b8842d953485c7a24c3f3cc4c96",
-      "encoding": "UTF-8/LF"
+      "size_bytes": 9049
     },
     {
       "encoding": "UTF-8/LF",
@@ -57,16 +93,22 @@
       "size_bytes": 4026
     },
     {
-      "path": "scripts/audit_world_cal_id_only_repro.py",
-      "size_bytes": 3803,
-      "sha256": "e6d8d6a2e6dea372a52a243605513b773e365cc3f444a6bb3ccee3f6b148a130",
-      "encoding": "UTF-8/LF"
+      "encoding": "UTF-8/LF",
+      "path": "scripts/audit_world_cal_fail_closed.py",
+      "sha256": "165cd4d2d5a3b3517f923ea33cbc6ea01a7a066af16903e9b1eed85d8e2909d0",
+      "size_bytes": 2159
     },
     {
+      "encoding": "UTF-8/LF",
+      "path": "scripts/audit_world_cal_id_only_repro.py",
+      "sha256": "e6d8d6a2e6dea372a52a243605513b773e365cc3f444a6bb3ccee3f6b148a130",
+      "size_bytes": 3803
+    },
+    {
+      "encoding": "UTF-8/LF",
       "path": "scripts/audit_world_cal_k0_index.py",
-      "size_bytes": 554,
       "sha256": "8f700ed2bcbc8cd0ac9fb38476231c283fae68e8f55196134a169d76ce0e5d88",
-      "encoding": "UTF-8/LF"
+      "size_bytes": 554
     },
     {
       "encoding": "UTF-8/LF",
@@ -81,10 +123,10 @@
       "size_bytes": 4091
     },
     {
+      "encoding": "UTF-8/LF",
       "path": "scripts/build_world_cal_source_manifest.py",
-      "size_bytes": 4550,
-      "sha256": "4640832d58b9230a1f612a1a43208e53add37cb8cf901ac57b309bbd4abdb32e",
-      "encoding": "UTF-8/LF"
+      "sha256": "cef903016dcb3eaa12a1f22c74fc532ce6440f87896f52700543d370ca4315d2",
+      "size_bytes": 4885
     },
     {
       "encoding": "UTF-8/LF",
@@ -100,15 +142,21 @@
     },
     {
       "encoding": "UTF-8/LF",
+      "path": "tests/test_world_cal_fail_closed.py",
+      "sha256": "dbb9afb5112d80a959246d63d0499e1b287cbd5ffe7f336eae3d440a6318c950",
+      "size_bytes": 13717
+    },
+    {
+      "encoding": "UTF-8/LF",
       "path": "tests/test_world_cal_impl_completion.py",
       "sha256": "717c5777e58d79b4eb1cd81ea49847d2cea63c7864babd17e04bd994573e978e",
       "size_bytes": 6508
     },
     {
+      "encoding": "UTF-8/LF",
       "path": "tests/test_world_cal_k0_coverage.py",
-      "size_bytes": 3386,
       "sha256": "04fbbf947eea62f56c84650ad9bc58ee9f53aa9049c250da8f98cbe6f8c1b03e",
-      "encoding": "UTF-8/LF"
+      "size_bytes": 3386
     },
     {
       "encoding": "UTF-8/LF",
@@ -159,22 +207,22 @@
       "size_bytes": 5206
     },
     {
+      "encoding": "UTF-8/LF",
       "path": "world_cal/k0_b.py",
-      "size_bytes": 7250,
-      "sha256": "f48f9a6a4ff6e278a81d52ff4d74d70798a4f0e30ff38ce1cbc0c3344efa4896",
-      "encoding": "UTF-8/LF"
+      "sha256": "0c7b78864fcec30bd4d03f678c128eae169c882eaf3beb7b4dab23651b8f635e",
+      "size_bytes": 8282
     },
     {
+      "encoding": "UTF-8/LF",
       "path": "world_cal/k0_c.py",
-      "size_bytes": 7216,
-      "sha256": "8746afae85089836c7850839df110f694f7cbc6027e175e950e273eb6f5dcc46",
-      "encoding": "UTF-8/LF"
+      "sha256": "3883198a6b5b9cb67e457ae0a7d2e2d01ef866ff8956a00e9d3146b0bd11c648",
+      "size_bytes": 8498
     },
     {
+      "encoding": "UTF-8/LF",
       "path": "world_cal/k0_coverage.py",
-      "size_bytes": 6567,
       "sha256": "8d039a7828c1228e1feebda8dcc01e7ada9f304b1a1a044ca40a5d753a1d022a",
-      "encoding": "UTF-8/LF"
+      "size_bytes": 6567
     },
     {
       "encoding": "UTF-8/LF",
@@ -191,8 +239,8 @@
     {
       "encoding": "UTF-8/LF",
       "path": "world_cal/k0_oracle.py",
-      "sha256": "abff2cb68213ed6dfc95fb279d507ca178c0abc220c1c7f382edfb0a18f5849e",
-      "size_bytes": 1054
+      "sha256": "2e0a908366177de25b23080a536ec0276488dd1442312747d049e1a35b41cffc",
+      "size_bytes": 2014
     },
     {
       "encoding": "UTF-8/LF",
@@ -227,14 +275,14 @@
     {
       "encoding": "UTF-8/LF",
       "path": "world_cal/power_engine.py",
-      "sha256": "057b91752c400064acda536ee735c7ec5532dde7212b56a8dccf286ab263d4a5",
-      "size_bytes": 11431
+      "sha256": "2e9abfaa9e8bb7b4f680bc3b49a45165b6daaab900525b715be0b5ebf9bb6b27",
+      "size_bytes": 12818
     },
     {
       "encoding": "UTF-8/LF",
       "path": "world_cal/power_route.py",
-      "sha256": "d0916c39cae71481f2be43e997671e5d623144be9bace30f8135730ba81855c8",
-      "size_bytes": 2826
+      "sha256": "81596d483d4e7b23ba1185d6c887815b732291e9ff7fdefc54380b2b058ac0b6",
+      "size_bytes": 3650
     },
     {
       "encoding": "UTF-8/LF",
@@ -290,15 +338,15 @@
     "cryptography_pin": "46.0.3",
     "libc": [
       "glibc",
-      "2.39"
+      "2.41"
     ],
     "machine": "x86_64",
     "numpy_pin": "2.2.6",
-    "openblas_num_threads": "1",
-    "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
-    "python": "3.12.16",
+    "openblas_num_threads": null,
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "python": "3.12.14",
     "python_implementation": "CPython",
-    "pythonhashseed": "0",
+    "pythonhashseed": null,
     "rfc8785_pin": "0.1.4",
     "ubuntu_runner_pin": "ubuntu-24.04"
   },
@@ -307,6 +355,7 @@
   "independent_audit_required": true,
   "seed": null,
   "source_commit": "CI_ARTIFACT_BINDS_EXACT_PR_HEAD__SEE_WORKFLOW",
+  "source_head_binding": "CI checks out the exact PR head, regenerates all 55 entries and compares every raw byte hash/size. A tracked commit cannot contain its own SHA.",
   "source_origin_git_blob": {
     "acl_e2": "6068b0b21808d7016e6570b8893ef18edc2a1d75",
     "gtheta": "7df028318df0f876ffaf7b7331738620a1187e8c",
@@ -314,6 +363,5 @@
     "spec_v6": "9362065507791ced44e2a3cc218c93a0b3cef395"
   },
   "split_digest": null,
-  "status": "CANDIDATE_UNAUDITED__NOT_ALGORITHM_DIGEST",
-  "source_head_binding": "CI runs set WORLD_CAL_SOURCE_HEAD to the exact PR SHA. Tracked manifest cannot self-contain its own commit SHA."
+  "status": "CANDIDATE_UNAUDITED__NOT_ALGORITHM_DIGEST"
 }

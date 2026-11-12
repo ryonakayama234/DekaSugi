@@ -10,6 +10,10 @@ on:
       - 'scripts/audit_world_cal_role_process.py'
       - 'scripts/audit_world_cal_id_only_repro.py'
       - 'scripts/audit_world_cal_k0_index.py'
+      - 'scripts/audit_world_cal_fail_closed.py'
+      - 'scripts/build_world_cal_source_manifest.py'
+      - 'docs/research/WORLD-CAL-*.md'
+      - 'docs/research/WORLD-CAL-*.json'
       - '.github/workflows/world-cal-synthetic-implementation.yml'
   workflow_dispatch:
 jobs:
@@ -26,6 +30,8 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12.16'
@@ -33,6 +39,13 @@ jobs:
         run: python -m pip install -r world_cal/requirements.lock
       - name: Golden and role-denial unit tests (not CAL)
         run: python -m unittest discover -s tests -p 'test_world_cal*.py' -v
+      - name: Forced caps and UNKNOWN downstream evidence (synthetic and mocked only)
+        shell: bash
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python scripts/audit_world_cal_fail_closed.py --output world-cal-fail-closed.json 2>&1 | tee world-cal-fail-closed.log
+      - name: Documentation links and metadata
+        run: python scripts/check_docs.py
       - name: Synthetic component profiler (not simulation)
         run: PYTHONPATH=. python scripts/profile_world_cal_synthetic.py --output world-cal-synthetic-profiler.json
       - name: Public N336 exact-law all-n audit (not CAL)
@@ -64,18 +77,19 @@ jobs:
         run: |
           python scripts/build_world_cal_source_manifest.py --output world-cal-algorithm-source-manifest-candidate.json > /dev/null
           cat world-cal-algorithm-source-manifest-candidate.json
-      - name: Compare checked-in 47-byte-entry closure with generated exact-head manifest
+      - name: Compare checked-in byte closure with generated exact-head manifest
         run: |
           python - <<'PY'
           import json, os
           from pathlib import Path
+          from scripts.build_world_cal_source_manifest import PATHS
           tracked=json.loads(Path('docs/research/WORLD-CAL-ALGORITHM-SOURCE-MANIFEST-20261111-01-candidate.json').read_text())
           exact=json.loads(Path('world-cal-algorithm-source-manifest-candidate.json').read_text())
           assert tracked['closed_source_files']==exact['closed_source_files']
-          assert len(exact['closed_source_files'])==47
+          assert len(exact['closed_source_files'])==len(PATHS)==55
           assert exact['source_commit']==os.environ['WORLD_CAL_SOURCE_HEAD']
           assert exact['algorithm_digest'] is None and exact['seed'] is None and exact['split_digest'] is None
-          print('RAW_BYTE_MANIFEST_47_OF_47_MATCH_EXACT_HEAD',exact['source_commit'])
+          print('RAW_BYTE_MANIFEST_ALL_MATCH_EXACT_HEAD',len(PATHS),exact['source_commit'])
           PY
       - uses: actions/upload-artifact@v4
         with:
@@ -86,6 +100,8 @@ jobs:
             world-cal-synthetic-end-to-end-one-rep.json
             world-cal-k0-index-census.json
             world-cal-algorithm-source-manifest-candidate.json
+            world-cal-fail-closed.json
+            world-cal-fail-closed.log
           retention-days: 30
 
   id-only-repro-two-linux-environments:
@@ -104,6 +120,8 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12.16'

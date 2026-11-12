@@ -15,10 +15,29 @@ def saturation_upper(oracle_aulc, strongest_control_aulc, threshold=0.15):
     return oracle_aulc-strongest_control_aulc<threshold
 
 def k0_outcome(open_status,conditional_status,b_status,c_saturated):
-    if "UNKNOWN" in (open_status,conditional_status,b_status) or c_saturated is None:
+    # Closed vocabularies: e.g. STOP_UNKNOWN or the nonempty string
+    # 'UNKNOWN' in the c slot must never be interpreted as a truth value.
+    if (open_status not in ("OPEN_LOOP_WINS","OPEN_LOOP_DOES_NOT_WIN") or
+            conditional_status not in ("CONDITIONAL_WINS","CONDITIONAL_DOES_NOT_WIN") or
+            b_status not in ("PASS","FAIL") or type(c_saturated) is not bool):
         return "STOP_UNKNOWN"
     if b_status=="FAIL" or c_saturated:
         return "STOP_K0"
     if open_status=="OPEN_LOOP_DOES_NOT_WIN" and conditional_status=="CONDITIONAL_WINS":
         return "K0A_WITNESS"
     return "K0A_NO_WITNESS"
+
+
+def k0_result_outcome(open_result,conditional_result,b_result,c_result):
+    """Consume status-bearing results; never read a partial oracle curve.
+
+    This is a reducer, not a source/custody/completeness authenticator.
+    Registered full K0-b/c currently cannot supply definitive results.
+    """
+    if any(type(r) is not dict for r in
+           (open_result,conditional_result,b_result,c_result)):
+        return "STOP_UNKNOWN"
+    if c_result.get("status")!="COMPLETE":
+        return "STOP_UNKNOWN"
+    return k0_outcome(open_result.get("status"),conditional_result.get("status"),
+                      b_result.get("status"),c_result.get("saturated"))

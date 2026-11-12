@@ -38,7 +38,7 @@ def regularized_beta(a,b,x):
     return 1-bt*_betacf(b,a,1-x)/b
 
 def cp_lower(successes, repetitions=R_REQUIRED, alpha=0.01):
-    if repetitions!=R_REQUIRED or not isinstance(successes,int) or not 0<=successes<=repetitions:
+    if repetitions!=R_REQUIRED or type(successes) is not int or not 0<=successes<=repetitions:
         raise PowerUnknown("MC repetition count not approved")
     if successes==0:return 0.0
     if successes==repetitions:return alpha**(1/repetitions)
@@ -50,18 +50,33 @@ def cp_lower(successes, repetitions=R_REQUIRED, alpha=0.01):
     return hi
 
 def lower_for_completed_counts(scenario_counts):
-    if set(scenario_counts)!=set(SCENARIOS):raise PowerUnknown("incomplete scenarios")
+    if type(scenario_counts) is not dict or set(scenario_counts)!=set(SCENARIOS):
+        raise PowerUnknown("incomplete scenarios")
     return min(cp_lower(scenario_counts[s]) for s in SCENARIOS)
 
-def route_from_completed_scan(counts_by_n,N_eligible,b_final=6144,cost_cap=20_000_000):
+def k0_allows_scan(k0_status):
+    # A closed result from k0_result_outcome; never bool(result) or a
+    # default PASS. K0A_NO_WITNESS blocks second-order attribution separately.
+    return type(k0_status) is str and k0_status in ("K0A_WITNESS","K0A_NO_WITNESS")
+
+def unknown_scan(reason):
+    return {"route":"STOP_UNKNOWN","n_required":None,
+            "power_lower_bound":None,"cost_cap_check":False,"reason":reason}
+
+def route_from_completed_scan(counts_by_n,N_eligible,b_final=6144,cost_cap=20_000_000,
+                              *,k0_status=None):
     """Requires COMPLETE per-n scenario counts; never fills in missing n."""
+    if not k0_allows_scan(k0_status):return unknown_scan("K0 not complete/continuable")
+    if (type(counts_by_n) is not dict or type(N_eligible) is not int or
+            b_final not in (4096,6144) or cost_cap!=20_000_000):
+        return unknown_scan("invalid scan inputs")
     end=min(N_eligible,512)
-    if not 2<=end: return {"route":"STOP_UNKNOWN","n_required":None}
+    if not 2<=end: return unknown_scan("insufficient eligible laws")
     for n in range(2,end+1):
-        if n not in counts_by_n:return {"route":"STOP_UNKNOWN","n_required":None}
+        if n not in counts_by_n:return unknown_scan("incomplete ascending n scan")
         try:lower=lower_for_completed_counts(counts_by_n[n])
-        except PowerUnknown:return {"route":"STOP_UNKNOWN","n_required":None}
+        except PowerUnknown:return unknown_scan("incomplete scenario counts")
         if lower>=.80 and cost(n,b_final)<=cost_cap:
             return {"route":"STATISTICAL","n_required":n,"power_lower_bound":lower}
     # Finite-descriptive requires real complete H evaluation; cannot be inferred here.
-    return {"route":"STOP_UNKNOWN","n_required":None}
+    return unknown_scan("no certified statistical n; descriptive route not evaluated")

@@ -8,6 +8,12 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 PATHS=tuple(sorted((
+    "AGENTS.md",
+    "docs/INDEX.md",
+    "docs/architecture/system.md",
+    "docs/architecture/contracts.md",
+    "docs/research/WORLD-CAL-FINAL-AUDIT-REQUEST-20261112-01.md",
+    "docs/research/WORLD-CAL-FAIL-CLOSED-EVIDENCE-20261112-01.json",
     "docs/research/WORLD-CAL-GENERATOR-SOURCE-20261111-01.md",
     "docs/research/WORLD-CAL-IMPLEMENTATION-PLAN-20261111-01.md",
     "docs/research/WORLD-CAL-IMPLEMENTATION-RQ-20261111-01.md",
@@ -49,11 +55,13 @@ PATHS=tuple(sorted((
     "scripts/audit_world_cal_role_process.py",
     "scripts/audit_world_cal_id_only_repro.py",
     "scripts/audit_world_cal_k0_index.py",
+    "scripts/audit_world_cal_fail_closed.py",
     "scripts/profile_world_cal_synthetic.py",
     "scripts/build_world_cal_source_manifest.py",
     "tests/test_world_cal_synthetic.py",
     "tests/test_world_cal_impl_completion.py",
     "tests/test_world_cal_k0_coverage.py",
+    "tests/test_world_cal_fail_closed.py",
     ".github/workflows/world-cal-synthetic-implementation.yml"
 )))
 

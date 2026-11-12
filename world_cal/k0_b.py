@@ -1,4 +1,4 @@
-"""Resource-bounded COMPLETE deterministic K0-b public-history AND/OR DP.
+"""Bounded K0-b public-history AND/OR DP for explicitly supplied hypotheses.
 
 This is an abstract support solver, NOT a CAL/K0 run. It is forbidden to
 materialize sealed law allocations or inject hidden law IDs into policy keys.
@@ -83,7 +83,8 @@ def solve_k0b_pair(left,right,*,mode,horizon=24,cap=2_000_000):
     EVAL: exactly one episode and NO success/failure feedback.
     Every possible action is examined in Appendix A canonical 14-token order.
     """
-    if mode not in ("TRAIN","EVAL") or not 1<=horizon<=64 or cap<=0:
+    if (mode not in ("TRAIN","EVAL") or not 1<=horizon<=64 or
+            type(cap) is not int or not 1<=cap<=2_000_000):
         raise K0Unknown("invalid mode/bounds")
     if mode=="EVAL" and (len(left.instances)!=1 or len(right.instances)!=1):
         raise K0Unknown("EVAL must have exactly one trial")
@@ -121,12 +122,27 @@ def solve_k0b_pair(left,right,*,mode,horizon=24,cap=2_000_000):
 
     try:
         wins=rec((_start(left,0),_start(right,1)))
-    except (CapReached,RecursionError,MemoryError):
+    except (CapReached,RecursionError,MemoryError,ValueError,TypeError,StopIteration):
         return {"status":"UNKNOWN","nodes":seen[0],"mode":mode}
     return {"status":"PASS" if wins else "FAIL","nodes":seen[0],"mode":mode}
 
 
 def scan_k0b_pairs(pairs,*,complete_support,cap=2_000_000):
+    """Bounded diagnostic scan; no registered joint-support certifier exists.
+
+    Exceptions/cap exits cannot export partial FAIL/PASS. Even an apparent
+    full count and caller-asserted receipts cannot authenticate demo/trial
+    coverage. Until that verifier exists this full-source API is UNKNOWN.
+    """
+    try:
+        if type(cap) is not int or not 1<=cap<=2_000_000:
+            raise K0Unknown("invalid registered node cap")
+        return _scan_k0b_pairs(pairs,complete_support=complete_support,cap=cap)
+    except (K0Unknown,ValueError,TypeError,StopIteration,RecursionError,MemoryError):
+        return {"status":"UNKNOWN","reason":"incomplete pair/support enumeration"}
+
+
+def _scan_k0b_pairs(pairs,*,complete_support,cap):
     """All pairs from a separately certified COMPLETE abstract source iterator.
 
     No provisional PASS if a single pair is UNKNOWN. FAIL also waits for
@@ -165,6 +181,9 @@ def scan_k0b_pairs(pairs,*,complete_support,cap=2_000_000):
     if audited!=complete_support["law_pair_count"]:
         return {"status":"UNKNOWN","reason":"law pair iterator did not exhaust",
                 "pairs_audited":audited}
-    return {"status":"UNKNOWN" if unknown else "FAIL" if fails else "PASS",
-            "pairs_audited":audited,"failed_pairs":fails if not unknown else [],
-            "unknown_prioritized":unknown}
+    # The iterator's nominal row count and boolean receipt fields do not
+    # prove joint demo/trial/history coverage. Do not promote these caller
+    # assertions to a registered full-source PASS (or FAIL).
+    return {"status":"UNKNOWN","pairs_audited":audited,"failed_pairs":[],
+            "unknown_prioritized":True,
+            "reason":"registered joint-support certification not implemented"}
