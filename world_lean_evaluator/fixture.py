@@ -6,8 +6,8 @@ from dataclasses import dataclass
 from packages.world_lean.core import State, TOKENS, SYMS, Session, read, step, digest
 
 FIXTURE_STREAMS=('artificial-fixture-A','artificial-fixture-B','artificial-fixture-C','artificial-fixture-D')
-TRAIN_PAIRS=((0,1),(1,2),(2,3))
-DRAW_LIMIT=4096
+from .protocol import DEMOS_PER_LAW, DRAW_LIMIT, TRAIN_BODY_PAIRS
+TRAIN_PAIRS=TRAIN_BODY_PAIRS
 
 @dataclass(frozen=True)
 class Recipe:
@@ -69,7 +69,7 @@ def examples(recipe: Recipe, fixture_stream: str, extra: bool = False) -> tuple[
     if fixture_stream not in FIXTURE_STREAMS: raise ValueError('only named artificial fixture streams')
     out=[]; seen=set()
     # T,T,T,F,F,F fixed presentation (labels omitted); query T,F.
-    for kind,wants in [('demo',True)]*3+[('demo',False)]*3+[('query',True),('query',False)]:
+    for kind,wants in [('demo',True)]*(DEMOS_PER_LAW//2)+[('demo',False)]*(DEMOS_PER_LAW//2)+[('query',True),('query',False)]:
         index=len(out)
         rng=CounterStream('world-lean-1','FIXTURE_TRAIN_ONLY',fixture_stream,
                           str(recipe.condition),str(recipe.then_body),str(recipe.else_body),
@@ -88,9 +88,9 @@ def audit_ambiguity(fixture_stream: str, extra: bool = False) -> dict:
     ambiguous=0; unresolved=0; total=0
     for true_law in lawset:
         data=examples(true_law,fixture_stream,extra=extra)
-        agreeing=tuple(h for h in lawset if all(target(h,s)==t for s,t in data[:6]))
+        agreeing=tuple(h for h in lawset if all(target(h,s)==t for s,t in data[:DEMOS_PER_LAW]))
         if len(agreeing)>1: unresolved+=1
-        for query,_ in data[6:]:
+        for query,_ in data[DEMOS_PER_LAW:]:
             predictions={digest(target(h,query).record()) for h in agreeing}
             ambiguous+=len(predictions)>1
             total+=1
@@ -125,5 +125,5 @@ def random_train_blocks(fixture_stream: str, blocks: int = 3) -> tuple[dict,...]
             result.append({'tag':opaque_tag,
                 'initial':pre.record(),'actions':actions,'observations':observations,
                 'success':s==target(recipe,pre),
-                'demos':[[x.record(),y.record()] for x,y in examples(recipe,fixture_stream)[:6]]})
+                'demos':[[x.record(),y.record()] for x,y in examples(recipe,fixture_stream)[:DEMOS_PER_LAW]]})
     return tuple(result)

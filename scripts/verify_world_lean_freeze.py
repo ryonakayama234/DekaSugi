@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
-MANIFEST=ROOT/'docs/research/WORLD-LEAN-1-SOURCE-LOCK-20261112-02.json'
+MANIFEST=ROOT/'docs/research/WORLD-LEAN-1-SOURCE-LOCK-20261112-03.json'
 
 def canonical(obj):
     return (json.dumps(obj,sort_keys=True,ensure_ascii=True,separators=(',',':'))+'\n').encode('utf-8')
@@ -20,6 +20,6 @@ def main():
     combined=hashlib.sha256(canonical(actual)).hexdigest()
     if combined!=manifest['source_digest']:
         raise SystemExit('WORLD-LEAN SOURCE-LOCK COMBINED DIGEST MISMATCH')
-    print('WORLD-LEAN-1 SIX-DEMO SOURCE-LOCK PASS',combined,'files',len(actual))
+    print('WORLD-LEAN-1 REPAIR-03 SOURCE-LOCK PASS',combined,'files',len(actual))
 
 if __name__=='__main__':main()
