@@ -340,3 +340,11 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 
 - [設計案 WORLD-LEAN-EXPERIMENT-DESIGN-20261112-01](research/WORLD-LEAN-EXPERIMENT-DESIGN-20261112-01.md): 11原子操作、TRAIN24／未見24法則、4腕・16 seed、経験効率、CPU上限案、削除要素と失う主張、逆質問RQ1〜3。proposed / NOT_IMPLEMENTED / NOT_RUN。
 - [planned台帳](../experiments/WORLD-LEAN-1/runs/README.md)。追跡 [Issue #207](https://github.com/ryonakayama234/DekaSugi/issues/207)。WORLD-Rの設計基礎を維持し、旧SPEC-06／CALと並走するdocs-only案。過去の認定・停止記録は変更しない。
+
+
+## WORLD-LEAN-1 — implementation and artificial fixture gate (2026-11-12)
+
+- Design adoption: [PR #208](https://github.com/ryonakayama234/DekaSugi/pull/208), supervisor [AGREE / RQ1–RQ3](https://github.com/ryonakayama234/DekaSugi/pull/208#issuecomment-6823583705), then separate Owner implementation GO. Earlier `proposed / NOT_IMPLEMENTED` statements above document the proposal stage only.
+- [Bit-specific learner total order](research/WORLD-LEAN-1-ORDER-FREEZE-20261112.md) and [12-file SHA-256 source-lock manifest](research/WORLD-LEAN-1-SOURCE-LOCK-20261112.json). Independent audit of freeze still pending.
+- [Learner package](../packages/world_lean/README.md), [separate fixture evaluator](../world_lean_evaluator/README.md), [artificial fixture evidence](../experiments/WORLD-LEAN-1/runs/20261112-fixture-gate.md), [plan](../experiments/WORLD-LEAN-1/plan.md), [ledger](../experiments/WORLD-LEAN-1/runs/README.md).
+- **No official seeds, split files, holdout, snapshot score evaluation or B result**. CPython 3.12.12 replay and independent supervisor gate outstanding. Historic CAL/SPEC unaffected.
