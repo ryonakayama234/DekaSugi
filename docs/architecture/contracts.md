@@ -1099,7 +1099,7 @@ flowchart LR
 
 ## SENTENCE-REVISION-1 / stage A contract and verification plan
 
-status: planned before implementation; source specification fixed in a separate commit.
+Specification fixed before implementation in commit `086d259f`; stage A is now implemented, supervisor acceptance pending.
 Scope: [PR #213 agreed proposal](https://github.com/ryonakayama234/DekaSugi/pull/213#issuecomment-6871629451), [Owner GO](https://github.com/ryonakayama234/DekaSugi/issues/195#issuecomment-6880874031). `packages/sentence_revision` is independent from frozen LEAN-1.
 
 - `State`: immutable exact builtin tuple buffer/clipboard (A/B/C/D, max16), exact int cursor 0..len; selection none or (anchor,head), both in range and head=cursor. JSON has exactly buffer/cursor/selection/clipboard. Bool-as-int, mutable containers in constructors, subtypes and extra fields are invalid. General state permits deletion outputs shorter than4; `validate_input` separately requires length4..8, internal cursor, no selection and empty clipboard.
@@ -1112,3 +1112,6 @@ Scope: [PR #213 agreed proposal](https://github.com/ryonakayama234/DekaSugi/pull
 - Limits: max100000 candidate checks per construction/update/rebuild phase, 60 CPU seconds per phase, 7200 CPU seconds whole future run, retained case data1MiB. Stage A supplies metered phase/checkpoint and deep retained-size guard; these are cooperative limits, not process RSS or OS sandbox guarantees. Stage B/C must apply them to complete case state, all arms, preparation/execution/report overhead. Exhaustion raises `BudgetExceeded`, never a valid empty-candidate result.
 
 Verification uses invented states only: independent deletion/read oracle on all4-symbol length4..6 strings and internal cursors; all15 equality partitions of four positions for 78 ASTs; fresh-process catalog/snapshot equality across hash seeds; malformed types/JSON/AST/snapshots; candidate count/order roundtrip; phase/check/CPU/retained-size exhaustion and failure receipts. No 24-case table or labels enter tests. Hypothesis: exact semantics/order/snapshot bytes reproduce; any mismatch blocks A acceptance. B/C remain planned until prior-stage supervisor acceptance. Synthetic correctness gives no scientific performance claim.
+
+
+Stage A implementation: [foundation](../../packages/sentence_revision/foundation.py), [13 artificial tests](../../tests/test_sentence_revision_a.py), [receipt generator](../../scripts/verify_sentence_stage_a.py). Snapshot encode/decode take the meter too: saving re-enumerates78, restoring re-enumerates156 including canonical-byte verification. These costs are visible rather than silently free. Timed/retained guards are cooperative and stage A does not claim a complete future runner's budget enforcement. No evaluation-gold isolation claim is made until C exists.

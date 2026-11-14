@@ -1,0 +1,32 @@
+name: Sentence revision stage A artificial checks
+
+on:
+  pull_request:
+    paths:
+      - "packages/sentence_revision/**"
+      - "tests/test_sentence_revision_a.py"
+      - "scripts/verify_sentence_stage_a.py"
+      - ".github/workflows/sentence-revision-synthetic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  artificial-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Invented stage A fixtures only
+        run: python scripts/verify_sentence_stage_a.py --output .run/sentence-stage-a.json
+      - name: Documentation integrity
+        run: python scripts/check_docs.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sentence-stage-a-artificial
+          path: .run/sentence-stage-a.json
+          if-no-files-found: error

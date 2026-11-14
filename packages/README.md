@@ -140,3 +140,8 @@ The implementation checks canonical same-task/4-100-budget search status/program
 ### r2_m_a G3-3 — custody and audit materials (engineering only)
 
 The parent-only [append-only ledger](r2_m_a/evidence_ledger.py) and [GitHub remote seal](r2_m_a/remote_custody.py) enforce pre-answer and pre-score digest boundaries with explicit 448-slot missingness. [Evaluator gate](r2_m_a/evaluator_gate.py) denies scoring while G4/G5/G6 are unauthorized; [G4 dossier generator](r2_m_a/g4_dossier.py) produces NOT_AUDITED templates, not findings. There is no scientific 448-child run entry point. [G3-3 specification](../docs/specs/R2-M-A-G3-3.md).
+
+
+## SENTENCE-REVISION-1 common foundation
+
+[sentence_revision](sentence_revision/__init__.py): isolated stdlib state/condition/snapshot/cost utilities. Stage A only; no four-arm learner, evaluation runner or official data. [Contract and verification plan](../docs/architecture/contracts.md), [topology](../docs/architecture/system.md).
