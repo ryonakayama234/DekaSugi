@@ -1,0 +1,35 @@
+name: Sentence revision stage B artificial checks
+
+on:
+  pull_request:
+    paths:
+      - "packages/sentence_revision/**"
+      - "tests/test_sentence_revision_a.py"
+      - "tests/test_sentence_revision_b.py"
+      - "scripts/verify_sentence_stage_b.py"
+      - ".github/workflows/sentence-revision-stage-b-synthetic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  artificial-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Explicit invented A and B modules only
+        run: python scripts/verify_sentence_stage_b.py --output .run/sentence-stage-b.json
+      - name: Documentation and historical source integrity
+        run: |
+          python scripts/check_docs.py
+          python scripts/check_research_ci_v2.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sentence-stage-b-artificial
+          path: .run/sentence-stage-b.json
+          if-no-files-found: error

@@ -144,4 +144,4 @@ The parent-only [append-only ledger](r2_m_a/evidence_ledger.py) and [GitHub remo
 
 ## SENTENCE-REVISION-1 common foundation
 
-[sentence_revision](sentence_revision/__init__.py): isolated stdlib state/condition/snapshot/cost utilities. Stage A only; no four-arm learner, evaluation runner or official data. [Contract and verification plan](../docs/architecture/contracts.md), [topology](../docs/architecture/system.md).
+[sentence_revision](sentence_revision/__init__.py): isolated stdlib state/condition/snapshot/cost utilities. Stage A is supervisor accepted; [stage B arms](sentence_revision/arms.py) add metered public-example learners and replayable snapshots (B supervisor acceptance pending). No evaluation runner or official data. [Contract and verification plan](../docs/architecture/contracts.md), [topology](../docs/architecture/system.md).

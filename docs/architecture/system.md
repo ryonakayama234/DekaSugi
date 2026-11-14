@@ -1092,7 +1092,7 @@ flowchart TD
     P --> C
 ```
 
-Implementation spec and synthetic verification plan are in [ARCH-002](contracts.md). No four-arm learner, evaluation runner, Owner labels, official prediction or scoring exists in stage A. Local tests and CI are engineering evidence; supervisor acceptance remains separate.
+Implementation spec and synthetic verification plan are in [ARCH-002](contracts.md). Stage A supplies no four-arm learner or evaluator. A was independently accepted at `c41378fe` (PR214/6881127124); the B extension below is separate. No Owner labels, official prediction or scoring is present.
 
 
 ## SENTENCE-REVISION-1 / stage B (artificial only)

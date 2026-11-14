@@ -1099,7 +1099,7 @@ flowchart LR
 
 ## SENTENCE-REVISION-1 / stage A contract and verification plan
 
-Specification fixed before implementation in commit `086d259f`; stage A is now implemented, supervisor acceptance pending.
+Specification fixed before implementation in commit `086d259f`; stage A is implemented and [supervisor accepted](https://github.com/ryonakayama234/DekaSugi/pull/214#issuecomment-6881127124) at `c41378fe`.
 Scope: [PR #213 agreed proposal](https://github.com/ryonakayama234/DekaSugi/pull/213#issuecomment-6871629451), [Owner GO](https://github.com/ryonakayama234/DekaSugi/issues/195#issuecomment-6880874031). `packages/sentence_revision` is independent from frozen LEAN-1.
 
 - `State`: immutable exact builtin tuple buffer/clipboard (A/B/C/D, max16), exact int cursor 0..len; selection none or (anchor,head), both in range and head=cursor. JSON has exactly buffer/cursor/selection/clipboard. Bool-as-int, mutable containers in constructors, subtypes and extra fields are invalid. General state permits deletion outputs shorter than4; `validate_input` separately requires length4..8, internal cursor, no selection and empty clipboard.
@@ -1129,3 +1129,6 @@ Stage A accepted by [supervisor6881127124](https://github.com/ryonakayama234/Dek
 - Fixed upper bounds remain100000 actual candidate×example checks per phase,60 CPU seconds per phase,7200 CPU seconds for shared meter lifetime,1MiB retained case data. Each arm enumerates its actual catalog; no shared or replay work is declared free. Snapshot validation/restore is included in the phase cap. Counts distinguish enumeration, consistency checks, condition atom evaluations, atomic transitions and submissions. Timing includes validation, MEMORY lookup and serialization; no billing/API/GPU dependency.
 
 Artificial acceptance tests: independent fixed-order candidate oracle; identical input digests across four arms; symbolic initial agreement; pruning/reselection vs frozen immutability; exact-state memory and contradictory keys; FRESH repeated enumeration/check deltas; persistence replay/tampering; case isolation, inconsistent/ceiling cases; fresh-process/hash-seed determinism and forbidden historical import closure; candidate/CPU/total/retained caps at every public operation for every arm with failure receipts and terminal stop. Existing A suite and docs/source-lock checks must still pass. None is evidence from the24 production states. B source/settings pinning and C separation verification follow independent acceptance.
+
+
+Stage B implemented source: [four arms](../../packages/sentence_revision/arms.py), [explicit artificial tests](../../tests/test_sentence_revision_b.py), [receipt generator](../../scripts/verify_sentence_stage_b.py). A source/grammar and historical workflow remain unchanged. Save includes the renderer output and rejects changed explanations on restore. New B-only PR CI explicitly runs the A and B artificial modules. C evaluation-gold isolation and complete preparation/report accounting remain pending independent B acceptance. No study score is computed here.
