@@ -1092,4 +1092,23 @@ flowchart TD
     P --> C
 ```
 
-Implementation spec and synthetic verification plan are in [ARCH-002](contracts.md). No four-arm learner, evaluation runner, Owner labels, official prediction or scoring exists in stage A. Local tests and CI are engineering evidence; supervisor acceptance remains separate.
+Implementation spec and synthetic verification plan are in [ARCH-002](contracts.md). Stage A supplies no four-arm learner or evaluator. A was independently accepted at `c41378fe` (PR214/6881127124); the B extension below is separate. No Owner labels, official prediction or scoring is present.
+
+
+## SENTENCE-REVISION-1 / stage B (artificial only)
+
+A at `c41378fe` is [supervisor accepted](https://github.com/ryonakayama234/DekaSugi/pull/214#issuecomment-6881127124). B extends it with independent per-arm Case instances and one required shared Meter. [B contract and verification plan](contracts.md) is fixed before code. No official24-state preparation or evaluator/scorer exists in this stage.
+
+```mermaid
+flowchart TD
+    P["Public pairs and opaque ID/text"] --> B["Four independent Cases"]
+    B --> R["REVISE filters / FROZEN holds"]
+    B --> M["MEMORY exact key / FRESH rebuild"]
+    R --> O["Full output or typed abstention"]
+    M --> O
+    B --> S["Canonical save / metered replay restore"]
+    O --> G["Shared CPU and retained-data guard"]
+    S --> G
+```
+
+All operations including validation, save/restore and MEMORY lookup consume timed phases; no result-gold input is defined. Cooperative guards do not provide OS isolation. C must extend accounting to evaluator and report overhead and keep official execution gated.
