@@ -1,0 +1,31 @@
+{
+  "all_candidates_snapshot_sha256": "9be6daae0d821eedcd9f35aacd3ac54eb0895c501d487ddb403fa8c067724176",
+  "cpu_seconds_children": 0.131183,
+  "cpu_seconds_parent": 0.806072686,
+  "dirty_worktree": false,
+  "errors": 0,
+  "failures": 0,
+  "grammar_sha256": "ebf86948879d0dc27d66467ce4ff710bc7befbdb25ab899db15553c13eb92758",
+  "independent_supervisor_acceptance": "pending",
+  "official_predictions": "not_run",
+  "official_scoring": "not_run",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "production_table": "not_prepared",
+  "python": "3.12.14",
+  "schema": "sentence-stage-a-artificial-check/1",
+  "skipped": 0,
+  "source_commit": "705496f9ff7fbcd37c36f2ba73cee38835f7543f",
+  "source_sha256": {
+    ".github/workflows/sentence-revision-synthetic.yml": "83b87a02d5a907e0efc53daba860f53d1bf478d39da33a07ff2837c97a7ce3c9",
+    "packages/sentence_revision/__init__.py": "1167a97eadc2a2237307d8a06ce53aef500ae5a053895858ee5c3249e8590dca",
+    "packages/sentence_revision/foundation.py": "314e5d0d189be95e3925334c5a69eb0ddbba5336c1c80b8f2638a6fb069577e0",
+    "scripts/verify_sentence_stage_a.py": "a54e83e673a334fcf514864e9d6b9a6cb8cb5854e1f1400f2be01b1b8df5aa1c",
+    "tests/test_sentence_revision_a.py": "70e5afe462e54ef9ce3f26de34385f4cd55ef3859c3228788adb315e02547733"
+  },
+  "stage_b": "not_implemented",
+  "stage_c": "not_implemented",
+  "status": "pass",
+  "test_module": "tests.test_sentence_revision_a",
+  "tests_run": 13,
+  "wall_seconds": 0.9392321269999684
+}
