@@ -335,3 +335,8 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 
 - [WORLD-R-20261110-01 Research Lead回答](research/WORLD-R-20261110-01-lead-response.md) — [Muse質問票 WORLD-Q-20261110-01 / Draft PR #190](https://github.com/ryonakayama234/DekaSugi/pull/190) のQW1〜QW11に結論・根拠・見直し条件で回答、PW1〜PW7に同意／修正を明示。有限Editor世界の仕様、表現不足診断、二階If、強いH+対照、家族単位の転移ゲート、フォーム世界接続を設計。**Research Lead proposal / Muse精査待ち / Owner採否待ち**。実験Aの認定状態は持ち越さず、実装・事前登録凍結・学習・実験・実PCログ収集は一切未許可。
 - [WORLD-RQ-20261110-01 Museへの逆質問](research/WORLD-RQ-20261110-01-muse-questions.md) — 真の言語成長の主張境界、USE target漏洩、Ifのメタ機構、強い固定対照をblocking事項とし、Form転移・数値閾値・競合仮説を追加質疑。**回答提出による合意・採用は未成立**。追跡は [Issue #191](https://github.com/ryonakayama234/DekaSugi/issues/191)。
+
+
+## SENTENCE-REVISION-1 implementation — stage A
+
+- [Stage A topology](architecture/system.md) / [contract and artificial verification plan](architecture/contracts.md): common state, 78-condition grammar, snapshots and cost accounting. [GO](https://github.com/ryonakayama234/DekaSugi/issues/195#issuecomment-6880874031), [adopted proposal](https://github.com/ryonakayama234/DekaSugi/pull/213#issuecomment-6871629451). A acceptance pending; B/C, production state table, Owner sessions and official predictions/scoring not started.
