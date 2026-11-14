@@ -1076,3 +1076,20 @@ flowchart TD
 ~~~
 
 G3-3 is a parent/evaluator-side **engineering interface**, not an actual scientific runner. The remote adapter's real GitHub push/readback is not invoked in CI (fake remote only). Child import guard forbids evaluator/gate/ledger/remote/dossier modules. GitHub-only custody cannot prove an independent timestamp or absolute WORM; anchored hashes support subsequent audit. There is no 448 measurement, G5 order, G6 score or scientific M_use certification. [Specification](../specs/R2-M-A-G3-3.md) / [ARCH-002](contracts.md).
+
+
+## SENTENCE-REVISION-1 / stage A (Issue #195, 2026-11-15)
+
+Owner GO: [6880874031](https://github.com/ryonakayama234/DekaSugi/issues/195#issuecomment-6880874031); adopted scope/order: [PR #213 proposal](https://github.com/ryonakayama234/DekaSugi/pull/213#issuecomment-6871629451). Stage A is an isolated stdlib package `packages/sentence_revision`, with no imports from historical generators, scorers or learner code. Only artificial fixtures run. B/C and production table preparation follow supervisor acceptance in order.
+
+```mermaid
+flowchart TD
+    S["Validated editor state"] --> E["Finite condition interpreter"]
+    G["78 canonical conditions"] --> E
+    E --> T["Delete right or keep"]
+    G --> P["Rule and candidate snapshot"]
+    T --> C["Counters and phase timing"]
+    P --> C
+```
+
+Implementation spec and synthetic verification plan are in [ARCH-002](contracts.md). No four-arm learner, evaluation runner, Owner labels, official prediction or scoring exists in stage A. Local tests and CI are engineering evidence; supervisor acceptance remains separate.
