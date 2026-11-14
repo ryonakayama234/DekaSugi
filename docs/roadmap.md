@@ -289,3 +289,6 @@ Latest independent review of b2acf54 showed a `tuple` subclass for QuerySession.
 ## SENTENCE-REVISION-1 (2026-11-15)
 
 Owner authorized implementation + example preparation (#195 comment6880874031). Start A common foundation, submit for independent supervisor acceptance, then B four arms, then C isolated evaluation/reporting. Artificial fixtures only until code/settings accepted and pinned; only then prepare24 states for two25-minute Owner sessions (60-minute total cap). Official prediction/scoring remains separately gated. No LEAN-1 revision or new scientific result.
+
+
+Stage A accepted at `c41378fe` ([supervisor](https://github.com/ryonakayama234/DekaSugi/pull/214#issuecomment-6881127124)). Stage B now proceeds under Owner continuation: four arms and metered save/replay/predict, artificial fixtures only. Supervisor B acceptance precedes C; full-run budget accounting and evaluation-gold separation remain C acceptance requirements. No production predictions/scoring or merge authorization is implied.

@@ -459,3 +459,8 @@ The controlling Owner decision is [PR #183 comment 6675971478](https://github.co
 - Isolate `packages/sentence_revision`; preserve historic frozen code/results/workflows. Artificial fixtures only; no labels or production24 states used to tune the78-condition order. No LLM/parser, new grammar or replacement cases.
 - Specification/verification plan in ARCH-002 is committed before implementation. Maintain ARCH-001/002, INDEX and roadmap in each stage. Use targeted synthetic tests only; do not run legacy broad discovery or old scoring workflows. Separate cooperative accounting and retained-size caps from RSS/process guarantees.
 - Budgets: Lead+Muse16 hours, CPU2 hours total, external cost0; Owner two25-minute sessions plus10-minute reserve. B/C accepted/pinned source precedes production table preparation; Muse holds final split/gold and fixes them before predictions.
+
+
+## SENTENCE-REVISION-1 / stage B continuation (2026-11-15)
+- A accepted at `c41378fe`, PR214 comment6881127124. Owner authorizes B; submit B for supervisor acceptance before C. B artificial fixtures only; preserve A evidence and all historical locked code/workflows/results. No official prediction/scoring or24-state preparation yet.
+- Require shared Meter for every Case operation and charge actual enumeration/replay/simulation, validation/serialization and MEMORY lookup. No FRESH synthesis cache; FROZEN executable candidates remain initial. Exhaustion is terminal and distinct from an empty consistent set. C must extend shared budget to preparation/evaluator/report overhead; cooperative size is not RSS.

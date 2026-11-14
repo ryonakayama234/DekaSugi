@@ -342,3 +342,8 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 - [Stage A topology](architecture/system.md) / [contract and artificial verification plan](architecture/contracts.md): common state, 78-condition grammar, snapshots and cost accounting. [GO](https://github.com/ryonakayama234/DekaSugi/issues/195#issuecomment-6880874031), [adopted proposal](https://github.com/ryonakayama234/DekaSugi/pull/213#issuecomment-6871629451). A acceptance pending; B/C, production state table, Owner sessions and official predictions/scoring not started.
 
 - Stage A source: [foundation](../packages/sentence_revision/foundation.py), [artificial tests](../tests/test_sentence_revision_a.py), [explicit verification command](../scripts/verify_sentence_stage_a.py). Local13/13 checks passed; exact-head CI and independent acceptance remain pending.
+
+
+## SENTENCE-REVISION-1 implementation — stage B
+
+- Stage A [ACCEPT](https://github.com/ryonakayama234/DekaSugi/pull/214#issuecomment-6881127124), source `c41378fe`. [B topology](architecture/system.md) / [B contract and artificial verification plan](architecture/contracts.md): four arms, public-input provenance, mandatory cooperative accounting for every B operation. B implemented status/evidence to follow; independent B acceptance pending. C, production preparation and official prediction/scoring remain unstarted.
