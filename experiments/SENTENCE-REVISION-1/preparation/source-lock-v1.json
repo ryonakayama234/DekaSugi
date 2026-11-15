@@ -1,0 +1,1273 @@
+{
+  "accepted_code_commit": "a1c36d4b2e05ca9942862e29ede7eb6e3049b6eb",
+  "accepted_commit": "3f60aac8de70af9e9575d25bc72009b0c30d89f6",
+  "accepted_tree": "2d008e0efd6429468b2c6c3d44b42de264aeec5d",
+  "basis": "PR213 comments6871629451/6873481068; Issue195/6880874031; Owner continuation after C ACCEPT",
+  "candidate_order": [
+    {
+      "ast": [
+        "EQ",
+        "cursor",
+        "first"
+      ],
+      "id": "cond-000"
+    },
+    {
+      "ast": [
+        "EQ",
+        "cursor",
+        "last"
+      ],
+      "id": "cond-001"
+    },
+    {
+      "ast": [
+        "EQ",
+        "cursor",
+        "prev"
+      ],
+      "id": "cond-002"
+    },
+    {
+      "ast": [
+        "EQ",
+        "first",
+        "last"
+      ],
+      "id": "cond-003"
+    },
+    {
+      "ast": [
+        "EQ",
+        "first",
+        "prev"
+      ],
+      "id": "cond-004"
+    },
+    {
+      "ast": [
+        "EQ",
+        "last",
+        "prev"
+      ],
+      "id": "cond-005"
+    },
+    {
+      "ast": [
+        "NE",
+        "cursor",
+        "first"
+      ],
+      "id": "cond-006"
+    },
+    {
+      "ast": [
+        "NE",
+        "cursor",
+        "last"
+      ],
+      "id": "cond-007"
+    },
+    {
+      "ast": [
+        "NE",
+        "cursor",
+        "prev"
+      ],
+      "id": "cond-008"
+    },
+    {
+      "ast": [
+        "NE",
+        "first",
+        "last"
+      ],
+      "id": "cond-009"
+    },
+    {
+      "ast": [
+        "NE",
+        "first",
+        "prev"
+      ],
+      "id": "cond-010"
+    },
+    {
+      "ast": [
+        "NE",
+        "last",
+        "prev"
+      ],
+      "id": "cond-011"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "first"
+        ],
+        [
+          "EQ",
+          "cursor",
+          "last"
+        ]
+      ],
+      "id": "cond-012"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "first"
+        ],
+        [
+          "EQ",
+          "cursor",
+          "prev"
+        ]
+      ],
+      "id": "cond-013"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "first"
+        ],
+        [
+          "EQ",
+          "first",
+          "last"
+        ]
+      ],
+      "id": "cond-014"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "first"
+        ],
+        [
+          "EQ",
+          "first",
+          "prev"
+        ]
+      ],
+      "id": "cond-015"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "first"
+        ],
+        [
+          "EQ",
+          "last",
+          "prev"
+        ]
+      ],
+      "id": "cond-016"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "first"
+        ],
+        [
+          "NE",
+          "cursor",
+          "first"
+        ]
+      ],
+      "id": "cond-017"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "first"
+        ],
+        [
+          "NE",
+          "cursor",
+          "last"
+        ]
+      ],
+      "id": "cond-018"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "first"
+        ],
+        [
+          "NE",
+          "cursor",
+          "prev"
+        ]
+      ],
+      "id": "cond-019"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "first"
+        ],
+        [
+          "NE",
+          "first",
+          "last"
+        ]
+      ],
+      "id": "cond-020"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "first"
+        ],
+        [
+          "NE",
+          "first",
+          "prev"
+        ]
+      ],
+      "id": "cond-021"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "first"
+        ],
+        [
+          "NE",
+          "last",
+          "prev"
+        ]
+      ],
+      "id": "cond-022"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "last"
+        ],
+        [
+          "EQ",
+          "cursor",
+          "prev"
+        ]
+      ],
+      "id": "cond-023"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "last"
+        ],
+        [
+          "EQ",
+          "first",
+          "last"
+        ]
+      ],
+      "id": "cond-024"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "last"
+        ],
+        [
+          "EQ",
+          "first",
+          "prev"
+        ]
+      ],
+      "id": "cond-025"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "last"
+        ],
+        [
+          "EQ",
+          "last",
+          "prev"
+        ]
+      ],
+      "id": "cond-026"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "last"
+        ],
+        [
+          "NE",
+          "cursor",
+          "first"
+        ]
+      ],
+      "id": "cond-027"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "last"
+        ],
+        [
+          "NE",
+          "cursor",
+          "last"
+        ]
+      ],
+      "id": "cond-028"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "last"
+        ],
+        [
+          "NE",
+          "cursor",
+          "prev"
+        ]
+      ],
+      "id": "cond-029"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "last"
+        ],
+        [
+          "NE",
+          "first",
+          "last"
+        ]
+      ],
+      "id": "cond-030"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "last"
+        ],
+        [
+          "NE",
+          "first",
+          "prev"
+        ]
+      ],
+      "id": "cond-031"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "last"
+        ],
+        [
+          "NE",
+          "last",
+          "prev"
+        ]
+      ],
+      "id": "cond-032"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "prev"
+        ],
+        [
+          "EQ",
+          "first",
+          "last"
+        ]
+      ],
+      "id": "cond-033"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "prev"
+        ],
+        [
+          "EQ",
+          "first",
+          "prev"
+        ]
+      ],
+      "id": "cond-034"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "prev"
+        ],
+        [
+          "EQ",
+          "last",
+          "prev"
+        ]
+      ],
+      "id": "cond-035"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "prev"
+        ],
+        [
+          "NE",
+          "cursor",
+          "first"
+        ]
+      ],
+      "id": "cond-036"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "prev"
+        ],
+        [
+          "NE",
+          "cursor",
+          "last"
+        ]
+      ],
+      "id": "cond-037"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "prev"
+        ],
+        [
+          "NE",
+          "cursor",
+          "prev"
+        ]
+      ],
+      "id": "cond-038"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "prev"
+        ],
+        [
+          "NE",
+          "first",
+          "last"
+        ]
+      ],
+      "id": "cond-039"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "prev"
+        ],
+        [
+          "NE",
+          "first",
+          "prev"
+        ]
+      ],
+      "id": "cond-040"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "cursor",
+          "prev"
+        ],
+        [
+          "NE",
+          "last",
+          "prev"
+        ]
+      ],
+      "id": "cond-041"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "first",
+          "last"
+        ],
+        [
+          "EQ",
+          "first",
+          "prev"
+        ]
+      ],
+      "id": "cond-042"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "first",
+          "last"
+        ],
+        [
+          "EQ",
+          "last",
+          "prev"
+        ]
+      ],
+      "id": "cond-043"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "first",
+          "last"
+        ],
+        [
+          "NE",
+          "cursor",
+          "first"
+        ]
+      ],
+      "id": "cond-044"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "first",
+          "last"
+        ],
+        [
+          "NE",
+          "cursor",
+          "last"
+        ]
+      ],
+      "id": "cond-045"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "first",
+          "last"
+        ],
+        [
+          "NE",
+          "cursor",
+          "prev"
+        ]
+      ],
+      "id": "cond-046"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "first",
+          "last"
+        ],
+        [
+          "NE",
+          "first",
+          "last"
+        ]
+      ],
+      "id": "cond-047"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "first",
+          "last"
+        ],
+        [
+          "NE",
+          "first",
+          "prev"
+        ]
+      ],
+      "id": "cond-048"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "first",
+          "last"
+        ],
+        [
+          "NE",
+          "last",
+          "prev"
+        ]
+      ],
+      "id": "cond-049"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "first",
+          "prev"
+        ],
+        [
+          "EQ",
+          "last",
+          "prev"
+        ]
+      ],
+      "id": "cond-050"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "first",
+          "prev"
+        ],
+        [
+          "NE",
+          "cursor",
+          "first"
+        ]
+      ],
+      "id": "cond-051"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "first",
+          "prev"
+        ],
+        [
+          "NE",
+          "cursor",
+          "last"
+        ]
+      ],
+      "id": "cond-052"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "first",
+          "prev"
+        ],
+        [
+          "NE",
+          "cursor",
+          "prev"
+        ]
+      ],
+      "id": "cond-053"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "first",
+          "prev"
+        ],
+        [
+          "NE",
+          "first",
+          "last"
+        ]
+      ],
+      "id": "cond-054"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "first",
+          "prev"
+        ],
+        [
+          "NE",
+          "first",
+          "prev"
+        ]
+      ],
+      "id": "cond-055"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "first",
+          "prev"
+        ],
+        [
+          "NE",
+          "last",
+          "prev"
+        ]
+      ],
+      "id": "cond-056"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "last",
+          "prev"
+        ],
+        [
+          "NE",
+          "cursor",
+          "first"
+        ]
+      ],
+      "id": "cond-057"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "last",
+          "prev"
+        ],
+        [
+          "NE",
+          "cursor",
+          "last"
+        ]
+      ],
+      "id": "cond-058"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "last",
+          "prev"
+        ],
+        [
+          "NE",
+          "cursor",
+          "prev"
+        ]
+      ],
+      "id": "cond-059"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "last",
+          "prev"
+        ],
+        [
+          "NE",
+          "first",
+          "last"
+        ]
+      ],
+      "id": "cond-060"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "last",
+          "prev"
+        ],
+        [
+          "NE",
+          "first",
+          "prev"
+        ]
+      ],
+      "id": "cond-061"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "EQ",
+          "last",
+          "prev"
+        ],
+        [
+          "NE",
+          "last",
+          "prev"
+        ]
+      ],
+      "id": "cond-062"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "NE",
+          "cursor",
+          "first"
+        ],
+        [
+          "NE",
+          "cursor",
+          "last"
+        ]
+      ],
+      "id": "cond-063"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "NE",
+          "cursor",
+          "first"
+        ],
+        [
+          "NE",
+          "cursor",
+          "prev"
+        ]
+      ],
+      "id": "cond-064"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "NE",
+          "cursor",
+          "first"
+        ],
+        [
+          "NE",
+          "first",
+          "last"
+        ]
+      ],
+      "id": "cond-065"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "NE",
+          "cursor",
+          "first"
+        ],
+        [
+          "NE",
+          "first",
+          "prev"
+        ]
+      ],
+      "id": "cond-066"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "NE",
+          "cursor",
+          "first"
+        ],
+        [
+          "NE",
+          "last",
+          "prev"
+        ]
+      ],
+      "id": "cond-067"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "NE",
+          "cursor",
+          "last"
+        ],
+        [
+          "NE",
+          "cursor",
+          "prev"
+        ]
+      ],
+      "id": "cond-068"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "NE",
+          "cursor",
+          "last"
+        ],
+        [
+          "NE",
+          "first",
+          "last"
+        ]
+      ],
+      "id": "cond-069"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "NE",
+          "cursor",
+          "last"
+        ],
+        [
+          "NE",
+          "first",
+          "prev"
+        ]
+      ],
+      "id": "cond-070"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "NE",
+          "cursor",
+          "last"
+        ],
+        [
+          "NE",
+          "last",
+          "prev"
+        ]
+      ],
+      "id": "cond-071"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "NE",
+          "cursor",
+          "prev"
+        ],
+        [
+          "NE",
+          "first",
+          "last"
+        ]
+      ],
+      "id": "cond-072"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "NE",
+          "cursor",
+          "prev"
+        ],
+        [
+          "NE",
+          "first",
+          "prev"
+        ]
+      ],
+      "id": "cond-073"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "NE",
+          "cursor",
+          "prev"
+        ],
+        [
+          "NE",
+          "last",
+          "prev"
+        ]
+      ],
+      "id": "cond-074"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "NE",
+          "first",
+          "last"
+        ],
+        [
+          "NE",
+          "first",
+          "prev"
+        ]
+      ],
+      "id": "cond-075"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "NE",
+          "first",
+          "last"
+        ],
+        [
+          "NE",
+          "last",
+          "prev"
+        ]
+      ],
+      "id": "cond-076"
+    },
+    {
+      "ast": [
+        "AND",
+        [
+          "NE",
+          "first",
+          "prev"
+        ],
+        [
+          "NE",
+          "last",
+          "prev"
+        ]
+      ],
+      "id": "cond-077"
+    }
+  ],
+  "candidate_order_verified_by": "stdlib independent canonical reconstruction; no project imports",
+  "ci": [
+    {
+      "conclusion": "success",
+      "name": "A",
+      "run": 43716002703
+    },
+    {
+      "conclusion": "success",
+      "name": "B",
+      "run": 43716002695
+    },
+    {
+      "conclusion": "success",
+      "name": "C",
+      "run": 43716002705
+    },
+    {
+      "conclusion": "success",
+      "name": "historical-source-safe-check",
+      "run": 43716002739
+    }
+  ],
+  "data_freeze": "not_done_owner_choices_and_texts_absent",
+  "evidence_path": "experiments/SENTENCE-REVISION-1/evidence/stage-c-retained-repair-20261115.json",
+  "evidence_sha256": "701159ef1eaa1475c4924e50590b9e341df0289ef7a8ecb08e2ca42e84a894be",
+  "grammar_sha256": "ebf86948879d0dc27d66467ce4ff710bc7befbdb25ab899db15553c13eb92758",
+  "invalidation": "If any pinned runtime/test/settings/grammar byte changes, record invalidation; no automatic reseal or reuse of the same evaluation as a development fixture.",
+  "official_entrypoint": "run_official always raises; source pin does not activate a production path",
+  "official_predictions": "not_run",
+  "official_scoring": "not_run",
+  "prior_acceptances": {
+    "A": "PR214/6881127124",
+    "B": "PR215/6889951868"
+  },
+  "private_labels_custody": "Muse only; do not commit Owner choices/expected outputs or return unseen gold to Lead",
+  "production_table": "not_prepared_at_this_commit",
+  "runtime_source_paths": [
+    "packages/sentence_revision/__init__.py",
+    "packages/sentence_revision/arms.py",
+    "packages/sentence_revision/artifacts.py",
+    "packages/sentence_revision/evaluator.py",
+    "packages/sentence_revision/foundation.py",
+    "packages/sentence_revision/report.py",
+    "packages/sentence_revision/runner.py"
+  ],
+  "schema": "sentence-source-lock/1",
+  "selection": "first consistent candidate in the frozen ordered catalog; no production-label-driven reordering",
+  "settings": {
+    "arms": [
+      "REVISE",
+      "FROZEN",
+      "MEMORY",
+      "FRESH"
+    ],
+    "candidate_checks_cap": 100000,
+    "case_bytes_cap": 1048576,
+    "cases": 4,
+    "main_probe_indices": [
+      3,
+      4,
+      5
+    ],
+    "near_counterexample_probe": 5,
+    "phase_cpu_cap": 60,
+    "probes_per_stage": 6,
+    "renderer": "fixed-condition-renderer/1",
+    "schema": "sentence-evaluation/1",
+    "scoring": "all-state-fields-exact",
+    "stages": [
+      "before",
+      "after"
+    ],
+    "total_cpu_cap": 7200
+  },
+  "settings_sha256": "5a01fac5b3ee5e7a5b08b33c64870bbbb1ab460b94e6373168d72abd8953a350",
+  "source_git_blob_sha": {
+    ".github/workflows/sentence-revision-stage-c-synthetic.yml": "908e135dffac1af023da12f8bcd1f5ac5b7eed3b",
+    "packages/sentence_revision/__init__.py": "8bfcd4e815b5c5554a06da0fd483bf6791706f95",
+    "packages/sentence_revision/arms.py": "49816cd9593ddd5563691bdd5b93e362d718b7e2",
+    "packages/sentence_revision/artifacts.py": "98a659beedef898a2880fe490cc31378bf574ee0",
+    "packages/sentence_revision/evaluator.py": "5ddd6353a82b3823f28e5bbb8a29daeca389d00c",
+    "packages/sentence_revision/foundation.py": "6705c4f72a67650ef3338663a032621d74c5de49",
+    "packages/sentence_revision/report.py": "d35403e77c927103ca848b3757e8069b6fa06f65",
+    "packages/sentence_revision/runner.py": "de38c4d68c8968000545e92cd1c1c2c4b6951379",
+    "scripts/verify_sentence_stage_c.py": "1c3574fbaf9a2cb99315e46387c7466713060b4c",
+    "tests/sentence_revision_c_fixture.py": "ea31ae3161f2283d96eaf7347e8891f04fb1f3bf",
+    "tests/test_sentence_revision_a.py": "8035d82d7dff19902b65c760d73099034e6bf9c7",
+    "tests/test_sentence_revision_b.py": "0ecf212e3c23dfbdd75c7c2176e283fe8d888bf0",
+    "tests/test_sentence_revision_c.py": "11227098cf38b95c4597acbd826acc388d2c3531"
+  },
+  "source_manifest_sha256": "a4a7df0edc7c3b3ec1fd28d849b3c0b1e79bb86f4998702e6f9b0ccb24ab09e7",
+  "source_sha256": {
+    ".github/workflows/sentence-revision-stage-c-synthetic.yml": "93b15c51f9de78cbf2eb63d6d8615d626616e3db276f6473b1855d0d98b07eb7",
+    "packages/sentence_revision/__init__.py": "1167a97eadc2a2237307d8a06ce53aef500ae5a053895858ee5c3249e8590dca",
+    "packages/sentence_revision/arms.py": "399348ad9e9a3366ff9e44221459f313b2995c18c16b6adf2c95de1a1337d1b1",
+    "packages/sentence_revision/artifacts.py": "e47bb537d06da163c185fbad4486a5d26e3ac02fb335692cef658a8f8b94acc9",
+    "packages/sentence_revision/evaluator.py": "3645d13603e9d79b93c6eea01a82e74ee62e13d3bb84b4d3c501f44fccb38310",
+    "packages/sentence_revision/foundation.py": "314e5d0d189be95e3925334c5a69eb0ddbba5336c1c80b8f2638a6fb069577e0",
+    "packages/sentence_revision/report.py": "39fdd2e2ad7a6b5fa589842f4690f47f946eb472c9557dd0abc1b9fc2c7fd583",
+    "packages/sentence_revision/runner.py": "9aa878023e63712d0d3423d488c8f426c92b9bd9aee5a24c0266879d15a4ce8e",
+    "scripts/verify_sentence_stage_c.py": "e5d1c97b3c93a2fe276a838876974e61b56ca012460e09292210eb26d94fd0f6",
+    "tests/sentence_revision_c_fixture.py": "4f89b65bf7e6ac33fb7daccb1881efec3a69ee30b5e978180bef77683e9e989d",
+    "tests/test_sentence_revision_a.py": "70e5afe462e54ef9ce3f26de34385f4cd55ef3859c3228788adb315e02547733",
+    "tests/test_sentence_revision_b.py": "fce429e2b6146e684849a9b0f4e7bf0650771fadc3b269d025f4ca2128bacb70",
+    "tests/test_sentence_revision_c.py": "d54e020d67632cdf3285ec52eabd11468fd6ef3733e71fc1246d5aa6282bc3f1"
+  },
+  "status": "source_settings_pinned_before_owner_table",
+  "supervisor_acceptance": {
+    "decision": "ACCEPT",
+    "id": 6895212311,
+    "url": "https://github.com/ryonakayama234/DekaSugi/pull/216#issuecomment-6895212311"
+  }
+}

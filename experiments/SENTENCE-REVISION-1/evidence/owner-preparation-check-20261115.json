@@ -1,0 +1,28 @@
+{
+  "data_freeze": "pending_Muse_after_Owner_session",
+  "generator_sha256": "e48e502c61bfd3f0baa4b23b4c7b65a687376e6352476911f466f3cac88465c5",
+  "independent_state_oracle": "24/24 PASS all4 fields",
+  "learner_calls": 0,
+  "negative_checks": {
+    "boolean_cursor": "rejected",
+    "changed_owner_packet": "rejected",
+    "duplicate_state": "rejected",
+    "lock_drift": "rejected",
+    "pinned_source_drift": "rejected",
+    "prefilled_label": "rejected",
+    "wrong_mechanical_cursor": "rejected"
+  },
+  "official_predictions": "not_run",
+  "official_scoring": "not_run",
+  "owner_labels": "absent",
+  "owner_texts": "absent",
+  "project_modules_imported": false,
+  "rows": 24,
+  "schema": "sentence-owner-preparation-check/1",
+  "source_lock_commit": "ae9d10427c438ba9d82b248ec8001b5ecdccece3",
+  "source_lock_sha256": "3d31660fe094cb00c83c4542aed1c8f98c222d4c5d792006d8f26f9e31813f96",
+  "source_settings_pin": "verified",
+  "status": "pass",
+  "validation_cpu_seconds": 0.021805067999999997,
+  "validation_wall_seconds": 0.021804803000122774
+}
