@@ -297,3 +297,5 @@ Stage A accepted at `c41378fe` ([supervisor](https://github.com/ryonakayama234/D
 B accepted at27885d0f (PR215/6889951868); Owner authorizes C implementation. Build typed public/gold separation,192 planned rows (96 principal unseen), one parent batch score and complete reports with shared Meter. Artificial fixtures only until C independent acceptance and source/settings pinning; then prepare production states. Official predictions/scoring require separate GO.
 
 C supervisor review PR216/6894444235 is **要修正**: final results JSON omitted live caller data from the1MiB check. Repair releases obsolete copies and explicitly carries live results through all final writes; add frame-root coverage and genuine cap-stop regressions before resubmission. Earlier41-test PASS is historical, not acceptance. No production preparation or official run.
+
+SENTENCE-REVISION-1: C accepted by PR216/6895212311 at3f60aac8. Owner continuation now pins the accepted source/78-candidate order/settings before unlabelled24-row preparation. Next: two25-minute Owner sessions, Muse private data seal, then separate execution decision. The source pin is not a data freeze or official activation.

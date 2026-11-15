@@ -358,3 +358,7 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 - C sources: [collector](../packages/sentence_revision/runner.py), [parent evaluator](../packages/sentence_revision/evaluator.py), [artifacts](../packages/sentence_revision/artifacts.py), [report](../packages/sentence_revision/report.py). [Artificial C tests](../tests/test_sentence_revision_c.py) / [A/B/C command](../scripts/verify_sentence_stage_c.py). Local tests/CI are engineering evidence; independent C acceptance/source pin and production preparation remain pending.
 
 - C final-persistence retained-size repair: [supervisor request](https://github.com/ryonakayama234/DekaSugi/pull/216#issuecomment-6894444235), [contract](architecture/contracts.md), [live-root and actual-cap regressions](../tests/test_sentence_revision_c.py). [Repair evidence](../experiments/SENTENCE-REVISION-1/evidence/stage-c-retained-repair-20261115.json). Independent reacceptance pending; production24 states/prediction/scoring remain unstarted.
+
+## SENTENCE-REVISION-1 — source pin and Owner preparation
+
+- [Accepted source/settings pin](../experiments/SENTENCE-REVISION-1/preparation/source-lock-v1.json): C ACCEPT at3f60aac8, PR216/6895212311. Candidate order/settings fixed before table preparation; Owner labels/texts and Muse data seal remain pending. Official prediction/scoring not authorized.
