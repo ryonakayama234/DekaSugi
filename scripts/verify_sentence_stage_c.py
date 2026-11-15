@@ -40,6 +40,7 @@ def main():
     meter = Meter()
     run = run_artificial(fixtures(), Path(args.artifacts), meter=meter)
     now = resource.getrusage(resource.RUSAGE_CHILDREN)
+    artifact_paths = sorted(Path(args.artifacts).iterdir()) if Path(args.artifacts).is_dir() else []
     receipt = {
         "schema": "sentence-stage-c-artificial-check/1",
         "status": "pass" if result.wasSuccessful() and run["status"] == "complete" else "fail",
@@ -50,11 +51,11 @@ def main():
         "cpu_seconds_parent": time.process_time() - start_cpu,
         "cpu_seconds_children": now.ru_utime + now.ru_stime - prior.ru_utime - prior.ru_stime,
         "wall_seconds": time.perf_counter() - start_wall,
-        "artificial_run_status": run["status"], "settings": SETTINGS,
+        "artificial_run_status": run["status"], "artificial_run_failure": None if run["status"] == "complete" else run, "settings": SETTINGS,
         "artificial_run_final_cost": run.get("final_cost"),
         "artificial_prediction_hashes": {p.name: sha256(p.read_bytes()).hexdigest()
-            for p in sorted(Path(args.artifacts).iterdir()) if p.name.startswith(("row-", "snapshot-", "before-seal-")) or p.name == "report.md"},
-        "all_artifact_sha256": {p.name: sha256(p.read_bytes()).hexdigest() for p in sorted(Path(args.artifacts).iterdir())},
+            for p in artifact_paths if p.name.startswith(("row-", "snapshot-", "before-seal-")) or p.name == "report.md"},
+        "all_artifact_sha256": {p.name: sha256(p.read_bytes()).hexdigest() for p in artifact_paths},
         "cost_attribution_complete": all("scope" in p for p in meter.receipts),
         "stage_a_acceptance": "PR214/6881127124", "stage_b_acceptance": "PR215/6889951868",
         "stage_c_supervisor_acceptance": "pending", "official_predictions": "not_run",

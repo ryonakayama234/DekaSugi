@@ -34,6 +34,7 @@ class Artifacts:
         self.index = {}
         with attributed(meter, "shared/artifact-setup"), meter.phase("artifact-setup"):
             meter.checkpoint()
+            self.root.parent.mkdir(parents=True, exist_ok=True)
             self.root.mkdir(exist_ok=False)
             os.chmod(self.root, 0o700)
 

@@ -290,6 +290,12 @@ class EvaluationTests(unittest.TestCase):
             self.assertFalse(any(r["phase"] == "batch-score" for r in m.receipts))
 
     def test_existing_root_no_overwrite_or_official_activation(self):
+        with TemporaryDirectory() as d:
+            meter = Meter()
+            store = Artifacts(Path(d) / "missing-parent" / "nested-run", meter)
+            store.write("probe.json", {"artificial": True})
+            self.assertEqual(store.read("probe.json"), {"artificial": True})
+            self.assertEqual(meter.receipts[0]["scope"], "shared/artifact-setup")
         before = (self.root / "results.json").read_bytes()
         result = run_artificial(fixtures(), self.root, meter=Meter())
         self.assertEqual(result["status"], "invalid")
