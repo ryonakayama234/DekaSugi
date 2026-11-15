@@ -54,7 +54,7 @@ class Artifacts:
                 out.flush()
                 os.fsync(out.fileno())
             item = {"sha256": sha256(raw).hexdigest(), "bytes": len(raw)}
-            self.meter.checkpoint((retained, self.index, raw, item))
+            self.meter.checkpoint((retained, self.index, value, raw, item))
             self.index[name] = item
         return item
 

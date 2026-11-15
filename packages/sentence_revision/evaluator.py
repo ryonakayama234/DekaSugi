@@ -229,41 +229,51 @@ def run_artificial(cases, root, *, meter):
             episode.before()
             # Only this pair/text crosses the boundary after the verified before seal.
             episode.after(case.correction_text, Example(case.public.correction_input, case.correction_output))
+        # No learner state or input-case objects are needed after collection.
+        del episode, case, cases
         with attributed(meter, "shared/prediction-seal"), meter.phase("prediction-seal"):
             names = [n for n in store.index if n.startswith(("row-", "snapshot-", "before-seal-"))]
             seal = {"freeze_sha256": freeze_sha, "artifacts": {n: store.index[n] for n in sorted(names)}}
             meter.checkpoint(seal)
         store.write("predictions-seal.json", seal)
         results = score_batch(store, meter=meter, expected_freeze_sha=freeze_sha, expected_seal_sha=digest(seal))
+        seal_sha = digest(seal)
+        # Scoring has returned independent saved results. Release preparation copies
+        # before report/JSON buffers; they must not live outside retained checks.
+        del gold, planned, freeze, settings, seal, names
+        retained = (results, freeze_sha, seal_sha)
         from .report import render
         report = render(results, meter=meter)
-        store.write("report.md", report, text=True)
+        store.write("report.md", report, retained=retained, text=True)
+        del report
         with attributed(meter, "shared/result-generation"), meter.phase("result-generation"):
             summary = {"schema": "sentence-results/1", "mode": "artificial_only", "status": "scored_pending_completion",
                        "authoritative_status": "completion.json required; stop.json overrides every partial artifact",
                        "independent_cases": 4, "planned_rows": 192, "main_unseen_rows": 96,
-                       "freeze_sha256": freeze_sha, "predictions_seal_sha256": digest(seal),
+                       "freeze_sha256": freeze_sha, "predictions_seal_sha256": seal_sha,
                        "cases": results, "counts": meter.counts.copy(),
                        "cost_receipts": "cost-receipts-NNN.json shards; completion.json tail",
                        "cpu_seconds_including_preparation": time.process_time() - meter._start,
                        "wall_seconds": time.perf_counter() - start_wall,
                        "cost_note": "phase receipts plus raw whole-run total; report/persistence finalization recorded in completion.json"}
             # Results are serialized per case in report; guard aggregate JSON buffers too.
-            meter.checkpoint(summary)
-        store.write("results.json", summary)
+            meter.checkpoint((retained, summary))
+        store.write("results.json", summary, retained=retained)
+        del summary
         # Shard growing run metadata; each active serialization stays within the same1MiB guard.
         boundary = len(meter.receipts)
         for offset in range(0, boundary, 128):
-            store.write(f"cost-receipts-{offset // 128:03d}.json", meter.receipts[offset:min(offset + 128, boundary)])
+            store.write(f"cost-receipts-{offset // 128:03d}.json", meter.receipts[offset:min(offset + 128, boundary)],
+                        retained=retained)
         with attributed(meter, "shared/completion"), meter.phase("completion"):
             completion = {"status": "complete", "artifact_index": dict(store.index),
                           "counts": meter.counts.copy(), "phase_receipts_tail": list(meter.receipts[boundary:]),
                           "cpu_seconds": time.process_time() - meter._start,
                           "wall_seconds": time.perf_counter() - start_wall}
-            meter.checkpoint(completion)
-        store.write("completion.json", completion)
+            meter.checkpoint((retained, completion))
+        store.write("completion.json", completion, retained=retained)
         return {"status": "complete", "root": str(store.root), "results": results,
-                "freeze_sha256": freeze_sha, "predictions_seal_sha256": digest(seal),
+                "freeze_sha256": freeze_sha, "predictions_seal_sha256": seal_sha,
                 "final_cost": {"cpu_seconds": time.process_time() - meter._start,
                                "wall_seconds": time.perf_counter() - start_wall,
                                "counts": meter.counts.copy(), "phase_count": len(meter.receipts)}}

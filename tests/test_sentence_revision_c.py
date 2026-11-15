@@ -18,6 +18,7 @@ from packages.sentence_revision.artifacts import Artifacts, digest
 from packages.sentence_revision.evaluator import (
     _validate_row, run_artificial, run_official, score_batch, SETTINGS,
 )
+from packages.sentence_revision.foundation import retained_size
 from packages.sentence_revision.report import render
 from packages.sentence_revision.runner import Episode, schedule
 from tests.sentence_revision_c_fixture import fixtures
@@ -332,6 +333,103 @@ class EvaluationTests(unittest.TestCase):
             args = dict(captured["kwargs"], meter=captured["store"].meter)
             with self.assertRaises(Fault):
                 original(captured["store"], **args)
+
+    def test_final_writes_cover_live_data_and_release_redundant_copies(self):
+        # Inspect actual caller roots, not only the retained argument under test.
+        root_names = ("gold", "planned", "freeze", "seal", "results", "report",
+                      "summary", "names", "settings", "completion", "retained")
+        writes, sizes = [], {}
+        original_write, original_checkpoint = Artifacts.write, Meter.checkpoint
+        active = [None]
+        def ids(value):
+            found = set()
+            def visit(obj):
+                if id(obj) in found:
+                    return
+                found.add(id(obj))
+                if type(obj) in (tuple, list):
+                    for item in obj:
+                        visit(item)
+                elif type(obj) is dict:
+                    for key, item in obj.items():
+                        visit(key); visit(item)
+            visit(value)
+            return found
+        def write(store, name, value, **kwargs):
+            if name in ("report.md", "results.json", "completion.json") or name.startswith("cost-receipts-"):
+                caller = inspect.currentframe().f_back
+                live = {k: caller.f_locals[k] for k in root_names if k in caller.f_locals}
+                del caller
+                if name != "report.md":
+                    self.assertFalse(set(live) & {"gold", "planned", "freeze", "seal", "report", "names", "settings"})
+                if name.startswith("cost-receipts-") or name == "completion.json":
+                    self.assertNotIn("summary", live)
+                active[0] = (name, live)
+                writes.append(name)
+                try:
+                    return original_write(store, name, value, **kwargs)
+                finally:
+                    active[0] = None
+            return original_write(store, name, value, **kwargs)
+        def checkpoint(meter, retained=None):
+            if active[0] is not None and retained is not None:
+                name, live = active[0]
+                checked_ids = ids(retained)
+                for key, value in live.items():
+                    self.assertIn(id(value), checked_ids, (name, key))
+                sizes[name] = max(sizes.get(name, 0), retained_size(retained))
+            return original_checkpoint(meter, retained)
+        with TemporaryDirectory() as d, patch.object(Artifacts, "write", write), patch.object(Meter, "checkpoint", checkpoint):
+            result = run_artificial(fixtures(), Path(d) / "live-roots", meter=Meter())
+            self.assertEqual(result["status"], "complete", result)
+        self.assertEqual(writes[0:2], ["report.md", "results.json"])
+        self.assertEqual(writes[-1], "completion.json")
+        self.assertTrue(any(n.startswith("cost-receipts-") for n in writes))
+        self.assertTrue(all(0 < size <= 1048576 for size in sizes.values()), sizes)
+
+    def test_actual_final_serialization_caps_stop_and_do_not_resume(self):
+        # Tighten the real Meter immediately before each named write. The cap is
+        # independently derived from caller roots plus index/value/real JSON bytes.
+        # No BudgetExceeded injection: Meter.checkpoint must detect the excess.
+        root_names = ("gold", "planned", "freeze", "seal", "results", "report",
+                      "summary", "names", "settings", "completion")
+        original = Artifacts.write
+        for target in ("results.json", "cost-receipts-000.json", "completion.json"):
+            observed = {}
+            def write(store, name, value, **kwargs):
+                if name == target:
+                    caller = inspect.currentframe().f_back
+                    live = tuple(caller.f_locals[k] for k in root_names if k in caller.f_locals)
+                    del caller
+                    raw = canonical(value)
+                    # Reserve room for wrapper containers, but ensure the actual
+                    # payload exceeds the cap at its buffered checkpoint.
+                    full = retained_size((live, store.index, value, raw))
+                    payload_only = full - sys.getsizeof(live) - sys.getsizeof((live, store.index, value, raw))
+                    unchecked = retained_size((None, store.index, value, raw))
+                    cap = min(1048576, payload_only - 1, unchecked - 1) if target == "results.json" else min(1048576, payload_only - 1)
+                    self.assertGreater(full, cap)
+                    if target != "results.json":
+                        self.assertLess(unchecked, cap, (target, unchecked, cap))
+                    store.meter.max_bytes = cap
+                    observed.update(full=full, unchecked=unchecked, cap=cap)
+                return original(store, name, value, **kwargs)
+            with self.subTest(target=target), TemporaryDirectory() as d, patch.object(Artifacts, "write", write):
+                root = Path(d) / "actual-cap"
+                meter = Meter()
+                result = run_artificial(fixtures(), root, meter=meter)
+                self.assertTrue(observed)
+                self.assertEqual(result["status"], "resource_stop", result)
+                self.assertEqual(meter.receipts[-1]["phase"], "persist/" + target)
+                self.assertEqual(meter.receipts[-1]["status"], "budget_exhausted")
+                self.assertEqual(result["reason"], "retained case bytes cap")
+                self.assertFalse((root / target).exists())
+                self.assertFalse((root / "completion.json").exists())
+                self.assertTrue((root / "stop.json").exists())
+                self.assertEqual(result["completed_prediction_files"], 192)
+                self.assertFalse(result["retry_allowed"])
+                if target != "results.json":
+                    self.assertEqual(load(root, "results.json")["status"], "scored_pending_completion")
 
     def test_existing_root_no_overwrite_or_official_activation(self):
         with TemporaryDirectory() as d:
