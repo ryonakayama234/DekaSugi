@@ -104,6 +104,16 @@ def score_batch(store, *, meter, expected_freeze_sha, expected_seal_sha):
     """Verify complete artifacts before accessing parent gold; no learner callback."""
     if type(meter) is not Meter or store.meter is not meter:
         raise Fault("batch score requires the run Meter")
+    with attributed(meter, "shared/score-entry"), meter.phase("score-entry"):
+        if ((store.root / "stop.json").exists()
+                or (store.root / "score-started.json").exists()
+                or any(r["status"] in ("failed", "budget_exhausted") for r in meter.receipts)):
+            raise Fault("stopped, failed or already scoring run cannot enter batch score")
+        meter.checkpoint(store.index)
+    # Exclusive persistent latch precedes all gold reads. Any failure consumes entry;
+    # no resume/retry with a new phase, a new Meter or a reconstructed Artifacts object.
+    store.write("score-started.json", {"schema": "sentence-score-started/1",
+                "freeze_sha256": expected_freeze_sha, "predictions_seal_sha256": expected_seal_sha})
     freeze = store.read("freeze.json")
     seal = store.read("predictions-seal.json")
     saved_schedule = store.read("schedule.json")

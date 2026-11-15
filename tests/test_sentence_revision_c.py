@@ -49,6 +49,9 @@ class EvaluationTests(unittest.TestCase):
         store = object.__new__(Artifacts)
         store.root, store.meter = root, Meter()
         store.index = load(root, "completion.json")["artifact_index"]
+        # Reconstruct an invented pre-score boundary, not a resumed real run.
+        (root / "score-started.json").unlink()
+        store.index.pop("score-started.json")
         return store
 
     def score(self, store):
@@ -288,6 +291,47 @@ class EvaluationTests(unittest.TestCase):
             self.assertEqual(result["status"], "resource_stop")
             self.assertEqual(result["completed_prediction_files"], 0)
             self.assertFalse(any(r["phase"] == "batch-score" for r in m.receipts))
+
+    def test_score_entry_is_once_only_and_actual_report_size_stop_cannot_rescore(self):
+        # A complete run also cannot be scored twice, even with a fresh Meter.
+        store = self.copied_store()
+        self.score(store)
+        for meter in (store.meter, Meter()):
+            store.meter = meter
+            with self.assertRaises(Fault):
+                self.score(store)
+        import packages.sentence_revision.evaluator as ev
+        import packages.sentence_revision.report as report
+        from packages.sentence_revision.artifacts import attributed
+        original = ev.score_batch
+        captured = {}
+        def capture(store, **kwargs):
+            captured.update(store=store, kwargs=kwargs)
+            return original(store, **kwargs)
+        def real_size_stop(results, *, meter):
+            with attributed(meter, "shared/report"), meter.phase("report"):
+                meter.checkpoint(b"x" * meter.max_bytes)
+        with TemporaryDirectory() as d, patch.object(ev, "score_batch", capture), patch.object(report, "render", real_size_stop):
+            meter = Meter()
+            outcome = run_artificial(fixtures(), Path(d) / "size-stop", meter=meter)
+            self.assertEqual(outcome["status"], "resource_stop", outcome)
+            self.assertEqual(meter.receipts[-1]["phase"], "report")
+            self.assertTrue((captured["store"].root / "stop.json").exists())
+            reads = []
+            read = Artifacts.read
+            def spy(instance, name, **kwargs):
+                reads.append(name)
+                return read(instance, name, **kwargs)
+            with patch.object(Artifacts, "read", spy), self.assertRaises(Fault):
+                original(captured["store"], **captured["kwargs"])
+            self.assertNotIn("private-gold.json", reads)
+            # The persistent latch still blocks after removal of only the stop marker
+            # and replacement of the in-memory Meter (no OS-authenticity claim).
+            (captured["store"].root / "stop.json").unlink()
+            captured["store"].meter = Meter()
+            args = dict(captured["kwargs"], meter=captured["store"].meter)
+            with self.assertRaises(Fault):
+                original(captured["store"], **args)
 
     def test_existing_root_no_overwrite_or_official_activation(self):
         with TemporaryDirectory() as d:
