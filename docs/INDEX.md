@@ -354,3 +354,5 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 ## SENTENCE-REVISION-1 implementation — stage C
 
 - B [ACCEPT at27885d0f](https://github.com/ryonakayama234/DekaSugi/pull/215#issuecomment-6889951868). [C topology](architecture/system.md) / [C contract and planned artificial verification](architecture/contracts.md): public-only runner, pre-disclosure/final seals, parent batch scoring and all-case reporting under one Meter. C acceptance pending; no official prediction/scoring or production24-state preparation.
+
+- C sources: [collector](../packages/sentence_revision/runner.py), [parent evaluator](../packages/sentence_revision/evaluator.py), [artifacts](../packages/sentence_revision/artifacts.py), [report](../packages/sentence_revision/report.py). [Artificial C tests](../tests/test_sentence_revision_c.py) / [A/B/C command](../scripts/verify_sentence_stage_c.py). Local tests/CI are engineering evidence; independent C acceptance/source pin and production preparation remain pending.

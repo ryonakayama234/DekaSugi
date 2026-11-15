@@ -145,3 +145,8 @@ The parent-only [append-only ledger](r2_m_a/evidence_ledger.py) and [GitHub remo
 ## SENTENCE-REVISION-1 common foundation
 
 [sentence_revision](sentence_revision/__init__.py): isolated stdlib state/condition/snapshot/cost utilities. Stage A is supervisor accepted; [stage B arms](sentence_revision/arms.py) add metered public-example learners and replayable snapshots (B supervisor acceptance pending). No evaluation runner or official data. [Contract and verification plan](../docs/architecture/contracts.md), [topology](../docs/architecture/system.md).
+
+
+## SENTENCE-REVISION-1 stage C (artificial only)
+
+[runner](sentence_revision/runner.py) collects public-only predictions, [evaluator](sentence_revision/evaluator.py) holds gold and batch scores after final sealing, [artifacts](sentence_revision/artifacts.py) preserves exclusive hashes/partial rows, [report](sentence_revision/report.py) displays all cases and hypotheses. One shared Meter spans all stages. B accepted at27885d0f; C acceptance/pinning pending. Official execution always refuses; no production24-state table has been prepared.
