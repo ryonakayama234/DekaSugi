@@ -73,7 +73,9 @@ def _validate_row(row, planned, public):
             raise Fault("prediction schedule mismatch")
     inputs = [*[ex["before"] for ex in public["initial"]],
               public["correction_input"], *public["unseen_inputs"]]
-    if row["input"] != inputs[row["probe"]] or row["input_sha256"] != digest(inputs[row["probe"]]):
+    State.parse(row["input"])
+    if (row["input"] != inputs[row["probe"]] or row["input_sha256"] != digest(inputs[row["probe"]])
+            or digest(row["input"]) != row["input_sha256"]):
         raise Fault("prediction input mismatch")
     if row["status"] not in ("predicted", "abstain", "no_consistent_candidate"):
         raise Fault("missing/nonterminal prediction")
@@ -104,6 +106,7 @@ def score_batch(store, *, meter, expected_freeze_sha, expected_seal_sha):
         raise Fault("batch score requires the run Meter")
     freeze = store.read("freeze.json")
     seal = store.read("predictions-seal.json")
+    saved_schedule = store.read("schedule.json")
     if digest(freeze) != expected_freeze_sha or digest(seal) != expected_seal_sha:
         raise Fault("wrong external local seal expectation")
     with attributed(meter, "shared/pre-score-validation"), meter.phase("pre-score-validation"):
@@ -111,12 +114,13 @@ def score_batch(store, *, meter, expected_freeze_sha, expected_seal_sha):
                 or freeze["grammar_sha256"] != grammar_digest(meter)):
             raise Fault("source/settings changed since preparation")
         planned = schedule()
-        if freeze["schedule"] != planned or seal["freeze_sha256"] != expected_freeze_sha:
+        if freeze["schedule"] != planned or saved_schedule != planned or seal["freeze_sha256"] != expected_freeze_sha:
             raise Fault("schedule/freeze link mismatch")
         expected_names = {"row-" + r["slot"] + ".json" for r in planned}
         expected_names |= {f"snapshot-c{c}-{a}-{s}.json" for c in range(4) for a in ARMS for s in STAGES}
         expected_names |= {f"before-seal-c{c}.json" for c in range(4)}
-        if set(seal["artifacts"]) != expected_names:
+        actual_names = {p.name for p in store.root.iterdir() if p.name.startswith(("row-", "snapshot-", "before-seal-"))}
+        if set(seal["artifacts"]) != expected_names or actual_names != expected_names:
             raise Fault("missing/extra/duplicate scheduled artifacts")
         meter.checkpoint((freeze, seal, planned))
     # Verify every prediction/snapshot/seal byte before using any withheld expected value.
@@ -225,7 +229,8 @@ def run_artificial(cases, root, *, meter):
         report = render(results, meter=meter)
         store.write("report.md", report, text=True)
         with attributed(meter, "shared/result-generation"), meter.phase("result-generation"):
-            summary = {"schema": "sentence-results/1", "mode": "artificial_only", "status": "complete",
+            summary = {"schema": "sentence-results/1", "mode": "artificial_only", "status": "scored_pending_completion",
+                       "authoritative_status": "completion.json required; stop.json overrides every partial artifact",
                        "independent_cases": 4, "planned_rows": 192, "main_unseen_rows": 96,
                        "freeze_sha256": freeze_sha, "predictions_seal_sha256": digest(seal),
                        "cases": results, "counts": meter.counts.copy(),
@@ -257,11 +262,12 @@ def run_artificial(cases, root, *, meter):
         # Planned schedule + exclusive per-row files retain completed/not-run slots.
         receipt = {"status": "resource_stop" if isinstance(exc, BudgetExceeded) else "invalid",
                    "reason": str(exc)[:300], "planned_rows": 192, "main_unseen_rows": 96,
-                   "completed_prediction_files": 0 if store is None else sum(n.startswith("row-") for n in store.index),
+                   "completed_prediction_files": 0 if store is None else len(list(store.root.glob("row-*.json"))),
+                   "indexed_prediction_files": 0 if store is None else sum(n.startswith("row-") for n in store.index),
                    "schedule_status": "saved" if store is not None and "schedule.json" in store.index else "not_prepared_all_slots_not_run",
                    "missing_slot_rule": "fixed schedule() minus saved row files; no zero imputation",
                    "last_phase": meter.receipts[-1] if meter.receipts else None,
-                   "cpu_seconds_including_finalization": time.process_time() - meter._start,
+                   "cpu_observed_before_stop_write": time.process_time() - meter._start,
                    "wall_seconds": time.perf_counter() - start_wall,
                    "score_or_report_may_be_partial": True, "retry_allowed": False}
         path = Path(root)
@@ -271,4 +277,7 @@ def run_artificial(cases, root, *, meter):
             if len(raw) <= 2048:
                 with (path / "stop.json").open("xb") as stream:
                     stream.write(raw)
+        receipt["final_cost"] = {"cpu_seconds": time.process_time() - meter._start,
+                                 "wall_seconds": time.perf_counter() - start_wall,
+                                 "counts": meter.counts.copy(), "phase_count": len(meter.receipts)}
         return receipt

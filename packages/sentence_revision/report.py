@@ -18,7 +18,8 @@ def render(results, *, meter):
             raise Fault("report requires all four batch-scored cases")
         lines = ["# SENTENCE-REVISION-1 — artificial engineering report", "",
                  "人工fixtureのみ。固定renderer。独立単位は4ケース。192予定出力中、主診断は未見96出力。", "",
-                 "予算・棄権・空候補を成功として補完しない。母集団推定・能力認定は行わない。", ""]
+                 "予算・棄権・空候補を成功として補完しない。母集団推定・能力認定は行わない。", "",
+                 "実行完了はcompletion.jsonで確認する。stop.jsonがあれば、本票を含む途中成果物より停止状態を優先する。", ""]
         for case in results:
             lines += [f"## Case {case['case']} / {_safe(case['rule_id'])}", "",
                       f"事前の役割: {_safe(case['intended_role'])}", "",

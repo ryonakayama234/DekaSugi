@@ -158,7 +158,7 @@ class EvaluationTests(unittest.TestCase):
         for name, mutation in (("row-c0-REVISE-before-p0.json", "missing"),
                                ("snapshot-c0-REVISE-after.json", "bytes"),
                                ("private-gold.json", "bytes"),
-                               ("freeze.json", "bytes"),
+                               ("freeze.json", "bytes"), ("schedule.json", "bytes"),
                                ("predictions-seal.json", "bytes")):
             with self.subTest(name=name):
                 store = self.copied_store()
@@ -168,6 +168,10 @@ class EvaluationTests(unittest.TestCase):
                     (store.root / name).write_bytes(b'{}\n')
                 with self.assertRaises(Fault):
                     self.score(store)
+        store = self.copied_store()
+        (store.root / "row-unindexed-extra.json").write_bytes(b'{}\n')
+        with self.assertRaises(Fault):
+            self.score(store)
         for change in ("extra", "missing"):
             store = self.copied_store()
             seal = load(store.root, "predictions-seal.json")
@@ -262,6 +266,10 @@ class EvaluationTests(unittest.TestCase):
                 self.assertFalse(result["retry_allowed"])
                 if target in phases[:5]:
                     self.assertFalse(any(r["phase"] in ("batch-score", "report") for r in m.receipts))
+                if (root / "results.json").exists():
+                    self.assertEqual(load(root, "results.json")["status"], "scored_pending_completion")
+                    self.assertIn("stop.json", load(root, "results.json")["authoritative_status"])
+                self.assertIn("final_cost", result)
                 if (root / "schedule.json").exists():
                     planned = load(root, "schedule.json")
                     files = list(root.glob("row-*.json"))
