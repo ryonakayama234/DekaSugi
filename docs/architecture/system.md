@@ -1112,3 +1112,28 @@ flowchart TD
 ```
 
 All operations including validation, save/restore and MEMORY lookup consume timed phases; no result-gold input is defined. Cooperative guards do not provide OS isolation. C must extend accounting to evaluator and report overhead and keep official execution gated.
+
+
+## SENTENCE-REVISION-1 / stage C (synthetic implementation)
+
+B [ACCEPT](https://github.com/ryonakayama234/DekaSugi/pull/215#issuecomment-6889951868) permits C. [C contract](contracts.md) fixes separation, ordering, full schedule and whole-run accounting before code.
+
+```mermaid
+flowchart TD
+    G["Evaluator gold and fixed roles"] --> P["Parent preparation and schedule"]
+    P --> I["Public examples and input states"]
+    I --> L["Four Case arms"]
+    L --> S["Before seal then correction disclosure"]
+    S --> F["All predictions and snapshots sealed"]
+    G --> E["Parent batch scoring"]
+    F --> E
+    E --> R["Complete JSON and Markdown"]
+    M["One shared cooperative Meter"] --> P
+    M --> L
+    M --> E
+    M --> R
+```
+
+Runner never receives withheld expected states or scorer feedback. Parent stores evaluation gold separately; API isolation is not a hostile-code sandbox. All stages share accounting. C acceptance/pinning precedes production-table preparation; official execution still blocked.
+
+C final persistence repair: discard redundant preparation/input copies after collection/scoring; release the Markdown and JSON summary after their exclusive writes. Carry the surviving results graph through the shared Meter at results.json, every cost shard and completion.json; serialized value/index/raw buffers remain in the check until the write returns. Frame-root and real-cap negative regressions cover this boundary. Supervisor C recheck is pending (PR216/6894444235).

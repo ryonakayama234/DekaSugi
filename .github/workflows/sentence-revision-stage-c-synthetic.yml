@@ -1,0 +1,39 @@
+name: Sentence revision stage C artificial checks
+
+on:
+  pull_request:
+    paths:
+      - "packages/sentence_revision/**"
+      - "tests/test_sentence_revision_a.py"
+      - "tests/test_sentence_revision_b.py"
+      - "tests/test_sentence_revision_c.py"
+      - "tests/sentence_revision_c_fixture.py"
+      - "scripts/verify_sentence_stage_c.py"
+      - ".github/workflows/sentence-revision-stage-c-synthetic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  artificial-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Explicit invented A B C fixtures only
+        run: python scripts/verify_sentence_stage_c.py --output .run/sentence-stage-c.json --artifacts .run/sentence-stage-c-artifacts
+      - name: Documentation and historical byte locks
+        run: |
+          python scripts/check_docs.py
+          python scripts/check_research_ci_v2.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sentence-stage-c-artificial
+          path: |
+            .run/sentence-stage-c.json
+            .run/sentence-stage-c-artifacts
+          if-no-files-found: error
