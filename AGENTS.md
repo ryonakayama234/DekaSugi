@@ -464,3 +464,8 @@ The controlling Owner decision is [PR #183 comment 6675971478](https://github.co
 ## SENTENCE-REVISION-1 / stage B continuation (2026-11-15)
 - A accepted at `c41378fe`, PR214 comment6881127124. Owner authorizes B; submit B for supervisor acceptance before C. B artificial fixtures only; preserve A evidence and all historical locked code/workflows/results. No official prediction/scoring or24-state preparation yet.
 - Require shared Meter for every Case operation and charge actual enumeration/replay/simulation, validation/serialization and MEMORY lookup. No FRESH synthesis cache; FROZEN executable candidates remain initial. Exhaustion is terminal and distinct from an empty consistent set. C must extend shared budget to preparation/evaluator/report overhead; cooperative size is not RSS.
+
+
+## SENTENCE-REVISION-1 / stage C continuation (2026-11-15)
+- B accepted at27885d0f, PR215/6889951868. Owner authorizes C implementation/testing; submit for independent C acceptance. A/B source/workflows/evidence stay unchanged. C source/settings acceptance precedes production24-state preparation. No official prediction/scoring GO.
+- Public-only runner, evaluator-only withheld gold/roles, sealed pre-disclosure and all-case pre-score artifacts,192 planned rows including96 principal unseen outputs. One shared Meter through preparation, all arms/cases, persistence, scoring and reporting. Retain partial/not-run slots; terminal resource stops cannot retry or score. Cooperative limits are not RSS/process isolation. Independent fixture audit and latest-head review remain required.

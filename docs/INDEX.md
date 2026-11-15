@@ -349,3 +349,8 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 - Stage A [ACCEPT](https://github.com/ryonakayama234/DekaSugi/pull/214#issuecomment-6881127124), source `c41378fe`. [B topology](architecture/system.md) / [B contract and artificial verification plan](architecture/contracts.md): four arms, public-input provenance, mandatory cooperative accounting for every B operation. B implemented status/evidence to follow; independent B acceptance pending. C, production preparation and official prediction/scoring remain unstarted.
 
 - B implementation: [four arms](../packages/sentence_revision/arms.py), [artificial tests](../tests/test_sentence_revision_b.py), [explicit A/B verification](../scripts/verify_sentence_stage_b.py). Metered construction, correction, prediction and canonical replay restore. B supervisor acceptance pending; source pin/evidence recorded in PR submission.
+
+
+## SENTENCE-REVISION-1 implementation — stage C
+
+- B [ACCEPT at27885d0f](https://github.com/ryonakayama234/DekaSugi/pull/215#issuecomment-6889951868). [C topology](architecture/system.md) / [C contract and planned artificial verification](architecture/contracts.md): public-only runner, pre-disclosure/final seals, parent batch scoring and all-case reporting under one Meter. C acceptance pending; no official prediction/scoring or production24-state preparation.
