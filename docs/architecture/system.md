@@ -1135,3 +1135,5 @@ flowchart TD
 ```
 
 Runner never receives withheld expected states or scorer feedback. Parent stores evaluation gold separately; API isolation is not a hostile-code sandbox. All stages share accounting. C acceptance/pinning precedes production-table preparation; official execution still blocked.
+
+C final persistence repair: discard redundant preparation/input copies after collection/scoring; release the Markdown and JSON summary after their exclusive writes. Carry the surviving results graph through the shared Meter at results.json, every cost shard and completion.json; serialized value/index/raw buffers remain in the check until the write returns. Frame-root and real-cap negative regressions cover this boundary. Supervisor C recheck is pending (PR216/6894444235).
