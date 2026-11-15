@@ -362,3 +362,5 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 ## SENTENCE-REVISION-1 — source pin and Owner preparation
 
 - [Accepted source/settings pin](../experiments/SENTENCE-REVISION-1/preparation/source-lock-v1.json): C ACCEPT at3f60aac8, PR216/6895212311. Candidate order/settings fixed before table preparation; Owner labels/texts and Muse data seal remain pending. Official prediction/scoring not authorized.
+
+- Ownerセッション用の[24例確認表](../experiments/SENTENCE-REVISION-1/preparation/owner-packet-v1/owner-worksheet-v1.md)と[未回答の機械表](../experiments/SENTENCE-REVISION-1/preparation/owner-packet-v1/state-table-v1.json)、[Muse用の暫定割当](../experiments/SENTENCE-REVISION-1/preparation/owner-packet-v1/muse-allocation-proposal-v1.json)、[生成・hash台帳](../experiments/SENTENCE-REVISION-1/preparation/owner-packet-v1/packet-index-v1.json)、[準備検証](../experiments/SENTENCE-REVISION-1/evidence/owner-preparation-check-20261115.json)。[準備専用ツール](../scripts/prepare_sentence_owner_packet.py)はstdlibのみで、Case・予測・採点を呼ばない。source pin commit ae9d1042→表準備の順。Owner24選択・8文／Museデータ固定は未完了。
