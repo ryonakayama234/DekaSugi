@@ -369,3 +369,5 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 ## SENTENCE-REVISION-1 — supervisor VM loader
 
 - [Owner execution decision](https://github.com/ryonakayama234/DekaSugi/issues/195#issuecomment-6904747793), [loader data contract](architecture/contracts.md), [VM procedure and synthetic verification ledger](process/sentence-revision-vm.md). External loader preserves all13 pinned source bytes; official execution belongs to Muse after audit. No actual package or official outputs in this PR.
+
+- Loader synthetic evidence: [59-test generated receipt](../experiments/SENTENCE-REVISION-1/evidence/loader-synthetic-20261116.json) / [tested-tree publication binding](../experiments/SENTENCE-REVISION-1/evidence/loader-publication-binding-20261116.json), [Draft PR224](https://github.com/ryonakayama234/DekaSugi/pull/224). Supervisor loader acceptance remains pending.

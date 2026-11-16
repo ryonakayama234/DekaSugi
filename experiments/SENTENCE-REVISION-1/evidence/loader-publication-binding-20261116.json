@@ -1,0 +1,10 @@
+{
+  "changed_files_verified": 11,
+  "github_file_readback_byte_equal": true,
+  "identical_git_tree": "e32b015a6c2e53c63ef44173af3e55ba3e3e8a16",
+  "note": "GitHub API publication preserves tested tree bytes; API commit metadata creates a different commit ID. Original local test receipt remains unedited. All five loader/runtime/test/workflow source hashes match published source; thirteen pinned files unchanged.",
+  "published_source_commit": "7a378f468090eb34c06ae84d1ee30b154e0555b7",
+  "receipt_sha256": "e44c6da16241e1353c9b69f8aa1896c4b407050628679b7cd91671e5b9314169",
+  "schema": "sentence-loader-publication-binding/1",
+  "tested_local_commit": "b1ad9ce2576b25a6e3bc33c6def04e172e26b757"
+}

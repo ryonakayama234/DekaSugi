@@ -304,3 +304,5 @@ The24-row unlabelled packet is prepared after source pin ae9d1042. All4-field al
 
 
 SENTENCE-REVISION-1 (2026-11-16): Owner authorized one official prediction/scoring run on Muse VM (Issue195/6904747793, private manifest163f11d3…). Next engineering step is an external loader with immutable13-file pin, exact manifest/payload checks, package activation latch, pinned collector/scorer/report and cumulative budget. Synthetic verification and supervisor exact-head audit precede VM use. This PR does not execute official cases or merge any dependency.
+
+Loader implementation submitted as Draft PR224 on preparation PR222. Local explicit A13+B14+C16+loader16=59/59 synthetic checks pass (Python3.12.14); fixed13 hashes unchanged, published tree/source readback matches. VM instructions and private-custody outputs are ready for supervisor loader audit. Official package/predictions/scoring remain unobserved by Lead; no dependency or loader merge performed.

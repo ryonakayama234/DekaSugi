@@ -1,0 +1,52 @@
+{
+  "accepted_commit": "3f60aac8de70af9e9575d25bc72009b0c30d89f6",
+  "cpu_seconds_children": 31.722814,
+  "cpu_seconds_parent": 268.991575222,
+  "dirty_worktree_at_start": false,
+  "errors": 0,
+  "failures": 0,
+  "loader_source_sha256": {
+    ".github/workflows/sentence-revision-loader-synthetic.yml": "afb2043859bfb63e563f7ce87060685760dd11f9ecb6aabab4c20aa53a41af08",
+    "scripts/run_sentence_revision.py": "492a157184761d0123ea05d4a8bc26958d094f3d204b4f9bdd04b303b0f2892f",
+    "scripts/verify_sentence_loader.py": "bf026ab6f672d7f543e3cd3564b072380985f81fc4cffc5c57e742a155775fa7",
+    "tests/sentence_loader_fixture.py": "7a128d053cadd733945f3b3210802f2202e268e9d004281e69df77ec2f590523",
+    "tests/test_sentence_loader.py": "e6d912717501c0db60b91eaa051225a78245f4afc2e02c3519a7c7033f16e9cf"
+  },
+  "merge": "not_authorized",
+  "official_package_loaded": false,
+  "official_predictions": 0,
+  "official_scores": 0,
+  "pinned_source_files_unchanged": true,
+  "pinned_source_sha256": {
+    ".github/workflows/sentence-revision-stage-c-synthetic.yml": "93b15c51f9de78cbf2eb63d6d8615d626616e3db276f6473b1855d0d98b07eb7",
+    "packages/sentence_revision/__init__.py": "1167a97eadc2a2237307d8a06ce53aef500ae5a053895858ee5c3249e8590dca",
+    "packages/sentence_revision/arms.py": "399348ad9e9a3366ff9e44221459f313b2995c18c16b6adf2c95de1a1337d1b1",
+    "packages/sentence_revision/artifacts.py": "e47bb537d06da163c185fbad4486a5d26e3ac02fb335692cef658a8f8b94acc9",
+    "packages/sentence_revision/evaluator.py": "3645d13603e9d79b93c6eea01a82e74ee62e13d3bb84b4d3c501f44fccb38310",
+    "packages/sentence_revision/foundation.py": "314e5d0d189be95e3925334c5a69eb0ddbba5336c1c80b8f2638a6fb069577e0",
+    "packages/sentence_revision/report.py": "39fdd2e2ad7a6b5fa589842f4690f47f946eb472c9557dd0abc1b9fc2c7fd583",
+    "packages/sentence_revision/runner.py": "9aa878023e63712d0d3423d488c8f426c92b9bd9aee5a24c0266879d15a4ce8e",
+    "scripts/verify_sentence_stage_c.py": "e5d1c97b3c93a2fe276a838876974e61b56ca012460e09292210eb26d94fd0f6",
+    "tests/sentence_revision_c_fixture.py": "4f89b65bf7e6ac33fb7daccb1881efec3a69ee30b5e978180bef77683e9e989d",
+    "tests/test_sentence_revision_a.py": "70e5afe462e54ef9ce3f26de34385f4cd55ef3859c3228788adb315e02547733",
+    "tests/test_sentence_revision_b.py": "fce429e2b6146e684849a9b0f4e7bf0650771fadc3b269d025f4ca2128bacb70",
+    "tests/test_sentence_revision_c.py": "d54e020d67632cdf3285ec52eabd11468fd6ef3733e71fc1246d5aa6282bc3f1"
+  },
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "python": "3.12.14",
+  "schema": "sentence-loader-synthetic-verification/1",
+  "skipped": 0,
+  "source_commit": "b1ad9ce2576b25a6e3bc33c6def04e172e26b757",
+  "source_lock_sha256": "3d31660fe094cb00c83c4542aed1c8f98c222d4c5d792006d8f26f9e31813f96",
+  "status": "pass",
+  "supervisor_loader_audit": "pending",
+  "synthetic_package": "invented; not the production worksheet or frozen private package",
+  "test_modules": [
+    "tests.test_sentence_revision_a",
+    "tests.test_sentence_revision_b",
+    "tests.test_sentence_revision_c",
+    "tests.test_sentence_loader"
+  ],
+  "tests_run": 59,
+  "wall_seconds": 301.21955235999985
+}
