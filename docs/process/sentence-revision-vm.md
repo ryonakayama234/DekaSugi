@@ -24,4 +24,33 @@ Unseen roles are unseen_related, unseen_previous_application, unseen_near_counte
 
 ## Execution (planned until supervisor audit)
 
-Implementation and synthetic evidence will be added next. No official execution has been performed by Lead.
+1. Supervisor audits this loader head and verifies the13-file pin/source-lock against PR222. Use a clean checkout of that audited head with Python3.12 and standard library only. No dependency installation is needed. New code: [loader](../../scripts/run_sentence_revision.py), [explicit verification](../../scripts/verify_sentence_loader.py), [invented package/tests](../../tests/test_sentence_loader.py).
+2. Keep the four private input files outside the checkout. Directory must be writable to persist its exclusive manifest-named activation latch. Keep package and resulting outputs private; the report and results include unseen gold. Use a separate nonexistent run root outside checkout and outside package. Do not precreate it; loader creates0700.
+3. Determine prior cumulative CPU already spent under the adopted budget from preparation/verification/other supervisor records. Pass that observed number explicitly; do not assume zero or grant a fresh7200 seconds. Loader includes fresh interpreter startup, imports/preflight and all remaining work in the same7200s total. This numeric debit is supervisor-supplied provenance, not an independently authenticated budget ledger.
+4. Run exactly once **after supervisor audit**. Substitute only the private paths and observed prior CPU number:
+
+```bash
+python -I scripts/run_sentence_revision.py \
+  --package /private/sentence-revision-fixed \
+  --run-root /private/sentence-revision-official-run \
+  --prior-cpu-seconds OBSERVED_CUMULATIVE_CPU
+```
+
+The CLI has no manifest/hash/source/budget override, synthetic mode or resume option. Official manifest SHA256 is163f11d38827af0c2908ce1d3dc250b11645ad6a509cf8768037f94be7149c06. It rejects synthetic package commitments. `-I` is required; user Python paths and stale pycache are excluded. The unchanged packages bootstrap file is also authenticated before imports.
+
+5. Stdout contains bounded status/cost metadata, never input texts/states/results/gold. Exit0 requires `status=complete`. Any other status exits2. A preflight rejection leaves no run root/latch; diagnose without fetching predictions. Once the package latch exists, every error/interruption consumes activation. A duplicate root or package activation is refused. Do not delete/copy the latch or change the package to retry; report partial state for Owner/supervisor judgment. Local filesystem custody cannot prevent a privileged user deleting/copying the entire package.
+6. Authoritative success requires completion.json **and no stop.json**. Verify the completion artifact index before reviewing report.md/results.json. All192 scheduled rows include96 main unseen outputs; retain all four cases and negative/empty/abstain outcomes. stop.json overrides any partial report or results and records saved/indexed rows, last phase and cumulative observed CPU. Missing slots are schedule minus saved rows, never zero scores. Existing score-started.json is the unchanged scorer's once-only latch.
+
+## Output provenance and report
+
+`input-manifest.json` is a canonical copy for inspection; the external manifest commitment still refers to the original private file bytes. `freeze.json` links that commitment, source-lock, current settings/grammar/runtime bytes, public/gold digests and the unchanged schedule. Per-case public and private-disclosure files are separated. All four before seals and all output/snapshot bytes are sealed before the pinned score_batch entry; no incremental scoring.
+
+`frozen-renderer.md` preserves fixed renderer output, whose historic preamble says artificial. `report.md` substitutes only that known preamble with loader mode/manifest provenance; all scored tables/body remain byte-identical. It must be interpreted with completion/stop and the cost-receipt shards. `results.json` uses sentence-loader-results/1 and explicit official_supervisor_vm or synthetic_loader_check mode. No fixed renderer/scorer/kernel source is edited.
+
+One Meter is shared throughout, including result serialization, receipts and completion. Checks use live results, not an empty retained argument. Prior CPU is included; phase60s/check100000/data1MiB remain unchanged. Limits are cooperative retained-data/CPU guards, not OS memory/process isolation. Final caller-visible CPU includes completion persistence; a persisted timestamp cannot include its own subsequent write.
+
+## Synthetic verification ledger
+
+The explicit command is `python scripts/verify_sentence_loader.py --output /tmp/loader-check.json`. It runs only named A/B/C and invented-loader test modules, never broad discovery, actual Owner inputs or production execution. Temporary private packages and artifacts are removed after tests. The internal synthetic test seam cannot label a non-authorized commitment official and is not exposed by CLI. Separate pull-request-only CI uses the same command; all pinned workflows remain unchanged.
+
+Receipt and exact observed results will be added after local execution. Independent supervisor loader audit is pending; no official execution has been performed by Lead.
