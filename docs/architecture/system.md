@@ -1141,3 +1141,22 @@ C final persistence repair: discard redundant preparation/input copies after col
 SENTENCE-REVISION-1 preparation sequence after C ACCEPT (PR216/6895212311): accepted source/settings pin → unlabelled24-row Owner worksheet with two mechanical outcomes → two25-minute Owner sessions → Muse-only split/gold/text/order seal → separate decision for production execution. The [source pin](../../experiments/SENTENCE-REVISION-1/preparation/source-lock-v1.json) precedes the table; no learner/scorer is used in table generation.
 
 The [Owner packet](../../experiments/SENTENCE-REVISION-1/preparation/owner-packet-v1/packet-index-v1.json) is generated after pin commit ae9d1042. Owner sees unselected two-outcome rows and eight blank sentences; Muse separately sees provisional allocations and custody steps. The producer only performs structural checks and known deletion/keep, with zero learner/predict/score calls. Official route stays closed; packet readiness means two25-minute sessions can start, not that labels or data seal exist.
+
+
+## SENTENCE-REVISION-1 / external VM activation (2026-11-16)
+
+The [Owner GO](https://github.com/ryonakayama234/DekaSugi/issues/195#issuecomment-6904747793) authorizes one supervisor-VM run after loader audit. The new loader imports accepted code; the13-file pin and original official stub remain immutable. This PR executes synthetic fixtures only.
+
+```mermaid
+flowchart TD
+    P["Private four-file package"] --> V["Manifest, payload and source verification"]
+    V --> L["Exclusive package latch and new run root"]
+    L --> C["Public collector and sealed correction disclosure"]
+    C --> S["All-output seal and pinned once-only scorer"]
+    S --> R["Private report, costs and completion"]
+    V -->|"Mismatch"| X["Stop before prediction"]
+    C -->|"Failure or budget cap"| T["Terminal partial ledger; no retry"]
+    S -->|"Failure or budget cap"| T
+```
+
+The learner never receives unseen gold, intended-rule metadata or evaluator roles. Package authentication is parent-only, not process-level secrecy. [Data contract](contracts.md) / [VM instructions](../process/sentence-revision-vm.md).
