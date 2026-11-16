@@ -1,0 +1,35 @@
+name: Sentence revision loader invented-package checks
+
+on:
+  pull_request:
+    paths:
+      - "scripts/run_sentence_revision.py"
+      - "scripts/verify_sentence_loader.py"
+      - "tests/test_sentence_loader.py"
+      - "tests/sentence_loader_fixture.py"
+      - ".github/workflows/sentence-revision-loader-synthetic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  invented-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Explicit A B C and invented loader fixtures only
+        run: python scripts/verify_sentence_loader.py --output .run/sentence-loader-synthetic.json
+      - name: Documentation and immutable historical sources
+        run: |
+          python scripts/check_docs.py
+          python scripts/check_research_ci_v2.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sentence-loader-invented-verification
+          path: .run/sentence-loader-synthetic.json
+          if-no-files-found: error

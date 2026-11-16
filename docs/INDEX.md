@@ -364,3 +364,10 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 - [Accepted source/settings pin](../experiments/SENTENCE-REVISION-1/preparation/source-lock-v1.json): C ACCEPT at3f60aac8, PR216/6895212311. Candidate order/settings fixed before table preparation; Owner labels/texts and Muse data seal remain pending. Official prediction/scoring not authorized.
 
 - Ownerセッション用の[24例確認表](../experiments/SENTENCE-REVISION-1/preparation/owner-packet-v1/owner-worksheet-v1.md)と[未回答の機械表](../experiments/SENTENCE-REVISION-1/preparation/owner-packet-v1/state-table-v1.json)、[Muse用の暫定割当](../experiments/SENTENCE-REVISION-1/preparation/owner-packet-v1/muse-allocation-proposal-v1.json)、[生成・hash台帳](../experiments/SENTENCE-REVISION-1/preparation/owner-packet-v1/packet-index-v1.json)、[準備検証](../experiments/SENTENCE-REVISION-1/evidence/owner-preparation-check-20261115.json)。[準備専用ツール](../scripts/prepare_sentence_owner_packet.py)はstdlibのみで、Case・予測・採点を呼ばない。source pin commit ae9d1042→表準備の順。Owner24選択・8文／Museデータ固定は未完了。
+
+
+## SENTENCE-REVISION-1 — supervisor VM loader
+
+- [Owner execution decision](https://github.com/ryonakayama234/DekaSugi/issues/195#issuecomment-6904747793), [loader data contract](architecture/contracts.md), [VM procedure and synthetic verification ledger](process/sentence-revision-vm.md). External loader preserves all13 pinned source bytes; official execution belongs to Muse after audit. No actual package or official outputs in this PR.
+
+- Loader synthetic evidence: [59-test generated receipt](../experiments/SENTENCE-REVISION-1/evidence/loader-synthetic-20261116.json) / [tested-tree publication binding](../experiments/SENTENCE-REVISION-1/evidence/loader-publication-binding-20261116.json), [Draft PR224](https://github.com/ryonakayama234/DekaSugi/pull/224). Supervisor loader acceptance remains pending.

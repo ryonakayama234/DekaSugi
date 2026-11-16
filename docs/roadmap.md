@@ -301,3 +301,8 @@ C supervisor review PR216/6894444235 is **要修正**: final results JSON omitte
 SENTENCE-REVISION-1: C accepted by PR216/6895212311 at3f60aac8. Owner continuation now pins the accepted source/78-candidate order/settings before unlabelled24-row preparation. Next: two25-minute Owner sessions, Muse private data seal, then separate execution decision. The source pin is not a data freeze or official activation.
 
 The24-row unlabelled packet is prepared after source pin ae9d1042. All4-field alternatives,24 distinct inputs, null responses and7 negative integrity checks pass using stdlib only; no learner import/call. Owner sessions are ready for R01/R02 then R03/R04 (25 minutes each,10-minute reserve). Muse must confirm provisional semantic roles, collect24 choices/8 texts privately, and freeze split/gold/order before seeking production GO.
+
+
+SENTENCE-REVISION-1 (2026-11-16): Owner authorized one official prediction/scoring run on Muse VM (Issue195/6904747793, private manifest163f11d3…). Next engineering step is an external loader with immutable13-file pin, exact manifest/payload checks, package activation latch, pinned collector/scorer/report and cumulative budget. Synthetic verification and supervisor exact-head audit precede VM use. This PR does not execute official cases or merge any dependency.
+
+Loader implementation submitted as Draft PR224 on preparation PR222. Local explicit A13+B14+C16+loader16=59/59 synthetic checks pass (Python3.12.14); fixed13 hashes unchanged, published tree/source readback matches. VM instructions and private-custody outputs are ready for supervisor loader audit. Official package/predictions/scoring remain unobserved by Lead; no dependency or loader merge performed.

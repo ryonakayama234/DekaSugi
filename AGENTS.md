@@ -477,3 +477,9 @@ The controlling Owner decision is [PR #183 comment 6675971478](https://github.co
 - Candidate outcome pairs are mechanical DELETE_RIGHT/KEEP only, never predictions/recommendations. Owner choices/8 texts stay blank until Owner supplies them; Muse alone finalizes split/gold/text/order privately before any prediction. No production Case calls, snapshots, scoring, activator or main merge. No status update may imply data freeze or run GO from this source pin.
 
 - [Owner packet v1](experiments/SENTENCE-REVISION-1/preparation/owner-packet-v1/packet-index-v1.json) is unlabelled. Do not run its rows through Case/predict/score or add them to tests/fixtures. Only stdlib preparation checks run now. Candidate outcomes are both unselected, role allocation is provisional, and filled Owner response copies belong to Muse privately. Preserve accepted13 source bytes; an official loader/activation remains absent.
+
+
+## SENTENCE-REVISION-1 / official-loader implementation (2026-11-16)
+- Owner #195/6904747793 plus redacted package schema authorize external loader implementation, synthetic verification and Draft PR. Official execution is once only on Muse VM **after supervisor loader audit**. No actual package/gold/Owner text enters Lead, tests or GitHub; no merge.
+- Accepted13 files/source-lock remain immutable. Hash mismatch aborts before prediction; if changing a pinned file is necessary, stop and report invalidation instead. Import pinned Episode/score_batch/renderer, never replace scoring/arm semantics or open the frozen run_official stub.
+- Follow the pre-implementation [contract](docs/architecture/contracts.md) and [VM procedure](docs/process/sentence-revision-vm.md): exact authorized manifest bytes, three payload hashes, case/probe mapping, exclusive local activation and existing scorer once-only. No synthetic test may use the production24 packet. Retain cumulative CPU debit and terminal stops; no new budget, no resume or synthetic scientific claim.
