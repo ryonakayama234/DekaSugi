@@ -10,6 +10,7 @@ tags: navigation, architecture, research, experiments
 
 | ID | テーマ | 状態 | 文書 |
 |---|---|---|---|
+| SENTENCE-MEANING-CARD-20261116-01 | 短文の意味付け：接地2語・4対応対、TEXT/MASK/SWAP/STATE、固定前判別力・V0整合性・振る舞い同値類 | proposed / design only / not run; Owner採否待ち | [実験カードv1](research/SENTENCE-MEANING-CARD-20261116-01.md) |
 | VISION-001 | 研究目的・前提・非目標 | proposed | [mission](vision/mission.md) |
 | ARCH-001 | 全体システム図・モジュール関係 | proposed | [system](architecture/system.md) |
 | ARCH-002 | データ構造・境界・処理フロー | proposed | [contracts](architecture/contracts.md) |
