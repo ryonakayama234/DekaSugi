@@ -81,12 +81,11 @@ class SymbolBootstrapTests(unittest.TestCase):
             with self.assertRaises(ValueError):l.observe('bad',text)
         self.assertEqual(len(self.lock['train'])*self.lock['rounds'],54)
 
-
-if __name__=='__main__':unittest.main()
-
     def test_incomplete_or_duplicate_comparison_rejected(self):
         from packages.symbol_bootstrap.__main__ import aggregate
-        import json
         rows=[dict(id=t['id'],group=t['group'],arm=a,correct=False,trace={'prediction':''}) for t in self.lock['tests'] for a in self.lock['arms']]
         with self.assertRaises(ValueError):aggregate(rows[:-1],self.lock['arms'])
         with self.assertRaises(ValueError):aggregate(rows[:-1]+rows[:1],self.lock['arms'])
+
+
+if __name__=='__main__':unittest.main()
