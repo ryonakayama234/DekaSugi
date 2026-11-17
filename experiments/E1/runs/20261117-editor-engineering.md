@@ -1,0 +1,51 @@
+# E1 — 人工例による工学確認（2026-11-17）
+
+id: E1-ENGINEERING-20261117
+status: synthetic_checks_pass_device_and_independent_checks_pending
+updated: 2026-11-17
+tags: editor, engineering, invented, evidence
+
+許可：[Issue #227](https://github.com/ryonakayama234/DekaSugi/issues/227#issuecomment-6935058538)。基準main `ae44f126e36410b98dc5ee450a05348c9f11105b`。成果物：[HTML](../../../packages/draft_editor/editor.html)、[仕様](../../../docs/specs/E1-DRAFT-EDITOR.md)、[端末確認](../../../docs/process/e1-editor-checklist.md)。本票は研究結果・学習能力の認定ではない。
+
+## 確認の範囲
+
+- core検査は配布HTML内のcoreをそのままNode VMへ読み込む。架空の日本語訂正、600組のUnicode文字列対、改行・絵文字・ZWJ、undo/redo履歴、選択、目的変更、gap、JSON/JSONL、型・版・範囲・再生・品質の偽装拒否を確認。
+- browser検査は同じHTMLを実ブラウザで開く17シナリオ。DB再起動、区切りと子revision、native undo、合成composition順序変種、中止の不確定性、変換中の保存拒否、未通知変化、JSON別コピー、読込み全体拒否、保存不能・失敗注入・再試行、二重タブCAS、履歴ごと削除、CSP/通信、tablet寸法を対象にする。
+- 実入力はゼロ。browserのcompositionは合成イベントで実IMEではない。Android端末ではなくChromiumの寸法模擬である。
+
+## 実測と未確認
+
+| 確認 | 状態 | 証拠・限界 |
+|---|---|---|
+| Node core人工検査 | PASS 16/16 | `node --test tests/draft_editor/core.test.cjs`。最終ソースで再実施（600 Unicode対を含む） |
+| ローカルheadless Chromium | 実行不能 | この実行環境でUNIX socketが拒否され、ブラウザ起動前に停止。試行を合格数へ含めない |
+| cloud browserのfileプレビュー | 実行不能 | 許可プロトコルがhttp/httpsでfile表示が拒否。迂回していない |
+| E1専用GitHub browser検査 | PASS 17/17 | 修正後head cc46add4、Actions 43999090513。実IME／実Androidの確認は含まない |
+| docs-check／既存source境界 | PASS | 125 Markdown、CI-SAFE-V2 static_source_integrity_pass。旧workflowの稼働状態を新たに認証した意味ではない |
+| Muse独立確認 | 未実施 | 正確なheadでの別環境確認待ち |
+| Windows＋Edgeの実IME | 未実施 | Owner主端末の確認カード待ち |
+| Galaxy Tab A9+＋Chrome | 未実施 | 起動・IME・保存往復を確認するまで対応未確認 |
+| 別日の実用下書き3件程度 | 未実施 | E1完了条件。制作提出時の合格へ数えない |
+
+専用workflowはPRのE1変更にだけ反応し、read-only権限・10分上限。Node coreと独立のPlaywright 1.62.1／Chromiumだけを使う。パッケージ取得は検証環境の準備で、配布HTMLの実行時依存ではない。旧workflow・scorer・研究生成器・凍結データを変更／実行しない。既存CIを復活・無効化しない。
+
+## 判定
+
+制作物の工学提出であり、E1完了・学習能力の獲得・マージ許可ではない。ブラウザ検査の失敗は同じDraftで修正し、独立確認と実機確認へ渡す。未確認をPASSへ読み替えない。
+
+## 最初のCI確認と追加修正
+
+[Actions run 43998556493](https://github.com/ryonakayama234/DekaSugi/actions/runs/43998556493) はhead `e53e02b159d14195e208896c0a78a6484b59fe57`（PR merge ref `8df8c162d3ccb29d58931cd4feb4a70a255c782b`）でcore 15/15、browser **16/16** PASS。Chromium 151.0.7922.34、Playwright 1.62.1。Artifact ID `14291725098`、ZIP SHA256 `a4d1709dd8a3c784f86762af433a08e648114e5016a616fb05089b60f7bb172e`。当初の「17シナリオ」は数え違いで、この初回実測は16件。
+
+提出前の点検で、(a) input通知なしの本文変更が次のbeforeinputまでに起きた場合を独立gapにする、(b) 連続入力で自動退避timerを延長し続けない、(c) 履歴UIは全イベントの全文を配列へ展開せず指定位置だけ保持する、の修正と回帰を追加。上限付近では目的・タイトルも編集停止する。ソースを読みやすく整形した。最新browser検査は17シナリオ、coreは16件。初回CIの合格を変更後ソースへそのまま流用せず、同じDraftの専用CI結果で確認する。
+
+修正後HTML SHA256: `0f84b979d6b5a5ba28997e83b7f659ddcab297d058d65dde506ce9ce95c76c5d`。最新CIの参照はPR #230へ記録する。
+
+## 修正後の確認結果
+
+[Actions run 43999090513](https://github.com/ryonakayama234/DekaSugi/actions/runs/43999090513) は修正後head `cc46add4390d12f6455d293cbd23c2ca351315cd`（PR merge ref `b6f34b7`）でcore **16/16**、browser **17/17** PASS。既存safe successorも[run 43999090574](https://github.com/ryonakayama234/DekaSugi/actions/runs/43999090574)でsuccess。
+
+- Chromium `151.0.7922.34`、Playwright `1.62.1`、file起動。
+- Artifact ID `14291621027`（人工JSON結果票＋desktop/tablet寸法のスクリーンショット）、ZIP SHA256 `0f7c728c3dc0a3aef01e33d73dfb4148e7aa1992cee7a7f9e687f70e8bb7670f`。Actions artifactの保持は5日。恒久的な検証対象はrepo内の明示テストと本票の結果参照。
+- 本結果を記録する文書commitではHTML・テスト・workflowは変更しない。上記HTML SHA256で検証済みソースと照合できる。文書のみの同期でも、PR全体の対象パスによりE1 workflowが再起動する場合がある。最終headのE1／safe successor結果はPR checksで確認する。
+- ChatGPTによる実装側の工学確認であり、Museの独立確認・OwnerのWindows実IME・Galaxy実機・別日実用3件は引き続き未実施。Draft維持、マージなし。

@@ -284,3 +284,8 @@ After P2 Codex follow-up at 0baf02e, replace caller-provided Catalog by the **in
 
 ### ACTIVE-001 PR2 — exact-type attack resistance (2026-10-30)
 Latest independent review of b2acf54 showed a `tuple` subclass for QuerySession.class_ids that compares equal to the correct semantic class IDs but returns duplicated class IDs during iteration. Restore exact-built-in-type requirements at all untrusted replay boundaries, while preserving canonical internal Catalog, split and stepwise policy/answer verification. Add six synthetic negative fixtures, explicit CI-safe allowlist, synchronized AGENTS/INDEX/ARCH-001/ARCH-002 Mermaid/data contract/spec/plan/README/run. This is a Stage-I engineering correctness gate, **not** a Stage-II trained inquiry policy or transfer result. Retain PR #95 draft with dependency PR #94 and require exact-head independent review. [Run](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+
+## 2026-11-17 — E1 purpose-driven writing entry
+
+[Owner production GO](https://github.com/ryonakayama234/DekaSugi/issues/227#issuecomment-6935058538) starts [single local HTML](../packages/draft_editor/README.md), not E2 learning. Deliver committed-edit capture, replay, private IndexedDB backup and JSON round trip as one Draft PR; retain immutable historical research. [Engineering receipt](../experiments/E1/runs/20261117-editor-engineering.md) / [device checklist](process/e1-editor-checklist.md). E1 completion still needs independent checks, actual main-device IME, roughly three practical drafts on separate days and acceptable burden. E2–E5 wait for data quality, repeated corrections and separate GO.

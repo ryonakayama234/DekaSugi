@@ -1,0 +1,227 @@
+"use strict";
+// Invented fixtures only. Loads the exact core embedded in the delivered HTML.
+const { test } = require("node:test");
+const assert = require("node:assert/strict");
+const fs = require("node:fs"),
+  vm = require("node:vm"),
+  path = require("node:path");
+const html = fs.readFileSync(
+  path.join(__dirname, "../../packages/draft_editor/editor.html"),
+  "utf8",
+);
+const context = { window: {}, Blob };
+vm.createContext(context);
+vm.runInContext(
+  html.match(/<script id="e1-core">([\s\S]*?)<\/script>/)[1],
+  context,
+);
+const C = context.window.E1Core,
+  clone = (x) => JSON.parse(JSON.stringify(x));
+const sel = (n) => ({ start: n, end: n, direction: "none" });
+function recorder(text = "") {
+  let time = 0;
+  return new C.Recorder(
+    C.makeEpisode({
+      id: "invented-episode",
+      draftId: "invented-draft",
+      text,
+      sel: sel(text.length),
+      origin: "owner_probe",
+    }),
+    "invented-session",
+    () => ++time,
+  );
+}
+function episode() {
+  const r = recorder("資料を確認してください。");
+  r.commit(
+    "資料を確認していただけますか。",
+    sel(15),
+    "insertFromComposition",
+    null,
+    "ended",
+  );
+  return clone(r.snapshot("saved"));
+}
+
+test("independent expected UTF-16 replacement preserves target and replays", () => {
+  const e = episode();
+  assert.equal(e.events[0].patch.start_utf16, 7);
+  assert.equal(e.events[0].patch.remove, "ください");
+  assert.equal(e.events[0].patch.insert, "いただけますか");
+  assert.equal(C.validate(e).text, "資料を確認していただけますか。");
+});
+test("emoji with shared high surrogate is never split", () => {
+  const p = C.diff("a😀z", "a😁z");
+  assert.equal(p.start_utf16, 1);
+  assert.equal(p.end_utf16, 3);
+  assert.equal(p.remove, "😀");
+  assert.equal(C.apply("a😀z", p), "a😁z");
+});
+test("many independent Unicode string pairs round trip without pair cuts", () => {
+  const tokens = ["a", "\n", "日", "😀", "😁", "👍🏽", "e\u0301", "👨‍👩‍👧‍👦", "同"];
+  let seed = 381;
+  const next = () => {
+    seed = (seed * 1664525 + 1013904223) >>> 0;
+    return seed;
+  };
+  for (let i = 0; i < 600; i++) {
+    const word = () =>
+      Array.from(
+        { length: next() % 16 },
+        () => tokens[next() % tokens.length],
+      ).join("");
+    const a = word(),
+      b = word();
+    assert.equal(C.apply(a, C.diff(a, b)), b);
+  }
+});
+test("native undo/redo are appended, never erase original edits", () => {
+  const r = recorder();
+  for (const [s, t] of [
+    ["日本", "insertText"],
+    ["日本語", "insertText"],
+    ["日本", "historyUndo"],
+    ["日本語", "historyRedo"],
+  ])
+    r.commit(s, sel(s.length), t);
+  const e = r.snapshot();
+  assert.equal(e.events.length, 4);
+  assert.equal(e.events[2].input_type, "historyUndo");
+  assert.equal(C.validate(e).text, "日本語");
+});
+test("selection direction and no-text composition outcome survive", () => {
+  const r = recorder("abc");
+  r.select({ start: 0, end: 2, direction: "backward" });
+  r.noChange();
+  const e = r.snapshot();
+  assert.equal(e.events.length, 2);
+  assert.equal(e.events[1].outcome, "unknown/no_text_change");
+  assert.equal(C.validate(e).selection.direction, "backward");
+});
+test("metadata records purpose at change time without inventing semantic success", () => {
+  const r = recorder();
+  r.meta("お願い", "確認を頼む");
+  const e = r.snapshot();
+  assert.equal(e.initial.purpose.text, "");
+  assert.equal(e.events[0].kind, "metadata");
+  assert.equal(C.validate(e).purpose.text, "確認を頼む");
+  assert.equal(e.automatic.semantic_quality, "unrated");
+});
+test("gap uses explicit snapshot and next segment, never exact replay label", () => {
+  const r = recorder("a");
+  r.commit("ab", sel(2));
+  r.gap("回復した文", sel(5), "invented_missing_input");
+  r.commit("回復した文章", sel(6));
+  const e = r.snapshot();
+  assert.equal(e.events[1].kind, "capture_gap");
+  assert.equal(e.events[2].segment, 1);
+  assert.equal(e.automatic.replay_integrity, "snapshot_recovered");
+  assert.equal(e.automatic.capture_quality, "gap");
+  assert.equal(C.validate(e, true).length, 4);
+});
+test("input metadata missing is limited, not a fabricated body gap", () => {
+  const r = recorder();
+  r.commit("文", sel(1), "unknown", null, "none", "limited");
+  const e = r.snapshot();
+  assert.equal(e.automatic.gap_count, 0);
+  assert.equal(e.automatic.capture_quality, "limited");
+  assert.equal(e.automatic.replay_integrity, "exact");
+});
+test("import accepts JSON and JSONL and disregards object key order", () => {
+  const a = episode(),
+    b = episode();
+  b.episode_id = "second";
+  a.automatic = Object.fromEntries(Object.entries(a.automatic).reverse());
+  assert.equal(C.parse(JSON.stringify(a)).length, 1);
+  assert.equal(
+    C.parse(JSON.stringify(a) + "\n" + JSON.stringify(b) + "\n").length,
+    2,
+  );
+});
+test("forged final text, seq, version, removed text and quality are rejected", () => {
+  for (const mutate of [
+    (e) => (e.final.text = "forged"),
+    (e) => (e.events[0].seq = 2),
+    (e) => (e.events[0].version = 99),
+    (e) => (e.events[0].patch.remove = "forged"),
+    (e) => (e.automatic.replay_integrity = "snapshot_recovered"),
+  ]) {
+    const e = episode();
+    mutate(e);
+    assert.throws(() => C.validate(e));
+  }
+});
+test("out-of-range, bool integer, malformed selection and split-pair patches reject", () => {
+  for (const mutate of [
+    (e) => (e.events[0].patch.start_utf16 = -1),
+    (e) => (e.events[0].patch.end_utf16 = true),
+    (e) =>
+      (e.events[0].selection_after = { start: 99, end: 0, direction: "bad" }),
+  ]) {
+    const e = episode();
+    mutate(e);
+    assert.throws(() => C.validate(e));
+  }
+  assert.throws(() =>
+    C.apply("😀", {
+      start_utf16: 1,
+      end_utf16: 2,
+      remove: "\ude00",
+      insert: "x",
+    }),
+  );
+});
+test("unknown versions, extra instructions, share flags, arrays and oversized files reject", () => {
+  for (const mutate of [
+    (e) => (e.schema_version = "future"),
+    (e) => (e.editor_version = "future"),
+    (e) => (e.run_code = "alert(1)"),
+    (e) => (e.privacy.share_allowed = true),
+  ]) {
+    const e = episode();
+    mutate(e);
+    assert.throws(() => C.parse(JSON.stringify(e)));
+  }
+  assert.throws(() => C.parse("[]"));
+  assert.throws(() => C.parse(" ".repeat(C.LIMITS.fileBytes + 1)));
+});
+test("corrupt second JSONL record rejects entire import before returning any records", () => {
+  assert.throws(() =>
+    C.parse(JSON.stringify(episode()) + '\n{"schema_version":"bad"}'),
+  );
+});
+test("snapshot is a copy and saved revisions cannot be edited in place", () => {
+  const r = recorder("a"),
+    e = r.snapshot("saved");
+  e.final.text = "mutated";
+  assert.equal(r.snapshot().final.text, "a");
+  const saved = r.snapshot("saved");
+  assert.throws(() => new C.Recorder(saved, "other", () => 0));
+});
+test("strict time and segment checks reject invented continuity", () => {
+  const r = recorder();
+  r.commit("a", sel(1));
+  r.commit("ab", sel(2));
+  for (const mutate of [
+    (e) => (e.events[1].t_ms = -1),
+    (e) => (e.events[1].segment = 7),
+    (e) => (e.parent_episode_id = e.episode_id),
+  ]) {
+    const e = clone(r.snapshot());
+    mutate(e);
+    assert.throws(() => C.validate(e));
+  }
+});
+
+// UI asks for one state without materializing every historical full document.
+test("bounded single-position replay matches known prefix and rejects invalid indexes", () => {
+  const r = recorder("a");
+  r.commit("ab", sel(2));
+  r.commit("abc", sel(3));
+  const e = r.snapshot();
+  assert.equal(C.validate(e, 0).text, "a");
+  assert.equal(C.validate(e, 1).text, "ab");
+  assert.equal(C.validate(e, 2).text, "abc");
+  assert.throws(() => C.validate(e, 3));
+});

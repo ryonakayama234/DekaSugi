@@ -1,0 +1,1749 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; img-src 'none'; font-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>DekaSugi 下書き帳 — E1</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #203129;
+        --muted: #54685c;
+        --paper: #fffef9;
+        --edge: #ced8cf;
+        --green: #24593e;
+        --wash: #edf2ea;
+        --warn: #8b3f13;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--wash);
+        color: var(--ink);
+        font:
+          16px/1.7 system-ui,
+          sans-serif;
+      }
+      header,
+      main,
+      footer {
+        max-width: 1160px;
+        margin: auto;
+        padding: 20px;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+      }
+      h1 {
+        font-size: 25px;
+        margin: 0;
+      }
+      h2 {
+        font-size: 18px;
+        margin: 0 0 12px;
+      }
+      .eyebrow {
+        font-size: 12px;
+        letter-spacing: 0.13em;
+        color: var(--muted);
+      }
+      .subtitle,
+      small,
+      .hint {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 230px 1fr;
+        gap: 20px;
+      }
+      .card {
+        background: var(--paper);
+        border: 1px solid var(--edge);
+        border-radius: 12px;
+        padding: 20px;
+        min-width: 0;
+      }
+      .stack {
+        display: grid;
+        gap: 12px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      label {
+        display: block;
+        font-size: 14px;
+      }
+      input,
+      textarea,
+      select,
+      button {
+        font: inherit;
+      }
+      input:not([type="range"]),
+      select {
+        max-width: 100%;
+        padding: 8px;
+        border: 1px solid var(--edge);
+        border-radius: 6px;
+        background: white;
+        color: var(--ink);
+      }
+      .wide {
+        width: 100%;
+      }
+      textarea {
+        width: 100%;
+        min-height: 330px;
+        resize: vertical;
+        padding: 16px;
+        border: 1px solid var(--edge);
+        border-radius: 8px;
+        background: white;
+        color: var(--ink);
+        line-height: 1.9;
+        font-size: 17px;
+      }
+      textarea:focus,
+      input:focus,
+      button:focus-visible,
+      select:focus {
+        outline: 2px solid #4b8360;
+        outline-offset: 2px;
+      }
+      button,
+      .file-label {
+        padding: 8px 13px;
+        min-height: 43px;
+        border: 1px solid var(--edge);
+        border-radius: 7px;
+        background: white;
+        color: var(--ink);
+        cursor: pointer;
+      }
+      button.primary {
+        background: var(--green);
+        color: white;
+        border-color: var(--green);
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      .danger {
+        color: #a02e2e;
+      }
+      #notice {
+        white-space: pre-wrap;
+        color: var(--warn);
+        min-height: 1.6em;
+      }
+      #drafts {
+        list-style: none;
+        padding: 0;
+        max-height: 55vh;
+        overflow: auto;
+      }
+      #drafts button {
+        width: 100%;
+        text-align: left;
+        margin-bottom: 7px;
+        overflow-wrap: anywhere;
+      }
+      #drafts .current {
+        border: 2px solid var(--green);
+      }
+      #save-state {
+        font-size: 13px;
+      }
+      #storage-state {
+        font-size: 13px;
+      }
+      #gap-state {
+        color: var(--warn);
+        font-size: 13px;
+      }
+      pre {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        background: var(--wash);
+        border-radius: 6px;
+        padding: 12px;
+        max-height: 250px;
+        overflow: auto;
+        font:
+          14px/1.8 ui-monospace,
+          monospace;
+      }
+      details {
+        margin-top: 16px;
+      }
+      summary {
+        cursor: pointer;
+      }
+      #timeline {
+        width: 100%;
+      }
+      #replay-text {
+        border-left: 3px solid #8fae97;
+      }
+      #event-detail {
+        font-size: 13px;
+      }
+      footer {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .badge {
+        background: #e3ecdf;
+        border-radius: 20px;
+        padding: 4px 10px;
+        font-size: 12px;
+      }
+      .error {
+        color: #a02e2e;
+      }
+      hr {
+        border: 0;
+        border-top: 1px solid var(--edge);
+        margin: 16px 0;
+      }
+      @media (max-width: 760px) {
+        header,
+        main,
+        footer {
+          padding: 12px;
+        }
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .card {
+          padding: 15px;
+        }
+        #drafts {
+          max-height: 160px;
+        }
+        textarea {
+          min-height: 260px;
+        }
+        header {
+          align-items: flex-start;
+        }
+        h1 {
+          font-size: 22px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <div class="eyebrow">DEKASUGI / E1</div>
+        <h1>書いて、直して、残す。</h1>
+        <div class="subtitle">あなたの端末で動く下書き帳</div>
+      </div>
+      <span class="badge">外部送信なし</span>
+    </header>
+    <main class="layout">
+      <aside class="card">
+        <h2>下書き</h2>
+        <button id="new" class="primary wide">＋ 新しい下書き</button>
+        <ul id="drafts"></ul>
+        <label
+          >新しい下書きの種別<select id="new-origin" class="wide">
+            <option value="owner_real">普段の下書き</option>
+            <option value="owner_probe">動作確認の架空文</option>
+            <option value="assistant_generated">AIが用意した例</option>
+          </select></label
+        >
+        <hr />
+        <button id="import" class="wide">JSON / JSONLを読み込む</button
+        ><input
+          id="file"
+          type="file"
+          accept=".json,.jsonl,application/json"
+          hidden
+        />
+        <p class="hint">
+          読み込んだ原記録は別コピーで保管します。続きは新しい版になります。
+        </p>
+        <div id="storage-state" role="status"></div>
+        <button id="retry" class="wide">退避を再試行</button>
+      </aside>
+      <section class="stack">
+        <div class="card stack">
+          <div class="row">
+            <h2 style="margin: 0">いまの下書き</h2>
+            <span id="revision" class="hint"></span>
+          </div>
+          <label
+            >タイトル（任意）<input
+              id="title"
+              class="wide"
+              maxlength="200"
+              autocomplete="off"
+          /></label>
+          <label
+            >何のために書く？（任意）<input
+              id="purpose"
+              class="wide"
+              maxlength="2000"
+              placeholder="例：お願いの下書き"
+              autocomplete="off"
+          /></label>
+          <label for="body"
+            >本文
+            <span class="hint">この欄の確定した編集を記録します</span></label
+          >
+          <textarea
+            id="body"
+            placeholder="ここに、いつもの文章を。"
+            spellcheck="false"
+            autocomplete="off"
+            autocapitalize="off"
+          ></textarea>
+          <div class="row">
+            <button id="seal" class="primary">保存して区切る</button
+            ><button id="continue">続きを書く</button
+            ><button id="copy">本文をコピー</button
+            ><span id="count" class="hint"></span>
+          </div>
+          <div id="save-state" role="status" aria-live="polite"></div>
+          <div id="gap-state" role="status"></div>
+          <div id="notice" role="alert" aria-live="polite"></div>
+          <div class="row">
+            <button id="export">この版をJSONに書き出す</button
+            ><button id="export-all">全記録をJSONLに書き出す</button
+            ><button id="delete" class="danger">
+              この下書きを履歴ごと削除
+            </button>
+          </div>
+          <small
+            >ブラウザ内の退避と、書き出したファイルは別物です。履歴には消した文字も残ります。個人的な文章や履歴を共有する前に全体を確認してください。</small
+          >
+        </div>
+        <details class="card" id="history">
+          <summary>編集の履歴を見る（読み取り専用）</summary>
+          <label
+            >見る版<select id="history-revision" class="wide"></select
+          ></label>
+          <div class="row">
+            <button id="prev" aria-label="履歴を一つ戻す">← 前</button
+            ><button id="next" aria-label="履歴を一つ進める">次 →</button
+            ><span id="step" class="hint"></span>
+          </div>
+          <input
+            id="timeline"
+            type="range"
+            min="0"
+            max="0"
+            value="0"
+            aria-label="履歴の位置"
+          />
+          <pre id="replay-text"></pre>
+          <pre id="event-detail"></pre>
+        </details>
+        <details class="card">
+          <summary>使い方・保存について</summary>
+          <p>
+            普段の文章を書いて、直して、「保存して区切る」。目的欄は空でも使えます。学習・自動訂正・SNS投稿は行いません。
+          </p>
+          <p>
+            同じHTML・同じ場所・同じブラウザで開いてください。移動・更新・ブラウザデータの消去前にはJSONを書き出してください。書出しボタンは保存要求を出すだけなので、端末上のファイルを一度読み込み直して確認してください。
+          </p>
+          <p>
+            自動退避は最後の確定状態までです。変換中や未退避の末尾は、ブラウザの終了・障害で失われることがあります。正確に記録できない区間は「記録の欠損」として残し、学習可能と扱いません。
+          </p>
+          <p>
+            Windows＋Edgeが主対象です（実機確認待ち）。Galaxy Tab
+            A9+＋Chromeは副対象で、実機での起動・IME・保存往復を確認するまで対応未確認です。端末間は本人によるJSONコピーのみ。OSのIMEやブラウザ自身のサービスの通信はこのHTMLの管理外です。
+          </p>
+          <p>
+            削除はこのブラウザ内の選んだコピーの本文・履歴・索引が対象です。書出し済みファイルと他のコピーは別に残ります。
+          </p>
+        </details>
+      </section>
+    </main>
+    <footer>
+      E1 0.1.0 ·
+      ローカル記録器。文章の保存・再生は、知能や学習能力の獲得を意味しません。
+    </footer>
+    <script id="e1-core">
+      /* Pure, versioned recorder. No browser storage, network, DOM or legacy research imports. */
+      (() => {
+        "use strict";
+        const SCHEMA = "draft-episode/1",
+          EDITOR = "e1/0.1.0";
+        const LIMITS = Object.freeze({
+          fileBytes: 32 * 1024 * 1024,
+          events: 20000,
+          episodes: 200,
+          stopEvents: 19900,
+        });
+        const copy = (x) => JSON.parse(JSON.stringify(x));
+        const equal = (a, b) =>
+          a === b ||
+          (obj(a) &&
+            obj(b) &&
+            Object.keys(a).length === Object.keys(b).length &&
+            Object.keys(a).every(
+              (k) => Object.hasOwn(b, k) && equal(a[k], b[k]),
+            ));
+        const assert = (v, m) => {
+          if (!v) throw new Error(m);
+        };
+        const obj = (x) =>
+          x !== null && typeof x === "object" && !Array.isArray(x);
+        const integer = (x) => Number.isSafeInteger(x) && x >= 0;
+        const str = (x, n = LIMITS.fileBytes) =>
+          typeof x === "string" && x.length <= n;
+        const keys = (x, ks) => {
+          assert(obj(x), "オブジェクトが必要です");
+          assert(
+            Object.keys(x).every((k) => ks.includes(k)),
+            "未対応のフィールドです",
+          );
+          assert(
+            ks.every((k) => Object.hasOwn(x, k)),
+            "必要なフィールドがありません",
+          );
+        };
+        function selection(s, text) {
+          assert(
+            s === null ||
+              (obj(s) &&
+                integer(s.start) &&
+                integer(s.end) &&
+                s.start <= s.end &&
+                s.end <= text.length &&
+                ["forward", "backward", "none"].includes(s.direction)),
+            "選択範囲が不正です",
+          );
+          if (s !== null) keys(s, ["start", "end", "direction"]);
+          return s;
+        }
+        const splitPair = (s, i) =>
+          i > 0 &&
+          i < s.length &&
+          s.charCodeAt(i - 1) >= 0xd800 &&
+          s.charCodeAt(i - 1) <= 0xdbff &&
+          s.charCodeAt(i) >= 0xdc00 &&
+          s.charCodeAt(i) <= 0xdfff;
+        function diff(a, b) {
+          let p = 0,
+            x = a.length,
+            y = b.length;
+          while (p < x && p < y && a[p] === b[p]) p++;
+          while (p > 0 && (splitPair(a, p) || splitPair(b, p))) p--;
+          while (x > p && y > p && a[x - 1] === b[y - 1]) {
+            x--;
+            y--;
+          }
+          while (splitPair(a, x) || splitPair(b, y)) {
+            x++;
+            y++;
+          }
+          return {
+            start_utf16: p,
+            end_utf16: x,
+            remove: a.slice(p, x),
+            insert: b.slice(p, y),
+          };
+        }
+        function apply(text, p) {
+          keys(p, ["start_utf16", "end_utf16", "remove", "insert"]);
+          const { start_utf16: a, end_utf16: b } = p;
+          assert(
+            integer(a) &&
+              integer(b) &&
+              a <= b &&
+              b <= text.length &&
+              str(p.insert) &&
+              str(p.remove),
+            "差分範囲が不正です",
+          );
+          assert(
+            !splitPair(text, a) && !splitPair(text, b),
+            "差分がサロゲートペアを分断します",
+          );
+          assert(text.slice(a, b) === p.remove, "削除対象が一致しません");
+          return text.slice(0, a) + p.insert + text.slice(b);
+        }
+        function purpose(p) {
+          keys(p, ["text", "source"]);
+          assert(
+            str(p.text, 2000) && ["owner", "unknown"].includes(p.source),
+            "目的が不正です",
+          );
+        }
+        function summary(ep) {
+          const gaps = ep.events.filter((e) => e.kind === "capture_gap").length;
+          return {
+            replay_integrity: gaps ? "snapshot_recovered" : "exact",
+            capture_quality: gaps
+              ? "gap"
+              : ep.events.some((e) => e.quality === "limited")
+                ? "limited"
+                : "observed",
+            event_count: ep.events.length,
+            gap_count: gaps,
+            semantic_quality: "unrated",
+          };
+        }
+        function validate(ep, withStates = false) {
+          keys(ep, [
+            "schema_version",
+            "editor_version",
+            "episode_id",
+            "draft_id",
+            "revision",
+            "parent_episode_id",
+            "origin",
+            "title",
+            "purpose",
+            "initial",
+            "events",
+            "final",
+            "automatic",
+            "privacy",
+          ]);
+          assert(
+            ep.schema_version === SCHEMA && ep.editor_version === EDITOR,
+            "未対応の形式・エディタ版です",
+          );
+          for (const k of ["episode_id", "draft_id"])
+            assert(str(ep[k], 200) && ep[k].length > 0, "IDが不正です");
+          assert(
+            integer(ep.revision) &&
+              ep.revision >= 1 &&
+              (ep.parent_episode_id === null ||
+                (str(ep.parent_episode_id, 200) &&
+                  ep.parent_episode_id.length > 0)),
+            "版情報が不正です",
+          );
+          assert(
+            ep.parent_episode_id !== ep.episode_id,
+            "親参照が循環しています",
+          );
+          assert(
+            [
+              "owner_real",
+              "owner_probe",
+              "assistant_generated",
+              "unknown",
+            ].includes(ep.origin) && str(ep.title, 200),
+            "来歴・タイトルが不正です",
+          );
+          purpose(ep.purpose);
+          keys(ep.initial, ["text", "selection", "title", "purpose"]);
+          assert(
+            str(ep.initial.text) && str(ep.initial.title, 200),
+            "初期本文が不正です",
+          );
+          selection(ep.initial.selection, ep.initial.text);
+          purpose(ep.initial.purpose);
+          assert(
+            Array.isArray(ep.events) && ep.events.length <= LIMITS.events,
+            "イベント数が上限を超えています",
+          );
+          let state = {
+              text: ep.initial.text,
+              selection: copy(ep.initial.selection),
+              title: ep.initial.title,
+              purpose: copy(ep.initial.purpose),
+              version: 0,
+              segment: 0,
+            },
+            time = 0;
+          const index = Number.isInteger(withStates) ? withStates : null;
+          assert(
+            index === null || (index >= 0 && index <= ep.events.length),
+            "再生位置が不正です",
+          );
+          const states = withStates === true ? [copy(state)] : null;
+          let chosen = index === 0 ? copy(state) : null;
+          const base = [
+            "seq",
+            "t_ms",
+            "session_id",
+            "segment",
+            "kind",
+            "version",
+          ];
+          for (let i = 0; i < ep.events.length; i++) {
+            const e = ep.events[i];
+            assert(
+              obj(e) &&
+                e.seq === i + 1 &&
+                integer(e.t_ms) &&
+                e.t_ms >= time &&
+                str(e.session_id, 200) &&
+                e.session_id.length > 0 &&
+                integer(e.segment) &&
+                integer(e.version),
+              "イベント列・時刻が不正です",
+            );
+            time = e.t_ms;
+            if (e.kind === "edit_commit") {
+              keys(e, [
+                ...base,
+                "before_version",
+                "patch",
+                "selection_before",
+                "selection_after",
+                "input_type",
+                "range_source",
+                "quality",
+                "composition",
+              ]);
+              assert(
+                e.segment === state.segment &&
+                  e.before_version === state.version &&
+                  e.version === state.version + 1,
+                "編集の版が不連続です",
+              );
+              selection(e.selection_before, state.text);
+              state.text = apply(state.text, e.patch);
+              selection(e.selection_after, state.text);
+              state.selection = copy(e.selection_after);
+              state.version = e.version;
+              assert(
+                str(e.input_type, 100) &&
+                  e.range_source === "derived" &&
+                  ["observed", "limited"].includes(e.quality) &&
+                  ["none", "ended"].includes(e.composition),
+                "編集の観測情報が不正です",
+              );
+            } else if (e.kind === "capture_gap") {
+              keys(e, [...base, "reason", "last_consistent_seq", "snapshot"]);
+              assert(
+                e.segment === state.segment + 1 &&
+                  e.version === state.version + 1 &&
+                  e.last_consistent_seq === i &&
+                  str(e.reason, 200),
+                "欠損境界が不正です",
+              );
+              keys(e.snapshot, ["text", "selection"]);
+              assert(str(e.snapshot.text), "回復本文が不正です");
+              selection(e.snapshot.selection, e.snapshot.text);
+              state.text = e.snapshot.text;
+              state.selection = copy(e.snapshot.selection);
+              state.segment = e.segment;
+              state.version = e.version;
+            } else {
+              assert(
+                e.segment === state.segment && e.version === state.version,
+                "管理イベントの版が不正です",
+              );
+              if (e.kind === "selection") {
+                keys(e, [...base, "selection"]);
+                selection(e.selection, state.text);
+                state.selection = copy(e.selection);
+              } else if (e.kind === "composition_end") {
+                keys(e, [...base, "outcome"]);
+                assert(
+                  e.outcome === "unknown/no_text_change",
+                  "変換結果が不正です",
+                );
+              } else if (e.kind === "metadata") {
+                keys(e, [...base, "title", "purpose"]);
+                assert(str(e.title, 200), "タイトルが不正です");
+                purpose(e.purpose);
+                state.title = e.title;
+                state.purpose = copy(e.purpose);
+              } else if (e.kind === "session_start") {
+                keys(e, base);
+              } else throw new Error("未対応のイベントです");
+            }
+            if (states) states.push(copy(state));
+            if (index === i + 1) chosen = copy(state);
+          }
+          keys(ep.final, ["text", "selection", "status"]);
+          assert(
+            str(ep.final.text) &&
+              ["editing", "saved", "interrupted", "abandoned"].includes(
+                ep.final.status,
+              ),
+            "最終状態が不正です",
+          );
+          selection(ep.final.selection, ep.final.text);
+          assert(
+            state.text === ep.final.text &&
+              equal(state.selection, ep.final.selection) &&
+              state.title === ep.title &&
+              equal(state.purpose, ep.purpose),
+            "再生結果と最終状態が一致しません",
+          );
+          assert(equal(ep.automatic, summary(ep)), "品質集計が一致しません");
+          keys(ep.privacy, ["scope", "share_allowed"]);
+          assert(
+            ep.privacy.scope === "local_only" &&
+              ep.privacy.share_allowed === false,
+            "共有許可を持ち込めません",
+          );
+          return withStates === true ? states : index !== null ? chosen : state;
+        }
+        function makeEpisode({
+          id,
+          draftId,
+          revision = 1,
+          parent = null,
+          text = "",
+          sel = { start: 0, end: 0, direction: "none" },
+          title = "",
+          purposeText = "",
+          origin = "owner_real",
+        }) {
+          const p = {
+            text: purposeText,
+            source: purposeText ? "owner" : "unknown",
+          };
+          const ep = {
+            schema_version: SCHEMA,
+            editor_version: EDITOR,
+            episode_id: id,
+            draft_id: draftId,
+            revision,
+            parent_episode_id: parent,
+            origin,
+            title,
+            purpose: copy(p),
+            initial: { text, selection: copy(sel), title, purpose: copy(p) },
+            events: [],
+            final: { text, selection: copy(sel), status: "editing" },
+            automatic: null,
+            privacy: { scope: "local_only", share_allowed: false },
+          };
+          ep.automatic = summary(ep);
+          return ep;
+        }
+        class Recorder {
+          constructor(ep, session, clock) {
+            validate(ep);
+            assert(ep.final.status === "editing", "確定版は直接編集できません");
+            this.ep = copy(ep);
+            this.session = session;
+            this.clock = clock;
+            this.state = validate(ep);
+            this.offset = ep.events.at(-1)?.t_ms || 0;
+          }
+          event(kind, extra = {}) {
+            const e = {
+              seq: this.ep.events.length + 1,
+              t_ms: this.offset + Math.max(0, Math.floor(this.clock())),
+              session_id: this.session,
+              segment: this.state.segment,
+              kind,
+              version: this.state.version,
+              ...extra,
+            };
+            this.ep.events.push(e);
+            this.ep.automatic = summary(this.ep);
+            return e;
+          }
+          sync() {
+            this.ep.final.text = this.state.text;
+            this.ep.final.selection = copy(this.state.selection);
+            this.ep.title = this.state.title;
+            this.ep.purpose = copy(this.state.purpose);
+            this.ep.automatic = summary(this.ep);
+          }
+          commit(
+            text,
+            sel,
+            inputType = "unknown",
+            before = null,
+            composition = "none",
+            quality = "observed",
+          ) {
+            selection(sel, text);
+            if (text === this.state.text) return this.select(sel);
+            const old = this.state.version;
+            const patch = diff(this.state.text, text);
+            this.state.version++;
+            this.event("edit_commit", {
+              before_version: old,
+              patch,
+              selection_before: copy(before),
+              selection_after: copy(sel),
+              input_type: inputType || "unknown",
+              range_source: "derived",
+              quality,
+              composition,
+            });
+            this.state.text = text;
+            this.state.selection = copy(sel);
+            this.sync();
+            return true;
+          }
+          select(sel) {
+            selection(sel, this.state.text);
+            if (equal(sel, this.state.selection)) return false;
+            this.state.selection = copy(sel);
+            this.event("selection", { selection: copy(sel) });
+            this.sync();
+            return true;
+          }
+          meta(title, text) {
+            const p = { text, source: text ? "owner" : "unknown" };
+            if (title === this.state.title && equal(p, this.state.purpose))
+              return false;
+            this.state.title = title;
+            this.state.purpose = p;
+            this.event("metadata", { title, purpose: copy(p) });
+            this.sync();
+            return true;
+          }
+          gap(text, sel, reason) {
+            const last = this.ep.events.length;
+            this.state.segment++;
+            this.state.version++;
+            this.state.text = text;
+            this.state.selection = copy(sel);
+            this.event("capture_gap", {
+              reason,
+              last_consistent_seq: last,
+              snapshot: { text, selection: copy(sel) },
+            });
+            this.sync();
+          }
+          noChange() {
+            this.event("composition_end", {
+              outcome: "unknown/no_text_change",
+            });
+            this.sync();
+          }
+          snapshot(status = "editing") {
+            this.sync();
+            const out = copy(this.ep);
+            out.final.status = status;
+            validate(out);
+            return out;
+          }
+        }
+        function parse(text) {
+          assert(
+            new Blob([text]).size <= LIMITS.fileBytes,
+            "読込みは32MiBまでです",
+          );
+          let values;
+          try {
+            values = [JSON.parse(text)];
+          } catch {
+            values = text
+              .split(/\r?\n/)
+              .filter((x) => x.trim())
+              .map((x) => JSON.parse(x));
+          }
+          assert(
+            values.length > 0 && values.length <= LIMITS.episodes,
+            "読込み件数が不正です",
+          );
+          for (const ep of values) validate(ep);
+          return values.map(copy);
+        }
+        window.E1Core = Object.freeze({
+          SCHEMA,
+          EDITOR,
+          LIMITS,
+          copy,
+          diff,
+          apply,
+          validate,
+          makeEpisode,
+          Recorder,
+          parse,
+          summary,
+        });
+      })();
+    </script>
+    <script id="e1-app">
+      (() => {
+        "use strict";
+        const C = window.E1Core,
+          $ = (id) => document.getElementById(id),
+          clone = C.copy;
+        const uid = () =>
+          crypto.randomUUID
+            ? crypto.randomUUID()
+            : Array.from(crypto.getRandomValues(new Uint32Array(4)), (n) =>
+                n.toString(16),
+              ).join("-");
+        const selection = () => ({
+          start: $("body").selectionStart,
+          end: $("body").selectionEnd,
+          direction: $("body").selectionDirection,
+        });
+        let db = null,
+          current = null,
+          rec = null,
+          before = null,
+          composing = false,
+          compositionBase = null,
+          ending = false,
+          endTimer = null;
+        let serial = Promise.resolve(),
+          saveTimer = null,
+          loading = false,
+          writing = 0,
+          historyKey = null,
+          internal = false,
+          stopped = false;
+        const rows = new Map(),
+          versions = new Map(),
+          tokens = new Map(),
+          savedTokens = new Map();
+        const notice = (t) => {
+          $("notice").textContent = t;
+        };
+        const activeEp = () =>
+          rec ? rec.snapshot() : current?.episodes.at(-1) || null;
+        function selectedEp() {
+          const eps = current
+            ? [...current.episodes, ...(rec ? [rec.snapshot()] : [])]
+            : [];
+          return (
+            eps.find((e) => e.episode_id === $("history-revision").value) ||
+            eps.at(-1)
+          );
+        }
+        function rowSnapshot(row) {
+          const out = clone(row);
+          if (row === current && rec) out.active = rec.snapshot();
+          return out;
+        }
+        function openDB() {
+          return new Promise((resolve, reject) => {
+            let q;
+            try {
+              q = indexedDB.open("dekasugi-e1", 1);
+            } catch (e) {
+              reject(e);
+              return;
+            }
+            q.onupgradeneeded = () =>
+              q.result.createObjectStore("drafts", { keyPath: "id" });
+            q.onerror = () => reject(q.error);
+            q.onblocked = () => reject(new Error("別タブのDBを閉じてください"));
+            q.onsuccess = () => {
+              q.result.onversionchange = () => {
+                q.result.close();
+                db = null;
+                storage(
+                  "保存領域の版が変わりました。JSONを書き出してください。",
+                );
+              };
+              resolve(q.result);
+            };
+          });
+        }
+        function transaction(mode, action) {
+          return new Promise((resolve, reject) => {
+            let tx;
+            try {
+              tx = db.transaction("drafts", mode);
+            } catch (e) {
+              reject(e);
+              return;
+            }
+            let result;
+            tx.onerror = () => reject(tx.error || new Error("DBエラー"));
+            tx.onabort = () =>
+              reject(tx.error || new Error("退避が中止されました"));
+            tx.oncomplete = () => resolve(result);
+            action(
+              tx.objectStore("drafts"),
+              (v) => {
+                result = v;
+              },
+              tx,
+            );
+          });
+        }
+        async function probe() {
+          const id = "probe-" + uid();
+          await transaction("readwrite", (s) => s.put({ id, probe: true }));
+          const value = await transaction("readonly", (s, set) => {
+            s.get(id).onsuccess = (e) => set(e.target.result);
+          });
+          if (!value?.probe) throw new Error("保存試験が一致しません");
+          await transaction("readwrite", (s) => s.delete(id));
+        }
+        function storage(message) {
+          $("storage-state").textContent = message;
+        }
+        async function initDB() {
+          try {
+            if (!db) db = await openDB();
+            await probe();
+            storage("ブラウザ内退避が使えます（バックアップとは別です）。");
+            return true;
+          } catch (e) {
+            db = null;
+            storage(
+              "自動退避を使えません。JSON書出しが必要です。 " + e.message,
+            );
+            return false;
+          }
+        }
+        // CAS uses one read/write transaction. Its abort reason is retained outside IDB's error.
+        async function cas(snapshot, expected) {
+          let mismatch = false;
+          try {
+            return await transaction("readwrite", (s, set, tx) => {
+              s.get(snapshot.id).onsuccess = (e) => {
+                if ((e.target.result?.generation || 0) !== expected) {
+                  mismatch = true;
+                  tx.abort();
+                  return;
+                }
+                snapshot.generation = expected + 1;
+                s.put(snapshot);
+                set(snapshot.generation);
+              };
+            });
+          } catch (e) {
+            if (mismatch) throw new Error("conflict");
+            throw e;
+          }
+        }
+        function renderStatus() {
+          if (!current) return;
+          const id = current.id,
+            t = tokens.get(id) || 0,
+            s = savedTokens.get(id);
+          const pending = s !== t;
+          const ep = activeEp();
+          $("count").textContent =
+            Array.from($("body").value).length + " コードポイント";
+          $("save-state").textContent =
+            (pending ? "未退避の変更があります" : "ブラウザ内退避済み") +
+            " · " +
+            (rec ? "編集中" : "区切り確定／読込み原記録") +
+            " · " +
+            (current.exportRequested
+              ? "ファイル書出し要求済み（保存結果は端末で確認）"
+              : "ファイル書出し未要求");
+          if (!db)
+            $("save-state").textContent =
+              "自動退避なし · JSONを書き出してください";
+          $("gap-state").textContent = ep?.automatic.gap_count
+            ? "記録の欠損 " +
+              ep.automatic.gap_count +
+              "件 · snapshotで回復した区間あり（正確な行為列の学習対象外）"
+            : ep?.automatic.capture_quality === "limited"
+              ? "観測情報に欠測があります。本文の再生と行為の観測は別です。"
+              : "";
+        }
+        function enqueue(row) {
+          if (!row) return;
+          serial = serial
+            .catch(() => {})
+            .then(async () => {
+              if (!db) return;
+              const token = tokens.get(row.id) || 0;
+              const snap = rowSnapshot(row);
+              const expected = versions.get(row.id) || 0;
+              writing++;
+              try {
+                const gen = await cas(snap, expected);
+                versions.set(row.id, gen);
+                row.generation = gen;
+                savedTokens.set(row.id, token);
+              } catch (e) {
+                if (e.message === "conflict") {
+                  const oldId = row.id;
+                  row.id = uid();
+                  row.generation = 0;
+                  rows.delete(oldId);
+                  rows.set(row.id, row);
+                  versions.set(row.id, 0);
+                  tokens.set(row.id, token + 1);
+                  notice(
+                    "別タブの更新を検出しました。この編集は別コピーとして保全します。",
+                  );
+                  enqueue(row);
+                } else {
+                  storage(
+                    "退避に失敗しました。本文は画面に残っています。JSONを書き出してください。 " +
+                      e.message,
+                  );
+                }
+              } finally {
+                writing--;
+                renderStatus();
+                renderList();
+              }
+            });
+          return serial;
+        }
+        function touch() {
+          if (!current) return;
+          current.active = rec ? rec.snapshot() : null;
+          current.exportRequested = false;
+          tokens.set(current.id, (tokens.get(current.id) || 0) + 1);
+          if (!saveTimer) {
+            const row = current;
+            saveTimer = setTimeout(() => {
+              saveTimer = null;
+              enqueue(row);
+            }, 150);
+          }
+          renderStatus();
+          if ($("history").open) renderHistory();
+          if (rec && rec.ep.events.length >= C.LIMITS.stopEvents) {
+            stopped = true;
+            $("body").readOnly = true;
+            $("title").disabled = true;
+            $("purpose").disabled = true;
+            notice(
+              "この版の記録上限が近いため入力を止めました。保存して区切り、続きを新しい版で書いてください。",
+            );
+          }
+        }
+        function renderList() {
+          const ul = $("drafts");
+          ul.replaceChildren();
+          for (const row of rows.values()) {
+            const e =
+              row === current ? activeEp() : row.active || row.episodes.at(-1);
+            const li = document.createElement("li"),
+              b = document.createElement("button");
+            b.textContent =
+              (e?.title || e?.final.text.slice(0, 22) || "無題") +
+              " · r" +
+              (e?.revision || 1);
+            b.className = row === current ? "current" : "";
+            b.onclick = () => run(() => switchRow(row));
+            li.append(b);
+            ul.append(li);
+          }
+        }
+        function renderHistory(reset = false) {
+          const eps = current
+            ? [...current.episodes, ...(rec ? [rec.snapshot()] : [])]
+            : [];
+          const signature = eps
+            .map((e) => e.episode_id + ":" + e.events.length)
+            .join("|");
+          if (reset || signature !== historyKey) {
+            const old = $("history-revision").value;
+            const select = $("history-revision");
+            select.replaceChildren();
+            for (const ep of eps) {
+              const opt = document.createElement("option");
+              opt.value = ep.episode_id;
+              opt.textContent =
+                "r" +
+                ep.revision +
+                " · " +
+                ep.final.status +
+                (ep === eps.at(-1) ? "（最新）" : "");
+              select.append(opt);
+            }
+            select.value = reset
+              ? eps.at(-1)?.episode_id
+              : eps.some((e) => e.episode_id === old)
+                ? old
+                : eps.at(-1)?.episode_id;
+            historyKey = signature;
+          }
+          const ep = selectedEp();
+          if (!ep) return;
+          C.validate(ep);
+          $("timeline").max = String(ep.events.length);
+          if (reset) $("timeline").value = String(ep.events.length);
+          paintHistory();
+        }
+        function paintHistory() {
+          const ep = selectedEp();
+          if (!ep) return;
+          const n = Math.min(Number($("timeline").value), ep.events.length),
+            state = C.validate(ep, n);
+          if (!state) return;
+          $("replay-text").textContent = state.text;
+          $("step").textContent = n + " / " + ep.events.length;
+          $("prev").disabled = n === 0;
+          $("next").disabled = n === ep.events.length;
+          const e = ep.events[n - 1];
+          $("event-detail").textContent = !e
+            ? "初期状態"
+            : e.kind === "edit_commit"
+              ? "#" +
+                e.seq +
+                " " +
+                e.input_type +
+                "（範囲は本文差分から導出）\n− " +
+                e.patch.remove +
+                "\n＋ " +
+                e.patch.insert +
+                "\n" +
+                JSON.stringify(e, null, 2)
+              : JSON.stringify(e, null, 2);
+        }
+        function display() {
+          const ep = activeEp();
+          internal = true;
+          $("title").value = ep?.title || "";
+          $("purpose").value = ep?.purpose.text || "";
+          $("body").value = ep?.final.text || "";
+          if (ep?.final.selection)
+            $("body").setSelectionRange(
+              ep.final.selection.start,
+              ep.final.selection.end,
+              ep.final.selection.direction,
+            );
+          internal = false;
+          $("body").readOnly = !rec || stopped;
+          $("title").disabled = !rec;
+          $("purpose").disabled = !rec;
+          $("seal").disabled = !rec;
+          $("continue").disabled = !!rec;
+          $("revision").textContent = ep
+            ? "r" +
+              ep.revision +
+              " · " +
+              {
+                owner_real: "普段の下書き",
+                owner_probe: "架空文の確認",
+                assistant_generated: "AIが用意した例",
+                unknown: "来歴不明",
+              }[ep.origin]
+            : "";
+          renderStatus();
+          renderList();
+          renderHistory(true);
+        }
+        function startRecorder(ep) {
+          const start = performance.now();
+          rec = new C.Recorder(ep, uid(), () => performance.now() - start);
+          before = null;
+          composing = false;
+          ending = false;
+          compositionBase = null;
+          stopped = false;
+        }
+        function newRow() {
+          const id = uid(),
+            draftId = uid();
+          const ep = C.makeEpisode({
+            id: uid(),
+            draftId,
+            origin: $("new-origin").value,
+          });
+          return {
+            id,
+            generation: 0,
+            draft_id: draftId,
+            episodes: [],
+            active: ep,
+            openSession: true,
+            exportRequested: false,
+          };
+        }
+        function reconcile(reason) {
+          if (!rec) return;
+          if (composing || ending) {
+            finishComposition(true);
+            return;
+          }
+          if ($("body").value !== rec.state.text) {
+            rec.gap($("body").value, selection(), reason);
+            touch();
+          }
+        }
+        async function leave() {
+          if (!current) return;
+          syncMeta();
+          reconcile("value_changed_without_input");
+          if (composing || ending)
+            throw new Error("変換を確定してから移動してください");
+          clearTimeout(saveTimer);
+          saveTimer = null;
+          current.active = rec ? rec.snapshot() : null;
+          current.openSession = false;
+          tokens.set(current.id, (tokens.get(current.id) || 0) + 1);
+          await enqueue(current);
+        }
+        async function switchRow(row) {
+          if (row === current) return;
+          await leave();
+          current = row;
+          rec = null;
+          if (row.active) {
+            startRecorder(row.active);
+            if (row.openSession)
+              rec.gap(
+                rec.state.text,
+                rec.state.selection,
+                "restart_tail_unobserved",
+              );
+            else rec.event("session_start");
+            row.active = rec.snapshot();
+            row.openSession = true;
+            touch();
+          }
+          display();
+        }
+        async function create() {
+          await leave();
+          current = newRow();
+          rows.set(current.id, current);
+          versions.set(current.id, 0);
+          startRecorder(current.active);
+          touch();
+          display();
+          $("body").focus();
+        }
+        function syncMeta() {
+          if (rec && rec.meta($("title").value, $("purpose").value)) {
+            touch();
+            renderList();
+          }
+        }
+        function finishComposition(force = false) {
+          clearTimeout(endTimer);
+          if (!rec) return;
+          if (composing) {
+            if (force)
+              throw new Error("変換を確定してから保存・移動してください");
+            return;
+          }
+          if (!ending) return;
+          ending = false;
+          const text = $("body").value,
+            sel = selection();
+          if (compositionBase === null) {
+            rec.gap(text, sel, "composition_start_missing");
+          } else if (text !== compositionBase) {
+            rec.commit(
+              text,
+              sel,
+              "insertFromComposition",
+              before?.selection || null,
+              "ended",
+              before ? "observed" : "limited",
+            );
+          } else {
+            rec.select(sel);
+            rec.noChange();
+          }
+          compositionBase = null;
+          before = null;
+          touch();
+        }
+        function deferComposition() {
+          clearTimeout(endTimer);
+          endTimer = setTimeout(() => {
+            try {
+              finishComposition();
+            } catch (e) {
+              notice(e.message);
+            }
+          }, 0);
+        }
+        function input(e) {
+          if (!rec || internal) return;
+          const text = $("body").value,
+            sel = selection();
+          if (composing || e.isComposing) {
+            if (!composing) {
+              composing = true;
+              compositionBase = null;
+            }
+            return;
+          }
+          if (ending) {
+            deferComposition();
+            return;
+          }
+          const matched = before?.text === rec.state.text;
+          rec.commit(
+            text,
+            sel,
+            e.inputType || "unknown",
+            matched ? before.selection : null,
+            "none",
+            matched && e.inputType ? "observed" : "limited",
+          );
+          before = null;
+          touch();
+        }
+        async function seal() {
+          syncMeta();
+          reconcile("value_changed_without_input");
+          if (!rec) return;
+          if (composing || ending)
+            throw new Error("変換を確定してから保存してください");
+          const ep = rec.snapshot("saved");
+          current.episodes.push(ep);
+          rec = null;
+          current.active = null;
+          current.openSession = false;
+          touch();
+          clearTimeout(saveTimer);
+          saveTimer = null;
+          await enqueue(current);
+          display();
+          notice(
+            "この版を区切りました。ブラウザ内退避とJSONファイルは別です。",
+          );
+          if (!db) download([ep], false);
+        }
+        function resume() {
+          if (rec) return;
+          const prev = current.episodes.at(-1);
+          if (!prev) return;
+          const ep = C.makeEpisode({
+            id: uid(),
+            draftId: prev.draft_id,
+            revision: prev.revision + 1,
+            parent: prev.episode_id,
+            text: prev.final.text,
+            sel: prev.final.selection,
+            title: prev.title,
+            purposeText: prev.purpose.text,
+            origin: prev.origin,
+          });
+          startRecorder(ep);
+          current.active = rec.snapshot();
+          current.openSession = true;
+          touch();
+          display();
+          $("body").focus();
+        }
+        function download(episodes, lines) {
+          for (const e of episodes) C.validate(e);
+          const payload = lines
+            ? episodes.map((e) => JSON.stringify(e)).join("\n") + "\n"
+            : JSON.stringify(episodes[0], null, 2);
+          const blob = new Blob([payload], {
+            type: lines
+              ? "application/x-ndjson;charset=utf-8"
+              : "application/json;charset=utf-8",
+          });
+          if (blob.size > C.LIMITS.fileBytes)
+            throw new Error(
+              "書出しが32MiBを超えています。この版のJSONを個別に書き出してください。",
+            );
+          const url = URL.createObjectURL(blob),
+            a = document.createElement("a");
+          a.href = url;
+          a.download = lines
+            ? "dekasugi-records.jsonl"
+            : "dekasugi-" + episodes[0].episode_id + ".json";
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(url), 30000);
+          current.exportRequested = true;
+          notice(
+            "ファイル書出しを要求しました。端末の保存先を確認してください。保存完了は自動判定できません。",
+          );
+          renderStatus();
+        }
+        function prepareExport() {
+          syncMeta();
+          reconcile("value_changed_without_input");
+          if (composing || ending)
+            throw new Error("変換を確定してから書き出してください");
+        }
+        async function importFile(file) {
+          if (!file) return;
+          if (file.size > C.LIMITS.fileBytes)
+            throw new Error("読込みは32MiBまでです");
+          const eps = C.parse(await file.text());
+          await leave();
+          const imported = [];
+          for (const ep of eps) {
+            const row = {
+              id: uid(),
+              generation: 0,
+              draft_id: ep.draft_id,
+              episodes: [ep],
+              active: null,
+              openSession: false,
+              exportRequested: false,
+            };
+            rows.set(row.id, row);
+            versions.set(row.id, 0);
+            tokens.set(row.id, 1);
+            imported.push(row);
+            await enqueue(row);
+          }
+          current = imported[0];
+          rec = null;
+          display();
+          notice(
+            eps.length +
+              "件を別コピーとして読み込みました。原記録は変更していません。編集する場合は「続きを書く」。",
+          );
+        }
+        async function remove() {
+          if (!current) return;
+          if (
+            !confirm(
+              "このブラウザ内の選んだ下書きコピーを、本文・全履歴・索引ごと削除します。書出し済みファイルと他のコピーは残ります。削除しますか？",
+            )
+          )
+            return;
+          clearTimeout(saveTimer);
+          saveTimer = null;
+          await serial;
+          const row = current;
+          const expected = versions.get(row.id) || 0;
+          if (!db && expected > 0)
+            throw new Error(
+              "保存領域を使えないため削除を確認できません。退避を再試行してください。",
+            );
+          if (db) {
+            await transaction("readwrite", (s, set, tx) => {
+              s.get(row.id).onsuccess = (e) => {
+                if ((e.target.result?.generation || 0) !== expected) {
+                  tx.abort();
+                  return;
+                }
+                s.delete(row.id);
+              };
+            });
+          }
+          rows.delete(row.id);
+          versions.delete(row.id);
+          tokens.delete(row.id);
+          savedTokens.delete(row.id);
+          current = null;
+          rec = null;
+          const next = rows.values().next().value;
+          if (next) await switchRow(next);
+          else await create();
+          notice(
+            "選んだコピーを本文・履歴・索引ごと削除しました。書出しファイルは別に残っています。",
+          );
+        }
+        async function run(fn) {
+          try {
+            notice("");
+            await fn();
+          } catch (e) {
+            notice(e.message || String(e));
+          }
+        }
+        $("new").onclick = () => run(create);
+        $("seal").onclick = () => run(seal);
+        $("continue").onclick = () => run(resume);
+        $("delete").onclick = () => run(remove);
+        $("export").onclick = () =>
+          run(() => {
+            prepareExport();
+            download([activeEp()], false);
+          });
+        $("export-all").onclick = () =>
+          run(() => {
+            prepareExport();
+            const eps = [];
+            for (const row of rows.values()) {
+              eps.push(...row.episodes);
+              if (row === current && rec) eps.push(rec.snapshot());
+              else if (row.active) eps.push(row.active);
+            }
+            if (eps.length > C.LIMITS.episodes)
+              throw new Error(
+                "全体が200件を超えました。この版のJSONを個別に書き出してください",
+              );
+            download(eps, true);
+          });
+        $("import").onclick = () => $("file").click();
+        $("file").onchange = () => {
+          const f = $("file").files[0];
+          $("file").value = "";
+          run(() => importFile(f));
+        };
+        $("copy").onclick = () =>
+          run(async () => {
+            const text = $("body").value;
+            try {
+              await navigator.clipboard.writeText(text);
+              notice("本文だけをコピーしました。履歴は含みません。");
+            } catch {
+              $("body").focus();
+              $("body").select();
+              notice("本文を選択しました。端末のコピー操作を使ってください。");
+            }
+          });
+        $("retry").onclick = () =>
+          run(async () => {
+            if (await initDB()) {
+              await enqueue(current);
+              renderStatus();
+            }
+          });
+        $("title").onchange = syncMeta;
+        $("purpose").onchange = syncMeta;
+        $("body").addEventListener("beforeinput", (e) => {
+          if (!rec || internal) return;
+          if (
+            ending &&
+            !e.isComposing &&
+            !String(e.inputType).includes("Composition")
+          )
+            finishComposition();
+          if (!composing && !ending) {
+            reconcile("beforeinput_value_mismatch");
+            before = { text: rec.state.text, selection: selection() };
+          }
+        });
+        $("body").addEventListener("input", (e) => {
+          try {
+            input(e);
+          } catch (err) {
+            notice("記録エラー：" + err.message);
+          }
+        });
+        $("body").addEventListener("compositionstart", () => {
+          if (!rec) return;
+          if (ending) finishComposition();
+          if (composing) {
+            rec.gap(rec.state.text, rec.state.selection, "nested_composition");
+            touch();
+          }
+          if (!composing) reconcile("composition_start_value_mismatch");
+          before = { text: rec.state.text, selection: selection() };
+          compositionBase = rec.state.text;
+          composing = true;
+        });
+        $("body").addEventListener("compositionend", () => {
+          if (!rec) return;
+          if (!composing) compositionBase = null;
+          composing = false;
+          ending = true;
+          deferComposition();
+        });
+        function observeSelection() {
+          if (!rec || internal || composing || ending || stopped) return;
+          if ($("body").value !== rec.state.text) {
+            reconcile("value_changed_without_input");
+            return;
+          }
+          if (rec.select(selection())) touch();
+        }
+        $("body").addEventListener("select", observeSelection);
+        $("body").addEventListener("keyup", observeSelection);
+        $("body").addEventListener("pointerup", observeSelection);
+        document.addEventListener("selectionchange", () => {
+          if (document.activeElement === $("body")) observeSelection();
+        });
+        $("body").addEventListener("blur", () => {
+          if (!composing && !ending) reconcile("blur_value_mismatch");
+        });
+        $("history").ontoggle = () => {
+          if ($("history").open) renderHistory(true);
+        };
+        $("history-revision").onchange = () => {
+          const ep = selectedEp();
+          if (ep) {
+            C.validate(ep);
+            $("timeline").max = ep.events.length;
+            $("timeline").value = ep.events.length;
+            paintHistory();
+          }
+        };
+        $("timeline").oninput = paintHistory;
+        $("prev").onclick = () => {
+          $("timeline").value = Number($("timeline").value) - 1;
+          paintHistory();
+        };
+        $("next").onclick = () => {
+          $("timeline").value = Number($("timeline").value) + 1;
+          paintHistory();
+        };
+        document.addEventListener("visibilitychange", () => {
+          if (document.visibilityState === "hidden" && current) {
+            try {
+              syncMeta();
+              if (!composing && !ending) reconcile("hidden_value_mismatch");
+              clearTimeout(saveTimer);
+              saveTimer = null;
+              enqueue(current);
+            } catch (e) {
+              notice(e.message);
+            }
+          }
+        });
+        window.addEventListener("beforeunload", (e) => {
+          if (
+            current &&
+            (composing ||
+              ending ||
+              !db ||
+              savedTokens.get(current.id) !== (tokens.get(current.id) || 0))
+          ) {
+            e.preventDefault();
+            e.returnValue = "";
+          }
+        });
+        // Poll only for unnotified DOM changes; never turn composition text into committed text.
+        setInterval(() => {
+          if (
+            rec &&
+            !loading &&
+            !composing &&
+            !ending &&
+            $("body").value !== rec.state.text
+          ) {
+            try {
+              reconcile("value_changed_without_input");
+            } catch (e) {
+              notice(e.message);
+            }
+          }
+        }, 800);
+        async function init() {
+          loading = true;
+          await initDB();
+          if (db) {
+            const all = await transaction("readonly", (s, set) => {
+              s.getAll().onsuccess = (e) => set(e.target.result);
+            });
+            for (const row of all) {
+              if (row.probe) continue;
+              try {
+                if (!Array.isArray(row.episodes))
+                  throw new Error("保存形式が不正です");
+                for (const ep of row.episodes) C.validate(ep);
+                if (row.active) C.validate(row.active);
+                rows.set(row.id, row);
+                versions.set(row.id, row.generation);
+                tokens.set(row.id, 0);
+                savedTokens.set(row.id, 0);
+              } catch (e) {
+                notice(
+                  "復元できない記録があります。原保存は変更していません：" +
+                    e.message,
+                );
+              }
+            }
+          }
+          loading = false;
+          if (rows.size) await switchRow(rows.values().next().value);
+          else await create();
+        }
+        init().catch((e) => {
+          loading = false;
+          notice("起動エラー：" + e.message);
+        });
+      })();
+    </script>
+  </body>
+</html>
