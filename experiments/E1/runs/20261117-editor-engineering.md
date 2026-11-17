@@ -1,7 +1,7 @@
 # E1 — 人工例による工学確認（2026-11-17）
 
 id: E1-ENGINEERING-20261117
-status: local_core_pass_browser_ci_pending_device_checks_pending
+status: synthetic_checks_pass_device_and_independent_checks_pending
 updated: 2026-11-17
 tags: editor, engineering, invented, evidence
 
@@ -20,7 +20,7 @@ tags: editor, engineering, invented, evidence
 | Node core人工検査 | PASS 16/16 | `node --test tests/draft_editor/core.test.cjs`。最終ソースで再実施（600 Unicode対を含む） |
 | ローカルheadless Chromium | 実行不能 | この実行環境でUNIX socketが拒否され、ブラウザ起動前に停止。試行を合格数へ含めない |
 | cloud browserのfileプレビュー | 実行不能 | 許可プロトコルがhttp/httpsでfile表示が拒否。迂回していない |
-| E1専用GitHub browser検査 | pending | このPRの専用workflowから人工例のみ実施し、結果はPR／Actionsに追記する |
+| E1専用GitHub browser検査 | PASS 17/17 | 修正後head cc46add4、Actions 43999090513。実IME／実Androidの確認は含まない |
 | docs-check／既存source境界 | PASS | 125 Markdown、CI-SAFE-V2 static_source_integrity_pass。旧workflowの稼働状態を新たに認証した意味ではない |
 | Muse独立確認 | 未実施 | 正確なheadでの別環境確認待ち |
 | Windows＋Edgeの実IME | 未実施 | Owner主端末の確認カード待ち |
@@ -40,3 +40,12 @@ tags: editor, engineering, invented, evidence
 提出前の点検で、(a) input通知なしの本文変更が次のbeforeinputまでに起きた場合を独立gapにする、(b) 連続入力で自動退避timerを延長し続けない、(c) 履歴UIは全イベントの全文を配列へ展開せず指定位置だけ保持する、の修正と回帰を追加。上限付近では目的・タイトルも編集停止する。ソースを読みやすく整形した。最新browser検査は17シナリオ、coreは16件。初回CIの合格を変更後ソースへそのまま流用せず、同じDraftの専用CI結果で確認する。
 
 修正後HTML SHA256: `0f84b979d6b5a5ba28997e83b7f659ddcab297d058d65dde506ce9ce95c76c5d`。最新CIの参照はPR #230へ記録する。
+
+## 修正後の確認結果
+
+[Actions run 43999090513](https://github.com/ryonakayama234/DekaSugi/actions/runs/43999090513) は修正後head `cc46add4390d12f6455d293cbd23c2ca351315cd`（PR merge ref `b6f34b7`）でcore **16/16**、browser **17/17** PASS。既存safe successorも[run 43999090574](https://github.com/ryonakayama234/DekaSugi/actions/runs/43999090574)でsuccess。
+
+- Chromium `151.0.7922.34`、Playwright `1.62.1`、file起動。
+- Artifact ID `14291621027`（人工JSON結果票＋desktop/tablet寸法のスクリーンショット）、ZIP SHA256 `0f7c728c3dc0a3aef01e33d73dfb4148e7aa1992cee7a7f9e687f70e8bb7670f`。Actions artifactの保持は5日。恒久的な検証対象はrepo内の明示テストと本票の結果参照。
+- 本結果を記録する文書commitではHTML・テスト・workflowは変更しない。上記HTML SHA256で検証済みソースと照合できる。文書のみの最終headではE1のpaths filterは起動せず、既存safe successorの結果はPR checksで確認する。
+- ChatGPTによる実装側の工学確認であり、Museの独立確認・OwnerのWindows実IME・Galaxy実機・別日実用3件は引き続き未実施。Draft維持、マージなし。
