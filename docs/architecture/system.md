@@ -1076,3 +1076,19 @@ flowchart TD
 ~~~
 
 G3-3 is a parent/evaluator-side **engineering interface**, not an actual scientific runner. The remote adapter's real GitHub push/readback is not invoked in CI (fake remote only). Child import guard forbids evaluator/gate/ledger/remote/dossier modules. GitHub-only custody cannot prove an independent timestamp or absolute WORM; anchored hashes support subsequent audit. There is no 448 measurement, G5 order, G6 score or scientific M_use certification. [Specification](../specs/R2-M-A-G3-3.md) / [ARCH-002](contracts.md).
+
+## SYMBOL-BOOTSTRAP-1 — 実装した独立経路
+
+[仕様](../specs/SYMBOL-BOOTSTRAP-1.md) / [結果](../../experiments/SYMBOL-BOOTSTRAP-1/runs/README.md)。`symbol_bootstrap` は既存Kernel/Registry/旧scorerをimportせず、E1とも未接続。raw文字列→候補形成→更新しない予測の経路のみ。人工例のcopy文法を実装者のバイアスと区別する。
+
+```mermaid
+flowchart TD
+  T["raw文字episode"] --> M["文字の記憶とngram"]
+  T --> C["FULLのみのchunk候補"]
+  C --> F["後続episodeの候補形成"]
+  T --> F
+  F --> R["支持と反例を持つ規則候補"]
+  M --> P["固定状態からの自由生成"]
+  R --> P
+  P --> E["分類別結果と依存の監査"]
+```

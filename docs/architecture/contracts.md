@@ -1095,3 +1095,7 @@ flowchart LR
 - Query: exactly one Q001 pre-answer intent per law (P3 digest, legal Q digest, paid budget=1, expiry, method/policy hashes). Remote GitHub audit-branch commit/push, ref verification and fetched exact bytes required before synthetic answer callback; failures leave an unrepeatable local intent and **no paid answer**.
 - Pre-score: 448 scheduled slots always represented. `NOT_RUN` and `STARTED_MISSING` plus typed INVALID/RESOURCE_STOP/RUN_BLOCK/UNMEASURED are not replaced with zero. Raw trace/receipt SHA required for completed slots. Immutable pre-score manifest, event-chain tip and remote object bytes rechecked; missing Q receipts or any changed original block.
 - Gate: `SCIENTIFIC_EXECUTION_AUTHORIZED=False` and independent G4/G5/G6 flags are false; `require_score_gate` rejects caller-provided Owner approval claims. No score or truth reading is implemented. G4 dossier generator emits only NOT_AUDITED documents. GitHub-only timestamps are not independent trusted timestamps. [G3-3 specification](../specs/R2-M-A-G3-3.md).
+
+## SYMBOL-BOOTSTRAP-1 — raw入力と採点台帳の分離
+
+[詳細仕様](../specs/SYMBOL-BOOTSTRAP-1.md)が正本。学習器の公開入口は `observe(episode_id, raw_text)` と `predict(prefix, length)`。語一覧・prefix境界・正解は前者へ渡さない。形成元のepisode/split/variable_spans、C-IDの展開と依存、R-IDのASTと支持/反例を保持。状態digestで各試験の更新なしを照合し、結果票は全14件×4armの56行を必要とする。欠損/重複/RESOURCE_STOPは完了した正答率にしない。raw evidenceは[run目録](../../experiments/SYMBOL-BOOTSTRAP-1/runs/README.md)のZIPに保存。

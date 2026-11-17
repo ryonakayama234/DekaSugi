@@ -87,5 +87,41 @@ class SymbolBootstrapTests(unittest.TestCase):
         with self.assertRaises(ValueError):aggregate(rows[:-1],self.lock['arms'])
         with self.assertRaises(ValueError):aggregate(rows[:-1]+rows[:1],self.lock['arms'])
 
+    def test_cli_resource_stop_is_incomplete(self):
+        from packages.symbol_bootstrap.__main__ import run
+        from unittest.mock import patch
+        import contextlib, io, json, tempfile
+        for limit in ('operations_total','artifact_bytes'):
+            lock=copy.deepcopy(self.lock);lock['limits'][limit]=0
+            with tempfile.TemporaryDirectory() as tmp, patch('packages.symbol_bootstrap.__main__.load_lock',return_value=lock), contextlib.redirect_stdout(io.StringIO()):
+                out=Path(tmp)/'stopped'
+                self.assertEqual(run(out),2)
+                report=json.loads((out/'report.json').read_text())
+                self.assertEqual(report['status'],'RESOURCE_STOP')
+                self.assertNotIn('summary',report)
+
+    def test_auditor_rejects_resigned_corruption(self):
+        from scripts.audit_symbol_bootstrap import verify
+        import json, tempfile
+        from hashlib import sha256
+        from zipfile import ZipFile
+        archive=Path('experiments/SYMBOL-BOOTSTRAP-1/runs/local-02/evidence.zip')
+        for kind in ('prediction','dependency','summary'):
+            with tempfile.TemporaryDirectory() as tmp:
+                root=Path(tmp)
+                with ZipFile(archive) as z:z.extractall(root)
+                name='states.json' if kind=='dependency' else 'report.json'
+                obj=json.loads((root/name).read_text())
+                if kind=='prediction':obj['rows'][0]['trace']['prediction']=';;;;;;;'
+                elif kind=='summary':obj['summary']['b1']['correct']['MEMORY']=4
+                else:
+                    rule=next(r for r in obj['FULL']['rules'].values() if r['dependencies'])
+                    rule['dependencies']=['C-nonexistent']
+                (root/name).write_text(json.dumps(obj))
+                hashes=json.loads((root/'SHA256SUMS.json').read_text())
+                hashes[name]=sha256((root/name).read_bytes()).hexdigest()
+                (root/'SHA256SUMS.json').write_text(json.dumps(hashes))
+                with self.assertRaises((AssertionError,KeyError)):verify(root)
+
 
 if __name__=='__main__':unittest.main()
