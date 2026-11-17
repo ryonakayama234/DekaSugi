@@ -1076,3 +1076,20 @@ flowchart TD
 ~~~
 
 G3-3 is a parent/evaluator-side **engineering interface**, not an actual scientific runner. The remote adapter's real GitHub push/readback is not invoked in CI (fake remote only). Child import guard forbids evaluator/gate/ledger/remote/dossier modules. GitHub-only custody cannot prove an independent timestamp or absolute WORM; anchored hashes support subsequent audit. There is no 448 measurement, G5 order, G6 score or scientific M_use certification. [Specification](../specs/R2-M-A-G3-3.md) / [ARCH-002](contracts.md).
+
+
+## E1 — local editor implementation boundary (2026-11-17)
+
+[Single HTML](../../packages/draft_editor/editor.html) is standalone: native textarea → committed-edit recorder → local IndexedDB / JSON → read-only replay. It does not import Kernel, synthesis, learner, evaluator or prior experimental data. [Contract](../specs/E1-DRAFT-EDITOR.md) / [engineering receipt](../../experiments/E1/runs/20261117-editor-engineering.md).
+
+```mermaid
+flowchart TD
+  I["Native textarea and IME"] --> R["Committed edits and gaps"]
+  R --> S["IndexedDB CAS backup"]
+  R --> J["JSON / JSONL"]
+  J --> V["Version and replay validator"]
+  V --> H["Separate local copy / replay"]
+  R --> H
+```
+
+Implemented capture/storage is engineering functionality, not learned skill acquisition. IME preedit is transient. Real Windows/Android IME and daily usefulness await Owner checks; synthetic browser composition cannot establish them.

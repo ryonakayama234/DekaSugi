@@ -1095,3 +1095,10 @@ flowchart LR
 - Query: exactly one Q001 pre-answer intent per law (P3 digest, legal Q digest, paid budget=1, expiry, method/policy hashes). Remote GitHub audit-branch commit/push, ref verification and fetched exact bytes required before synthetic answer callback; failures leave an unrepeatable local intent and **no paid answer**.
 - Pre-score: 448 scheduled slots always represented. `NOT_RUN` and `STARTED_MISSING` plus typed INVALID/RESOURCE_STOP/RUN_BLOCK/UNMEASURED are not replaced with zero. Raw trace/receipt SHA required for completed slots. Immutable pre-score manifest, event-chain tip and remote object bytes rechecked; missing Q receipts or any changed original block.
 - Gate: `SCIENTIFIC_EXECUTION_AUTHORIZED=False` and independent G4/G5/G6 flags are false; `require_score_gate` rejects caller-provided Owner approval claims. No score or truth reading is implemented. G4 dossier generator emits only NOT_AUDITED documents. GitHub-only timestamps are not independent trusted timestamps. [G3-3 specification](../specs/R2-M-A-G3-3.md).
+
+
+## E1 — draft-episode/1 local boundary (2026-11-17)
+
+[Normative format and invariants](../specs/E1-DRAFT-EDITOR.md) / [single HTML](../../packages/draft_editor/editor.html). Independent from historic TaskSpec/AST/experiment receipts. Episode records stable draft/episode IDs, revision parent, origin, purpose provenance, initial state, seq/session/segment/version events, final state, replay and capture quality, local-only privacy. Edits are UTF-16 half-open replace patches including expected removed text. Gaps explicitly carry recovery snapshots and exclude exact action-sequence claims.
+
+Local storage wraps episodes with a separate storage ID and generation; CAS inside one IndexedDB transaction rejects stale heads and preserves conflicting text as a separate copy. JSON imports validate all lines before writes, keep original IDs/provenance and immutable records, and never auto-mark data as learning-eligible or sharing-approved. Synthetic-only [checks](../../tests/draft_editor/core.test.cjs) and [browser checks](../../tests/draft_editor/browser.test.cjs) contain no real user data.

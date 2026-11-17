@@ -1,0 +1,46 @@
+name: E1 editor invented-only checks
+on:
+  pull_request:
+    paths:
+      - 'packages/draft_editor/**'
+      - 'tests/draft_editor/**'
+      - 'docs/specs/E1-DRAFT-EDITOR.md'
+      - '.github/workflows/e1-editor-synthetic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  invented-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Exact delivered core, invented records only
+        run: node --test tests/draft_editor/core.test.cjs
+      - name: Install isolated browser test dependency (not a product dependency)
+        run: |
+          npm install --prefix "$RUNNER_TEMP/e1-deps" --ignore-scripts --no-audit --no-fund playwright@1.62.1
+          "$RUNNER_TEMP/e1-deps/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Open the actual single HTML in Chromium, invented data only
+        env:
+          NODE_PATH: ${{ runner.temp }}/e1-deps/node_modules
+          E1_REPORT: ${{ runner.temp }}/e1-report.json
+          E1_SCREENSHOT_DIR: ${{ runner.temp }}
+        run: |
+          export E1_CHROMIUM="$(node -p "require('playwright').chromium.executablePath()")"
+          node tests/draft_editor/browser.test.cjs
+      - name: Upload invented-only browser receipt and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: E1-invented-only-browser
+          retention-days: 5
+          path: |
+            ${{ runner.temp }}/e1-report.json
+            ${{ runner.temp }}/e1-desktop.png
+            ${{ runner.temp }}/e1-tablet.png
+          if-no-files-found: warn
