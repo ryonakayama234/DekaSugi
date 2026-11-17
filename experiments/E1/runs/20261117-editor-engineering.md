@@ -17,11 +17,11 @@ tags: editor, engineering, invented, evidence
 
 | 確認 | 状態 | 証拠・限界 |
 |---|---|---|
-| Node core人工検査 | PASS 15/15 | `node --test tests/draft_editor/core.test.cjs`。最終ソースへの再実施をPRに記載 |
+| Node core人工検査 | PASS 16/16 | `node --test tests/draft_editor/core.test.cjs`。最終ソースで再実施（600 Unicode対を含む） |
 | ローカルheadless Chromium | 実行不能 | この実行環境でUNIX socketが拒否され、ブラウザ起動前に停止。試行を合格数へ含めない |
 | cloud browserのfileプレビュー | 実行不能 | 許可プロトコルがhttp/httpsでfile表示が拒否。迂回していない |
 | E1専用GitHub browser検査 | pending | このPRの専用workflowから人工例のみ実施し、結果はPR／Actionsに追記する |
-| docs-check／既存source境界 | pending | 最終ソースで実施し記録する |
+| docs-check／既存source境界 | PASS | 125 Markdown、CI-SAFE-V2 static_source_integrity_pass。旧workflowの稼働状態を新たに認証した意味ではない |
 | Muse独立確認 | 未実施 | 正確なheadでの別環境確認待ち |
 | Windows＋Edgeの実IME | 未実施 | Owner主端末の確認カード待ち |
 | Galaxy Tab A9+＋Chrome | 未実施 | 起動・IME・保存往復を確認するまで対応未確認 |
@@ -32,3 +32,11 @@ tags: editor, engineering, invented, evidence
 ## 判定
 
 制作物の工学提出であり、E1完了・学習能力の獲得・マージ許可ではない。ブラウザ検査の失敗は同じDraftで修正し、独立確認と実機確認へ渡す。未確認をPASSへ読み替えない。
+
+## 最初のCI確認と追加修正
+
+[Actions run 43998556493](https://github.com/ryonakayama234/DekaSugi/actions/runs/43998556493) はhead `e53e02b159d14195e208896c0a78a6484b59fe57`（PR merge ref `8df8c162d3ccb29d58931cd4feb4a70a255c782b`）でcore 15/15、browser **16/16** PASS。Chromium 151.0.7922.34、Playwright 1.62.1。Artifact ID `14291725098`、ZIP SHA256 `a4d1709dd8a3c784f86762af433a08e648114e5016a616fb05089b60f7bb172e`。当初の「17シナリオ」は数え違いで、この初回実測は16件。
+
+提出前の点検で、(a) input通知なしの本文変更が次のbeforeinputまでに起きた場合を独立gapにする、(b) 連続入力で自動退避timerを延長し続けない、(c) 履歴UIは全イベントの全文を配列へ展開せず指定位置だけ保持する、の修正と回帰を追加。上限付近では目的・タイトルも編集停止する。ソースを読みやすく整形した。最新browser検査は17シナリオ、coreは16件。初回CIの合格を変更後ソースへそのまま流用せず、同じDraftの専用CI結果で確認する。
+
+修正後HTML SHA256: `0f84b979d6b5a5ba28997e83b7f659ddcab297d058d65dde506ce9ce95c76c5d`。最新CIの参照はPR #230へ記録する。

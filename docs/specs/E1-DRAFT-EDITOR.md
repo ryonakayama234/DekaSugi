@@ -51,7 +51,7 @@ JSONは一episode。JSONLは一行一episode、最大200行。未知版・未知
 - 本文無変化はcomposition_end（outcome=`unknown/no_text_change`）。空dataだけで中止と断定しない。未終了のcomposition中は区切り保存・書出し・draft移動を拒否し、確定を案内する。
 - beforeinputなしでも連続した本文差分とinputが観測できれば記録するが、前選択・inputType等はunknown/limited。undo/redoは差分追記で、過去eventを消さない。取り消した編集への因果リンクを推測しない。
 - inputなしの本文変化はblur・export/save・非変換中800msごとの照合で検出する。開始不明のcomposition、nested composition、本文不一致、open sessionの再起動ではcapture_gapを立てる。
-- gapは理由・last_consistent_seq・新segment・新version・回復snapshotを持つ。snapshotから回復した表示を、差分だけの完全再生と呼ばない。未観測の末尾そのものは回収できない。
+- gapは理由・last_consistent_seq・新segment・新version・回復snapshotを持つ。snapshotから回復した表示を、差分だけの完全再生と呼ばない。未観測の末尾そのものは回収できない。履歴UIは選んだ位置の状態だけを保持し、全文snapshotを全イベント分配列に展開しない。
 
 | 品質軸 | 値と意味 |
 |---|---|
@@ -63,7 +63,7 @@ JSONは一episode。JSONLは一行一episode、最大200行。未知版・未知
 
 DB名 `dekasugi-e1`、DB version=1、object store=drafts（keyPath=id）。ローカル保管レコードはid、generation、draft_id、確定episodes、active、openSession、exportRequestedを持つ。episode内の索引（ID/revision/segment/seq）以外の検索索引は作らない。保存は小規模下書き向けにレコード全体を原子的にputする。大規模コーパス用のappend専用DBではない。
 
-確定編集から150msのdebounceで直列保存する。通常のイベントループ負荷の下で速やかに退避する設計で、停止中・重負荷中の500ms以内保証はしない。完了表示はtransaction.completeの後。異なる世代の同じ保管IDへの更新は同一transaction内のCASで拒否し、編集内容を新しい保管IDへ別コピーとして保全する。保存エラー時の本文は画面とメモリに残し、再試行・JSONを案内する。
+確定編集から変更開始から150msで直列保存（連続入力でも待ち時間を延長し続けない）する。通常のイベントループ負荷の下で速やかに退避する設計で、停止中・重負荷中の500ms以内保証はしない。完了表示はtransaction.completeの後。異なる世代の同じ保管IDへの更新は同一transaction内のCASで拒否し、編集内容を新しい保管IDへ別コピーとして保全する。保存エラー時の本文は画面とメモリに残し、再試行・JSONを案内する。
 
 「保存して区切る」で再生検査後のepisodeを確定し、入力欄を読み取り専用にする。「続きを書く」で新episode ID、revision+1、親参照、前版最終状態を初期状態として編集する。既存episodeは変更しない。アプリ内draft切替では退避を試しopenSessionを閉じる。再起動でopenSession=trueなら最後に退避できた確定状態を回復し、末尾不明をgapとして明記する。終了時イベントだけに保存を依存させない。
 
