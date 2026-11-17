@@ -1,0 +1,295 @@
+{
+  "schema": "symbol-bootstrap-lock/1",
+  "arms": [
+    "FULL",
+    "NO-LEARN",
+    "NO-CHUNK",
+    "MEMORY"
+  ],
+  "alphabet": "abcdefghijklmnopqrstuvwxyz|><;",
+  "rounds": 3,
+  "train": [
+    {
+      "prefix": "dax|mip>",
+      "expected": "daxmip;",
+      "x": "dax",
+      "y": "mip",
+      "context": ">"
+    },
+    {
+      "prefix": "dax|mip<",
+      "expected": "mipdax;",
+      "x": "dax",
+      "y": "mip",
+      "context": "<"
+    },
+    {
+      "prefix": "dax|zok>",
+      "expected": "daxzok;",
+      "x": "dax",
+      "y": "zok",
+      "context": ">"
+    },
+    {
+      "prefix": "dax|zok<",
+      "expected": "zokdax;",
+      "x": "dax",
+      "y": "zok",
+      "context": "<"
+    },
+    {
+      "prefix": "mip|dax>",
+      "expected": "mipdax;",
+      "x": "mip",
+      "y": "dax",
+      "context": ">"
+    },
+    {
+      "prefix": "mip|dax<",
+      "expected": "daxmip;",
+      "x": "mip",
+      "y": "dax",
+      "context": "<"
+    },
+    {
+      "prefix": "mip|nuv>",
+      "expected": "mipnuv;",
+      "x": "mip",
+      "y": "nuv",
+      "context": ">"
+    },
+    {
+      "prefix": "mip|nuv<",
+      "expected": "nuvmip;",
+      "x": "mip",
+      "y": "nuv",
+      "context": "<"
+    },
+    {
+      "prefix": "mip|zok>",
+      "expected": "mipzok;",
+      "x": "mip",
+      "y": "zok",
+      "context": ">"
+    },
+    {
+      "prefix": "nuv|mip>",
+      "expected": "nuvmip;",
+      "x": "nuv",
+      "y": "mip",
+      "context": ">"
+    },
+    {
+      "prefix": "nuv|mip<",
+      "expected": "mipnuv;",
+      "x": "nuv",
+      "y": "mip",
+      "context": "<"
+    },
+    {
+      "prefix": "nuv|zok>",
+      "expected": "nuvzok;",
+      "x": "nuv",
+      "y": "zok",
+      "context": ">"
+    },
+    {
+      "prefix": "nuv|zok<",
+      "expected": "zoknuv;",
+      "x": "nuv",
+      "y": "zok",
+      "context": "<"
+    },
+    {
+      "prefix": "zok|dax>",
+      "expected": "zokdax;",
+      "x": "zok",
+      "y": "dax",
+      "context": ">"
+    },
+    {
+      "prefix": "zok|dax<",
+      "expected": "daxzok;",
+      "x": "zok",
+      "y": "dax",
+      "context": "<"
+    },
+    {
+      "prefix": "zok|mip>",
+      "expected": "zokmip;",
+      "x": "zok",
+      "y": "mip",
+      "context": ">"
+    },
+    {
+      "prefix": "zok|nuv>",
+      "expected": "zoknuv;",
+      "x": "zok",
+      "y": "nuv",
+      "context": ">"
+    },
+    {
+      "prefix": "zok|nuv<",
+      "expected": "nuvzok;",
+      "x": "zok",
+      "y": "nuv",
+      "context": "<"
+    }
+  ],
+  "tests": [
+    {
+      "id": "a-1",
+      "group": "a",
+      "prefix": "dax|mip>",
+      "expected": "daxmip;",
+      "x": "dax",
+      "y": "mip",
+      "context": ">"
+    },
+    {
+      "id": "a-2",
+      "group": "a",
+      "prefix": "dax|mip<",
+      "expected": "mipdax;",
+      "x": "dax",
+      "y": "mip",
+      "context": "<"
+    },
+    {
+      "id": "a-3",
+      "group": "a",
+      "prefix": "mip|nuv>",
+      "expected": "mipnuv;",
+      "x": "mip",
+      "y": "nuv",
+      "context": ">"
+    },
+    {
+      "id": "a-4",
+      "group": "a",
+      "prefix": "zok|nuv<",
+      "expected": "nuvzok;",
+      "x": "zok",
+      "y": "nuv",
+      "context": "<"
+    },
+    {
+      "id": "b1-1",
+      "group": "b1",
+      "prefix": "dax|nuv>",
+      "expected": "daxnuv;",
+      "x": "dax",
+      "y": "nuv",
+      "context": ">"
+    },
+    {
+      "id": "b1-2",
+      "group": "b1",
+      "prefix": "dax|nuv<",
+      "expected": "nuvdax;",
+      "x": "dax",
+      "y": "nuv",
+      "context": "<"
+    },
+    {
+      "id": "b1-3",
+      "group": "b1",
+      "prefix": "nuv|dax>",
+      "expected": "nuvdax;",
+      "x": "nuv",
+      "y": "dax",
+      "context": ">"
+    },
+    {
+      "id": "b1-4",
+      "group": "b1",
+      "prefix": "nuv|dax<",
+      "expected": "daxnuv;",
+      "x": "nuv",
+      "y": "dax",
+      "context": "<"
+    },
+    {
+      "id": "b2-1",
+      "group": "b2",
+      "prefix": "mip|zok<",
+      "expected": "zokmip;",
+      "x": "mip",
+      "y": "zok",
+      "context": "<"
+    },
+    {
+      "id": "b2-2",
+      "group": "b2",
+      "prefix": "zok|mip<",
+      "expected": "mipzok;",
+      "x": "zok",
+      "y": "mip",
+      "context": "<"
+    },
+    {
+      "id": "c-1",
+      "group": "c",
+      "prefix": "qef|wyg>",
+      "expected": "qefwyg;",
+      "x": "qef",
+      "y": "wyg",
+      "context": ">"
+    },
+    {
+      "id": "c-2",
+      "group": "c",
+      "prefix": "qef|wyg<",
+      "expected": "wygqef;",
+      "x": "qef",
+      "y": "wyg",
+      "context": "<"
+    },
+    {
+      "id": "c-3",
+      "group": "c",
+      "prefix": "wyg|qef>",
+      "expected": "wygqef;",
+      "x": "wyg",
+      "y": "qef",
+      "context": ">"
+    },
+    {
+      "id": "c-4",
+      "group": "c",
+      "prefix": "wyg|qef<",
+      "expected": "qefwyg;",
+      "x": "wyg",
+      "y": "qef",
+      "context": "<"
+    }
+  ],
+  "limits": {
+    "episode_chars": 32,
+    "episodes": 54,
+    "chunk_chars": 8,
+    "chunks": 4096,
+    "rules": 4096,
+    "variables": 2,
+    "variable_chars": 6,
+    "input_literals": 8,
+    "output_literals": 8,
+    "output_references": 4,
+    "output_atoms": 16,
+    "expanded_chars": 32,
+    "formation_attempts_per_episode": 16384,
+    "output_search_nodes_per_pair": 4096,
+    "operations_total": 20000000,
+    "wall_seconds": 120,
+    "cpu_seconds": 120,
+    "artifact_bytes": 50000000
+  },
+  "selection": {
+    "chunk": "longest expansion, then Unicode lexicographic; one-character fallback",
+    "formation": "past distinct rows in first-seen order; split ascending; FULL symbol route then character route; canonical AST lexicographic",
+    "rule": "confidence descending (unique-support/(unique-support+unique-failure)), unique-support descending, literal-input-length descending, canonical AST ascending; require two distinct supporting rows; every applicable competing candidate retained in trace",
+    "fallback": "exact observed prefix -> most frequent remaining suffix, tie Unicode lexicographic; otherwise character ngram context 4..0 longest match, count descending then Unicode lexicographic; empty state alphabet minimum",
+    "retention": "no pruning or silent truncation; exceeding any cap is RESOURCE_STOP"
+  },
+  "claim": "engineering only; NO-CHUNK tie means no demonstrated chunk contribution; no result-dependent extension"
+}
