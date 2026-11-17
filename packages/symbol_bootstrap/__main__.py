@@ -44,6 +44,14 @@ def audit_ledger(lock):
 
 
 def aggregate(rows, arms):
+    expected={'a':4,'b1':4,'b2':2,'c':4}
+    keys=[(r['id'],r['arm']) for r in rows]
+    if len(keys)!=56 or len(set(keys))!=56:
+        raise ValueError('incomplete or duplicate comparison')
+    for arm in arms:
+        for group,n in expected.items():
+            if sum(r['arm']==arm and r['group']==group for r in rows)!=n:
+                raise ValueError('fixed denominator missing')
     result={}
     for group in ('a','b1','b2','b','c'):
         selected=[r for r in rows if r['group']==group or (group=='b' and r['group'] in ('b1','b2'))]
@@ -111,7 +119,6 @@ def run(out):
         report['ledger']=audit_ledger(lock)
         for arm in lock['arms']:
             learner=Learner(arm,lock['alphabet'],budget); learners[arm]=learner
-            if arm=='NO-LEARN': continue
             for i in range(lock['rounds']*len(lock['train'])):
                 record=lock['train'][i%len(lock['train'])]
                 eid=f'E{i+1:03}'
@@ -141,6 +148,7 @@ def run(out):
     encoded={k:(canonical(v)+'\n').encode() for k,v in payloads.items()}
     if sum(map(len,encoded.values()))>lock['limits']['artifact_bytes']:
         report['status']='RESOURCE_STOP'; report['reason']='artifact_bytes';report.pop('summary',None);report.pop('interpretation',None)
+        report['missing_artifacts']=['states.json','history.json','cost.json']
         encoded={'report.json':(canonical(report)+'\n').encode()}
     if report['status']=='COMPLETE':
         try: budget.check()
