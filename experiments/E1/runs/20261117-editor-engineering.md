@@ -47,5 +47,5 @@ tags: editor, engineering, invented, evidence
 
 - Chromium `151.0.7922.34`、Playwright `1.62.1`、file起動。
 - Artifact ID `14291621027`（人工JSON結果票＋desktop/tablet寸法のスクリーンショット）、ZIP SHA256 `0f7c728c3dc0a3aef01e33d73dfb4148e7aa1992cee7a7f9e687f70e8bb7670f`。Actions artifactの保持は5日。恒久的な検証対象はrepo内の明示テストと本票の結果参照。
-- 本結果を記録する文書commitではHTML・テスト・workflowは変更しない。上記HTML SHA256で検証済みソースと照合できる。文書のみの最終headではE1のpaths filterは起動せず、既存safe successorの結果はPR checksで確認する。
+- 本結果を記録する文書commitではHTML・テスト・workflowは変更しない。上記HTML SHA256で検証済みソースと照合できる。文書のみの同期でも、PR全体の対象パスによりE1 workflowが再起動する場合がある。最終headのE1／safe successor結果はPR checksで確認する。
 - ChatGPTによる実装側の工学確認であり、Museの独立確認・OwnerのWindows実IME・Galaxy実機・別日実用3件は引き続き未実施。Draft維持、マージなし。
