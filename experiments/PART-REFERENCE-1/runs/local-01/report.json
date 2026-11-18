@@ -1,0 +1,56 @@
+{
+  "answers_sha256": "111800821552387e0fe72dc9cc98b63c52a9d84bf984ba63bb599c6885356893",
+  "audit_mismatches": 0,
+  "counts": {
+    "CHAR": {
+      "control": 8,
+      "main": 0
+    },
+    "MASK": {
+      "control": 8,
+      "main": 0
+    },
+    "REF": {
+      "control": 8,
+      "main": 8
+    }
+  },
+  "independent_vm_review": "pending",
+  "logical_cost": {
+    "CHAR": {
+      "acquired": 4,
+      "candidate_slots": 96,
+      "executed_instructions": 80,
+      "expanded_instructions": 544,
+      "scanned_characters": 40,
+      "selection_slots": 96,
+      "training_rows": 8
+    },
+    "MASK": {
+      "acquired": 4,
+      "candidate_slots": 96,
+      "executed_instructions": 80,
+      "expanded_instructions": 544,
+      "scanned_characters": 40,
+      "selection_slots": 96,
+      "training_rows": 8
+    },
+    "REF": {
+      "acquired": 4,
+      "candidate_slots": 96,
+      "executed_instructions": 112,
+      "expanded_instructions": 544,
+      "scanned_characters": 40,
+      "selection_slots": 96,
+      "training_rows": 8
+    }
+  },
+  "paired_accuracy_difference": {
+    "CHAR": 1.0,
+    "MASK": 1.0
+  },
+  "predictions_sha256": "0e191abebd85c91e78311cedf538288583dcab20649ba670670d01795c2b9bf5",
+  "reference_dependent_main": 8,
+  "selected_limit_violations": 0,
+  "verdict": "MET"
+}

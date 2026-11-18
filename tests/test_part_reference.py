@@ -64,3 +64,37 @@ class PartReferenceTests(unittest.TestCase):
     def test_auditor_rejects_missing_arms(self):
         with self.assertRaises(ValueError):
             audit(dict(schema='part-reference/1',answers_read_before_lock=0,arms={}),{})
+
+
+class EvidenceCorruptionTests(unittest.TestCase):
+    def setUp(self):
+        self.record = json.loads((DATA/'runs/local-01/predictions.json').read_text())
+        self.answers = json.loads((DATA/'answers.json').read_text())
+
+    def test_full_recount(self):
+        self.assertEqual(audit(self.record,self.answers)['verdict'],'MET')
+
+    def test_changed_counter_rejected(self):
+        self.record['arms']['MASK']['records'][0]['preselection_cost']['candidate_slots'] = 0
+        with self.assertRaises(ValueError):
+            audit(self.record,self.answers)
+
+    def test_missing_candidate_rejected(self):
+        self.record['arms']['REF']['records'][0]['candidates'].pop()
+        with self.assertRaises(ValueError):
+            audit(self.record,self.answers)
+
+    def test_reference_claim_rejected(self):
+        self.record['arms']['REF']['records'][0]['used_references'] = []
+        with self.assertRaises(ValueError):
+            audit(self.record,self.answers)
+
+    def test_changed_prediction_rejected(self):
+        self.record['arms']['CHAR']['records'][0]['output'] = self.answers['Q01']
+        with self.assertRaises(ValueError):
+            audit(self.record,self.answers)
+
+    def test_early_answer_read_rejected(self):
+        self.record['answers_read_before_lock'] = 1
+        with self.assertRaises(ValueError):
+            audit(self.record,self.answers)
