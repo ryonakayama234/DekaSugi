@@ -1099,3 +1099,7 @@ flowchart LR
 ## SYMBOL-BOOTSTRAP-1 — raw入力と採点台帳の分離
 
 [詳細仕様](../specs/SYMBOL-BOOTSTRAP-1.md)が正本。学習器の公開入口は `observe(episode_id, raw_text)` と `predict(prefix, length)`。語一覧・prefix境界・正解は前者へ渡さない。形成元のepisode/split/variable_spans、C-IDの展開と依存、R-IDのASTと支持/反例を保持。状態digestで各試験の更新なしを照合し、結果票は全14件×4armの56行を必要とする。欠損/重複/RESOURCE_STOPは完了した正答率にしない。raw evidenceは[run目録](../../experiments/SYMBOL-BOOTSTRAP-1/runs/README.md)のZIPに保存。
+
+## SYMBOL-REFORMATION-1 — 訓練入力のみ・新たな観測ではない
+
+[仕様](../specs/SYMBOL-REFORMATION-1.md)が出力形式、[先行固定](../../experiments/SYMBOL-REFORMATION-1/plan.md)が順序/上限の正本。states.jsonのみを読んで18生文字列を抽出、FULL/NO-CHUNKの辞書・旧規則・54観測を変更しない。AFTER-E054イベントを旧episodeと分離し、unique支持18分母を維持。全AST、全試行、全形成元・chunk位置/獲得時点、反例/不適用を保存。COMPLETE小票とmanifest読戻しなしの出力は比較未完了。費用停止・入力不整合は結論へ昇格しない。
