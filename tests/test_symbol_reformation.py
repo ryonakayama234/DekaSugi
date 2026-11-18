@@ -113,5 +113,35 @@ class ReformationTests(unittest.TestCase):
         self.assertEqual(opened,['states.json'])
         self.assertEqual(set(states),set(ARMS))
 
+    def test_auditor_rejects_resigned_corruption_and_missing_completion(self):
+        import json
+        from hashlib import sha256
+        from scripts.audit_symbol_reformation import verify
+        submitted=Path('experiments/SYMBOL-REFORMATION-1/runs/local-01')
+        for name in ('trial','evidence','dependency','summary','missing_completion'):
+            with tempfile.TemporaryDirectory() as tmp:
+                out=Path(tmp)/'run';out.mkdir()
+                from zipfile import ZipFile
+                with ZipFile(submitted/'evidence.zip') as z:z.extractall(out)
+                if name=='missing_completion':
+                    (out/'COMPLETE.json').unlink()
+                    with self.assertRaises(FileNotFoundError):verify(out)
+                    continue
+                path={'trial':'trials.json','evidence':'diagnostic.json','dependency':'events.json','summary':'report.json'}[name]
+                value=json.loads((out/path).read_text())
+                if name=='trial':value[0]['pair'].reverse()
+                elif name=='evidence':next(iter(value['arms']['FULL']['candidates'].values()))['evidence'][0]['status']='forged'
+                elif name=='dependency':value[0]['dependencies']=['C-missing']
+                else:value['summary']['FULL']['new']=1
+                (out/path).write_text(json.dumps(value))
+                hashes=json.loads((out/'SHA256SUMS.json').read_text())
+                hashes[path]=sha256((out/path).read_bytes()).hexdigest()
+                manifest=json.dumps(hashes).encode();(out/'SHA256SUMS.json').write_bytes(manifest)
+                complete=json.loads((out/'COMPLETE.json').read_text())
+                complete['manifest_sha256']=sha256(manifest).hexdigest()
+                complete['artifact_bytes_before_completion']=sum(p.stat().st_size for p in out.iterdir() if p.name!='COMPLETE.json')
+                (out/'COMPLETE.json').write_text(json.dumps(complete))
+                with self.assertRaises(AssertionError):verify(out)
+
 
 if __name__=='__main__':unittest.main()
