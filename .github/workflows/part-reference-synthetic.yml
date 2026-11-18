@@ -1,0 +1,21 @@
+name: Part reference synthetic engineering
+on:
+  pull_request:
+    paths:
+      - 'packages/part_reference/**'
+      - 'scripts/*part_reference.py'
+      - 'tests/test_part_reference.py'
+      - 'experiments/PART-REFERENCE-1/**'
+      - '.github/workflows/part-reference-synthetic.yml'
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest tests.test_part_reference -v
+      - run: python scripts/check_docs.py

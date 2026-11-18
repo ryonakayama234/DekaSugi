@@ -1103,3 +1103,7 @@ flowchart LR
 ## SYMBOL-REFORMATION-1 — 訓練入力のみ・新たな観測ではない
 
 [仕様](../specs/SYMBOL-REFORMATION-1.md)が出力形式、[先行固定](../../experiments/SYMBOL-REFORMATION-1/plan.md)が順序/上限の正本。states.jsonのみを読んで18生文字列を抽出、FULL/NO-CHUNKの辞書・旧規則・54観測を変更しない。AFTER-E054イベントを旧episodeと分離し、unique支持18分母を維持。全AST、全試行、全形成元・chunk位置/獲得時点、反例/不適用を保存。COMPLETE小票とmanifest読戻しなしの出力は比較未完了。費用停止・入力不整合は結論へ昇格しない。
+
+## PART-REFERENCE-1 — 予測固定後の正解読込
+
+[仕様](../specs/PART-REFERENCE-1.md)。学習入口は学習8行、予測入口は獲得断片・未ラベル入力だけ。候補の格納／展開命令を別記。REF/MASKの全獲得・選択前trace・費用計数は同一で、MASKの参照無効化は適用資格だけ。CHARは参照枠を文字に展開して格納し、重複候補も保持する。全予測を排他保存・hash読戻し後に別プロセスが正解を読む。全48行・全候補・選択・実行・論理費用と実時間を保存。独立VM確認の責務はMuse。

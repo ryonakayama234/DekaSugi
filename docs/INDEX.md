@@ -343,3 +343,7 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 ## SYMBOL-REFORMATION-1 — 終了辞書による訓練側診断
 
 [仕様](specs/SYMBOL-REFORMATION-1.md) / [実行前固定](../experiments/SYMBOL-REFORMATION-1/plan.md) / [結果・Muse手順](../experiments/SYMBOL-REFORMATION-1/runs/README.md)。18種類の既知行・辞書固定・両方式153ペア一巡。新候補はcandidateとして隔離し、旧試験・新予測評価・モデル採用を含めない。
+
+## PART-REFERENCE-1 — 部品参照の最小試験
+
+[仕様](specs/PART-REFERENCE-1.md) / [先行固定](../experiments/PART-REFERENCE-1/plan.md) / [結果とMuse手順](../experiments/PART-REFERENCE-1/runs/README.md)。Owner GO 6970376396、3方式・主8件と片側対照8件、予測固定後の別プロセス採点。
