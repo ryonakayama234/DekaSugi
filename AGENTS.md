@@ -452,3 +452,9 @@ The controlling Owner decision is [PR #183 comment 6675971478](https://github.co
 - Parent-only `packages/r2_m_a/evidence_ledger.py` uses a unique run root, exclusive O_EXCL artifacts, O_APPEND/flock/fsynced hash-linked events and a complete unordered 448-slot manifest. Remote GitHub custody must pin actual pre-answer and pre-score SHA bytes and fail closed on push/readback failure; any local receipt alone is insufficient. Synthetic fake remote tests do not attest an actual remote seal.
 - Missing slots remain NOT_RUN or STARTED_MISSING, terminal failures INVALID/RESOURCE_STOP/RUN_BLOCK/UNMEASURED remain visible and cannot be retried after START; no absence is converted to successful zero. Q before remote, post-freeze event, overwritten trace or forged approval is rejected.
 - `packages/r2_m_a/evaluator_gate.py` always refuses scoring for this head, including caller-supplied owner_approval=True. Child import guard blocks evidence, remote, evaluator and dossier modules. `g4_dossier.py` generates eight NOT_AUDITED templates (not audit evidence); G4 exact-head, G5, G6 separately require supervisor/Owner approvals and real-path evidence. CI includes synthetic negative tests only, never scientific execution.
+
+## SYMBOL-BOOTSTRAP-1 — 2026-11-17 Owner制作GOの境界
+
+- Issue #227 コメント6949460097/6949721000/6949870568に基づく独立CPU/stdlib試作。[固定条件](experiments/SYMBOL-BOOTSTRAP-1/plan.md)、[仕様](docs/specs/SYMBOL-BOOTSTRAP-1.md)、[結果・Muse手順](experiments/SYMBOL-BOOTSTRAP-1/runs/README.md)。語一覧・正解規則を学習器へ渡さない。
+- 54学習episodeと14件×4armを変更・選別しない。上限と選択順は人工確認より先の別commit。NO-CHUNKとの同点やsymbol不使用を成功へ読み替えない。上限超過はRESOURCE_STOP、延長しない。
+- 明示した新規テストだけを実行し、旧研究scorer/generatorや封印holdoutに接続しない。提出後Museの独立確認待ち。E1完了・実入力収集・エディタ統合・3D・mainマージは範囲外。

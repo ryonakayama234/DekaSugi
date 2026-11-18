@@ -284,3 +284,7 @@ After P2 Codex follow-up at 0baf02e, replace caller-provided Catalog by the **in
 
 ### ACTIVE-001 PR2 — exact-type attack resistance (2026-10-30)
 Latest independent review of b2acf54 showed a `tuple` subclass for QuerySession.class_ids that compares equal to the correct semantic class IDs but returns duplicated class IDs during iteration. Restore exact-built-in-type requirements at all untrusted replay boundaries, while preserving canonical internal Catalog, split and stepwise policy/answer verification. Add six synthetic negative fixtures, explicit CI-safe allowlist, synchronized AGENTS/INDEX/ARCH-001/ARCH-002 Mermaid/data contract/spec/plan/README/run. This is a Stage-I engineering correctness gate, **not** a Stage-II trained inquiry policy or transfer result. Retain PR #95 draft with dependency PR #94 and require exact-head independent review. [Run](../experiments/ACTIVE-001/runs/20261030-pr2-container-types.md).
+
+## 2026-11-17 — SYMBOL-BOOTSTRAP-1
+
+Owner GO（Issue #227 コメント6949870568）で、E1から独立した最小学習器を制作。[結果・引継ぎ](../experiments/SYMBOL-BOOTSTRAP-1/runs/README.md)。固定した未見組合せはFULL/NO-CHUNKが6/6、MEMORY0/6。chunk経路は形成されたが予測への寄与は未確認。次のゲートはMuse VMの独立確認で、モデル採用・正式汎化実験・マージではない。
