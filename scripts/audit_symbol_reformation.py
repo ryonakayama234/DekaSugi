@@ -8,6 +8,13 @@ from pathlib import Path
 from zipfile import ZipFile
 
 
+ARMS = ('FULL', 'NO-CHUNK')
+LEARNER_COST_KINDS = {
+    'formation_attempt', 'token_scan', 'output_search_node',
+    'match_node', 'expand_atom', 'fit_cache',
+}
+
+
 def canon(v):return json.dumps(v,sort_keys=True,ensure_ascii=False,separators=(',',':'))
 def digest(v):return sha256(canon(v).encode()).hexdigest()
 
@@ -75,6 +82,68 @@ def outputs(a,b,va,vb):
     return [json.loads(s) for s in sorted({canon(p) for p in found})]
 
 
+def operation_counts(counts, label):
+    assert isinstance(counts, dict), f'{label}: expected operation breakdown'
+    assert all(type(n) is int and n >= 0 for n in counts.values()), f'{label}: invalid operation count'
+    return Counter(counts)
+
+
+def receipt_counts(receipt, label):
+    counts = operation_counts(receipt['by_kind'], label)
+    operations = receipt['operations']
+    assert type(operations) is int and operations == counts.total() <= 20_000_000, f'{label}: operations'
+    for clock in ('cpu_seconds', 'wall_seconds'):
+        seconds = receipt[clock]
+        assert type(seconds) in (int, float) and 0 <= seconds <= 120, f'{label}: {clock}'
+    return counts
+
+
+def json_operations(value):
+    if isinstance(value, dict):
+        return 1 + sum(len(key) + json_operations(item) for key, item in value.items())
+    if isinstance(value, list):
+        return 1 + sum(map(json_operations, value))
+    return 1 + (len(value) if isinstance(value, str) else 0)
+
+
+def verify_cost(root, complete, manifest, diagnostic, attempts, required):
+    saved = json.loads((root / 'cost.json').read_bytes())
+    subtotal = receipt_counts(saved['total'], 'saved cost')
+    final = receipt_counts(complete['final_cost'], 'final cost')
+    for clock in ('cpu_seconds', 'wall_seconds'):
+        assert saved['total'][clock] <= complete['final_cost'][clock], f'final cost: {clock} below saved cost'
+
+    assert set(saved['arms']) == set(ARMS), 'saved cost: arms'
+    arm_total = Counter()
+    for arm in ARMS:
+        arm_cost = operation_counts(saved['arms'][arm], f'{arm} saved cost')
+        diagnostic_cost = operation_counts(diagnostic['arms'][arm]['cost'], f'{arm} diagnostic cost')
+        assert dict(arm_cost) == dict(diagnostic_cost), f'{arm} cost: differs from diagnostic'
+        assert arm_cost.keys() <= LEARNER_COST_KINDS, f'{arm} cost: unexpected operation kind'
+        assert arm_cost['formation_attempt'] == attempts[arm], f'{arm} cost: formation attempts'
+        arm_total.update(arm_cost)
+    for kind in LEARNER_COST_KINDS:
+        assert subtotal[kind] == arm_total[kind], f'saved cost: {kind} differs from arm sum'
+    for kind, minimum in required.items():
+        assert subtotal[kind] >= minimum, f'saved cost: {kind} below recount'
+
+    # After the saved snapshot, only cost, manifest and completion are charged.
+    before_cost = sum(
+        (root / name).stat().st_size
+        for name in ('diagnostic.json', 'trials.json', 'events.json', 'report.json', 'result.md')
+    )
+    assert saved['artifact_bytes_before_cost'] == before_cost, 'saved cost: artifact bytes'
+    tail_bytes = sum(((root / name).stat().st_size + 1023) // 1024
+                     for name in ('cost.json', 'SHA256SUMS.json'))
+    assert complete['completion_reserve_operations'] == 4096, 'final cost: completion reservation'
+    expected = subtotal + Counter(
+        serialize_json=json_operations(saved) + json_operations(manifest),
+        encode_byte=tail_bytes, write_byte=tail_bytes, readback_byte=tail_bytes,
+        completion_reserve=4096,
+    )
+    assert final == expected, 'final cost: differs from saved cost plus finalization'
+
+
 def verify(root):
     assert not (root/'STOP.json').exists(),'stopped comparison'
     complete=json.loads((root/'COMPLETE.json').read_text());assert complete['status']=='COMPLETE'
@@ -87,14 +156,12 @@ def verify(root):
     sizes=sum(p.stat().st_size for p in root.iterdir())
     assert sizes<=50_000_000
     assert sizes==complete['artifact_bytes_before_completion']+(root/'COMPLETE.json').stat().st_size
-    cost=complete['final_cost'];assert cost['operations']==sum(cost['by_kind'].values())<=20_000_000
-    assert cost['cpu_seconds']<=120 and cost['wall_seconds']<=120
     project=Path(__file__).resolve().parents[1]
     archive=project/'experiments/SYMBOL-BOOTSTRAP-1/runs/local-02/evidence.zip'
     assert sha256(archive.read_bytes()).hexdigest()=='d050df3d1caa06203036b15c20e2a6881581133f1ad51d9ed5756666ee1d54e5'
     with ZipFile(archive) as z:data=z.read('states.json')
     assert sha256(data).hexdigest()=='b28875765b21e0b3603fb750a4fa8e7283d9322efd2b3b286de708aba4cdb7fd'
-    states=json.loads(data);states={a:states[a] for a in ('FULL','NO-CHUNK')}
+    states=json.loads(data);states={a:states[a] for a in ARMS}
     d=json.loads((root/'diagnostic.json').read_text());trials=json.loads((root/'trials.json').read_text());events=json.loads((root/'events.json').read_text())
     report=json.loads((root/'report.json').read_text());assert report['status']=='COMPLETE'
     assert report['plan_sha256']==sha256((project/'experiments/SYMBOL-REFORMATION-1/plan.md').read_bytes()).hexdigest()
@@ -104,17 +171,23 @@ def verify(root):
     assert len({t for _,t in rows})==18
     assert d['state_before']==d['state_after']==digest(states)==report['state_sha256']
     ti=0;ei=0;verified=0
-    for arm in ('FULL','NO-CHUNK'):
+    attempts = Counter()
+    required = Counter()
+    for arm in ARMS:
         state=states[arm];result=d['arms'][arm];candidates=result['candidates']
         before=set(state['rules']);formed_ids=set();routes={r:set() for r in candidates};event_ids={r:[] for r in candidates};pairs=[]
         assert result['before']==sorted(before)
         for i in range(1,18):
             for j in range(i):
                 pair=[rows[j][0],rows[i][0]];pairs.append(pair)
+                required['row_pair'] += 1
                 for split in range(1,min(len(rows[j][1]),len(rows[i][1]))):
                     for route in (('symbol','character') if arm=='FULL' else ('character',)):
                         t=trials[ti];ti+=1
                         assert (t['id'],t['arm'],t['pair'],t['split'],t['route'])==(f'T{ti:05}',arm,pair,split,route)
+                        attempts[arm] += 1
+                        if route == 'character':
+                            required['character_token'] += 2 * split
                         chunks=state['chunks'] if route=='symbol' else {}
                         texts=[rows[j][1],rows[i][1]]
                         p=pattern_for(texts[0][:split],texts[1][:split],chunks)
@@ -140,6 +213,7 @@ def verify(root):
                                 formed_ids.add(rid);routes[rid].add(route);event_ids[rid].append(eid)
                         assert t['events']==expected_events
         assert result['pairs']==pairs
+        required['baseline_candidate'] += len(before)
         assert set(candidates)==before|formed_ids
         assert result['after']==sorted(candidates)
         for rid,c in candidates.items():
@@ -158,7 +232,7 @@ def verify(root):
             verified+=1
         new=set(candidates)-before
         es=[e for e in events if e['arm']==arm]
-        summary=dict(before=len(before),after=len(candidates),new=len(new),new_supported=sum(candidates[r]['support']>=2 for r in new),new_with_failure=sum(candidates[r]['failure']>0 for r in new),new_inapplicable_rows=sum(candidates[r]['inapplicable'] for r in new),attempts=sum(t['arm']==arm for t in trials),pairs=153,existing_rediscovery_events=sum(e['baseline_rediscovery'] for e in es),repeated_formation_events=sum(e['already_formed'] for e in es),cross_route_asts=sum(len(c['routes'])==2 for c in candidates.values()))
+        summary=dict(before=len(before),after=len(candidates),new=len(new),new_supported=sum(candidates[r]['support']>=2 for r in new),new_with_failure=sum(candidates[r]['failure']>0 for r in new),new_inapplicable_rows=sum(candidates[r]['inapplicable'] for r in new),attempts=attempts[arm],pairs=153,existing_rediscovery_events=sum(e['baseline_rediscovery'] for e in es),repeated_formation_events=sum(e['already_formed'] for e in es),cross_route_asts=sum(len(c['routes'])==2 for c in candidates.values()))
         assert result['summary']==report['summary'][arm]==summary
     assert ti==len(trials) and ei==len(events)
     f,n=d['arms']['FULL'],d['arms']['NO-CHUNK']
@@ -167,6 +241,9 @@ def verify(root):
     assert sorted(d['comparison']['full_chunk_exclusive_new'])==unique
     assert sorted(d['comparison']['full_chunk_exclusive_supported'])==[r for r in unique if f['candidates'][r]['support']>=2]
     assert report['comparison']==d['comparison']
+    required.update(trial_retention=ti, event_retention=ei, fit_retention=verified*len(rows),
+                    support_aggregate=verified*len(rows)*3, compare=len(f['candidates']))
+    verify_cost(root, complete, hashes, d, attempts, required)
     return dict(status='PASS',candidates=verified,row_assessments=verified*18,trials=ti,events=ei,artifact_bytes=sizes,independent_vm_check=False)
 
 

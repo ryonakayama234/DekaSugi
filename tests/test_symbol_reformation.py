@@ -143,5 +143,71 @@ class ReformationTests(unittest.TestCase):
                 (out/'COMPLETE.json').write_text(json.dumps(complete))
                 with self.assertRaises(AssertionError):verify(out)
 
+    def test_auditor_accepts_original_cost_evidence(self):
+        from zipfile import ZipFile
+        from scripts.audit_symbol_reformation import verify
+
+        archive = Path('experiments/SYMBOL-REFORMATION-1/runs/local-01/evidence.zip')
+        with tempfile.TemporaryDirectory() as tmp, ZipFile(archive) as evidence:
+            evidence.extractall(tmp)
+            result = verify(Path(tmp))
+        self.assertEqual(result['status'], 'PASS')
+        self.assertEqual(result['trials'], 6426)
+
+    def test_auditor_rejects_inconsistent_cost_evidence(self):
+        from hashlib import sha256
+        import json
+        from zipfile import ZipFile
+        from scripts.audit_symbol_reformation import verify
+
+        cases = {
+            'zero final': 'final cost: differs from saved cost plus finalization',
+            'missing final charge': 'final cost: differs from saved cost plus finalization',
+            'cpu reversal': 'final cost: cpu_seconds below saved cost',
+            'wall reversal': 'final cost: wall_seconds below saved cost',
+            'arm mismatch': 'FULL cost: differs from diagnostic',
+            'arm sum mismatch': 'saved cost: formation_attempt differs from arm sum',
+            'both receipts undercount trials': 'saved cost: trial_retention below recount',
+        }
+        archive = Path('experiments/SYMBOL-REFORMATION-1/runs/local-01/evidence.zip')
+        for case, error in cases.items():
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as tmp, ZipFile(archive) as evidence:
+                root = Path(tmp)
+                evidence.extractall(root)
+                completion_path = root / 'COMPLETE.json'
+                complete = json.loads(completion_path.read_bytes())
+                final = complete['final_cost']
+                cost_path = root / 'cost.json'
+                saved = json.loads(cost_path.read_bytes())
+                if case == 'zero final':
+                    final.update(operations=0, by_kind={})
+                elif case == 'missing final charge':
+                    final['by_kind']['serialize_json'] -= 1
+                    final['operations'] -= 1
+                elif case == 'cpu reversal':
+                    final['cpu_seconds'] = 0
+                elif case == 'wall reversal':
+                    final['wall_seconds'] = 0
+                else:
+                    if case == 'arm mismatch':
+                        saved['arms']['FULL']['formation_attempt'] -= 1
+                    else:
+                        kind = 'formation_attempt' if case == 'arm sum mismatch' else 'trial_retention'
+                        for receipt in (saved['total'], final):
+                            receipt['by_kind'][kind] -= 1
+                            receipt['operations'] -= 1
+                    cost_path.write_text(json.dumps(saved))
+                    manifest_path = root / 'SHA256SUMS.json'
+                    manifest = json.loads(manifest_path.read_bytes())
+                    manifest['cost.json'] = sha256(cost_path.read_bytes()).hexdigest()
+                    manifest_path.write_text(json.dumps(manifest))
+                    complete['manifest_sha256'] = sha256(manifest_path.read_bytes()).hexdigest()
+                    complete['artifact_bytes_before_completion'] = sum(
+                        path.stat().st_size for path in root.iterdir() if path != completion_path
+                    )
+                completion_path.write_text(json.dumps(complete))
+                with self.assertRaisesRegex(AssertionError, error):
+                    verify(root)
+
 
 if __name__=='__main__':unittest.main()
