@@ -1092,3 +1092,19 @@ flowchart TD
   R --> P
   P --> E["分類別結果と依存の監査"]
 ```
+
+## SYMBOL-REFORMATION-1 — 旧状態を変更しない訓練側の分岐
+
+[仕様](../specs/SYMBOL-REFORMATION-1.md) / [固定計画](../../experiments/SYMBOL-REFORMATION-1/plan.md)。`symbol_reformation` は `symbol_bootstrap` の有限な形成・照合文法だけを利用。observe/predict・旧runner・scorer・Registry・E1への接続なし。
+
+```mermaid
+flowchart TD
+  S["SHA固定の学習終了state"] --> D["読取り専用の終了辞書"]
+  S --> R["18種類の既知文字列"]
+  D --> F["153ペアの再形成 FULL / NO-CHUNK"]
+  R --> F
+  F --> C["別表に隔離したcandidateと全形成イベント"]
+  R --> E["18行の支持・反例・不適用"]
+  C --> E
+  E --> O["前後差・費用・結果票"]
+```

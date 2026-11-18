@@ -339,3 +339,7 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 ## SYMBOL-BOOTSTRAP-1 — Owner GOによる独立最小試作
 
 [仕様](specs/SYMBOL-BOOTSTRAP-1.md) / [実行前固定](../experiments/SYMBOL-BOOTSTRAP-1/plan.md) / [数値・順序・人工台帳](../experiments/SYMBOL-BOOTSTRAP-1/lock.json) / [結果とMuse確認手順](../experiments/SYMBOL-BOOTSTRAP-1/runs/README.md)。CPU/stdlib、54学習episode・14試験×4arm。未見予測はFULLとNO-CHUNKが並び、chunkの寄与は未確認。E1とは独立、マージなし。
+
+## SYMBOL-REFORMATION-1 — 終了辞書による訓練側診断
+
+[仕様](specs/SYMBOL-REFORMATION-1.md) / [実行前固定](../experiments/SYMBOL-REFORMATION-1/plan.md) / [結果・Muse手順](../experiments/SYMBOL-REFORMATION-1/runs/README.md)。18種類の既知行・辞書固定・両方式153ペア一巡。新候補はcandidateとして隔離し、旧試験・新予測評価・モデル採用を含めない。

@@ -458,3 +458,9 @@ The controlling Owner decision is [PR #183 comment 6675971478](https://github.co
 - Issue #227 コメント6949460097/6949721000/6949870568に基づく独立CPU/stdlib試作。[固定条件](experiments/SYMBOL-BOOTSTRAP-1/plan.md)、[仕様](docs/specs/SYMBOL-BOOTSTRAP-1.md)、[結果・Muse手順](experiments/SYMBOL-BOOTSTRAP-1/runs/README.md)。語一覧・正解規則を学習器へ渡さない。
 - 54学習episodeと14件×4armを変更・選別しない。上限と選択順は人工確認より先の別commit。NO-CHUNKとの同点やsymbol不使用を成功へ読み替えない。上限超過はRESOURCE_STOP、延長しない。
 - 明示した新規テストだけを実行し、旧研究scorer/generatorや封印holdoutに接続しない。提出後Museの独立確認待ち。E1完了・実入力収集・エディタ統合・3D・mainマージは範囲外。
+
+## SYMBOL-REFORMATION-1 — Owner制作GO 2026-11-18
+
+- [先行固定](experiments/SYMBOL-REFORMATION-1/plan.md)、[仕様](docs/specs/SYMBOL-REFORMATION-1.md)、[run/Muse手順](experiments/SYMBOL-REFORMATION-1/runs/README.md)。Issue #227 コメント6969285381に基づく訓練側診断だけ。
+- 旧終了stateの辞書固定、18種類の異なる153ペアを両方式に一巡。旧試験・予測・再学習なし。新候補は隔離し、旧来歴を書換えず支持はunique18行。0件・重複・反例も記録して閉じ、結果後調整をしない。
+- 上限超過RESOURCE_STOPを完了と呼ばない。専用人工テストだけを実行。Muse VM独立確認後も、モデル採用・E1完了・マージはOwner別判断。
