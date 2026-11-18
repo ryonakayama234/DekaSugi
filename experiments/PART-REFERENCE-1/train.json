@@ -1,0 +1,58 @@
+[
+  {
+    "id": "T01",
+    "left": 1,
+    "right": 0,
+    "text": "u",
+    "output": "ABBAu"
+  },
+  {
+    "id": "T02",
+    "left": 1,
+    "right": 0,
+    "text": "v",
+    "output": "ABBAv"
+  },
+  {
+    "id": "T03",
+    "left": 2,
+    "right": 0,
+    "text": "u",
+    "output": "BAABu"
+  },
+  {
+    "id": "T04",
+    "left": 2,
+    "right": 0,
+    "text": "v",
+    "output": "BAABv"
+  },
+  {
+    "id": "T05",
+    "left": 0,
+    "right": 1,
+    "text": "u",
+    "output": "uCDDC"
+  },
+  {
+    "id": "T06",
+    "left": 0,
+    "right": 1,
+    "text": "v",
+    "output": "vCDDC"
+  },
+  {
+    "id": "T07",
+    "left": 0,
+    "right": 2,
+    "text": "u",
+    "output": "uDCCD"
+  },
+  {
+    "id": "T08",
+    "left": 0,
+    "right": 2,
+    "text": "v",
+    "output": "vDCCD"
+  }
+]

@@ -1108,3 +1108,17 @@ flowchart TD
   C --> E
   E --> O["前後差・費用・結果票"]
 ```
+
+## PART-REFERENCE-1 — 人工例からの有向残差と参照付き合成
+
+[仕様](../specs/PART-REFERENCE-1.md) / [固定](../../experiments/PART-REFERENCE-1/plan.md)。旧研究学習器から独立したstdlib試作。
+
+```mermaid
+flowchart TD
+  T["片側の学習8行"] --> A["有向残差4個の獲得"]
+  A --> P["REF・CHAR・MASKの全候補と予測"]
+  Q["正解を含まない16入力"] --> P
+  P --> L["予測保存とSHA固定・プロセス終了"]
+  L --> S["別プロセスの採点と表からの検算"]
+  G["事前固定の正解16件"] --> S
+```

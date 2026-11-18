@@ -464,3 +464,9 @@ The controlling Owner decision is [PR #183 comment 6675971478](https://github.co
 - [先行固定](experiments/SYMBOL-REFORMATION-1/plan.md)、[仕様](docs/specs/SYMBOL-REFORMATION-1.md)、[run/Muse手順](experiments/SYMBOL-REFORMATION-1/runs/README.md)。Issue #227 コメント6969285381に基づく訓練側診断だけ。
 - 旧終了stateの辞書固定、18種類の異なる153ペアを両方式に一巡。旧試験・予測・再学習なし。新候補は隔離し、旧来歴を書換えず支持はunique18行。0件・重複・反例も記録して閉じ、結果後調整をしない。
 - 上限超過RESOURCE_STOPを完了と呼ばない。専用人工テストだけを実行。Muse VM独立確認後も、モデル採用・E1完了・マージはOwner別判断。
+
+## PART-REFERENCE-1 — Owner制作GO 2026-11-18
+
+- Issue #227 GO6970376396、[先行固定](experiments/PART-REFERENCE-1/plan.md)、[仕様](docs/specs/PART-REFERENCE-1.md)、[結果/Muse手順](experiments/PART-REFERENCE-1/runs/README.md)。固定8学習・16入力・3方式のみ。旧研究素材・学習器は呼ばない。
+- 予測を別プロセスで排他保存し固定してから正解読込。REF/MASK全獲得・候補・選択前計数一致を確認。主REF8/8・CHAR/MASK0、対照全方式8/8。結果後に上限やラインを調整しない。全候補traceと費用を残す。
+- 明示した専用人工テストだけ実行する。提出後Muse VM独立確認。実入力・E1統合/完了・モデル採用・マージはOwner別判断。

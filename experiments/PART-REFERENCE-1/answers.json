@@ -1,0 +1,18 @@
+{
+  "Q01": "ABBAmCDDC",
+  "Q02": "ABBAnCDDC",
+  "Q03": "ABBAmDCCD",
+  "Q04": "ABBAnDCCD",
+  "Q05": "BAABmCDDC",
+  "Q06": "BAABnCDDC",
+  "Q07": "BAABmDCCD",
+  "Q08": "BAABnDCCD",
+  "Q09": "ABBAm",
+  "Q10": "ABBAn",
+  "Q11": "BAABm",
+  "Q12": "BAABn",
+  "Q13": "mCDDC",
+  "Q14": "nCDDC",
+  "Q15": "mDCCD",
+  "Q16": "nDCCD"
+}

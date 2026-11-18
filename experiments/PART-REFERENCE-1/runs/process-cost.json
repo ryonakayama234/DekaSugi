@@ -1,0 +1,12 @@
+[
+  {
+    "stage": "predict",
+    "wall_seconds": 0.09136596000007557,
+    "cpu_seconds": 0.087652
+  },
+  {
+    "stage": "score",
+    "wall_seconds": 0.09439513799952692,
+    "cpu_seconds": 0.09269299999999997
+  }
+]
