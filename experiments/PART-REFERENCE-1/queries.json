@@ -1,0 +1,114 @@
+[
+  {
+    "id": "Q01",
+    "group": "main",
+    "left": 1,
+    "right": 1,
+    "text": "m"
+  },
+  {
+    "id": "Q02",
+    "group": "main",
+    "left": 1,
+    "right": 1,
+    "text": "n"
+  },
+  {
+    "id": "Q03",
+    "group": "main",
+    "left": 1,
+    "right": 2,
+    "text": "m"
+  },
+  {
+    "id": "Q04",
+    "group": "main",
+    "left": 1,
+    "right": 2,
+    "text": "n"
+  },
+  {
+    "id": "Q05",
+    "group": "main",
+    "left": 2,
+    "right": 1,
+    "text": "m"
+  },
+  {
+    "id": "Q06",
+    "group": "main",
+    "left": 2,
+    "right": 1,
+    "text": "n"
+  },
+  {
+    "id": "Q07",
+    "group": "main",
+    "left": 2,
+    "right": 2,
+    "text": "m"
+  },
+  {
+    "id": "Q08",
+    "group": "main",
+    "left": 2,
+    "right": 2,
+    "text": "n"
+  },
+  {
+    "id": "Q09",
+    "group": "control",
+    "left": 1,
+    "right": 0,
+    "text": "m"
+  },
+  {
+    "id": "Q10",
+    "group": "control",
+    "left": 1,
+    "right": 0,
+    "text": "n"
+  },
+  {
+    "id": "Q11",
+    "group": "control",
+    "left": 2,
+    "right": 0,
+    "text": "m"
+  },
+  {
+    "id": "Q12",
+    "group": "control",
+    "left": 2,
+    "right": 0,
+    "text": "n"
+  },
+  {
+    "id": "Q13",
+    "group": "control",
+    "left": 0,
+    "right": 1,
+    "text": "m"
+  },
+  {
+    "id": "Q14",
+    "group": "control",
+    "left": 0,
+    "right": 1,
+    "text": "n"
+  },
+  {
+    "id": "Q15",
+    "group": "control",
+    "left": 0,
+    "right": 2,
+    "text": "m"
+  },
+  {
+    "id": "Q16",
+    "group": "control",
+    "left": 0,
+    "right": 2,
+    "text": "n"
+  }
+]
