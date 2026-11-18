@@ -347,3 +347,7 @@ G3-3 begins at G3-2 merge main `177bfa1757f40c6451dc521b413841d790bdae24`; no 44
 ## PART-REFERENCE-1 — 部品参照の最小試験
 
 [仕様](specs/PART-REFERENCE-1.md) / [先行固定](../experiments/PART-REFERENCE-1/plan.md) / [結果とMuse手順](../experiments/PART-REFERENCE-1/runs/README.md)。Owner GO 6970376396、3方式・主8件と片側対照8件、予測固定後の別プロセス採点。
+
+## UNIT-DISCOVERY-1 — 文字列から見つけた単位の再利用
+
+[固定設計 v1](../experiments/UNIT-DISCOVERY-1/plan.md)。両条件が同じ18文書から学習し、発見単位への参照だけを切り替える。資料選定・制作・実行は別判断。
