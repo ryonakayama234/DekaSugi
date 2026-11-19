@@ -17,6 +17,7 @@ tags: navigation, architecture, research, experiments
 | PROC-001 | 仮説→実験→採否 | active | [workflow](process/workflow.md) |
 | PROC-002 | GitHub運用・進捗管理 | active | [github](process/github.md) |
 | ROADMAP | 実験ロードマップ | proposed | [roadmap](roadmap.md) |
+| R-20261115-06 | 3Dモデリング環境と経験データの大目標・段階・登録用サブ目標・Owner判断点 | proposed; design-only; no implementation or experiment authorization | [回答](research/R-20261115-06-3d-modeling-roadmap.md) / [質問票 PR #221](https://github.com/ryonakayama234/DekaSugi/pull/221) / [Issue #220](https://github.com/ryonakayama234/DekaSugi/issues/220) |
 | EXP-0001 | 型付きプログラム合成ベースライン | accepted baseline (EXP-0001) | [spec](specs/EXP-0001.md) / [plan](../experiments/EXP-0001/plan.md) |
 | EXP-0002 | 共通部分式の発見と未知例での比較 | implemented in main; scientific promotion unaccepted | [spec](specs/EXP-0002.md) / [preregistered plan](../experiments/EXP-0002/plan.md) / [runs](../experiments/EXP-0002/runs/README.md) |
 | EXP-0002-SEC-003 | Registry偽装と展開予算すり抜けの安全監査 | security remediations reviewed and merged to main | [review record](../experiments/EXP-0002/reviews/20261024-primitive-allowlist-hardening.md) / [PR #6](https://github.com/ryonakayama234/DekaSugi/pull/6) |
